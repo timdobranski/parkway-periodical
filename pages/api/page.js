@@ -32,7 +32,7 @@ export default async function scraper(req, res) {
   // Convert HTML element to JSON
   const contentJSON = {
     html: content.outerHTML,
-    text: content.textContent.trim(),
+    // text: content.textContent.trim(),
     styles, // add styles to the JSON
     // add other properties as needed
   };
