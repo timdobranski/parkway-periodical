@@ -1,0 +1,20 @@
+.headerContainer {
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100vw;
+  height: 250px;
+
+}
+
+.logoContainer {
+  position: relative;
+  width: 150px;
+  height: 150px;
+
+}
+.headerContainer h1 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+}

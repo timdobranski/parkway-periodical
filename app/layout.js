@@ -1,17 +1,18 @@
-import { Inter } from 'next/font/google'
 import './globals.css'
+import Header from '../components/Header/Header'
 
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Parkway Periodical',
-  description: 'A blog for Parkway Academy',
+  description: 'News And Parkway Academy',
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <Header />
+
+      <body>{children}</body>
     </html>
   )
 }
