@@ -10,6 +10,19 @@ export default async function scraper(req, res) {
 
   const dom = new JSDOM(html);
   const document = dom.window.document;
+
+  // Retrieve CSS styles
+  const styles = [];
+  const linkElements = document.querySelectorAll('head link[rel="stylesheet"]');
+  for (const linkElement of linkElements) {
+    const href = linkElement.getAttribute('href');
+    if (href) {
+      const styleResponse = await fetch(href);
+      const styleText = await styleResponse.text();
+      styles.push(styleText);
+    }
+  }
+
   const content = document.querySelector('#yDmH0d > div:nth-child(1) > div > div:nth-child(2) > div.QZ3zWd > div > div.UtePc.RCETm');
 
   if (!content) {
@@ -20,6 +33,7 @@ export default async function scraper(req, res) {
   const contentJSON = {
     html: content.outerHTML,
     text: content.textContent.trim(),
+    styles, // add styles to the JSON
     // add other properties as needed
   };
 

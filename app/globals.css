@@ -98,10 +98,34 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+
+.blogContainer {
+  margin-top: 10rem;
+  box-sizing: border-box;
+  position: relative;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: solid red 4px;
+
+}
+.yaqOZd {
+
+  border: solid black 4px;
+  margin: 2rem;
+  /* width: 1200px; */
+}
+
+.CENy8b {
+  /* height: 250px; */
 }
