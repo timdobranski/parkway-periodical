@@ -2,36 +2,65 @@
   font-family: 'Nadall';
   src: url('../public/fonts/NADALL.TTF') format('truetype');
 }
+@font-face {
+  font-family: 'Louis George Cafe';
+  src: url('../public/fonts/Louis\ George\ Cafe\ Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Louis George Cafe Bold';
+  src: url('../public/fonts/Louis\ George\ Cafe\ Bold.ttf') format('truetype');
+}
 
-.blogContainer {
-  margin-top: 150px;
+.appContainer {
+  margin-top: 120px;
   box-sizing: border-box !important;
   position: relative;
   width: 100vw !important;
-  height: calc(100vh - 150px);
-
+  height: calc(100vh - 120px);
   overflow-y: auto !important;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   background-color: white;
-  background: linear-gradient(to bottom, rgb(164, 212, 255), rgb(0, 52, 89));
+  background: linear-gradient(to right, rgb(92, 201, 255), rgb(30, 101, 152));
 
 }
-.yaqOZd {
+.yaqOZd, .sectionContainer {
   position: relative;
   width: 1400px !important;
   margin: 2rem;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, .7);
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
+  text-align: center;
+  min-height: 300px;
   /* width: 1200px; */
+}
+
+.sectionContainer {
+  position: relative;
+  width: 1400px !important;
+  box-sizing: border-box;
+  margin: 2rem;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, .8);
+  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
+  text-align: center;
+  min-height: 300px;
+  padding: 2rem;
 }
 
 .CENy8b {
   /* height: 250px; */
 }
+/* Attendance Matters header */
+#h\.62c1njw9uc5k_l > div > span { font-size: 3rem;
+  font-weight: bold;
+}
 body {
   margin: 0;
+  font-family: Louis George Cafe;
+  font-size: 1.5rem;
+  outline: none;
 }

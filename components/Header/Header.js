@@ -11,11 +11,11 @@ export default function Header() {
       </div>
       <h1>Parkway Periodical</h1>
       <div className={styles.navContainer}>
-        <h2>HOME</h2>
-        <h2>STAFF</h2>
-        <h2>ABOUT US</h2>
-        <h2>CONTACT</h2>
-        </div>
+        <Link href='/'><h2>HOME</h2></Link>
+        <Link href='/posts'><h2>POSTS</h2></Link>
+        <Link href='/archive'><h2>ARCHIVE</h2></Link>
+        <Link href='/about'><h2>ABOUT US</h2></Link>
+      </div>
     </div>
   )
 
