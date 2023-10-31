@@ -61,9 +61,9 @@ export default function Home() {
       const computedStyle = window.getComputedStyle(element);
 
       // Check if the element has one of the target background colors
-      if (targetBackgroundColors.includes(computedStyle.backgroundColor)) {
-        element.style.setProperty('background-color', newBackgroundColor, 'important');
-      }
+      // if (targetBackgroundColors.includes(computedStyle.backgroundColor)) {
+      //   element.style.setProperty('background-color', newBackgroundColor, 'important');
+      // }
     }
   }, [content]);
 

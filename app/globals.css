@@ -26,7 +26,8 @@
   background: linear-gradient(to right, rgb(92, 201, 255), rgb(30, 101, 152));
 
 }
-.yaqOZd, .sectionContainer {
+/* All returned section elements */
+.yaqOZd {
   position: relative;
   width: 1400px !important;
   margin: 2rem;
@@ -35,8 +36,27 @@
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
   text-align: center;
   min-height: 300px;
-  /* width: 1200px; */
 }
+
+.yaqOZd * {
+  /* text-align: left; */
+}
+
+#h\.3bpin9ukdacj_l > div {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+#h\.138c307daba94d3e_142 > div > div > p:nth-child(1) {
+ font-size: 3rem;
+ margin-bottom: 1rem;
+}
+#h\.62c1njw9uc5k_l > div > span {
+  font-size: 3rem;
+  margin-bottom: 3rem;
+}
+
+
 
 .sectionContainer {
   position: relative;
@@ -55,12 +75,10 @@
   /* height: 250px; */
 }
 /* Attendance Matters header */
-#h\.62c1njw9uc5k_l > div > span { font-size: 3rem;
-  font-weight: bold;
-}
+
 body {
-  margin: 0;
+  /* margin: 0; */
   font-family: Louis George Cafe;
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
   outline: none;
 }
