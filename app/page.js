@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
-import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [content, setContent] = useState('');
@@ -18,9 +17,10 @@ export default function Home() {
         const sections = doc.querySelectorAll('section');
         const sectionsArray = Array.from(sections);
 
-        // Remove the first and last sections
-        if (sectionsArray.length) {
+        // Remove the first and last 5 sections
+        if (sectionsArray.length > 5) {
           sectionsArray.shift();
+          sectionsArray.splice(-6);
         }
 
         // Set the remaining sections as content to be rendered
@@ -65,7 +65,7 @@ export default function Home() {
         element.style.setProperty('background-color', newBackgroundColor, 'important');
       }
     }
-  }, [content]); // <-- This useEffect runs after the content has been updated
+  }, [content]);
 
   return (
     <div className='blogContainer'>
