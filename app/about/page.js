@@ -6,6 +6,7 @@ import parse from 'html-react-parser';
 export default function About() {
   const [content, setContent] = useState('');
   const [styles, setStyles] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/page')
@@ -25,10 +26,41 @@ export default function About() {
         setContent(selectedSectionsHtml);
 
         setStyles(data.content.styles.join('\n'));
-        console.log('old blog data: ', data.content);
+
+        const imgs = doc.querySelectorAll('img');
+        if (imgs.length === 0) {
+          setLoading(false);
+          return;
+        }
+
+        let loadedImages = 0;
+        imgs.forEach(img => {
+          if (img.complete) {
+            loadedImages++;
+          } else {
+            img.addEventListener('load', () => {
+              loadedImages++;
+              if (loadedImages === imgs.length) {
+                setLoading(false);
+              }
+            });
+            // Handle the case where the image fails to load
+            img.addEventListener('error', () => {
+              loadedImages++;
+              if (loadedImages === imgs.length) {
+                setLoading(false);
+              }
+            });
+          }
+        });
+
+        if (loadedImages === imgs.length) {
+          setLoading(false);
+        }
       })
       .catch((err) => {
         console.error('Error fetching scraped content:', err);
+        setLoading(false);
       });
   }, []);
 
@@ -43,9 +75,18 @@ export default function About() {
     };
   }, [styles]);
 
-  return (
-    <div className='blogContainer'>
-      <div>{parse(content)}</div>
-    </div>
-  );
+  if (loading) {
+    return (
+      <div className='blogContainer'>
+        Loading...
+      </div>
+    );
+  } else {
+    return (
+      <div className='blogContainer'>
+        <div>{parse(content)}</div>
+      </div>
+    );
+  }
 }
+
