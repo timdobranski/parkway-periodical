@@ -16,77 +16,68 @@ export default function About() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const sections = doc.querySelectorAll('section');
-        const sectionsArray = Array.from(sections);
+        let sectionsArray = Array.from(sections);
 
-        // Get the 4th and 5th section from the end
-        const selectedSections = sectionsArray.slice(-6, -4).concat(sectionsArray.slice(-1));
+        // Remove the first and last 5 sections
+        if (sectionsArray.length > 5) {
+          const lastSection = sectionsArray.pop();  // store the last section
+          sectionsArray = sectionsArray.slice(-6, -4).concat(lastSection);  // slice and add the last section back
+          [sectionsArray[0], sectionsArray[1]] = [sectionsArray[1], sectionsArray[0]];  // swap the first two sections
+        }
 
         // Set the remaining sections as content to be rendered
-        const selectedSectionsHtml = selectedSections.map(section => section.outerHTML).join('');
-        setContent(selectedSectionsHtml);
+        const remainingSectionsHtml = sectionsArray.map(section => section.outerHTML).join('');
+        setContent(remainingSectionsHtml);
 
         setStyles(data.content.styles.join('\n'));
-
-        const imgs = doc.querySelectorAll('img');
-        if (imgs.length === 0) {
-          setLoading(false);
-          return;
-        }
-
-        let loadedImages = 0;
-        imgs.forEach(img => {
-          if (img.complete) {
-            loadedImages++;
-          } else {
-            img.addEventListener('load', () => {
-              loadedImages++;
-              if (loadedImages === imgs.length) {
-                setLoading(false);
-              }
-            });
-            // Handle the case where the image fails to load
-            img.addEventListener('error', () => {
-              loadedImages++;
-              if (loadedImages === imgs.length) {
-                setLoading(false);
-              }
-            });
-          }
-        });
-
-        if (loadedImages === imgs.length) {
-          setLoading(false);
-        }
+        console.log('old blog data: ', data.content);
       })
       .catch((err) => {
         console.error('Error fetching scraped content:', err);
-        setLoading(false);
       });
   }, []);
 
   useEffect(() => {
-    const styleTag = document.createElement('style');
-    styleTag.type = 'text/css';
-    styleTag.appendChild(document.createTextNode(styles));
-    document.head.appendChild(styleTag);
+    if (styles) {
+      const styleTag = document.createElement('style');
+      styleTag.type = 'text/css';
+      styleTag.appendChild(document.createTextNode(styles));
+      document.head.appendChild(styleTag);
 
-    return () => {
-      document.head.removeChild(styleTag);
-    };
+      setLoading(false);
+
+      return () => {
+        document.head.removeChild(styleTag);
+      };
+    }
   }, [styles]);
 
-  if (loading) {
-    return (
-      <div className='blogContainer'>
-        Loading...
-      </div>
-    );
-  } else {
-    return (
-      <div className='blogContainer'>
-        <div>{parse(content)}</div>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    if (content && !loading) {
+      // Set the background colors you want to change and the new background color
+      const targetBackgroundColors = ['rgb(252, 229, 205)', 'rgb(217, 210, 233)']; // Colors you want to reset
+      const newBackgroundColor = '#ffc5bf'; // Color you want to set
 
+      // Get all elements inside the blog container
+      const blogContainer = document.querySelector('.blogContainer');
+      const allElements = blogContainer ? blogContainer.getElementsByTagName('*') : [];
+
+      // Iterate through all elements and change their background color
+      for (let i = 0; i < allElements.length; i++) {
+        const element = allElements[i];
+        const computedStyle = window.getComputedStyle(element);
+
+        // Check if the element has one of the target background colors
+        // if (targetBackgroundColors.includes(computedStyle.backgroundColor)) {
+        //   element.style.setProperty('background-color', newBackgroundColor, 'important');
+        // }
+      }
+    }
+  }, [content, loading]);
+
+  return (
+    <div className='blogContainer'>
+      {loading ? <div className='loadingHeader'>Loading...</div> : <div>{parse(content)}</div>}
+    </div>
+  );
+}

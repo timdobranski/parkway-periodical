@@ -6,6 +6,7 @@ import parse from 'html-react-parser';
 export default function Home() {
   const [content, setContent] = useState('');
   const [styles, setStyles] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/page')
@@ -36,40 +37,46 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const styleTag = document.createElement('style');
-    styleTag.type = 'text/css';
-    styleTag.appendChild(document.createTextNode(styles));
-    document.head.appendChild(styleTag);
+    if (styles) {
+      const styleTag = document.createElement('style');
+      styleTag.type = 'text/css';
+      styleTag.appendChild(document.createTextNode(styles));
+      document.head.appendChild(styleTag);
 
-    return () => {
-      document.head.removeChild(styleTag);
-    };
+      setLoading(false);
+
+      return () => {
+        document.head.removeChild(styleTag);
+      };
+    }
   }, [styles]);
 
   useEffect(() => {
-    // Set the background colors you want to change and the new background color
-    const targetBackgroundColors = ['rgb(252, 229, 205)', 'rgb(217, 210, 233)']; // Colors you want to reset
-    const newBackgroundColor = '#ffc5bf'; // Color you want to set
+    if (content && !loading) {
+      // Set the background colors you want to change and the new background color
+      const targetBackgroundColors = ['rgb(252, 229, 205)', 'rgb(217, 210, 233)']; // Colors you want to reset
+      const newBackgroundColor = '#ffc5bf'; // Color you want to set
 
-    // Get all elements inside the blog container
-    const blogContainer = document.querySelector('.blogContainer');
-    const allElements = blogContainer ? blogContainer.getElementsByTagName('*') : [];
+      // Get all elements inside the blog container
+      const blogContainer = document.querySelector('.blogContainer');
+      const allElements = blogContainer ? blogContainer.getElementsByTagName('*') : [];
 
-    // Iterate through all elements and change their background color
-    for (let i = 0; i < allElements.length; i++) {
-      const element = allElements[i];
-      const computedStyle = window.getComputedStyle(element);
+      // Iterate through all elements and change their background color
+      for (let i = 0; i < allElements.length; i++) {
+        const element = allElements[i];
+        const computedStyle = window.getComputedStyle(element);
 
-      // Check if the element has one of the target background colors
-      // if (targetBackgroundColors.includes(computedStyle.backgroundColor)) {
-      //   element.style.setProperty('background-color', newBackgroundColor, 'important');
-      // }
+        // Check if the element has one of the target background colors
+        // if (targetBackgroundColors.includes(computedStyle.backgroundColor)) {
+        //   element.style.setProperty('background-color', newBackgroundColor, 'important');
+        // }
+      }
     }
-  }, [content]);
+  }, [content, loading]);
 
   return (
     <div className='blogContainer'>
-      <div>{parse(content)}</div>
+      {loading ? <div className='loadingHeader'>Retrieving Posts...</div> : <div>{parse(content)}</div>}
     </div>
   );
 }
