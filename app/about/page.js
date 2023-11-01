@@ -21,8 +21,8 @@ export default function About() {
         // Remove the first and last 5 sections
         if (sectionsArray.length > 5) {
           const lastSection = sectionsArray.pop();  // store the last section
-          sectionsArray = sectionsArray.slice(-6, -4).concat(lastSection);  // slice and add the last section back
-          [sectionsArray[0], sectionsArray[1]] = [sectionsArray[1], sectionsArray[0]];  // swap the first two sections
+          sectionsArray = sectionsArray.slice(-5, -4).concat(lastSection);  // slice and add the last section back
+          // [sectionsArray[0], sectionsArray[1]] = [sectionsArray[1], sectionsArray[0]];
         }
 
         // Set the remaining sections as content to be rendered
