@@ -82,6 +82,7 @@
     text-align: left;
     z-index: 1;
     border-bottom: solid 1px rgb(134, 134, 134);
+    min-width: 0;
   }
   .headerContainer h1 {
     font-size: 2.5rem;
@@ -100,15 +101,16 @@
     box-sizing: border-box;
     display: flex;
     justify-content: center;
-    top: 80px;
+    align-items: center !important;
+    top: 50px;
     left: 0;
     flex-direction: row;
     width: 100vw !important;
-    /* border: solid red 4px; */
+    min-width: 0;
+    border: solid red 4px;
   }
   .navContainer h2 {
-    /* margin: 0rem 3rem .75rem 3rem; */
-    /* font-family: Nadall; */
+
     font-family: Louis George Cafe;
     color: red;
     font-size: 1.25rem;
