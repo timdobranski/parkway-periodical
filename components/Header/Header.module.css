@@ -107,7 +107,7 @@
     flex-direction: row;
     width: 100vw !important;
     min-width: 0;
-    border: solid red 4px;
+    /* border: solid red 4px; */
   }
   .navContainer h2 {
 
