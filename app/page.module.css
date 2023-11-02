@@ -1,0 +1,15 @@
+.blogContainer {
+  width: 95vw !important;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  border: solid red 4px !important;
+  /* min-width: 0; */
+}
+.mYVXT {
+  margin: 0 auto;
+}
+
+.mYVXT * {
+  margin: 0 auto;
+}

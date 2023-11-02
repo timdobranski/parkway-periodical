@@ -76,7 +76,7 @@ export default function Home() {
 
   return (
     <div className='blogContainer'>
-      {loading ? <div className='loadingHeader'>Retrieving Posts...</div> : <div>{parse(content)}</div>}
+      {loading ? <div className='loadingHeader'>Retrieving Posts...</div> : <div className='blogPostsContainer'>{parse(content)}</div>}
     </div>
   );
 }
