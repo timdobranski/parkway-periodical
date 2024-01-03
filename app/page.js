@@ -2,81 +2,49 @@
 
 import { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
-  const [content, setContent] = useState('');
-  const [styles, setStyles] = useState('');
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/page')
-      .then((res) => res.json())
-      .then((data) => {
-        let html = data.content.html;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const sections = doc.querySelectorAll('section');
-        const sectionsArray = Array.from(sections);
-
-        // Remove the first and last 5 sections
-        if (sectionsArray.length > 5) {
-          sectionsArray.shift();
-          sectionsArray.splice(-6);
-        }
-
-        // Set the remaining sections as content to be rendered
-        const remainingSectionsHtml = sectionsArray.map(section => section.outerHTML).join('');
-        setContent(remainingSectionsHtml);
-
-        setStyles(data.content.styles.join('\n'));
-        console.log('old blog data: ', data.content);
-      })
-      .catch((err) => {
-        console.error('Error fetching scraped content:', err);
-      });
+    const getPosts = async () => {
+      try {
+        const response = await fetch('https://public-api.wordpress.com/rest/v1.1/sites/timdobranski.wordpress.com/posts/');
+        const data = await response.json();
+        setPosts(data.posts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getPosts();
   }, []);
 
-  useEffect(() => {
-    if (styles) {
-      const styleTag = document.createElement('style');
-      styleTag.type = 'text/css';
-      styleTag.appendChild(document.createTextNode(styles));
-      document.head.appendChild(styleTag);
+  if (loading) {
+    return <div><FontAwesomeIcon icon={faSpinner} spin /> Loading...</div>;
+  }
 
-      setLoading(false);
-
-      return () => {
-        document.head.removeChild(styleTag);
-      };
-    }
-  }, [styles]);
-
-  useEffect(() => {
-    if (content && !loading) {
-      // Set the background colors you want to change and the new background color
-      const targetBackgroundColors = ['rgb(252, 229, 205)', 'rgb(217, 210, 233)']; // Colors you want to reset
-      const newBackgroundColor = '#ffc5bf'; // Color you want to set
-
-      // Get all elements inside the blog container
-      const blogContainer = document.querySelector('.blogContainer');
-      const allElements = blogContainer ? blogContainer.getElementsByTagName('*') : [];
-
-      // Iterate through all elements and change their background color
-      for (let i = 0; i < allElements.length; i++) {
-        const element = allElements[i];
-        const computedStyle = window.getComputedStyle(element);
-
-        // Check if the element has one of the target background colors
-        // if (targetBackgroundColors.includes(computedStyle.backgroundColor)) {
-        //   element.style.setProperty('background-color', newBackgroundColor, 'important');
-        // }
-      }
-    }
-  }, [content, loading]);
+  if (!posts || posts.length === 0) {
+    return <div>No posts found.</div>;
+  }
 
   return (
     <div className='blogContainer'>
-      {loading ? <div className='loadingHeader'>Retrieving Posts...</div> : <div className='blogPostsContainer'>{parse(content)}</div>}
+      <div className='blogPostsContainer'>
+        {posts.map(post => (
+          <div key={post.ID}>
+            {/* <h2>{post.title}</h2> */}
+            <div className='sectionContainer'>
+              <h1>{post.title}</h1>
+              {parse(post.content)}
+              </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
