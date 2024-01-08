@@ -2,8 +2,10 @@
   width: 95vw !important;
   padding: 0;
   margin: 0;
-  overflow: hidden;
-  border: solid red 4px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   /* min-width: 0; */
 }
 .mYVXT {

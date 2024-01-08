@@ -67,27 +67,24 @@
 }
 
 @media (max-width: 768px) {
-  .headercontainer {
-    box-sizing: border-box;
+  .headerContainer {
+    /* box-sizing: border-box; */
     position: fixed;
+    margin: 0;
     top:0;
     left: 0;
-    width: 50vw;
-    height:150px !important;
+    width: 100vw;
+    height:150px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
     align-items: flex-start;
     background-color: white;
-    text-align: left;
     z-index: 1;
     border-bottom: solid 1px rgb(134, 134, 134);
-    min-width: 0;
+
   }
   .headerContainer h1 {
     font-size: 2.5rem;
-
-
   }
   .logoContainer {
     position: absolute;

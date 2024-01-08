@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import parse from 'html-react-parser';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import Post from '../components/Post/Post';
+import styles from './page.module.css'
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -12,9 +14,9 @@ export default function Home() {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const response = await fetch('https://public-api.wordpress.com/rest/v1.1/sites/timdobranski.wordpress.com/posts/');
+        const response = await fetch('/api/getWordPressPosts');
         const data = await response.json();
-        setPosts(data.posts);
+        setPosts(data);
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
@@ -23,6 +25,12 @@ export default function Home() {
     };
     getPosts();
   }, []);
+
+  useEffect(() => {
+    console.log('posts: ', posts)
+  }, [posts])
+
+
 
   if (loading) {
     return <div><FontAwesomeIcon icon={faSpinner} spin /> Loading...</div>;
@@ -34,17 +42,24 @@ export default function Home() {
 
   return (
     <div className='blogContainer'>
-      <div className='blogPostsContainer'>
         {posts.map(post => (
           <div key={post.ID}>
-            {/* <h2>{post.title}</h2> */}
-            <div className='sectionContainer'>
-              <h1>{post.title}</h1>
-              {parse(post.content)}
-              </div>
+              <Post postData={post} />
           </div>
         ))}
-      </div>
     </div>
   );
 }
+
+// // Function to get Unauthenticated posts
+// const getPosts = async () => {
+//   try {
+//     const response = await fetch('https://public-api.wordpress.com/wp/v2/sites/timdobranski.wordpress.com/posts');
+//     const data = await response.json();
+//     setPosts(data);
+//   } catch (error) {
+//     console.error('Error fetching posts:', error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
