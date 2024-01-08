@@ -4,15 +4,17 @@ import supabase from '../../utils/supabase.js';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './auth.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(supabase);
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
@@ -20,31 +22,39 @@ export default function Login() {
       return;
     }
     console.log('data: ', data);
-    // console.log('user in handler: ', user);
-    // console.log('session in handler: ', session);
-    // router.push('/auth/new-post'); // Redirect to new-post page
+    router.push('/auth/new-post'); // Redirect after login
+  };
 
-    // Add redirection or state update here
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
     <div className={styles.loginContainer}>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
-      <h1 className={styles.loginHeader}>Login</h1>
+        <h1 className={styles.loginHeader}>Login</h1>
         <input
-          type="email"
+          type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
           className={styles.loginInput}
         />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          className={styles.loginInput}
-        />
+      <div className={styles.inputContainer}>
+          <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className={styles.loginInput}
+          />
+          <FontAwesomeIcon
+              onClick={togglePasswordVisibility}
+              className={styles.togglePasswordIcon}
+              icon={showPassword ? faEye : faEyeSlash}
+          />
+      </div>
+
         <button type="submit" className={styles.loginButton}>Login</button>
       </form>
     </div>
