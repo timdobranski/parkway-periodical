@@ -21,7 +21,7 @@ export default function Login() {
       alert(error.message);
       return;
     }
-    console.log('data: ', data);
+    console.log('data in auth page: ', data);
     router.push('/auth/new-post'); // Redirect after login
   };
 
