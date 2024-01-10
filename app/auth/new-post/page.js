@@ -1,62 +1,83 @@
 'use client'
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect, useRef } from 'react';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
-import {Editor, EditorState} from 'draft-js';
+import { EditorState } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
+import Text from '../../../components/Text/Text';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
-export default function NewPostPage () {
+export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [post, setPost] = useState(null);
-  const [editorState, setEditorState] = useState(
-    EditorState.createEmpty()
-  );
+  const [contentBlocks, setContentBlocks] = useState([]); // Corrected function name
 
-  const editor = useRef(null);
-
-  function focusEditor() {
-    editor.current.focus();
-  }
-
-  // Check if there is a current session
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
-      console.log('data in new post page: ', response.data);
       if (response.data.session.user) {
-        setUser(response.data.session.user)
-    } else {
-      // console.log('no user')
-      router.push('/auth');
-    }
+        setUser(response.data.session.user);
+      } else {
+        router.push('/auth');
+      }
+    };
+    getAndSetUser();
+  }, [router]);
+
+  const addTextBlock = () => {
+    setContentBlocks([...contentBlocks, { type: 'text', content: EditorState.createEmpty() }]);
+  };
+  const removeBlock = (index) => {
+    setContentBlocks(contentBlocks.filter((_, i) => i !== index));
+  };
+  const moveBlockUp = (index) => {
+    if (index === 0) return; // Can't move the first element up
+    const newContentBlocks = [...contentBlocks];
+    [newContentBlocks[index], newContentBlocks[index - 1]] = [newContentBlocks[index - 1], newContentBlocks[index]];
+    setContentBlocks(newContentBlocks);
+  };
+  const moveBlockDown = (index) => {
+    if (index === contentBlocks.length - 1) return; // Can't move the last element down
+    const newContentBlocks = [...contentBlocks];
+    [newContentBlocks[index], newContentBlocks[index + 1]] = [newContentBlocks[index + 1], newContentBlocks[index]];
+    setContentBlocks(newContentBlocks);
+  };
+  const updateEditorState = (index, newState) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], content: newState };
+    setContentBlocks(newContentBlocks);
+  };
+
+  if (!user) {
+    return <div>Loading...</div>;
   }
-  getAndSetUser();
-  }, []);
-
-  useEffect(() => {
-    if (editor.current) {
-      focusEditor();
-    }
-  }, [editorState]);
-
-
-  if (!user) { return <div>Loading...</div>; }
-
 
   return (
     <div className={styles.pageWrapper}>
       <h1 className={styles.loginHeader}>New Post</h1>
-      <PostNavbar />
-      <div onClick={focusEditor}>
-      <Editor
-        ref={editor}
-        editorState={editorState}
-        onChange={editorState => setEditorState(editorState)}
-      />
+      <PostNavbar onAddText={addTextBlock} />
+      {contentBlocks.map((block, index) => (
+        <div key={index} className={styles.blockContainer}>
+          <div className={styles.blockControls}>
+            <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>
+            {/* <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/> */}
+            <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
+          </div>
+          {block.type === 'text' && (
+            <Text
+              editorState={block.content}
+              setEditorState={(newState) => updateEditorState(index, newState)}
+            />
+          )}
+          {block.type === 'photo' && <img src={block.content} alt="User uploaded" />}
+          {block.type === 'video' && <video src={block.content} controls />}
+          <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
+
+        </div>
+      ))}
     </div>
-    </div>
-  )
+  );
 }

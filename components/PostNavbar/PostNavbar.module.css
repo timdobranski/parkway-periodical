@@ -11,3 +11,6 @@
   border-radius: 10px;
   padding: 0 1rem;
 }
+.navbarWrapper h3:hover {
+  cursor:pointer;
+}

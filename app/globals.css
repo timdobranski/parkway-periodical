@@ -101,13 +101,28 @@
 }
 
 .DraftEditor-root {
-  height: 100%;
   width: 50vw;
   min-height: 100px;
   min-width: 500px;
-  border: solid black 1px;
-  background: white;
+  /* border: solid black 1px; */
+  /* background: white; */
   margin: 1rem;
   padding: 1rem;
   font-size: 1.25rem;
+  border-radius: 10px;
+}
+.DraftEditor-root:focus {
+  border: 2px solid blue;
+  background-color: lightgray;
+}
+.DraftEditor-root .public-DraftEditor-content:focus {
+  border: 1px solid black;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  min-height: 100px;
+}
+.DraftEditor-root .public-DraftEditor-content {
+  border: none;
+  padding: 1rem;
+  background-color: rgba(211, 211, 211, 0);
 }
