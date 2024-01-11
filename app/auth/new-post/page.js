@@ -8,6 +8,7 @@ import { EditorState } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import Text from '../../../components/Text/Text';
 import Video from '../../../components/Video/Video';
+import Photo from '../../../components/Photo/Photo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,6 +16,10 @@ export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([]); // Corrected function name
+
+  useEffect(() => {
+    console.log('content blocks: ', contentBlocks);
+  }, [contentBlocks])
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -28,16 +33,16 @@ export default function NewPostPage() {
     getAndSetUser();
   }, [router]);
 
-useEffect(() => {
-  console.log('first content block:', contentBlocks[0])
-}, [contentBlocks])
-
+  // content blocks helpers
   const addTextBlock = () => {
     setContentBlocks([...contentBlocks, { type: 'text', content: EditorState.createEmpty(), isEditable: true }]);
   };
   const addVideoBlock = () => {
     setContentBlocks([...contentBlocks, { type: 'video', content: '', isEditable: true }]);
   }
+  const addPhotoBlock = () => {
+    setContentBlocks([...contentBlocks, { type: 'photo', content: null, isEditable: true }]);
+  };
   const removeBlock = (index) => {
     setContentBlocks(contentBlocks.filter((_, i) => i !== index));
   };
@@ -53,16 +58,6 @@ useEffect(() => {
     [newContentBlocks[index], newContentBlocks[index + 1]] = [newContentBlocks[index + 1], newContentBlocks[index]];
     setContentBlocks(newContentBlocks);
   };
-  const updateEditorState = (index, newState) => {
-    const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: newState };
-    setContentBlocks(newContentBlocks);
-  };
-  const updateVideoUrl = (index, url) => {
-    const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: url };
-    setContentBlocks(newContentBlocks);
-  }
   const toggleEditable = (index) => {
     const updatedBlocks = contentBlocks.map((block, i) => {
       if (i === index) {
@@ -89,6 +84,30 @@ useEffect(() => {
     }));
     setContentBlocks(updatedBlocks);
   };
+  // text block helpers
+  const updateEditorState = (index, newState) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], content: newState };
+    setContentBlocks(newContentBlocks);
+  };
+  // photo block helpers
+  const updatePhotoContent = (index, dataUrls) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], content: dataUrls };
+    setContentBlocks(newContentBlocks);
+  };
+  const handlePhotoSelect = (file, blockIndex) => {
+    // Update the photo block with the file object for later upload
+    updatePhotoContent(blockIndex, file);
+  };
+  // video block helpers
+  const updateVideoUrl = (index, url) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], content: url };
+    setContentBlocks(newContentBlocks);
+  }
+
+
 
   if (!user) {
     return <div>Loading...</div>;
@@ -97,7 +116,7 @@ useEffect(() => {
   return (
     <div className={styles.pageWrapper}>
       <h1 className={styles.loginHeader}>New Post</h1>
-      <PostNavbar onAddText={addTextBlock} onAddVideo={addVideoBlock} />
+      <PostNavbar onAddText={addTextBlock} onAddPhoto={addPhotoBlock} onAddVideo={addVideoBlock} />
       <div className='postPreview'>
       {contentBlocks.map((block, index) => (
         <div key={index} className={styles.blockContainer}>
@@ -114,8 +133,14 @@ useEffect(() => {
               onBlur={() => handleBlur(index)}
             />
           )}
-          {block.type === 'photo' && <img src={block.content} alt="User uploaded" />}
-          {block.type === 'video' && <Video updateVideoUrl={(url) => updateVideoUrl(index, url)} src={block.content} />}
+          {block.type === 'photo' &&
+            <Photo
+              key={index}
+              updatePhotoContent={(files) => updatePhotoContent(index, files)}
+              isEditable={block.isEditable}
+              src={block.content}
+            />}
+          {block.type === 'video' && <Video updateVideoUrl={(url) => updateVideoUrl(index, url)} isEditable={block.isEditable} src={block.content} />}
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
           <FontAwesomeIcon icon={block.isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
