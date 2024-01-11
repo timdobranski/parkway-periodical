@@ -5,6 +5,7 @@
     justify-content: flex-start;
     height: 100vh;
     font-family: Louis George Cafe;
+    position: relative;
     /* border: solid red 2px; */
 }
 

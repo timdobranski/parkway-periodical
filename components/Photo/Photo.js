@@ -2,61 +2,106 @@
 
 import { useState, useEffect } from 'react';
 import styles from './photo.module.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTableCells, faTv } from '@fortawesome/free-solid-svg-icons';
 
-export default function Photo({ updatePhotoContent, src, isEditable }) {
+export default function Photo({ updatePhotoContent, src, isEditable, updatePhotoFormat, format }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [photoFormat, setPhotoFormat] = useState('grid') // grid, single, carousel
+  const [photoFormat, setPhotoFormat] = useState(format); // grid, single, carousel
 
+  // if there are selected files, render previews
   useEffect(() => {
     if (selectedFiles.length > 0) {
       let urls = [];
       let readersCompleted = 0;
 
-      selectedFiles.forEach(file => {
+      selectedFiles.forEach(fileObj => {
         const reader = new FileReader();
         reader.onloadend = () => {
-          urls.push(reader.result); // Add URL to the urls array
+          urls.push({ src: reader.result, caption: fileObj.caption });
           readersCompleted++;
-
-          // When all readers are complete, update the content
           if (readersCompleted === selectedFiles.length) {
             updatePhotoContent(urls);
           }
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileObj.file);
       });
     }
   }, [selectedFiles]);
 
-  useEffect(() => {
-    if (isEditable && selectedFiles.length > 0) {
-      // Call updatePhotoContent with the selected files when they change
-      updatePhotoContent(selectedFiles);
-    }
-  }, [selectedFiles, isEditable]);
-
   const handleFileChange = (event) => {
-    setSelectedFiles(Array.from(event.target.files));
+    // Create objects for each file with an empty caption
+    const fileObjects = Array.from(event.target.files).map(file => ({ file, caption: '' }));
+    setSelectedFiles(fileObjects);
   };
-  // render previews immediately after upload
+
+  const handleCaptionChange = (index, newCaption) => {
+    setSelectedFiles(files =>
+      files.map((fileObj, idx) => idx === index ? { ...fileObj, caption: newCaption } : fileObj)
+    );
+  };
+
   const renderPreviews = () => {
-    return selectedFiles.map((file, index) => (
-      <img
-        key={index}
-        src={URL.createObjectURL(file)}
-        alt={`Preview ${index}`}
-        className={styles.photoPreview}
-      />
+    return selectedFiles.map((fileObj, index) => (
+      <div key={index} className={styles.photoPreviewContainer}>
+        <img src={URL.createObjectURL(fileObj.file)} alt={`Preview ${index}`} className={styles.photoPreview} />
+        <input
+          type="text"
+          value={fileObj.caption}
+          onChange={(e) => handleCaptionChange(index, e.target.value)}
+          placeholder="Enter caption"
+        />
+      </div>
     ));
   };
-  // render a preview of a grid style display
   const renderPhotosGrid = (photos) => {
-    console.log('photos: ', photos)
     return (
       <div className={styles.photosGrid}>
-        {photos.map((photoSrc, index) => (
-          <img key={index} src={photoSrc} alt={`Photo ${index}`} className={styles.gridPhoto} />
+        {photos.map((photo, index) => (
+          <div key={index} className={styles.gridPhotoContainer}>
+            <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} />
+            {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
+          </div>
         ))}
+      </div>
+    );
+  };
+  const renderPhotosCarousel = (photos) => {
+    return (
+      <Carousel dynamicHeight={true} autoPlay={false} showThumbs={true}>
+        {photos.map((photoObj, index) => (
+          <div key={index} className={styles.carouselSlide}>
+            <img src={photoObj.src} alt={`Photo ${index}`} />
+            {photoObj.caption && (
+              <p className={styles.carouselCaption}>{photoObj.caption}</p>
+            )}
+          </div>
+        ))}
+      </Carousel>
+    );
+  };
+
+  const formatSelectionInterface = () => {
+    return (
+      <div className={styles.formatSelection}>
+        <FontAwesomeIcon
+          icon={faTableCells}
+          className={`${styles.icon} ${photoFormat === 'grid' ? styles.selectedIcon : ''}`}
+          onClick={() => {
+            setPhotoFormat('grid');
+            updatePhotoFormat('grid');
+          }}
+        />
+        <FontAwesomeIcon
+          icon={faTv}
+          className={`${styles.icon} ${photoFormat === 'carousel' ? styles.selectedIcon : ''}`}
+          onClick={() => {
+            setPhotoFormat('carousel');
+            updatePhotoFormat('carousel');
+          }}
+        />
       </div>
     );
   };
@@ -64,15 +109,11 @@ export default function Photo({ updatePhotoContent, src, isEditable }) {
 
   if (isEditable) {
     return (
-      <>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          multiple
-        />
+      <div className={styles.previewWrapper}>
+        <input type="file" accept="image/*" onChange={handleFileChange} multiple className={styles.photoInput}/>
+        {selectedFiles.length > 1 && formatSelectionInterface()}
         <div className={styles.photoWrapper}>{renderPreviews()}</div>
-      </>
+      </div>
     );
   } else {
     if (!src || src.length === 0) {
@@ -82,8 +123,6 @@ export default function Photo({ updatePhotoContent, src, isEditable }) {
     switch (photoFormat) {
       case 'grid':
         return renderPhotosGrid(src);
-      case 'single':
-        return renderPhotosSingle(src);
       case 'carousel':
         return renderPhotosCarousel(src);
       default:

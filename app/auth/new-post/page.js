@@ -100,6 +100,15 @@ export default function NewPostPage() {
     // Update the photo block with the file object for later upload
     updatePhotoContent(blockIndex, file);
   };
+  const updatePhotoFormat = (index, format) => {
+    const newContentBlocks = contentBlocks.map((block, idx) => {
+      if (idx === index && block.type === 'photo') {
+        return { ...block, format };
+      }
+      return block;
+    });
+    setContentBlocks(newContentBlocks);
+  };
   // video block helpers
   const updateVideoUrl = (index, url) => {
     const newContentBlocks = [...contentBlocks];
@@ -115,7 +124,7 @@ export default function NewPostPage() {
 
   return (
     <div className={styles.pageWrapper}>
-      <h1 className={styles.loginHeader}>New Post</h1>
+      {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar onAddText={addTextBlock} onAddPhoto={addPhotoBlock} onAddVideo={addVideoBlock} />
       <div className='postPreview'>
       {contentBlocks.map((block, index) => (
@@ -137,8 +146,10 @@ export default function NewPostPage() {
             <Photo
               key={index}
               updatePhotoContent={(files) => updatePhotoContent(index, files)}
+              updatePhotoFormat={(format) => updatePhotoFormat(index, format)}
               isEditable={block.isEditable}
               src={block.content}
+              format={block.format || 'grid'}
             />}
           {block.type === 'video' && <Video updateVideoUrl={(url) => updateVideoUrl(index, url)} isEditable={block.isEditable} src={block.content} />}
           <div className={styles.blockControlsRight}>

@@ -1,17 +1,81 @@
-.photoWrapper {
+.previewWrapper {
   width: 100%;
   margin: 0 auto;
-  /* display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; */
+  justify-content: flex-start;
   /* border: solid red 2px; */
+
+}
+.photoPreviewContainer {
+  width: 45%;
+  /* border: solid green 2px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.photoWrapper {
+
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 .photoInput {
   margin: 1rem;
 }
 .photoPreview {
-  width: 200px;
+  width: 100%;
   height: auto;
   margin: 1rem;
+}
+.photosGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(45%, 1fr)); /* Adjust minmax as needed */
+  gap: 10px; /* Space between grid items */
+  width: 100%;
+  padding: 0;
+}
+
+.gridPhotoContainer {
+
+}
+
+.gridPhoto {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.icon {
+  padding: .5rem;
+  border-radius: 4px;
+  margin: .5rem;
+}
+
+.selectedIcon {
+  background: rgb(101, 191, 255);
+  padding: .5rem;
+  border-radius: 4px;
+  margin: .5rem;
+}
+.icon:hover {
+  cursor: pointer;
+}
+.carouselSlide {
+  position: relative;
+}
+.carouselCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0; /* Ensures full width */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: white;
+  padding: 10px;
+  font-size: 1em;
+  z-index: 2; /* Ensure it's above the image */
 }

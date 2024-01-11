@@ -64,7 +64,9 @@
   justify-content: flex-start;
 }
 .postPreview {
-  margin-top: 4rem;
+  margin-top: calc(2rem + 150px);
+  max-height: none;
+
   /* border: solid orange 2px; */
 }
 

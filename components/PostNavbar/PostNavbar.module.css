@@ -1,8 +1,10 @@
 .navbarWrapper {
+  position: fixed;
+  top: 150px;
+  /* left: 0; */
   width: 70vw;
   min-width: 1000px;
   background-color: white;
-  height: 50px;
   margin: .5rem;
   display: flex;
   flex-direction: row;
@@ -10,7 +12,27 @@
   align-items: center;
   border-radius: 10px;
   padding: 0 1rem;
+  z-index: 200;
+  border: solid 4px rgb(55, 55, 55);
 }
-.navbarWrapper h3:hover {
+.navbarWrapper *:hover {
   cursor:pointer;
+  color: rgb(255, 133, 122);
+}
+.icon {
+  height: 30px;
+  width: 30px;
+  margin: .5rem;
+}
+.navbarItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: .25rem;
+}
+.navbarItem h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
 }
