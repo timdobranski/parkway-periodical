@@ -1,5 +1,6 @@
 .pageWrapper {
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -11,7 +12,7 @@
 .blockContainer {
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 100%;
   padding: 0;
 }
 
@@ -24,10 +25,10 @@
   margin-right: 10px;
 }
 .blockControlsLeft{
-  left: -225px;
+  left: -125px;
 }
 .blockControlsRight{
-  right: -225px;
+  right: -125px;
 }
 .blockControls .fa {
   cursor: pointer;

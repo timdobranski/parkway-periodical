@@ -52,7 +52,7 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
 
 
 
-  console.log('raw content state: ', JSON.stringify(convertToRaw(contentState)));
+  // console.log('raw content state: ', JSON.stringify(convertToRaw(contentState)));
 
   // renderable html of text block for preview when not editing
   const html = stateToHTML(contentState, options);

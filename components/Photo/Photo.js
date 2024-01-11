@@ -52,6 +52,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
           value={fileObj.caption}
           onChange={(e) => handleCaptionChange(index, e.target.value)}
           placeholder="Enter caption"
+          className={styles.captionInput}
         />
       </div>
     ));
