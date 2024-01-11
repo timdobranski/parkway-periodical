@@ -18,6 +18,10 @@ export default function PostNavbar({ onAddText, onAddPhoto, onAddVideo }) {
       <FontAwesomeIcon icon={faVideo} className={styles.icon} />
       <h3>Add a Video</h3>
     </div>
+    <div onClick={onAddVideo} className={styles.navbarItem}>
+      {/* <FontAwesomeIcon icon={faVideo} className={styles.icon} /> */}
+      <h3 className={styles.publishButton}>POST</h3>
+    </div>
     </div>
   )
 }

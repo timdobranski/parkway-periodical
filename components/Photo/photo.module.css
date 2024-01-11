@@ -5,19 +5,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* border: solid red 2px; */
+  border: dashed black 1px;
+  border-radius: 10px;
+
 
 }
 .photoPreviewContainer {
   width: 45%;
-  /* border: solid green 2px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 .photoWrapper {
-
   width: 100%;
   margin: 0 auto;
   display: flex;

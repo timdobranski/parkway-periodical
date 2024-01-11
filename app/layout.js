@@ -4,7 +4,7 @@ import Header from '../components/Header/Header'
 
 export const metadata = {
   title: 'Parkway Periodical',
-  description: 'News And Parkway Academy',
+  description: 'Weekly Updates At Parkway Academy',
 }
 
 export default function RootLayout({ children }) {

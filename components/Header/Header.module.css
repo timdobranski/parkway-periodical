@@ -37,13 +37,22 @@
   top: 80px;
   flex-direction: row;
 }
+.authNavContainer {
+  position: absolute;
+  display: flex;
+  top: 0;
+  right: 0;
+  margin: .5rem;
+  flex-direction: row;
+}
+
 .navContainer a {
   text-decoration: none;
 }
 .navContainer a:focus {
   outline: none;
 }
-.navContainer h2 {
+.navContainer h2, .authNavContainer h2 {
   margin: 0rem 3rem .75rem 3rem;
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
@@ -55,7 +64,7 @@
   border: none !important;
 
 }
-.navContainer h2:hover {
+.navContainer h2:hover, .authNavContainer h2:hover {
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;

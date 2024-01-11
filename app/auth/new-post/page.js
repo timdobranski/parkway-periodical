@@ -24,14 +24,23 @@ export default function NewPostPage() {
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
-      if (response.data.session.user) {
+
+      // Check if the session exists
+      if (response.data.session) {
+        // If session exists, set the user
         setUser(response.data.session.user);
       } else {
+        // If no session, redirect to /auth
         router.push('/auth');
       }
     };
     getAndSetUser();
   }, [router]);
+
+  useEffect(() => {
+    // Log the user on state change
+    console.log('user: ', user);
+  }, [user]);
 
   // content blocks helpers
   const addTextBlock = () => {
