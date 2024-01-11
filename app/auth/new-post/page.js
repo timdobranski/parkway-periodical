@@ -7,6 +7,7 @@ import styles from './new-post.module.css';
 import { EditorState } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import Text from '../../../components/Text/Text';
+import Video from '../../../components/Video/Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
@@ -34,6 +35,9 @@ useEffect(() => {
   const addTextBlock = () => {
     setContentBlocks([...contentBlocks, { type: 'text', content: EditorState.createEmpty(), isEditable: true }]);
   };
+  const addVideoBlock = () => {
+    setContentBlocks([...contentBlocks, { type: 'video', content: '', isEditable: true }]);
+  }
   const removeBlock = (index) => {
     setContentBlocks(contentBlocks.filter((_, i) => i !== index));
   };
@@ -54,6 +58,11 @@ useEffect(() => {
     newContentBlocks[index] = { ...newContentBlocks[index], content: newState };
     setContentBlocks(newContentBlocks);
   };
+  const updateVideoUrl = (index, url) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], content: url };
+    setContentBlocks(newContentBlocks);
+  }
   const toggleEditable = (index) => {
     const updatedBlocks = contentBlocks.map((block, i) => {
       if (i === index) {
@@ -88,7 +97,7 @@ useEffect(() => {
   return (
     <div className={styles.pageWrapper}>
       <h1 className={styles.loginHeader}>New Post</h1>
-      <PostNavbar onAddText={addTextBlock} />
+      <PostNavbar onAddText={addTextBlock} onAddVideo={addVideoBlock} />
       <div className='postPreview'>
       {contentBlocks.map((block, index) => (
         <div key={index} className={styles.blockContainer}>
@@ -106,7 +115,7 @@ useEffect(() => {
             />
           )}
           {block.type === 'photo' && <img src={block.content} alt="User uploaded" />}
-          {block.type === 'video' && <video src={block.content} controls />}
+          {block.type === 'video' && <Video updateVideoUrl={(url) => updateVideoUrl(index, url)} src={block.content} />}
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
           <FontAwesomeIcon icon={block.isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>

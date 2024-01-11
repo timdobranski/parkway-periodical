@@ -5,11 +5,14 @@
     justify-content: flex-start;
     height: 100vh;
     font-family: Louis George Cafe;
+    /* border: solid red 2px; */
 }
 
 .blockContainer {
   display: flex;
   align-items: center;
+  width: 80%;
+  padding: 0;
 }
 
 .blockControlsLeft, .blockControlsRight {

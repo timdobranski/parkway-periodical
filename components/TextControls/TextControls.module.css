@@ -1,6 +1,7 @@
 .controls {
   position: absolute;
-  top: -100px;
+  top: -150%;
+  transform: translateY(100%);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -16,13 +17,23 @@
   border: solid black 1px;
 }
 .alignmentWrapper * {
-  margin: 0 .25rem 0 .25rem
+  margin: 0 .25rem 0 .25rem;
+  border-radius: 4px;
+  background-color:rgb(255, 255, 255);
+  padding: 3px;
 }
 .undoRedoWrapper * {
-  margin: 0 .25rem 0 .25rem
-
+  margin: 0 .25rem 0 .25rem;
+  border-radius: 4px;
+  background-color:rgb(255, 255, 255);
+  padding: 3px;
 }
 .listsWrapper * {
-  margin: 0 .25rem 0 .25rem
-
+  margin: 0 .25rem 0 .25rem;
+  border-radius: 4px;
+  background-color:rgb(255, 255, 255);
+  padding: 3px;
+}
+.alignmentWrapper *:hover, .undoRedoWrapper *:hover, .listsWrapper *:hover {
+  cursor: pointer;
 }
