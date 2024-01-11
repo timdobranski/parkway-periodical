@@ -10,7 +10,18 @@ import TextControls from '../TextControls/TextControls';
 export default function Text({ key, editorState, setEditorState, isEditable, onFocus, onBlur }) {
   const editorRef = useRef(null);
   const contentState = editorState.getCurrentContent();
-  const html = stateToHTML(contentState);
+  const blockStyleFn = (block) => {
+    const textAlign = block.getData().get('textAlign');
+    if (textAlign) {
+      return {
+        style: {
+          textAlign: textAlign,
+        },
+      };
+    }
+  };
+
+  const html = stateToHTML(contentState, { blockStyleFn: blockStyleFn });
 
   // Make the editor focus when the component mounts
   useEffect(() => {
@@ -64,7 +75,7 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
   return (
     <div className={styles.textEditorWrapper}>
       {isEditable ? (
-        <>
+        <div className={styles.editorContainer}>
           <TextControls
             editorState={editorState}
             onToggle={handleToggle}
@@ -82,11 +93,11 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
             onBlur={onBlur}
             blockStyleFn={getBlockStyle}
           />
-        </>
+        </div>
       ) : (
         // Render a static preview of the editor content
         <div className={styles.preview}>
-          <div className={styles.preview} dangerouslySetInnerHTML={{ __html: html }}></div>
+          <div dangerouslySetInnerHTML={{ __html: html }}></div>
         </div>
       )}
     </div>

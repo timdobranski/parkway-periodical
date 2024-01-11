@@ -89,9 +89,10 @@ useEffect(() => {
     <div className={styles.pageWrapper}>
       <h1 className={styles.loginHeader}>New Post</h1>
       <PostNavbar onAddText={addTextBlock} />
+      <div className='postPreview'>
       {contentBlocks.map((block, index) => (
         <div key={index} className={styles.blockContainer}>
-          <div className={styles.blockControls}>
+          <div className={styles.blockControlsLeft}>
             <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
           </div>
@@ -106,12 +107,13 @@ useEffect(() => {
           )}
           {block.type === 'photo' && <img src={block.content} alt="User uploaded" />}
           {block.type === 'video' && <video src={block.content} controls />}
-          <div className={styles.blockControls}>
+          <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
           <FontAwesomeIcon icon={block.isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
           </div>
         </div>
       ))}
+      </div>
     </div>
   );
 }
