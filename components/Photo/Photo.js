@@ -26,7 +26,7 @@ export default function Photo({ updatePhotoContent, src, isEditable }) {
         reader.readAsDataURL(file);
       });
     }
-  }, [selectedFiles, updatePhotoContent]);
+  }, [selectedFiles]);
 
   useEffect(() => {
     if (isEditable && selectedFiles.length > 0) {

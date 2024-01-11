@@ -10,7 +10,7 @@ export default function Video({ updateVideoUrl, src, isEditable }) {
     if (!isEditable) {
       updateVideoUrl(url);
     }
-  }, [isEditable, url, updateVideoUrl]);
+  }, [isEditable]);
 
   const handleInputChange = (event) => {
     setUrl(event.target.value);
