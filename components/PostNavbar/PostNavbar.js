@@ -1,8 +1,21 @@
-import styles from './PostNavbar.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faImage, faVideo, faFont } from '@fortawesome/free-solid-svg-icons';
+'use client'
 
-export default function PostNavbar({ onAddText, onAddPhoto, onAddVideo }) {
+import styles from './PostNavbar.module.css';
+import { useState, useEffect } from 'react';
+import  { RichUtils,  } from 'draft-js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImage, faVideo, faFont, faUndo, faRedo, faBold, faPalette, faHighlighter, faAlignLeft, faAlignRight, faAlignCenter, faListOl, faListUl } from '@fortawesome/free-solid-svg-icons';
+import TextControls from '../TextControls/TextControls';
+
+export default function PostNavbar({
+  onAddText, onAddPhoto, onAddVideo,
+  editorState, onToggleBold,
+  activeBlock, activeBlockType, updateEditorState,
+}) {
+
+  const isTextBlockActive = activeBlock !== null && activeBlockType === 'text';
+
+
 
   return (
     <div className={styles.navbarWrapper}>
@@ -23,8 +36,25 @@ export default function PostNavbar({ onAddText, onAddPhoto, onAddVideo }) {
         {/* <FontAwesomeIcon icon={faVideo} className={styles.icon} /> */}
         <h3 className={styles.publishButton}>PUBLISH</h3>
       </div>
-
       </div>
+      <div className={styles.divider}></div>
+
+      <TextControls
+        editorState={editorState}
+        onToggleBold={onToggleBold}
+        // setEditorState={updateEditorState}
+        // onToggle={handleToggle}
+        // onUndo={handleUndo}
+        // onRedo={handleRedo}
+        // onAlignmentToggle={applyTextAlignment}
+        // addColorToMap={addColorToMap}
+        // applyColor={applyColor}
+        isActive={isTextBlockActive}
+      />
+      {/* <div className={styles.editRow}>
+
+
+      </div> */}
     </div>
   )
 }

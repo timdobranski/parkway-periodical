@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
-import { EditorState } from 'draft-js';
+import { EditorState, RichUtils } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import Text from '../../../components/Text/Text';
 import Video from '../../../components/Video/Video';
@@ -16,6 +16,8 @@ export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([]); // Corrected function name
+  const [activeBlock, setActiveBlock] = useState(null);
+
 
   useEffect(() => {
     console.log('content blocks: ', contentBlocks);
@@ -37,15 +39,12 @@ export default function NewPostPage() {
     getAndSetUser();
   }, [router]);
 
-  useEffect(() => {
-    // Log the user on state change
-    console.log('user: ', user);
-  }, [user]);
-
   // content blocks helpers
   const addTextBlock = () => {
-    setContentBlocks([...contentBlocks, { type: 'text', content: EditorState.createEmpty(), isEditable: true }]);
-  };
+    const newBlock = { type: 'text', content: EditorState.createEmpty(), isEditable: true };
+    setContentBlocks([...contentBlocks, newBlock]);
+    setActiveBlock(contentBlocks.length); // New block's index
+};
   const addVideoBlock = () => {
     setContentBlocks([...contentBlocks, { type: 'video', content: '', isEditable: true }]);
   }
@@ -69,13 +68,19 @@ export default function NewPostPage() {
   };
   const toggleEditable = (index) => {
     const updatedBlocks = contentBlocks.map((block, i) => {
-      if (i === index) {
-        return { ...block, isEditable: !block.isEditable };
-      }
-      return block;
+        return {
+            ...block,
+            isEditable: i === index ? !block.isEditable : false
+        };
     });
+
     setContentBlocks(updatedBlocks);
-  };
+
+    // Set activeBlock to the current index if it's being made editable,
+    // or reset to null if no block is editable
+    const isCurrentBlockEditable = updatedBlocks[index].isEditable;
+    setActiveBlock(isCurrentBlockEditable ? index : null);
+};
   const handleFocus = (index) => {
     // Set the isEditable to true for the focused block
     const updatedBlocks = contentBlocks.map((block, i) => ({
@@ -99,6 +104,23 @@ export default function NewPostPage() {
     newContentBlocks[index] = { ...newContentBlocks[index], content: newState };
     setContentBlocks(newContentBlocks);
   };
+  const updateActiveTextEditorState = (newState) => {
+    if (activeBlock !== null) {
+      updateEditorState(activeBlock, newState);
+    }
+  };
+  const toggleBold = () => {
+    console.log('inside toggle bold. activeBlock: ', activeBlock)
+    if (activeBlock === null) return; // No block is active
+    console.log()
+    const currentContent = contentBlocks[activeBlock].content;
+    const newState = RichUtils.toggleInlineStyle(currentContent, 'BOLD');
+
+    // Now use your method to update the contentBlocks state
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[activeBlock] = { ...newContentBlocks[activeBlock], content: newState };
+    setContentBlocks(newContentBlocks);
+};
   // photo block helpers
   const updatePhotoContent = (index, dataUrls) => {
     const newContentBlocks = [...contentBlocks];
@@ -134,7 +156,17 @@ export default function NewPostPage() {
   return (
     <div className={styles.pageWrapper}>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
-      <PostNavbar onAddText={addTextBlock} onAddPhoto={addPhotoBlock} onAddVideo={addVideoBlock} />
+      <PostNavbar
+        // onToggle={onToggle}
+        onToggleBold={toggleBold}
+        onAddText={addTextBlock}
+        onAddPhoto={addPhotoBlock}
+        onAddVideo={addVideoBlock}
+        activeBlock={activeBlock}
+        editorState={activeBlock !== null ? contentBlocks[activeBlock].content : null}
+        updateEditorState={updateEditorState}
+      />
+
       <div className='postPreview'>
       {contentBlocks.map((block, index) => (
         <div key={index} className={styles.blockContainer}>
@@ -160,13 +192,18 @@ export default function NewPostPage() {
               src={block.content}
               format={block.format || 'grid'}
             />}
-          {block.type === 'video' && <Video updateVideoUrl={(url) => updateVideoUrl(index, url)} isEditable={block.isEditable} src={block.content} />}
+          {block.type === 'video' &&
+            <Video
+              updateVideoUrl={(url) => updateVideoUrl(index, url)}
+              isEditable={block.isEditable} src={block.content}
+            />}
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
           <FontAwesomeIcon icon={block.isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
           </div>
         </div>
       ))}
+
       </div>
     </div>
   );

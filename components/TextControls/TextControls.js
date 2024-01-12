@@ -6,9 +6,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBold, faListOl, faListUl, faUndo, faRedo, faAlignLeft, faAlignCenter, faAlignRight, faPalette, faHighlighter } from '@fortawesome/free-solid-svg-icons';
 import styles from './TextControls.module.css';
 
-export default function TextControls({ editorState, onToggle, onUndo, onRedo, isEditable, onAlignmentToggle, addColorToMap, applyColor }) {
+export default function TextControls({
+  editorState, setEditorState, onToggle, onUndo, onRedo, isEditable,
+  onToggleBold, onAlignmentToggle, addColorToMap, applyColor, isActive }) {
   const [textColor, setTextColor] = useState('#000000');
   const [highlightColor, setHighlightColor] = useState('#FFFF00');
+
+  const handleIconClick = (action) => {
+    console.log('inside handle icon click! action: ', action)
+    if (isActive || !isActive) {
+      console.log('inside handle icon click! isActive')
+      action();
+    }
+  };
 
   const openColorPicker = (event, pickerRef) => {
     event.preventDefault();
@@ -34,15 +44,14 @@ export default function TextControls({ editorState, onToggle, onUndo, onRedo, is
   const textColorRef = useRef(null);
   const highlightColorRef = useRef(null);
 
-  if (!isEditable) return null;
 
   return (
     <div className={styles.controls}>
       <div className={styles.undoRedoWrapper}>
-        <FontAwesomeIcon icon={faUndo} onClick={onUndo} />
-        <FontAwesomeIcon icon={faRedo} onClick={onRedo} />
+        <FontAwesomeIcon icon={faUndo} onClick={() => handleIconClick(onUndo)} />
+        <FontAwesomeIcon icon={faRedo} onClick={() => handleIconClick(onRedo)} />
       </div>
-      <FontAwesomeIcon icon={faBold} onClick={() => onToggle('BOLD')} />
+      <FontAwesomeIcon icon={faBold} onClick={() => handleIconClick(onToggleBold)} />
       <input
         type="color"
         ref={textColorRef}
@@ -51,7 +60,7 @@ export default function TextControls({ editorState, onToggle, onUndo, onRedo, is
         style={{ display: 'none' }}
       />
       <FontAwesomeIcon icon={faPalette}
-        onClick={(e) => openColorPicker(e, textColorRef)}
+        onClick={(e) => handleIconClick(openColorPicker(e, textColorRef))}
 
       />
       <input
@@ -61,15 +70,15 @@ export default function TextControls({ editorState, onToggle, onUndo, onRedo, is
         onChange={handleHighlightColorChange}
         style={{ display: 'none' }}
       />
-      <FontAwesomeIcon icon={faHighlighter} onClick={(e) => openColorPicker(e, highlightColorRef)} />
+      <FontAwesomeIcon icon={faHighlighter} onClick={(e) => handleIconClick(openColorPicker(e, highlightColorRef))} />
       <div className={styles.alignmentWrapper}>
-        <FontAwesomeIcon icon={faAlignLeft} onClick={() => onAlignmentToggle('left')} />
-        <FontAwesomeIcon icon={faAlignCenter} onClick={() => onAlignmentToggle('center')} />
-        <FontAwesomeIcon icon={faAlignRight} onClick={() => onAlignmentToggle('right')} />
+        <FontAwesomeIcon icon={faAlignLeft} onClick={() => handleIconClick(onAlignmentToggle('left'))} />
+        <FontAwesomeIcon icon={faAlignCenter} onClick={() => handleIconClick(onAlignmentToggle('center'))} />
+        <FontAwesomeIcon icon={faAlignRight} onClick={() => handleIconClick(onAlignmentToggle('right'))} />
       </div>
       <div className={styles.listsWrapper}>
-        <FontAwesomeIcon icon={faListOl} onClick={() => onToggle('ordered-list-item')} />
-        <FontAwesomeIcon icon={faListUl} onClick={() => onToggle('unordered-list-item')} />
+        <FontAwesomeIcon icon={faListOl} onClick={() => handleIconClick(onToggle('ordered-list-item'))} />
+        <FontAwesomeIcon icon={faListUl} onClick={() => handleIconClick(onToggle('unordered-list-item'))} />
       </div>
     </div>
   );

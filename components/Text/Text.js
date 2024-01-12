@@ -59,55 +59,55 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
   console.log('html preview: ', html);
   console.log(editorState.getCurrentInlineStyle().toArray());
 
-  // style object to pass inline styles to Draft.js Editor component
-  const [styleMap, setStyleMap] = useState({
-    'TEXT_COLOR': {},
-    'HIGHLIGHT_COLOR': {}
-  });
-  const applyColor = (color, stylePrefix) => {
-    const selection = editorState.getSelection();
-    const nextContentState = Object.keys(styleMap)
-      .filter(key => key.startsWith(stylePrefix))
-      .reduce((contentState, key) => {
-        return Modifier.removeInlineStyle(contentState, selection, key)
-      }, editorState.getCurrentContent());
+  // // style object to pass inline styles to Draft.js Editor component
+  // const [styleMap, setStyleMap] = useState({
+  //   'TEXT_COLOR': {},
+  //   'HIGHLIGHT_COLOR': {}
+  // });
+  // const applyColor = (color, stylePrefix) => {
+  //   const selection = editorState.getSelection();
+  //   const nextContentState = Object.keys(styleMap)
+  //     .filter(key => key.startsWith(stylePrefix))
+  //     .reduce((contentState, key) => {
+  //       return Modifier.removeInlineStyle(contentState, selection, key)
+  //     }, editorState.getCurrentContent());
 
-    let nextEditorState = EditorState.push(
-      editorState,
-      nextContentState,
-      'change-inline-style'
-    );
+  //   let nextEditorState = EditorState.push(
+  //     editorState,
+  //     nextContentState,
+  //     'change-inline-style'
+  //   );
 
-    const currentStyle = editorState.getCurrentInlineStyle();
+  //   const currentStyle = editorState.getCurrentInlineStyle();
 
-    if (selection.isCollapsed()) {
-      nextEditorState = currentStyle.reduce((state, key) => {
-        return RichUtils.toggleInlineStyle(state, key);
-      }, nextEditorState);
-    }
+  //   if (selection.isCollapsed()) {
+  //     nextEditorState = currentStyle.reduce((state, key) => {
+  //       return RichUtils.toggleInlineStyle(state, key);
+  //     }, nextEditorState);
+  //   }
 
-    // If the color is being toggled on, apply it
-    if (!currentStyle.has(stylePrefix + color.toUpperCase())) {
-      nextEditorState = RichUtils.toggleInlineStyle(
-        nextEditorState,
-        stylePrefix + color.toUpperCase()
-      );
-    }
+  //   // If the color is being toggled on, apply it
+  //   if (!currentStyle.has(stylePrefix + color.toUpperCase())) {
+  //     nextEditorState = RichUtils.toggleInlineStyle(
+  //       nextEditorState,
+  //       stylePrefix + color.toUpperCase()
+  //     );
+  //   }
 
-    setEditorState(nextEditorState);
-  };
+  //   setEditorState(nextEditorState);
+  // };
 
-  const addColorToMap = (color, stylePrefix) => {
-    const newStyle = {
-      color: stylePrefix === 'TEXT_COLOR' ? color : 'inherit',
-      backgroundColor: stylePrefix === 'HIGHLIGHT_COLOR' ? color : 'inherit'
-    };
-    setStyleMap(prevStyleMap => ({
-      ...prevStyleMap,
-      [stylePrefix + color.toUpperCase()]: newStyle
-    }));
-  };
-  // Make the editor focus when the component mounts
+  // const addColorToMap = (color, stylePrefix) => {
+  //   const newStyle = {
+  //     color: stylePrefix === 'TEXT_COLOR' ? color : 'inherit',
+  //     backgroundColor: stylePrefix === 'HIGHLIGHT_COLOR' ? color : 'inherit'
+  //   };
+  //   setStyleMap(prevStyleMap => ({
+  //     ...prevStyleMap,
+  //     [stylePrefix + color.toUpperCase()]: newStyle
+  //   }));
+  // };
+  // // Make the editor focus when the component mounts
   useEffect(() => {
     if (editorRef.current) {
       editorRef.current.focus();
@@ -119,17 +119,17 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
     if (['BOLD', 'ITALIC', 'UNDERLINE'].includes(style)) {
       setEditorState(RichUtils.toggleInlineStyle(editorState, style));
     }
-    // For block types
+  //   // For block types
     else if (['ordered-list-item', 'unordered-list-item'].includes(style)) {
       setEditorState(RichUtils.toggleBlockType(editorState, style));
     }
   };
-  const handleUndo = () => {
-    setEditorState(EditorState.undo(editorState));
-  };
-  const handleRedo = () => {
-    setEditorState(EditorState.redo(editorState));
-  };
+  // const handleUndo = () => {
+  //   setEditorState(EditorState.undo(editorState));
+  // };
+  // const handleRedo = () => {
+  //   setEditorState(EditorState.redo(editorState));
+  // };
   function getBlockStyle(block) {
     switch (block.getData().get('textAlign')) {
       case 'left':
@@ -142,25 +142,25 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
         return '';
     }
   }
-  const applyTextAlignment = (alignment) => {
-    const selection = editorState.getSelection();
-    const contentState = editorState.getCurrentContent();
-    const block = contentState.getBlockForKey(selection.getStartKey());
+  // const applyTextAlignment = (alignment) => {
+  //   const selection = editorState.getSelection();
+  //   const contentState = editorState.getCurrentContent();
+  //   const block = contentState.getBlockForKey(selection.getStartKey());
 
-    const newContentState = Modifier.setBlockData(
-      contentState,
-      selection,
-      new Map([['textAlign', alignment]])
-    );
+  //   const newContentState = Modifier.setBlockData(
+  //     contentState,
+  //     selection,
+  //     new Map([['textAlign', alignment]])
+  //   );
 
-    setEditorState(EditorState.push(editorState, newContentState, 'change-block-data'));
-  };
+  //   setEditorState(EditorState.push(editorState, newContentState, 'change-block-data'));
+  // };
 
   return (
     <div className={styles.textEditorWrapper}>
       {isEditable ? (
         <div className={styles.editorContainer}>
-          <TextControls
+          {/* <TextControls
             editorState={editorState}
             onToggle={handleToggle}
             onUndo={handleUndo}
@@ -169,7 +169,7 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
             onAlignmentToggle={applyTextAlignment}
             applyColor={applyColor}
             addColorToMap={addColorToMap}
-          />
+          /> */}
           <Editor
             ref={editorRef}
             editorState={editorState}
@@ -177,8 +177,8 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
             readOnly={!isEditable}
             onFocus={onFocus}
             onBlur={onBlur}
-            blockStyleFn={getBlockStyle}
-            customStyleMap={styleMap}
+            // blockStyleFn={getBlockStyle}
+            // customStyleMap={styleMap}
           />
         </div>
       ) : (
