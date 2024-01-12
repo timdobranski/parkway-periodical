@@ -9,7 +9,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import TextControls from '../TextControls/TextControls';
 
 
-export default function Text({ key, editorState, setEditorState, isEditable, onFocus, onBlur }) {
+export default function Text({ key, editorState, setEditorState, isEditable, onFocus, onBlur, onToggleBold }) {
   const editorRef = useRef(null);
   const contentState = editorState.getCurrentContent();
   const blockStyleFn = (block) => {
@@ -49,8 +49,6 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
       return styleObjects.length > 0 ? styleObjects : null;
     },
   };
-
-
 
   // console.log('raw content state: ', JSON.stringify(convertToRaw(contentState)));
 
@@ -124,12 +122,7 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
       setEditorState(RichUtils.toggleBlockType(editorState, style));
     }
   };
-  // const handleUndo = () => {
-  //   setEditorState(EditorState.undo(editorState));
-  // };
-  // const handleRedo = () => {
-  //   setEditorState(EditorState.redo(editorState));
-  // };
+
   function getBlockStyle(block) {
     switch (block.getData().get('textAlign')) {
       case 'left':
@@ -142,34 +135,25 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
         return '';
     }
   }
-  // const applyTextAlignment = (alignment) => {
-  //   const selection = editorState.getSelection();
-  //   const contentState = editorState.getCurrentContent();
-  //   const block = contentState.getBlockForKey(selection.getStartKey());
+  const applyTextAlignment = (alignment) => {
+    const selection = editorState.getSelection();
+    const contentState = editorState.getCurrentContent();
+    const block = contentState.getBlockForKey(selection.getStartKey());
 
-  //   const newContentState = Modifier.setBlockData(
-  //     contentState,
-  //     selection,
-  //     new Map([['textAlign', alignment]])
-  //   );
+    const newContentState = Modifier.setBlockData(
+      contentState,
+      selection,
+      new Map([['textAlign', alignment]])
+    );
 
-  //   setEditorState(EditorState.push(editorState, newContentState, 'change-block-data'));
-  // };
+    setEditorState(EditorState.push(editorState, newContentState, 'change-block-data'));
+  };
 
   return (
     <div className={styles.textEditorWrapper}>
       {isEditable ? (
         <div className={styles.editorContainer}>
-          {/* <TextControls
-            editorState={editorState}
-            onToggle={handleToggle}
-            onUndo={handleUndo}
-            onRedo={handleRedo}
-            isEditable={isEditable}
-            onAlignmentToggle={applyTextAlignment}
-            applyColor={applyColor}
-            addColorToMap={addColorToMap}
-          /> */}
+
           <Editor
             ref={editorRef}
             editorState={editorState}
@@ -177,7 +161,8 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
             readOnly={!isEditable}
             onFocus={onFocus}
             onBlur={onBlur}
-            // blockStyleFn={getBlockStyle}
+            blockStyleFn={getBlockStyle}
+            onToggleBold={onToggleBold}
             // customStyleMap={styleMap}
           />
         </div>

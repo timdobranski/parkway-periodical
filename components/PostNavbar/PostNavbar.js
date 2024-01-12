@@ -11,6 +11,7 @@ export default function PostNavbar({
   onAddText, onAddPhoto, onAddVideo,
   editorState, onToggleBold,
   activeBlock, activeBlockType, updateEditorState,
+  onToggleLeftAlign, onToggleCenterAlign, onToggleRightAlign,
 }) {
 
   const isTextBlockActive = activeBlock !== null && activeBlockType === 'text';
@@ -41,7 +42,12 @@ export default function PostNavbar({
 
       <TextControls
         editorState={editorState}
+
         onToggleBold={onToggleBold}
+        onToggleLeftAlign={() => onToggleLeftAlign()}
+        onToggleCenterAlign={() => onToggleCenterAlign()}
+        onToggleRightAlign={() => onToggleRightAlign()}
+
         // setEditorState={updateEditorState}
         // onToggle={handleToggle}
         // onUndo={handleUndo}

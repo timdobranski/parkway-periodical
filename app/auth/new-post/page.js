@@ -44,7 +44,7 @@ export default function NewPostPage() {
     const newBlock = { type: 'text', content: EditorState.createEmpty(), isEditable: true };
     setContentBlocks([...contentBlocks, newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
-};
+  };
   const addVideoBlock = () => {
     setContentBlocks([...contentBlocks, { type: 'video', content: '', isEditable: true }]);
   }
@@ -110,9 +110,9 @@ export default function NewPostPage() {
     }
   };
   const toggleBold = () => {
-    console.log('inside toggle bold. activeBlock: ', activeBlock)
-    if (activeBlock === null) return; // No block is active
-    console.log()
+    console.log('inside toggle bold. activeBlock: ', activeBlock, 'type: ', contentBlocks[activeBlock].type)
+    if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return; // No text block is active
+    console.log('active text block')
     const currentContent = contentBlocks[activeBlock].content;
     const newState = RichUtils.toggleInlineStyle(currentContent, 'BOLD');
 
@@ -120,7 +120,28 @@ export default function NewPostPage() {
     const newContentBlocks = [...contentBlocks];
     newContentBlocks[activeBlock] = { ...newContentBlocks[activeBlock], content: newState };
     setContentBlocks(newContentBlocks);
+  };
+  const toggleAlignment = (alignment) => {
+    if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return;
+
+    const editorState = contentBlocks[activeBlock].content;
+    const contentState = editorState.getCurrentContent(); // Get the ContentState from EditorState
+    const selectionState = editorState.getSelection();
+
+    const blockKey = selectionState.getStartKey();
+    const block = contentState.getBlockForKey(blockKey);
+    const newBlock = block.set('data', block.getData().merge({ textAlign: alignment }));
+
+    const newContentState = contentState.merge({
+        blockMap: contentState.getBlockMap().set(blockKey, newBlock),
+        selectionAfter: selectionState
+    });
+
+    const newState = EditorState.push(editorState, newContentState, 'change-block-data');
+    updateEditorState(activeBlock, newState);
 };
+
+
   // photo block helpers
   const updatePhotoContent = (index, dataUrls) => {
     const newContentBlocks = [...contentBlocks];
@@ -157,11 +178,15 @@ export default function NewPostPage() {
     <div className={styles.pageWrapper}>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar
-        // onToggle={onToggle}
         onToggleBold={toggleBold}
+        onToggleLeftAlign={() => toggleAlignment('left')}
+        onToggleCenterAlign={() => toggleAlignment('center')}
+        onToggleRightAlign={() => toggleAlignment('right')}
+
         onAddText={addTextBlock}
         onAddPhoto={addPhotoBlock}
         onAddVideo={addVideoBlock}
+
         activeBlock={activeBlock}
         editorState={activeBlock !== null ? contentBlocks[activeBlock].content : null}
         updateEditorState={updateEditorState}
@@ -181,6 +206,8 @@ export default function NewPostPage() {
               isEditable={block.isEditable}
               onFocus={() => handleFocus(index)}
               onBlur={() => handleBlur(index)}
+              onToggleBold={toggleBold}
+
             />
           )}
           {block.type === 'photo' &&

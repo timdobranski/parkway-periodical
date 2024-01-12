@@ -8,7 +8,9 @@ import styles from './TextControls.module.css';
 
 export default function TextControls({
   editorState, setEditorState, onToggle, onUndo, onRedo, isEditable,
-  onToggleBold, onAlignmentToggle, addColorToMap, applyColor, isActive }) {
+  onToggleBold, addColorToMap, applyColor, isActive,
+  onToggleLeftAlign, onToggleCenterAlign, onToggleRightAlign,}) {
+
   const [textColor, setTextColor] = useState('#000000');
   const [highlightColor, setHighlightColor] = useState('#FFFF00');
 
@@ -72,9 +74,9 @@ export default function TextControls({
       />
       <FontAwesomeIcon icon={faHighlighter} onClick={(e) => handleIconClick(openColorPicker(e, highlightColorRef))} />
       <div className={styles.alignmentWrapper}>
-        <FontAwesomeIcon icon={faAlignLeft} onClick={() => handleIconClick(onAlignmentToggle('left'))} />
-        <FontAwesomeIcon icon={faAlignCenter} onClick={() => handleIconClick(onAlignmentToggle('center'))} />
-        <FontAwesomeIcon icon={faAlignRight} onClick={() => handleIconClick(onAlignmentToggle('right'))} />
+        <FontAwesomeIcon icon={faAlignLeft} onClick={() => handleIconClick(onToggleLeftAlign)} />
+        <FontAwesomeIcon icon={faAlignCenter} onClick={() => handleIconClick(onToggleCenterAlign)} />
+        <FontAwesomeIcon icon={faAlignRight} onClick={() => handleIconClick(onToggleRightAlign)} />
       </div>
       <div className={styles.listsWrapper}>
         <FontAwesomeIcon icon={faListOl} onClick={() => handleIconClick(onToggle('ordered-list-item'))} />
