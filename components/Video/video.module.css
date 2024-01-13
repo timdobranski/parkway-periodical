@@ -2,7 +2,7 @@
   position: relative; /* Added position relative */
   width: 100%;
   height: 500px; /* Fixed height, or use padding-top for aspect ratio */
-
+  margin: 4rem;
 }
 
 .youtubeVideoWrapper iframe {

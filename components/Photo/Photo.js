@@ -71,6 +71,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   };
   const renderPhotosCarousel = (photos) => {
     return (
+      <div className={styles.carouselWrapper}>
       <Carousel dynamicHeight={true} autoPlay={false} showThumbs={true}>
         {photos.map((photoObj, index) => (
           <div key={index} className={styles.carouselSlide}>
@@ -81,6 +82,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
           </div>
         ))}
       </Carousel>
+      </div>
     );
   };
 

@@ -188,7 +188,7 @@ export default function NewPostPage() {
         onAddVideo={addVideoBlock}
 
         activeBlock={activeBlock}
-        editorState={activeBlock !== null ? contentBlocks[activeBlock].content : null}
+        editorState={activeBlock !== null && contentBlocks.length ? contentBlocks[activeBlock].content : null}
         updateEditorState={updateEditorState}
       />
 
