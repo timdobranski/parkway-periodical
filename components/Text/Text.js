@@ -11,7 +11,7 @@ import TextControls from '../TextControls/TextControls';
 
 export default function Text({ key, editorState, setEditorState, isEditable, onFocus, onBlur, onToggleBold }) {
   const editorRef = useRef(null);
-  const contentState = editorState.getCurrentContent();
+  const contentState = editorState ? editorState.getCurrentContent() : null;
   const blockStyleFn = (block) => {
     const textAlign = block.getData().get('textAlign');
     if (textAlign) {
@@ -53,10 +53,12 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
   // console.log('raw content state: ', JSON.stringify(convertToRaw(contentState)));
 
   // renderable html of text block for preview when not editing
-  const html = stateToHTML(contentState, options);
-  console.log('html preview: ', html);
-  console.log(editorState.getCurrentInlineStyle().toArray());
-
+  let html = '';
+  if (editorState) {
+    html = stateToHTML(contentState, options);
+    console.log('html preview: ', html);
+    console.log('Current inline styles: ', editorState.getCurrentInlineStyle().toArray());
+  }
   // // style object to pass inline styles to Draft.js Editor component
   // const [styleMap, setStyleMap] = useState({
   //   'TEXT_COLOR': {},
@@ -162,7 +164,7 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
             onFocus={onFocus}
             onBlur={onBlur}
             blockStyleFn={getBlockStyle}
-            onToggleBold={onToggleBold}
+            // onToggleBold={onToggleBold}
             // customStyleMap={styleMap}
           />
         </div>

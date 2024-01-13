@@ -13,23 +13,37 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
 
   // if there are selected files, render previews
   useEffect(() => {
-    if (selectedFiles.length > 0) {
-      let urls = [];
-      let readersCompleted = 0;
+    let urls = [];
+    let readersCompleted = 0;
 
-      selectedFiles.forEach(fileObj => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          urls.push({ src: reader.result, caption: fileObj.caption });
-          readersCompleted++;
-          if (readersCompleted === selectedFiles.length) {
-            updatePhotoContent(urls);
-          }
-        };
-        reader.readAsDataURL(fileObj.file);
-      });
+    selectedFiles.forEach(fileObj => {
+        if (fileObj && fileObj.file instanceof File) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                urls.push({ src: reader.result, caption: fileObj.caption });
+                readersCompleted++;
+                if (readersCompleted === selectedFiles.length) {
+                    updatePhotoContent(urls);
+                }
+            };
+            reader.readAsDataURL(fileObj.file);
+        }
+    });
+}, [selectedFiles]);
+
+
+  useEffect(() => {
+    if (src && src.length > 0) {
+      const fileObjects = src.map(photo => ({
+        file: null, // No file object available for existing photos
+        caption: photo.caption || '',
+        src: photo.src // Keep the existing URL
+      }));
+      setSelectedFiles(fileObjects);
+    } else {
+      setSelectedFiles([]); // Reset if src is empty
     }
-  }, [selectedFiles]);
+  }, [src]);
 
   const handleFileChange = (event) => {
     // Create objects for each file with an empty caption
@@ -44,18 +58,21 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   };
 
   const renderPreviews = () => {
-    return selectedFiles.map((fileObj, index) => (
-      <div key={index} className={styles.photoPreviewContainer}>
-        <img src={URL.createObjectURL(fileObj.file)} alt={`Preview ${index}`} className={styles.photoPreview} />
-        <input
-          type="text"
-          value={fileObj.caption}
-          onChange={(e) => handleCaptionChange(index, e.target.value)}
-          placeholder="Enter caption"
-          className={styles.captionInput}
-        />
-      </div>
-    ));
+    return selectedFiles.map((fileObj, index) => {
+      const imageUrl = fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src;
+      return (
+        <div key={index} className={styles.photoPreviewContainer}>
+          <img src={imageUrl} alt={`Preview ${index}`} className={styles.photoPreview} />
+          <input
+            type="text"
+            value={fileObj.caption}
+            onChange={(e) => handleCaptionChange(index, e.target.value)}
+            placeholder="Enter caption"
+            className={styles.captionInput}
+          />
+        </div>
+      );
+    });
   };
   const renderPhotosGrid = (photos) => {
     return (

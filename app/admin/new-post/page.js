@@ -42,28 +42,57 @@ export default function NewPostPage() {
   // content blocks helpers
   const addTextBlock = () => {
     const newBlock = { type: 'text', content: EditorState.createEmpty(), isEditable: true };
-    setContentBlocks([...contentBlocks, newBlock]);
+    setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addVideoBlock = () => {
-    setContentBlocks([...contentBlocks, { type: 'video', content: '', isEditable: true }]);
-  }
+    const newBlock = { type: 'video', content: '', isEditable: true };
+    setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
+    setActiveBlock(contentBlocks.length); // New block's index
+  };
   const addPhotoBlock = () => {
-    setContentBlocks([...contentBlocks, { type: 'photo', content: null, isEditable: true }]);
+    const newBlock = { type: 'photo', content: null, isEditable: true };
+    setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
+    setActiveBlock(contentBlocks.length); // New block's index
   };
   const removeBlock = (index) => {
-    setContentBlocks(contentBlocks.filter((_, i) => i !== index));
+    // Remove the selected block
+    const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
+    setContentBlocks(updatedBlocks);
+
+    // Adjust activeBlock if necessary
+    if (index === activeBlock || index < activeBlock || activeBlock >= updatedBlocks.length) {
+        setActiveBlock(updatedBlocks.length > 0 ? 0 : null); // Set to first block or null
+    }
   };
   const moveBlockUp = (index) => {
     if (index === 0) return; // Can't move the first element up
+
     const newContentBlocks = [...contentBlocks];
     [newContentBlocks[index], newContentBlocks[index - 1]] = [newContentBlocks[index - 1], newContentBlocks[index]];
+
+    // Update activeBlock index if it's one of the moved blocks
+    if (activeBlock === index) {
+      setActiveBlock(index - 1);
+    } else if (activeBlock === index - 1) {
+      setActiveBlock(index);
+    }
+
     setContentBlocks(newContentBlocks);
   };
   const moveBlockDown = (index) => {
     if (index === contentBlocks.length - 1) return; // Can't move the last element down
+
     const newContentBlocks = [...contentBlocks];
     [newContentBlocks[index], newContentBlocks[index + 1]] = [newContentBlocks[index + 1], newContentBlocks[index]];
+
+    // Update activeBlock index if it's one of the moved blocks
+    if (activeBlock === index) {
+      setActiveBlock(index + 1);
+    } else if (activeBlock === index + 1) {
+      setActiveBlock(index);
+    }
+
     setContentBlocks(newContentBlocks);
   };
   const toggleEditable = (index) => {
@@ -167,7 +196,9 @@ export default function NewPostPage() {
     newContentBlocks[index] = { ...newContentBlocks[index], content: url };
     setContentBlocks(newContentBlocks);
   }
-
+  const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
+  ? contentBlocks[activeBlock].content
+  : null;
 
 
   if (!user) {
@@ -182,13 +213,11 @@ export default function NewPostPage() {
         onToggleLeftAlign={() => toggleAlignment('left')}
         onToggleCenterAlign={() => toggleAlignment('center')}
         onToggleRightAlign={() => toggleAlignment('right')}
-
         onAddText={addTextBlock}
         onAddPhoto={addPhotoBlock}
         onAddVideo={addVideoBlock}
-
         activeBlock={activeBlock}
-        editorState={activeBlock !== null && contentBlocks.length ? contentBlocks[activeBlock].content : null}
+        editorState={safeEditorState}
         updateEditorState={updateEditorState}
       />
 
@@ -201,9 +230,9 @@ export default function NewPostPage() {
           </div>
           {block.type === 'text' && (
             <Text
-              editorState={block.content}
+              editorState={safeEditorState}
               setEditorState={(newState) => updateEditorState(index, newState)}
-              isEditable={block.isEditable}
+              isEditable={index === activeBlock}
               onFocus={() => handleFocus(index)}
               onBlur={() => handleBlur(index)}
               onToggleBold={toggleBold}
@@ -215,14 +244,15 @@ export default function NewPostPage() {
               key={index}
               updatePhotoContent={(files) => updatePhotoContent(index, files)}
               updatePhotoFormat={(format) => updatePhotoFormat(index, format)}
-              isEditable={block.isEditable}
+              isEditable={index === activeBlock}
               src={block.content}
               format={block.format || 'grid'}
             />}
           {block.type === 'video' &&
             <Video
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
-              isEditable={block.isEditable} src={block.content}
+              isEditable={index === activeBlock}
+              src={block.content}
             />}
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
