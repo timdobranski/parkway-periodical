@@ -62,6 +62,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
       const imageUrl = fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src;
       return (
         <div key={index} className={styles.photoPreviewContainer}>
+          {formatSelectionInterface()}
           <img src={imageUrl} alt={`Preview ${index}`} className={styles.photoPreview} />
           <input
             type="text"
