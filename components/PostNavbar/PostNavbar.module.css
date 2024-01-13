@@ -1,17 +1,20 @@
 .navbarWrapper {
   position: fixed;
   box-sizing: border-box;
-  top: 120px;
+  top: 60px;
   left: 0;
   width: 100vw;
   min-width: 1000px;
-  background-color: rgb(198, 229, 255);
+  background-color: rgb(237, 247, 255);
   margin: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   z-index: 2;
+}
+.rowsWrapper {
+  width: 80%;
 }
 .navbarRow *:hover {
   cursor:pointer;
@@ -32,13 +35,14 @@
   padding: 0 .5rem .25rem .5rem;
 }
 .navbarItem h3 {
-  margin: 0;
+  margin: 0 2rem 0 2rem;
   padding: 0;
   font-size: 1rem;
+  font-weight: normal;
 }
 .icon {
-  height: 30px;
-  width: 30px;
+  height: 15px;
+  width: 15px;
   margin: .5rem;
 }
 .publishButton {
@@ -52,7 +56,8 @@
   height: 40px;
   background-color: rgb(255, 126, 126);
   border-radius: 4px;
-  font-family: Louis George Cafe Bold;
+  font-family: Louis George Cafe;
+  font-weight: bold !important;
 }
 .publishButton:hover {
   cursor: pointer;
@@ -60,10 +65,17 @@
   color: black;
 }
 .divider {
-  border: solid rgb(135, 135, 135) .5px;
-  height: 0px;
-  width: 90%;
+  background: rgb(111, 146, 161);
+  height: 2px;
+  width: 80%;
 }
 .editRow {
-  width: 100%;
+  width: 90%;
+  margin: .5rem;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background: rgb(195, 212, 220);
 }

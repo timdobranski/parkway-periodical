@@ -4,7 +4,7 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: 120px;
+  height: auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -12,62 +12,37 @@
   background-color: white;
   text-align: center;
   z-index: 1;
-  border-bottom: solid 1px rgb(134, 134, 134);
-}
-.authHeaderContainer {
-  font-family: Louis George Cafe;
-  box-sizing: border-box;
-  position: fixed;
-  top:0;
-  left: 0;
-  width: 100vw;
-  height: 80px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  text-align: center;
-  z-index: 1;
+  padding: .5rem;
   border-bottom: solid 1px rgb(134, 134, 134);
 }
 .logoContainer {
   position: absolute;
-  width: 80px;
-  height: 80px;
-  top: 20px;
-  left: 20px;
-}
-.authLogoContainer {
-  position: absolute;
   width: 40px;
   height: 40px;
-  top: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   left: 20px;
 }
-
+.title {
+  font-size: 3rem;
+}
 .headerContainer h1 {
   position: relative;
   width: 100%;
   margin: 0;
   top: 0;
   font-family: Nadall;
-  /* font-family: OstrichSansInline; */
-  font-size: 5rem;
 }
 .navContainer {
   position: absolute;
   display: flex;
-  top: 80px;
-  flex-direction: row;
-}
-.authNavContainer {
-  position: absolute;
-  display: flex;
-  top: 0;
+  top: 50%;
   right: 0;
-  margin: .5rem;
+  transform: translateY(-50%);
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .navContainer a {
@@ -76,19 +51,19 @@
 .navContainer a:focus {
   outline: none;
 }
-.navContainer h2, .authNavContainer h2 {
+.navContainer h2 {
   margin: 0rem 3rem .75rem 3rem;
-  /* font-family: Nadall; */
   font-family: Louis George Cafe;
-  color: red;
+  color: rgb(254, 113, 113);
   font-size: 1.5rem;
+  font-weight:normal;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;
   border: none !important;
 
 }
-.navContainer h2:hover, .authNavContainer h2:hover {
+.navContainer h2:hover {
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
@@ -150,10 +125,4 @@
     border: none !important;
 
   }
-}
-
-.authHeader {
-  font-size: 3rem !important;
-  font-family: Nadall
-
 }

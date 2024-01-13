@@ -21,3 +21,6 @@
   border-radius: 4px;
   border: solid rgb(67, 67, 67) 2px;
 }
+.noVideoMessage {
+  width: 100%;
+}

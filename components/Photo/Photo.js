@@ -118,7 +118,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
     );
   } else {
     if (!src || src.length === 0) {
-      return <p>No photo provided</p>;
+      return <p className={styles.noPhotoMessage}>No photo provided</p>;
     }
 
     switch (photoFormat) {

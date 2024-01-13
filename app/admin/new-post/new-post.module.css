@@ -1,14 +1,17 @@
 .pageWrapper {
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: auto;
-    font-family: Louis George Cafe;
-    position: relative;
+  position: relative;
+  top: 175px;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: Louis George Cafe;
+  /* overflow-y: auto;  */
+  /* border: solid greenyellow 4px; */
 }
-
 .blockContainer {
   display: flex;
   align-items: center;

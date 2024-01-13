@@ -3,7 +3,7 @@
 import supabase from '../../utils/supabase.js';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './auth.module.css';
+import styles from './login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,7 +22,7 @@ export default function Login() {
       return;
     }
     console.log('data in auth page: ', data);
-    router.push('/auth/new-post'); // Redirect after login
+    router.push('/admin/new-post'); // Redirect after login
   };
 
   const togglePasswordVisibility = () => {

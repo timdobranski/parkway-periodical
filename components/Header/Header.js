@@ -28,21 +28,7 @@ export default function Header() {
     getAndSetUser();
   }, []);
 
-  if (user) {
-    return (
-      <div className={styles.headerContainer}>
-        <div className={styles.logoContainer}>
-          <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
-        </div>
-        <h1>Parkway Periodical</h1>
-        <div className={styles.authNavContainer}>
-          <Link href='/archive'><h2>NEW POST</h2></Link>
-          <Link href='/about'><h2>VIEW/EDIT POSTS</h2></Link>
-          <Link href='/auth'><h2>LOGOUT</h2></Link>
-        </div>
-      </div>
-    )
-  }
+
 
   return (
     <div className={styles.headerContainer}>

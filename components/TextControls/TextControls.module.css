@@ -1,13 +1,17 @@
 .controls {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
   width: 80%;
   margin: 0 auto;
-  margin-top: 2rem;
   padding: .5rem;
   border-radius: 10px;
+  /* border: solid red 1px; */
+}
+.controls * {
+  margin: 0 2rem 0 2rem;
+
 }
 .alignmentWrapper * {
   margin: 0 .25rem 0 .25rem;
@@ -28,6 +32,13 @@
   padding: 3px;
 }
 .alignmentWrapper *:hover, .undoRedoWrapper *:hover, .listsWrapper *:hover {
+  cursor: pointer;
+}
+.textIcon {
+  height: 25px;
+  width: 25px;
+}
+.textIcon:hover {
   cursor: pointer;
 }
 
