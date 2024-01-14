@@ -10,26 +10,58 @@ import { faTableCells, faTv } from '@fortawesome/free-solid-svg-icons';
 export default function Photo({ updatePhotoContent, src, isEditable, updatePhotoFormat, format }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [photoFormat, setPhotoFormat] = useState(format); // grid, single, carousel
-
+  const formatSelectionInterface = () => {
+    return (
+      <div className={styles.formatSelection}>
+        <FontAwesomeIcon
+          icon={faTableCells}
+          className={`${styles.icon} ${photoFormat === 'grid' ? styles.selectedIcon : ''}`}
+          onClick={() => {
+            setPhotoFormat('grid');
+            updatePhotoFormat('grid');
+          }}
+        />
+        <FontAwesomeIcon
+          icon={faTv}
+          className={`${styles.icon} ${photoFormat === 'carousel' ? styles.selectedIcon : ''}`}
+          onClick={() => {
+            setPhotoFormat('carousel');
+            updatePhotoFormat('carousel');
+          }}
+        />
+      </div>
+    );
+  };
   // if there are selected files, render previews
   useEffect(() => {
-    let urls = [];
-    let readersCompleted = 0;
+    if (!isEditable) {
+      let urls = [];
+      let readersToComplete = selectedFiles.reduce((count, fileObj) =>
+          count + (fileObj.file instanceof File ? 1 : 0), 0);
 
-    selectedFiles.forEach(fileObj => {
-        if (fileObj && fileObj.file instanceof File) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                urls.push({ src: reader.result, caption: fileObj.caption });
-                readersCompleted++;
-                if (readersCompleted === selectedFiles.length) {
-                    updatePhotoContent(urls);
-                }
-            };
-            reader.readAsDataURL(fileObj.file);
-        }
-    });
-}, [selectedFiles]);
+      if (readersToComplete === 0) {
+          updatePhotoContent(selectedFiles.map(({ src, caption }) => ({ src, caption })));
+          return;
+      }
+
+      selectedFiles.forEach(fileObj => {
+          if (fileObj.file instanceof File) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                  urls.push({ src: reader.result, caption: fileObj.caption });
+                  if (--readersToComplete === 0) {
+                      updatePhotoContent(urls);
+                  }
+              };
+              reader.readAsDataURL(fileObj.file);
+          } else {
+              urls.push({ src: fileObj.src, caption: fileObj.caption });
+          }
+      });
+    }
+  }, [isEditable]);
+
+
 
 
   useEffect(() => {
@@ -53,7 +85,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
 
   const handleCaptionChange = (index, newCaption) => {
     setSelectedFiles(files =>
-      files.map((fileObj, idx) => idx === index ? { ...fileObj, caption: newCaption } : fileObj)
+      files.map((fileObj, idx) => { return idx === index ? { ...fileObj, caption: newCaption } : fileObj})
     );
   };
 
@@ -62,7 +94,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
       const imageUrl = fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src;
       return (
         <div key={index} className={styles.photoPreviewContainer}>
-          {formatSelectionInterface()}
+          {/* {selectedFiles.length > 1 ? formatSelectionInterface() : null} */}
           <img src={imageUrl} alt={`Preview ${index}`} className={styles.photoPreview} />
           <input
             type="text"
@@ -76,9 +108,11 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
     });
   };
   const renderPhotosGrid = (photos) => {
+    console.log('photos passed to renderphotosGrid: ', photos)
     return (
       <div className={styles.photosGrid}>
         {photos.map((photo, index) => (
+          console.log('photo caption: ', photo.caption),
           <div key={index} className={styles.gridPhotoContainer}>
             <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} />
             {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
@@ -100,29 +134,6 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
           </div>
         ))}
       </Carousel>
-      </div>
-    );
-  };
-
-  const formatSelectionInterface = () => {
-    return (
-      <div className={styles.formatSelection}>
-        <FontAwesomeIcon
-          icon={faTableCells}
-          className={`${styles.icon} ${photoFormat === 'grid' ? styles.selectedIcon : ''}`}
-          onClick={() => {
-            setPhotoFormat('grid');
-            updatePhotoFormat('grid');
-          }}
-        />
-        <FontAwesomeIcon
-          icon={faTv}
-          className={`${styles.icon} ${photoFormat === 'carousel' ? styles.selectedIcon : ''}`}
-          onClick={() => {
-            setPhotoFormat('carousel');
-            updatePhotoFormat('carousel');
-          }}
-        />
       </div>
     );
   };

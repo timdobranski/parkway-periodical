@@ -15,27 +15,8 @@ import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesom
 export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [contentBlocks, setContentBlocks] = useState([]); // Corrected function name
+  const [contentBlocks, setContentBlocks] = useState([]);
   const [activeBlock, setActiveBlock] = useState(null);
-
-  // useEffect(() => {
-  //   if (activeBlock !== null && contentBlocks[activeBlock]) {
-  //     const newEditorState = contentBlocks[activeBlock].content;
-  //     // Assuming setEditorState is the method to update the editor state
-  //     setEditorState(newEditorState);
-  //   }
-  // }, [activeBlock, contentBlocks]);
-  // useEffect(() => {
-  //   console.log('content blocks: ', contentBlocks);
-  //   const logEditorStateContent = (index) => {
-  //     if (index >= 0 && index < contentBlocks.length && contentBlocks[index].type === 'text') {
-  //       const contentState = contentBlocks[index].content.getCurrentContent();
-  //       console.log(contentState.getPlainText());
-  //     }
-  //   };
-  //   logEditorStateContent(activeBlock);
-
-  // }, [contentBlocks, activeBlock])
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -53,20 +34,24 @@ export default function NewPostPage() {
     getAndSetUser();
   }, [router]);
 
+  // useEffect(() => {
+  //   console.log('contentBlocks updated')
+  // }, [contentBlocks])
+
   // content blocks helpers
   const addTextBlock = () => {
     const newBlock = { type: 'text', content: EditorState.createEmpty() };
-    setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
+    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addVideoBlock = () => {
     const newBlock = { type: 'video', content: '', };
-    setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
+    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = () => {
     const newBlock = { type: 'photo', content: null};
-    setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
+    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const removeBlock = (index) => {
@@ -183,10 +168,9 @@ export default function NewPostPage() {
     const newState = EditorState.push(editorState, newContentState, 'change-block-data');
     updateEditorState(activeBlock, newState);
 };
-
-
   // photo block helpers
   const updatePhotoContent = (index, dataUrls) => {
+    console.log('dataUrls in updatePhotoContent: ', dataUrls);
     const newContentBlocks = [...contentBlocks];
     newContentBlocks[index] = { ...newContentBlocks[index], content: dataUrls };
     setContentBlocks(newContentBlocks);
@@ -250,7 +234,6 @@ export default function NewPostPage() {
               onFocus={() => handleFocus(index)}
               onBlur={() => handleBlur(index)}
               onToggleBold={toggleBold}
-
             />
           )}
           {block.type === 'photo' &&
