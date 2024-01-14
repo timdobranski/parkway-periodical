@@ -1,39 +1,30 @@
 'use client'
 
-import { useEffect } from 'react';
-const imagePaths = Array.from({ length: 18 }, (v, i) => `/images/intro/${i + 1}.png`);
+import { useEffect, useState } from 'react';
 import styles from './home.module.css';
 
 export default function Home() {
+  const [images, setImages] = useState([]);
+  const imageCount = 18; // Adjusted for 3 rows of 6 images each
+  const imagePath = "/images/intro/"; // Correctly defined imagePath
+
   useEffect(() => {
-    const collage = document.getElementById('collage');
-    let scrollAmount = 0;
-
-    const scrollInterval = setInterval(function(){
-      collage.scrollLeft += 1; // Adjust the increment value as needed
-      scrollAmount += 1;
-
-      if(scrollAmount >= collage.scrollWidth - window.innerWidth){
-        clearInterval(scrollInterval);
-      }
-    }, 10); // Adjust the interval as needed
-
-    // Cleanup on component unmount
-    return () => clearInterval(scrollInterval);
+    const loadedImages = [];
+    for (let i = 1; i <= imageCount; i++) {
+      loadedImages.push(`${imagePath}${i}.png`);
+    }
+    setImages(loadedImages);
   }, []);
 
   return (
-    <div className='pageWrapper'>
-      <div id="collage" className={styles.collage}>
-        {imagePaths.map((path, index) => {
-          const tintClassName = index % 2 === 0 ? 'blueTint' : 'redTint';
-          const combinedClassName = `${styles.collagePhoto} ${styles[tintClassName]}`;
-
-          return (
-            <img key={index} src={path} alt={`Intro Image ${index + 1}`} className={combinedClassName} />
-          );
-        })}
-      </div>
+    <div className='publicPageWrapper'>
+      {[...Array(3)].map((_, rowIndex) => (
+        <div key={rowIndex} className={styles.imageRow}>
+          {images.slice(rowIndex * 6, (rowIndex + 1) * 6).map((src, index) => (
+            <img key={index} src={src} alt={`Image ${rowIndex * 6 + index + 1}`} className={styles.image} />
+          ))}
+        </div>
+      ))}
     </div>
-  )
+  );
 }

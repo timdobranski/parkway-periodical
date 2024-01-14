@@ -203,6 +203,8 @@ export default function NewPostPage() {
     return <div>Loading...</div>;
   }
 
+
+
   return (
     <div className='pageWrapper'>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
@@ -262,3 +264,4 @@ export default function NewPostPage() {
     </div>
   );
 }
+
