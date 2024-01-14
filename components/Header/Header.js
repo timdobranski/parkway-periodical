@@ -37,9 +37,9 @@ export default function Header() {
       </div>
       <h1>Parkway Periodical</h1>
       <div className={styles.navContainer}>
-        <Link href='/'><h2>HOME</h2></Link>
-        <Link href='/archive'><h2>ARCHIVE</h2></Link>
-        <Link href='/about'><h2>ABOUT</h2></Link>
+        <Link href='/public/home'><h2>HOME</h2></Link>
+        <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
+        <Link href='/public/about'><h2>ABOUT</h2></Link>
       </div>
     </div>
   )

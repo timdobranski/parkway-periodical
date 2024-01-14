@@ -204,7 +204,7 @@ export default function NewPostPage() {
   }
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className='pageWrapper'>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar
         onToggleBold={toggleBold}

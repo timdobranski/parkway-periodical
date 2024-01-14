@@ -1,7 +1,7 @@
 import Header from '../../components/Header/Header'
 
 
-export default function RootLayout({ children }) {
+export default function PublicLayout({ children }) {
   return (
 
       <div className='appContainer'>

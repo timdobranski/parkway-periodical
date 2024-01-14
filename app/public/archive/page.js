@@ -1,18 +1,12 @@
-// import styles from './archive.module.css';
-// import Link from 'next/link';
+import styles from './archive.module.css';
 
-// export default function Archive() {
+export default function Archive() {
 
-//   return (
-//     <div className='sectionContainer'>
-//       <p className={styles.message}>{`As 2023-24 is the first year of the Parkway Periodical,
-//        we don't have an archive yet!`}</p>
+  return (
+    <div className='pageWrapper'>
+      <h1>Archive will go here</h1>
 
-//       <p>{`As the site grows, prior years' posts will be available here.`}</p>
-//       <Link href='/'>
-//         <p>2023-24 School Year</p>
-//       </Link>
-//     </div>
-//   )
+    </div>
+  )
 
-// }
+}

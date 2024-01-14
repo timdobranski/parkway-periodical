@@ -3,6 +3,8 @@
 export default function Home() {
 
   return (
-    <h1>Render Posts Here</h1>
+    <div className='pageWrapper'>
+      <h1>Render Posts Here</h1>
+    </div>
   )
 }

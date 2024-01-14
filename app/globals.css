@@ -36,6 +36,20 @@
   background: linear-gradient(to right, rgb(92, 201, 255), rgb(30, 101, 152)) !important;
   /* border: solid red 4px; */
 }
+.pageWrapper {
+  position: relative;
+  top: 175px;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: Louis George Cafe;
+  /* overflow-y: auto;  */
+  /* border: solid greenyellow 4px; */
+}
 /* All returned section elements */
 .blogContainer {
   width: 95vw !important;
