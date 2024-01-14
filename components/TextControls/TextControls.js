@@ -15,9 +15,7 @@ export default function TextControls({
   const [highlightColor, setHighlightColor] = useState('#FFFF00');
 
   const handleIconClick = (action) => {
-    console.log('inside handle icon click! action: ', action)
     if (isActive || !isActive) {
-      console.log('inside handle icon click! isActive')
       action();
     }
   };

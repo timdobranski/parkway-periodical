@@ -18,10 +18,24 @@ export default function NewPostPage() {
   const [contentBlocks, setContentBlocks] = useState([]); // Corrected function name
   const [activeBlock, setActiveBlock] = useState(null);
 
+  // useEffect(() => {
+  //   if (activeBlock !== null && contentBlocks[activeBlock]) {
+  //     const newEditorState = contentBlocks[activeBlock].content;
+  //     // Assuming setEditorState is the method to update the editor state
+  //     setEditorState(newEditorState);
+  //   }
+  // }, [activeBlock, contentBlocks]);
+  // useEffect(() => {
+  //   console.log('content blocks: ', contentBlocks);
+  //   const logEditorStateContent = (index) => {
+  //     if (index >= 0 && index < contentBlocks.length && contentBlocks[index].type === 'text') {
+  //       const contentState = contentBlocks[index].content.getCurrentContent();
+  //       console.log(contentState.getPlainText());
+  //     }
+  //   };
+  //   logEditorStateContent(activeBlock);
 
-  useEffect(() => {
-    console.log('content blocks: ', contentBlocks);
-  }, [contentBlocks])
+  // }, [contentBlocks, activeBlock])
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -41,17 +55,17 @@ export default function NewPostPage() {
 
   // content blocks helpers
   const addTextBlock = () => {
-    const newBlock = { type: 'text', content: EditorState.createEmpty(), isEditable: true };
+    const newBlock = { type: 'text', content: EditorState.createEmpty() };
     setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', isEditable: true };
+    const newBlock = { type: 'video', content: '', };
     setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = () => {
-    const newBlock = { type: 'photo', content: null, isEditable: true };
+    const newBlock = { type: 'photo', content: null};
     setContentBlocks([...contentBlocks.map(block => ({ ...block, isEditable: false })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
@@ -218,7 +232,7 @@ export default function NewPostPage() {
         onAddVideo={addVideoBlock}
         activeBlock={activeBlock}
         editorState={safeEditorState}
-        updateEditorState={updateEditorState}
+        updateEditorState={updateActiveTextEditorState}
       />
 
       <div className='postPreview'>
@@ -230,8 +244,8 @@ export default function NewPostPage() {
           </div>
           {block.type === 'text' && (
             <Text
-              editorState={safeEditorState}
-              setEditorState={(newState) => updateEditorState(index, newState)}
+              editorState={block.content}
+              setEditorState={(newState) => updateActiveTextEditorState(newState)}
               isEditable={index === activeBlock}
               onFocus={() => handleFocus(index)}
               onBlur={() => handleBlur(index)}
@@ -256,7 +270,7 @@ export default function NewPostPage() {
             />}
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
-          <FontAwesomeIcon icon={block.isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
+          <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
           </div>
         </div>
       ))}
