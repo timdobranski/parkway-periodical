@@ -11,8 +11,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <div className='appContainer'>
-        {children}
-
+          {children}
         </div>
       </body>
     </html>
