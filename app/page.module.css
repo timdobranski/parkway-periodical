@@ -70,7 +70,7 @@
   top: 50%;
   left: 50%;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.85);
   color: white;
   font: 2rem 'Louis George Cafe';
   font-weight: normal;
@@ -83,10 +83,29 @@
   justify-content: center;
   transform: skew(-10deg) translate(-50%, -50%);
   border: solid 2px rgb(149, 149, 149);
+  backdrop-filter: blur(10px); /* Adjust the pixel value to increase or decrease the blur effect */
+
 }
 .introContainer h1 {
-  font-size: 4rem;
-  font-weight: normal;
+  /* position: relative;
   margin: 0;
+  padding: 0; */
+}
+.introImage {
+  width: 90%;
+  margin-left:2rem;
+  /* border: solid white 2px; */
   padding: 0;
+}
+.enter {
+  padding: 1rem;
+  margin: 1rem;
+  font-size: 2rem;
+  font-weight: normal;
+}
+.enter:hover {
+  cursor: pointer;
+  background-color: rgb(34, 171, 240);
+  padding: 1rem;
+  border-radius: 10px;
 }

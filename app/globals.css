@@ -28,15 +28,18 @@
   width: 100vw;
   height: 100vh; /* Changed from 100vw to 100vh */
   overflow-y: auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: white;
-  background: linear-gradient(to right, rgb(92, 201, 255), rgb(30, 101, 152)) !important;
-  /* border: solid red 4px; */
+  /* background-color: rgba(255, 255, 255, 0.691); */
+  background-image: url('../public/images/gradient3.png');
+  background-size: cover;
+  background-position: center;
+  /* background: linear-gradient(to right, rgba(92, 201, 255, .7), rgba(30, 101, 152, .7)); */
+  backdrop-filter: blur(15px);
 }
+
 .pageWrapper {
   position: relative;
   top: 175px;
@@ -79,10 +82,11 @@
   width: 1400px !important;
   box-sizing: border-box;
   border-radius: 15px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
+  backdrop-filter: blur(10px);
   text-align: center;
-  min-height: 300px;
+  min-height: 800px;
   padding: 2rem;
   font-size: 1.5rem;
   font-family: Louis George Cafe;
@@ -90,6 +94,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  margin: 1rem;
 }
 .postPreview {
   margin: 2rem;
@@ -179,3 +184,5 @@
   padding: 1rem;
   background-color: rgba(211, 211, 211, 0);
 } */
+
+https://lh5.googleusercontent.com/iH8bhhbm-OO9xBY3-Vjws1llTqHm33M1N0I_h3NxM5pZhHVA80VeTu8vpM4j5jQuOs89qYcg_f845PUT6sUIlYU=w16383&quot;

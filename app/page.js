@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './page.module.css';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [rows, setRows] = useState([[], [], []]);
@@ -10,7 +11,7 @@ export default function Home() {
   const rowsDirectories = ['row1', 'row2', 'row3']; // Directories for each row
   const imagesPerRow = 6; // Assuming 6 unique images per row
   const rowRefs = useRef([React.createRef(), React.createRef(), React.createRef()]);
-
+  const router = useRouter();
 
   useEffect(() => {
     const loadRowImages = (rowDir) => {
@@ -31,8 +32,8 @@ export default function Home() {
   return (
     <div className={styles.introWrapper}>
       <div className={styles.introContainer}>
-        <h1>PARKWAY</h1>
-        <h1>ACADEMY</h1>
+        <img src='images/logos/titledLogo.png' alt='Intro Image' className={styles.introImage} />
+        <h1 className={styles.enter} onClick={() => router.push('/public/home')}>ENTER</h1>
       </div>
       {rows.map((rowImages, rowIndex) => (
         <div key={rowIndex} className={styles.imageRow}>
