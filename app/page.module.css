@@ -33,9 +33,7 @@
   overflow: hidden;
   padding: 0;
   margin: 0;
-
 }
-
 .imageRow {
   display: flex;
   height: 33.33vh;
@@ -46,7 +44,6 @@
   position: relative;
   z-index: 0;
 }
-
 .imageRow:nth-child(1) {
   animation: scrollSlow 30s linear infinite;
 }
@@ -70,7 +67,7 @@
 }
 .image:hover {
   cursor: pointer;
-  transform: scale(1.2);
+  transform: scale(1.1);
   transform-origin: center;
   /* Removed z-index from here */
 }
