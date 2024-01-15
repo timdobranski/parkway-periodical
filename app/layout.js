@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div className='appContainer'>
+        <div className='black'>
           {children}
         </div>
       </body>
