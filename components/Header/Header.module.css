@@ -23,15 +23,20 @@
   left: 10px;
 }
 
-.headerContainer h1 {
+.title {
   position: relative;
-  width: 100%;
+  /* width: 100%; */
   margin: 0 auto;
   top: 1rem;;
-  font-family: Wonder Night;
-  /* font-weight: normal; */
+  font-family: Nadall;
+  background-image: linear-gradient(to right, rgb(21, 170, 250), rgb(0, 90, 150));
+  -webkit-background-clip: text; /* For WebKit browsers */
+  /* text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5); */
+  background-clip: text;
+  color: transparent;
   font-size: 5rem;
 }
+
 .navContainer {
   position: absolute;
   display: flex;

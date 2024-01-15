@@ -30,11 +30,9 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    // <div className='appContainer'>
-    <>
+    <div className='appContainer'>
       <HeaderAdmin />
       {children}
-    </>
-    // </div>
+    </div>
   );
 }

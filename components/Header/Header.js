@@ -6,9 +6,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import supabase from '../../utils/supabase';
 import  { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -32,10 +34,10 @@ export default function Header() {
 
   return (
     <div className={styles.headerContainer}>
-      <div className={styles.logoContainer}>
+      <div className={styles.logoContainer} onClick={() => router.push('/')}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
-      <h1>Parkway Periodical</h1>
+      <h1 className={styles.title}>Parkway Periodical</h1>
       <div className={styles.navContainer}>
         <Link href='/public/home'><h2>HOME</h2></Link>
         <Link href='/public/archive'><h2>ARCHIVE</h2></Link>

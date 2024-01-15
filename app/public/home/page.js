@@ -25,8 +25,9 @@ export default function Home() {
         <div className={styles.testImage}>
           <div className={styles.blueTint}></div>
         </div>
-      </div>
+      {/* <a href="https://www.freepik.com/free-vector/realistic-racing-text-effect_21075516.htm#query=font%20effect&position=18&from_view=keyword&track=ais&uuid=842ed622-0144-43d1-a4be-c6e8538bb9b4">Image by pikisuperstar</a> on Freepik */}
 
+      </div>
 
 
     </div>
