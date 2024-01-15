@@ -15,14 +15,22 @@ export default function Home() {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const [hoveredRowIndex, setHoveredRowIndex] = useState(null); // Track hovered row index
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null); // Track hovered image index
-
-
   const totalImages = 60;
+
+  const preloadImages = () => {
+    rowsDirectories.forEach(rowDir => {
+      for (let i = 1; i <= imagesPerRow; i++) {
+        const img = new Image();
+        img.src = `${baseImagePath}${rowDir}/${i}.webp`;
+        const hoverImg = new Image();
+        hoverImg.src = `${hoverImagePath}${rowDir}/${i}.webp`;
+      }
+    });
+  };
 
   const handleImageLoad = () => {
     setLoadedImages(prev => prev + 1);
   };
-
 
   const handleMouseEnter = (rowIndex, imageIndex) => (e) => {
     const newSrc = e.target.src.replace(baseImagePath, hoverImagePath);
@@ -37,7 +45,10 @@ export default function Home() {
     setHoveredRowIndex(null);
     setHoveredImageIndex(null);
   };
+
   useEffect(() => {
+    preloadImages();
+
     const loadRowImages = (rowDir) => {
       const rowImages = [];
       for (let i = 1; i <= imagesPerRow; i++) {
