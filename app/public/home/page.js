@@ -5,7 +5,7 @@ import styles from './home.module.css';
 
 export default function Home() {
   const [images, setImages] = useState([]);
-  const imageCount = 18; // Adjusted for 3 rows of 6 images each
+  const imageCount = 30; // Adjusted for 3 rows of 6 images each
   const imagePath = "/images/intro/"; // Correctly defined imagePath
 
   useEffect(() => {
@@ -20,8 +20,15 @@ export default function Home() {
     <div className='publicPageWrapper'>
       <div className='post'>
       <h1>Posts Here</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div className={styles.testImage}>
+          <div className={styles.blueTint}></div>
+        </div>
       </div>
+
+
+
     </div>
   );
 }

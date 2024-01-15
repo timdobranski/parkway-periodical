@@ -2,14 +2,11 @@
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 0;
   margin: 0;
 }
-.imageRow {
-  display: flex;
-  height: 33.33vh
-}
+
 .image {
   object-fit: cover;
   height: 100%;
@@ -43,9 +40,9 @@
   display: flex;
   height: 33.33vh;
   white-space: nowrap;
-  overflow: hidden;
+  overflow:visible;
   width: 200vw;
-
+  align-items: center;
 }
 
 .imageRow:nth-child(2) {
@@ -57,13 +54,23 @@
 }
 
 .imageRow:nth-child(4) {
-  animation: scrollFast 20s linear infinite;
+  animation: scrollFast 37s linear infinite;
 }
 
 .image {
   display: inline-block;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+  transform-origin: center;
+}
+.image:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  z-index: 999;
+  transform-origin: center;
+
+
 }
 .introContainer {
   position: absolute;

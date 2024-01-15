@@ -1,6 +1,5 @@
 'use client'
 
-
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './page.module.css';
 import { useRouter } from 'next/navigation';
@@ -9,15 +8,14 @@ export default function Home() {
   const [rows, setRows] = useState([[], [], []]);
   const baseImagePath = "/images/intro/";
   const rowsDirectories = ['row1', 'row2', 'row3']; // Directories for each row
-  const imagesPerRow = 6; // Assuming 6 unique images per row
-  const rowRefs = useRef([React.createRef(), React.createRef(), React.createRef()]);
+  const imagesPerRow = 10; // Assuming 6 unique images per row
   const router = useRouter();
 
   useEffect(() => {
     const loadRowImages = (rowDir) => {
       const rowImages = [];
       for (let i = 1; i <= imagesPerRow; i++) {
-        rowImages.push(`${baseImagePath}${rowDir}/${i}.png`);
+        rowImages.push(`${baseImagePath}${rowDir}/${i}.webp`);
       }
       // Duplicate the images for the scrolling effect
       return [...rowImages, ...rowImages];
@@ -27,7 +25,7 @@ export default function Home() {
     setRows(allRows);
   }, []);
 
-  if (rows[0].length !== 12) return null;
+  if (rows[0].length !== 20) return null;
 
   return (
     <div className={styles.introWrapper}>

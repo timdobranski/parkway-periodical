@@ -13,11 +13,38 @@
   src: url('../public/fonts/Louis George Cafe Bold.ttf') format('truetype');
   font-weight: bold; /* or 700 */
 }
+@font-face {
+  font-family: 'Louis George Cafe';
+  src: url('../public/fonts/Louis George Cafe Bold.ttf') format('truetype');
+  font-weight: bold; /* or 700 */
+}
+@font-face {
+  font-family: 'Wonder Night';
+  src: url('../public/fonts/WonderNight.ttf') format('truetype');
+  font-weight: bold; /* or 700 */
+}
+@font-face {
+  font-family: 'Murberry';
+  src: url('../public/fonts/Murberry.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Terano';
+  src: url('../public/fonts/Terano Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Roashe';
+  src: url('../public/fonts/Roashe.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Enchants';
+  src: url('../public/fonts/Enchants.otf') format('opentype');
+}
 
 @font-face {
-  font-family: 'OstrichSansInline';
-  src: url('../public/fonts/ostrich-sans-inline.ttf') format('truetype');
+  font-family: 'Blue Spirits';
+  src: url('../public/fonts/Blue Spirits.otf') format('opentype');
 }
+
 
 .appContainer {
   position: absolute;
@@ -185,4 +212,3 @@
   background-color: rgba(211, 211, 211, 0);
 } */
 
-https://lh5.googleusercontent.com/iH8bhhbm-OO9xBY3-Vjws1llTqHm33M1N0I_h3NxM5pZhHVA80VeTu8vpM4j5jQuOs89qYcg_f845PUT6sUIlYU=w16383&quot;

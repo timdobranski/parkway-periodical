@@ -4,7 +4,7 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: 120px;
+  height: 100px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -14,60 +14,33 @@
   z-index: 1;
   border-bottom: solid 1px rgb(134, 134, 134);
 }
-.authHeaderContainer {
-  font-family: Louis George Cafe;
-  box-sizing: border-box;
-  position: fixed;
-  top:0;
-  left: 0;
-  width: 100vw;
-  height: 80px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  text-align: center;
-  z-index: 1;
-  border-bottom: solid 1px rgb(134, 134, 134);
-}
+
 .logoContainer {
   position: absolute;
-  width: 80px;
-  height: 80px;
-  top: 20px;
-  left: 20px;
-}
-.authLogoContainer {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  top: 20px;
-  left: 20px;
+  width: 60px;
+  height: 60px;
+  top: 10px;
+  left: 10px;
 }
 
 .headerContainer h1 {
   position: relative;
   width: 100%;
-  margin: 0;
-  top: 0;
-  font-family: Nadall;
-  /* font-family: OstrichSansInline; */
+  margin: 0 auto;
+  top: 1rem;;
+  font-family: Wonder Night;
+  /* font-weight: normal; */
   font-size: 5rem;
 }
 .navContainer {
-  position: absolute;
-  display: flex;
-  top: 80px;
-  flex-direction: row;
-}
-.authNavContainer {
   position: absolute;
   display: flex;
   top: 0;
   right: 0;
   margin: .5rem;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .navContainer a {
@@ -80,8 +53,9 @@
   margin: 0rem 3rem .75rem 3rem;
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
-  color: red;
+  color: rgb(0, 160, 218);
   font-size: 1.5rem;
+  font-weight: normal;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;
