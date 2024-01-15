@@ -9,32 +9,42 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background-color: white;
+  background-color: rgba(255, 255, 255, .6);
+  /* background: linear-gradient(to bottom, rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)); */
+  backdrop-filter: blur(3px);
   text-align: center;
   z-index: 1;
-  border-bottom: solid 1px rgb(134, 134, 134);
+  /* border-bottom: solid 2px rgb(89, 89, 89); */
 }
 
 .logoContainer {
   position: absolute;
   width: 60px;
   height: 60px;
-  top: 10px;
-  left: 10px;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
 }
 
 .title {
-  position: relative;
-  /* width: 100%; */
+  /* position: relative;
   margin: 0 auto;
   top: 1rem;;
   font-family: Nadall;
-  background-image: linear-gradient(to right, rgb(21, 170, 250), rgb(0, 90, 150));
+  background-image: linear-gradient(to right, rgb(0, 158, 243), rgb(0, 100, 166));
   -webkit-background-clip: text; /* For WebKit browsers */
-  /* text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5); */
-  background-clip: text;
+
+  font-family: Louis George Cafe;
+  font-size: 5rem; /* Large font size to see the effect clearly */
+  font-weight: bold; /* Bold text to make the effect more noticeable */
+  width: max-content; /* Adjust the width to the content */
+  margin: auto; /* Center the text */
+  text-align: center; /* Ensure the text is centered */
+  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  background: url('/images/texture.jpeg') no-repeat center / cover;
+  -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
+  background-clip: text; /* Clip the background with the text */
   color: transparent;
-  font-size: 5rem;
 }
 
 .navContainer {
@@ -58,7 +68,7 @@
   margin: 0rem 3rem .75rem 3rem;
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
-  color: rgb(0, 160, 218);
+  color: rgb(0, 0, 0);
   font-size: 1.5rem;
   font-weight: normal;
   text-decoration: none;

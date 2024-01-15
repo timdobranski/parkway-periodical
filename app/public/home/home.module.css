@@ -31,19 +31,16 @@
   object-fit: cover;
   height: 33vh; /* Adjust height as needed */
 }
+.textPhoto {
+  font-size: 80px; /* Large font size to see the effect clearly */
+  font-weight: bold; /* Bold text to make the effect more noticeable */
+  width: max-content; /* Adjust the width to the content */
+  margin: auto; /* Center the text */
+  text-align: center; /* Ensure the text is centered */
+  -webkit-text-stroke: 2px rgb(255, 255, 255); /* Black border with 2px width */
 
-/* .testImage{
-  background-image: url("../../../public/images/og.png");
-  background-size: cover;
-  background-position: center;
-  height: 500px;
-  width: 500px;;
+  background: url('/images/texture.jpeg') no-repeat center / cover;
+  -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
+  background-clip: text; /* Clip the background with the text */
+  color: transparent;
 }
-.blueTint {
-  background-color: hsla(270, 60%, 50%, 0.25);
-  width: 100%;
-  height: 100%;
-}
-.redTint {
-  background-color:rgb(255, 33, 33);
-} */

@@ -100,8 +100,7 @@
   z-index: 20;
   top: 50%;
   left: 50%;
-
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   color: white;
   font: 2rem 'Louis George Cafe';
   font-weight: normal;
@@ -116,7 +115,10 @@
   border: solid 6px rgb(255, 255, 255);
   backdrop-filter: blur(10px);
   padding: 0;
-  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px 15px rgba(0, 0, 0, 0.5);
+}
+.introContainer:hover {
+  cursor: pointer;
 }
 .introImage {
   width: 75%;
@@ -130,6 +132,7 @@
   margin: 1rem;
   font-size: 2rem;
   font-weight: normal;
+  color: black;
   /* border: solid white 2px; */
 }
 .enter:hover {

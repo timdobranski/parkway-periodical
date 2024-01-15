@@ -37,7 +37,8 @@ export default function Header() {
       <div className={styles.logoContainer} onClick={() => router.push('/')}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
-      <h1 className={styles.title}>Parkway Periodical</h1>
+      <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
+      {/* <img className={styles.profilePic} src={'/images/header.png'} alt="Profile Picture"  width={800}/> */}
       <div className={styles.navContainer}>
         <Link href='/public/home'><h2>HOME</h2></Link>
         <Link href='/public/archive'><h2>ARCHIVE</h2></Link>

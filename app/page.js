@@ -76,9 +76,9 @@ export default function Home() {
 
   return (
     <>
-      <div className={styles.introContainer}>
+      <div className={styles.introContainer} onClick={() => router.push('/public/home')}>
         <img src='images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.introImage} />
-        <h1 className={styles.enter} onClick={() => router.push('/public/home')}>ENTER</h1>
+        <h1 className={styles.enter}>ENTER</h1>
       </div>
       <div className={`${styles.introWrapper} ${allImagesLoaded ? styles.fadeIn : ''}`}>
         {rows.map((rowImages, rowIndex) => (
