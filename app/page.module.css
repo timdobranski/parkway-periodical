@@ -66,15 +66,23 @@
   transition: transform 0.5s ease;
   transform-origin: center;
   position: relative;
-  z-index: 1000;
+  z-index: 5; /* Normal state z-index */
 }
 .image:hover {
   cursor: pointer;
   transform: scale(1.2);
-  z-index: 999;
   transform-origin: center;
+  /* Removed z-index from here */
 }
 
+.hoveredImage {
+  z-index: 10; /* This will be applied on hover via React state */
+  transform: scale(1.2); /* Ensure this matches your desired hover effect */
+  cursor: pointer;
+}
+.hoveredRow {
+  z-index: 15; /* Ensure this is higher than the z-index of unhovered rows and images */
+}
 .hiddenImage {
   opacity: 0;
 }
@@ -89,9 +97,10 @@
 
 .introContainer {
   position: absolute;
+  z-index: 20;
   top: 50%;
   left: 50%;
-  z-index: 1;
+
   background: rgba(0, 0, 0, 0.85);
   color: white;
   font: 2rem 'Louis George Cafe';
@@ -110,7 +119,7 @@
   box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 }
 .introImage {
-  width: 90%;
+  width: 75%;
   margin-left:2rem;
   margin-top: 0;
   /* border: solid white 2px; */

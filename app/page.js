@@ -13,6 +13,9 @@ export default function Home() {
   const router = useRouter();
   const [loadedImages, setLoadedImages] = useState(0);
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
+  const [hoveredRowIndex, setHoveredRowIndex] = useState(null); // Track hovered row index
+  const [hoveredImageIndex, setHoveredImageIndex] = useState(null); // Track hovered image index
+
 
   const totalImages = 60;
 
@@ -20,16 +23,20 @@ export default function Home() {
     setLoadedImages(prev => prev + 1);
   };
 
-  const handleMouseEnter = (e) => {
-    const newSrc = e.target.src.replace('intro/', 'introNaturalColor/');
+
+  const handleMouseEnter = (rowIndex, imageIndex) => (e) => {
+    const newSrc = e.target.src.replace(baseImagePath, hoverImagePath);
     e.target.src = newSrc;
+    setHoveredRowIndex(rowIndex);
+    setHoveredImageIndex(`${rowIndex}-${imageIndex}`); // Set the hovered image index
   };
 
-  const handleMouseLeave = (e) => {
-    const originalSrc = e.target.src.replace('introNaturalColor/', 'intro/');
+  const handleMouseLeave = (rowIndex, imageIndex) => (e) => {
+    const originalSrc = e.target.src.replace(hoverImagePath, baseImagePath);
     e.target.src = originalSrc;
+    setHoveredRowIndex(null);
+    setHoveredImageIndex(null);
   };
-
   useEffect(() => {
     const loadRowImages = (rowDir) => {
       const rowImages = [];
@@ -64,16 +71,19 @@ export default function Home() {
       </div>
       <div className={`${styles.introWrapper} ${allImagesLoaded ? styles.fadeIn : ''}`}>
         {rows.map((rowImages, rowIndex) => (
-          <div key={rowIndex} className={styles.imageRow}>
+          <div
+            key={rowIndex}
+            className={`${styles.imageRow} ${hoveredRowIndex === rowIndex ? styles.hoveredRow : ''}`}
+          >
             {rowImages.map((src, index) => (
               <img
                 key={`${rowIndex}-${index}`}
                 src={src}
                 alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
-                className={`${styles.image} ${allImagesLoaded ? "" : 'hiddenImage'}`}
+                className={`${styles.image} ${allImagesLoaded ? "" : 'hiddenImage'} ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}`}
                 onLoad={handleImageLoad}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                onMouseEnter={handleMouseEnter(rowIndex, index)}
+                onMouseLeave={handleMouseLeave(rowIndex, index)}
               />
             ))}
           </div>
