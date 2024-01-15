@@ -5,8 +5,10 @@ export default function About() {
 
 
   return (
-    <div className='pageWrapper'>
-      <h1>About stuff goes here</h1>
+    <div className='publicPageWrapper'>
+      <div className='post'>
+        <h1>General Info Will Go Here</h1>
+      </div>
     </div>
   );
 }

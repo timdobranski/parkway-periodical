@@ -14,35 +14,11 @@
   font-weight: bold; /* or 700 */
 }
 @font-face {
-  font-family: 'Louis George Cafe';
-  src: url('../public/fonts/Louis George Cafe Bold.ttf') format('truetype');
+  font-family: 'Montserrat';
+  src: url('../public/fonts/Montserrat.ttf') format('truetype');
   font-weight: bold; /* or 700 */
 }
-@font-face {
-  font-family: 'Wonder Night';
-  src: url('../public/fonts/WonderNight.ttf') format('truetype');
-  font-weight: bold; /* or 700 */
-}
-@font-face {
-  font-family: 'Murberry';
-  src: url('../public/fonts/Murberry.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Terano';
-  src: url('../public/fonts/Terano Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Roashe';
-  src: url('../public/fonts/Roashe.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Enchants';
-  src: url('../public/fonts/Enchants.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Blue Spirits';
-  src: url('../public/fonts/Blue Spirits.otf') format('opentype');
-}
+
 
 
 .appContainer {

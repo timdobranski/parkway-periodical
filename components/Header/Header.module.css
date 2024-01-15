@@ -4,7 +4,7 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: 100px;
+  height: 130px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -27,26 +27,39 @@
 }
 
 .title {
-  /* position: relative;
-  margin: 0 auto;
-  top: 1rem;;
-  font-family: Nadall;
-  background-image: linear-gradient(to right, rgb(0, 158, 243), rgb(0, 100, 166));
-  -webkit-background-clip: text; /* For WebKit browsers */
-
-  font-family: Louis George Cafe;
-  font-size: 5rem; /* Large font size to see the effect clearly */
-  font-weight: bold; /* Bold text to make the effect more noticeable */
-  width: max-content; /* Adjust the width to the content */
-  margin: auto; /* Center the text */
-  text-align: center; /* Ensure the text is centered */
-  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: url('/images/texture.jpeg') no-repeat center / cover;
-  -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
-  background-clip: text; /* Clip the background with the text */
+  background-clip: text;
   color: transparent;
-}
+  font-family: Montserrat;
+  font-size: 5rem;
+  margin: auto;
+  text-align: center;
+  -webkit-text-stroke: 2px white; /* Add a 2px black border around text */
 
+}
+/* for the tiktok text */
+.tikTokTitle {
+  font-family: Montserrat;
+  font-size: 5rem;
+  font-weight: bold;
+  width: max-content;
+  margin: auto;
+  text-align: center;
+}
+.specialLetter {
+  color: black; /* Or any color you want for the text itself */
+  text-shadow: 4px 0 rgb(252, 43, 103), -4px 0 rgb(95, 255, 255);
+}
+/* for the header image */
+.headerPhoto {
+  position: absolute;
+  margin-top: .5rem;
+  width: 800px;
+}
 .navContainer {
   position: absolute;
   display: flex;
@@ -64,20 +77,17 @@
 .navContainer a:focus {
   outline: none;
 }
-.navContainer h2, .authNavContainer h2 {
-  margin: 0rem 3rem .75rem 3rem;
-  /* font-family: Nadall; */
+.navContainer h2 {
+  margin: 0rem 2rem .75rem 2rem;
   font-family: Louis George Cafe;
-  color: rgb(0, 0, 0);
+  color: rgb(0, 91, 148);
   font-size: 1.5rem;
-  font-weight: normal;
+  font-weight: bold;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;
-  border: none !important;
-
 }
-.navContainer h2:hover, .authNavContainer h2:hover {
+.navContainer h2:hover {
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
@@ -87,6 +97,66 @@
   outline: none;
   border: none;
 }
+
+.graphicWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 90%;
+  font-family: Montserrat;
+  font-size: 2rem;
+  /* border: solid rgb(0, 0, 0) 4px; */
+  overflow: hidden;
+  transform: skew(-18deg) translate(-50%, -50%);
+
+}
+.blueShard {
+  background: linear-gradient(to bottom, rgb(14, 176, 221), rgb(2, 51, 143));
+  width: 100px;
+  height: 90%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-text-stroke: 2px white;
+
+}
+.redShard {
+  background: linear-gradient(to bottom, rgb(255, 47, 89), rgb(255, 16, 56));
+  -webkit-text-stroke: 2px white;
+  width: 100px;
+  height: 90%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .5rem 0 .5rem;
+}
+.transparentShard {
+  width: 100px;
+  height: 100%;
+  margin: 0;
+}
+.shardLetter {
+  color: transparent;
+  font-size: 5rem;
+  font-weight: bold;
+  text-align: center;
+  background-image: url('/images/texture.jpeg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 2px white;
+}
+
 
 @media (max-width: 768px) {
   .headerContainer {
@@ -129,9 +199,8 @@
     /* border: solid red 4px; */
   }
   .navContainer h2 {
-
     font-family: Louis George Cafe;
-    color: red;
+    color: rgb(224, 41, 41);
     font-size: 1.25rem;
     text-decoration: none;
     transform: scale(1);
@@ -141,8 +210,3 @@
   }
 }
 
-.authHeader {
-  font-size: 3rem !important;
-  font-family: Nadall
-
-}
