@@ -16,9 +16,16 @@ export default function Header() {
       </div>
       <h1 className={styles.title}>Parkway Periodical</h1>
       <div className={styles.navContainer}>
-        <Link href='/'><h2>NEW POST</h2></Link>
-        <Link href='/archive'><h2>VIEW/EDIT POSTS</h2></Link>
-        <Link href='/about'><h2>LOG OUT</h2></Link>
+        {/* <Link href='/'> */}
+
+        <h2>NEW POST</h2>
+        {/* </Link> */}
+        {/* <Link href='/archive'> */}
+          <h2>VIEW/EDIT POSTS</h2>
+          {/* </Link> */}
+        {/* <Link href='/about'> */}
+          <h2>LOG OUT</h2>
+          {/* ></Link> */}
       </div>
     </div>
   )

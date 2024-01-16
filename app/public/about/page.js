@@ -28,19 +28,33 @@ export default function About() {
 
         <div className={styles.staffWrapper}>
           <div className={styles.staffMember}>
-          <img src={'/images/staff/ruth.jpeg'} className={styles.staffPhoto} alt="Mr. Ruth" />
+            <div className={styles.staffPhotoWrapper}>
+              <img src={'/images/staff/ruth.jpeg'} className={styles.staffPhoto} alt="Mr. Ruth" />
+            </div>
           <h3>Jacob Ruth</h3>
           <p>Principal</p>
+          <p>{`Ext. 1199`}</p>
+          <p>{`jacob.ruth@lmsvschools.org`}</p>
         </div>
         <div className={styles.staffMember}>
+        <div className={styles.staffPhotoWrapper}>
           <img src={'/images/staff/chaniot.jpeg'} className={styles.staffPhoto} alt="Ms. Chaniot" />
+       </div>
+
           <h3>Marisa Chaniot</h3>
-          <p>New Assistant Principal, 6th/7th Grade</p>
+          <p>Assistant Principal, 6th/7th Grade</p>
+          <p>{`Ext. 1194`}</p>
+          <p>{`marisa.chaniot@lmsvschools.org`}</p>
         </div>
         <div className={styles.staffMember}>
+        <div className={styles.staffPhotoWrapper}>
           <img src={'/images/staff/crook.jpeg'} className={styles.staffPhoto} alt="Mr. Crook" />
+        </div>
+
           <h3>Daniel Crook</h3>
           <p>Assistant Principal, 6th/8th grade</p>
+          <p>{`Ext. 1193`}</p>
+          <p>daniel.crook@lmsvschools.org</p>
         </div>
       </div>
       </div>
