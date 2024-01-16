@@ -153,6 +153,25 @@ export default function NewPostPage() {
     // Update the state
     updateEditorState(activeBlock, editorState);
   };
+  const toggleAlignment = (alignment) => {
+    if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return;
+
+    const editorState = contentBlocks[activeBlock].content;
+    const contentState = editorState.getCurrentContent(); // Get the ContentState from EditorState
+    const selectionState = editorState.getSelection();
+
+    const blockKey = selectionState.getStartKey();
+    const block = contentState.getBlockForKey(blockKey);
+    const newBlock = block.set('data', block.getData().merge({ textAlign: alignment }));
+
+    const newContentState = contentState.merge({
+        blockMap: contentState.getBlockMap().set(blockKey, newBlock),
+        selectionAfter: selectionState
+    });
+
+    const newState = EditorState.push(editorState, newContentState, 'change-block-data');
+    updateEditorState(activeBlock, newState);
+};
   // photo block helpers
   const updatePhotoContent = (index, dataUrls) => {
     console.log('dataUrls in updatePhotoContent: ', dataUrls);
@@ -204,6 +223,7 @@ export default function NewPostPage() {
         activeBlock={activeBlock}
         editorState={safeEditorState}
         updateEditorState={updateActiveTextEditorState}
+        setActiveBlock={setActiveBlock}
       />
 
       <div className='postPreview'>

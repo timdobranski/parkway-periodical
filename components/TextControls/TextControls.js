@@ -50,8 +50,8 @@ export default function TextControls({
   return (
     <div className={styles.controls}>
       <div className={styles.undoRedoWrapper}>
-        <FontAwesomeIcon icon={faUndo} onClick={() => handleIconClick(onUndo)} className={styles.textIcon} />
-        <FontAwesomeIcon icon={faRedo} onClick={() => handleIconClick(onRedo)} className={styles.textIcon} />
+        <FontAwesomeIcon icon={faUndo} onClick={(e) => handleIconClick(e, onUndo)} className={styles.textIcon} />
+        <FontAwesomeIcon icon={faRedo} onClick={(e) => handleIconClick(e, onRedo)} className={styles.textIcon} />
       </div>
       <FontAwesomeIcon icon={faBold} onClick={(e) => handleIconClick(e, onToggleBold)} className={styles.textIcon}/>
       <input
@@ -74,13 +74,13 @@ export default function TextControls({
       />
       <FontAwesomeIcon icon={faHighlighter} onClick={(e) => handleIconClick(openColorPicker(e, highlightColorRef))} className={styles.textIcon} />
       <div className={styles.alignmentWrapper}>
-        <FontAwesomeIcon icon={faAlignLeft} onClick={() => handleIconClick(onToggleLeftAlign)} className={styles.textIcon} />
-        <FontAwesomeIcon icon={faAlignCenter} onClick={() => handleIconClick(onToggleCenterAlign)} className={styles.textIcon}/>
-        <FontAwesomeIcon icon={faAlignRight} onClick={() => handleIconClick(onToggleRightAlign)} className={styles.textIcon}/>
+        <FontAwesomeIcon icon={faAlignLeft} onClick={(e) => handleIconClick(e, onToggleLeftAlign)} className={styles.textIcon} />
+        <FontAwesomeIcon icon={faAlignCenter} onClick={(e) => handleIconClick(e, onToggleCenterAlign)} className={styles.textIcon}/>
+        <FontAwesomeIcon icon={faAlignRight} onClick={(e) => handleIconClick(e, onToggleRightAlign)} className={styles.textIcon}/>
       </div>
       <div className={styles.listsWrapper}>
-        <FontAwesomeIcon icon={faListOl} onClick={() => handleIconClick(onToggle('ordered-list-item'))} className={styles.textIcon} />
-        <FontAwesomeIcon icon={faListUl} onClick={() => handleIconClick(onToggle('unordered-list-item'))} className={styles.textIcon}/>
+        <FontAwesomeIcon icon={faListOl} onClick={(e) => handleIconClick(e, onToggle('ordered-list-item'))} className={styles.textIcon} />
+        <FontAwesomeIcon icon={faListUl} onClick={(e) => handleIconClick(e, onToggle('unordered-list-item'))} className={styles.textIcon}/>
       </div>
     </div>
   );
