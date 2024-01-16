@@ -238,6 +238,7 @@ export default function NewPostPage() {
           {block.type === 'video' &&
             <Video
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
+              setActiveBlock={setActiveBlock}
               isEditable={index === activeBlock}
               src={block.content}
             />}

@@ -6,6 +6,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableCells, faTv } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
 
 export default function Photo({ updatePhotoContent, src, isEditable, updatePhotoFormat, format, setActiveBlock }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -34,7 +35,6 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   };
   // if there are selected files, render previews
   useEffect(() => {
-    console.log('photo isEditable changed: ', isEditable);
     if (!isEditable && selectedFiles.length > 0) {
       let urls = [];
       let readersToComplete = selectedFiles.reduce((count, fileObj) =>
@@ -64,7 +64,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
 
 
 
-
+  // if there are existing photos, render them
   useEffect(() => {
     if (src && src.length > 0) {
       const fileObjects = src.map(photo => ({
@@ -97,7 +97,9 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
       return (
         <div key={index} className={styles.photoPreviewContainer}>
           {/* {selectedFiles.length > 1 ? formatSelectionInterface() : null} */}
-          <img src={imageUrl} alt={`Preview ${index}`} className={styles.photoPreview} />
+          <div src={imageUrl} className={styles.photoPreview} >
+          <Image src={imageUrl} alt={`Preview ${index}`} fill={true}/>
+          </div>
           <input
             type="text"
             value={fileObj.caption}

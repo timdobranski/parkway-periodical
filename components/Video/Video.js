@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import styles from './video.module.css'
 
-export default function Video({ updateVideoUrl, src, isEditable }) {
+export default function Video({ updateVideoUrl, src, isEditable, setActiveBlock }) {
   const [url, setUrl] = useState(src || '');
 
   useEffect(() => {
@@ -36,6 +36,7 @@ export default function Video({ updateVideoUrl, src, isEditable }) {
         onChange={handleInputChange}
         placeholder="Enter video URL"
         className={styles.videoInput}
+        onKeyDown={(e) => {if (e.key === 'Enter') {setActiveBlock(null)} }}
       />
     );
   } else {
