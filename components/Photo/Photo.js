@@ -7,7 +7,7 @@ import { Carousel } from 'react-responsive-carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableCells, faTv } from '@fortawesome/free-solid-svg-icons';
 
-export default function Photo({ updatePhotoContent, src, isEditable, updatePhotoFormat, format }) {
+export default function Photo({ updatePhotoContent, src, isEditable, updatePhotoFormat, format, setActiveBlock }) {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [photoFormat, setPhotoFormat] = useState(format); // grid, single, carousel
   const formatSelectionInterface = () => {
@@ -35,7 +35,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   // if there are selected files, render previews
   useEffect(() => {
     console.log('photo isEditable changed: ', isEditable);
-    if (!isEditable) {
+    if (!isEditable && selectedFiles.length > 0) {
       let urls = [];
       let readersToComplete = selectedFiles.reduce((count, fileObj) =>
           count + (fileObj.file instanceof File ? 1 : 0), 0);
@@ -104,6 +104,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
             onChange={(e) => handleCaptionChange(index, e.target.value)}
             placeholder="Enter caption"
             className={styles.captionInput}
+            onKeyDown={(e) => {if (e.key === 'Enter') {setActiveBlock(null)} }}
           />
         </div>
       );

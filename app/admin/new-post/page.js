@@ -233,6 +233,7 @@ export default function NewPostPage() {
               isEditable={index === activeBlock}
               src={block.content}
               format={block.format || 'grid'}
+              setActiveBlock={setActiveBlock}
             />}
           {block.type === 'video' &&
             <Video
