@@ -47,6 +47,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (allImagesLoaded) { return };
     preloadImages();
 
     const loadRowImages = (rowDir) => {
