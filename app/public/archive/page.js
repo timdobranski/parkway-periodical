@@ -3,7 +3,7 @@ import styles from './archive.module.css';
 export default function Archive() {
 
   return (
-    <div className='pageWrapper'>
+    <div className='publicPageWrapper'>
       <div className='post'>
       <h1>Archive</h1>
       <p>{`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!`}

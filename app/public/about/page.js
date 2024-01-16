@@ -5,7 +5,7 @@ export default function About() {
 
 
   return (
-    <div className='pageWrapper'>
+    <div className='publicPageWrapper'>
       <div className='post'>
         <h1>About Us</h1>
 
