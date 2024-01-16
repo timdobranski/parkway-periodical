@@ -40,8 +40,9 @@
   width: max-content; /* Adjust the width to the content */
   margin: auto; /* Center the text */
   text-align: center; /* Ensure the text is centered */
-  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  -webkit-text-stroke: 2px rgb(255, 255, 255);
   background: url('/images/texture.jpeg') no-repeat center / cover;
+  background: linear-gradient(to right, rgb(0, 118, 182), rgb(1, 112, 203));
   -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
   background-clip: text; /* Clip the background with the text */
   color: transparent;

@@ -14,8 +14,10 @@ export default function TextControls({
   const [textColor, setTextColor] = useState('#000000');
   const [highlightColor, setHighlightColor] = useState('#FFFF00');
 
-  const handleIconClick = (action) => {
+  const handleIconClick = (e, action) => {
+    e.preventDefault();
     if (isActive || !isActive) {
+      console.log('inside handle icon click! isActive')
       action();
     }
   };
@@ -51,7 +53,7 @@ export default function TextControls({
         <FontAwesomeIcon icon={faUndo} onClick={() => handleIconClick(onUndo)} className={styles.textIcon} />
         <FontAwesomeIcon icon={faRedo} onClick={() => handleIconClick(onRedo)} className={styles.textIcon} />
       </div>
-      <FontAwesomeIcon icon={faBold} onClick={() => handleIconClick(onToggleBold)} className={styles.textIcon}/>
+      <FontAwesomeIcon icon={faBold} onClick={(e) => handleIconClick(e, onToggleBold)} className={styles.textIcon}/>
       <input
         type="color"
         ref={textColorRef}

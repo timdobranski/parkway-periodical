@@ -9,7 +9,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import TextControls from '../TextControls/TextControls';
 
 
-export default function Text({ key, editorState, setEditorState, isEditable, onFocus, onBlur }) {
+export default function Text({ key, editorState, setEditorState, isEditable, onFocus, onBlur, setActiveBlock, index }) {
   const editorRef = useRef(null);
   const contentState = editorState ? editorState.getCurrentContent() : null;
   const blockStyleFn = (block) => {
@@ -61,13 +61,22 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
   const renderHTMLPreview = () => {
     if (editorState) {
       const contentState = editorState.getCurrentContent();
+
+      // Check if the content state has text
+      if (!contentState.hasText()) {
+        // Return a message if there's no text
+        return '<p>No text added yet</p>';
+      }
+
       const html = stateToHTML(contentState);
       console.log('HTML Preview:', html); // Debugging line
       return html;
     }
+
     console.log('EditorState is empty'); // Debugging line
-    return '<p>No text added</p>';
+    return '<p>No text added yet</p>'; // Default message if editorState is not available
   };
+
   return (
     <div className={styles.textEditorWrapper}>
       {isEditable ? (
@@ -85,7 +94,7 @@ export default function Text({ key, editorState, setEditorState, isEditable, onF
         </div>
       ) : (
         // Render a static preview of the editor content
-        <div className={styles.preview} dangerouslySetInnerHTML={{ __html: renderHTMLPreview() }} />
+        <div className={styles.preview} onClick={() => {setActiveBlock(index)}} dangerouslySetInnerHTML={{ __html: renderHTMLPreview() }} />
 
       )}
     </div>

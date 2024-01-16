@@ -34,9 +34,9 @@ export default function NewPostPage() {
     getAndSetUser();
   }, [router]);
 
-  // useEffect(() => {
-  //   console.log('contentBlocks updated')
-  // }, [contentBlocks])
+  useEffect(() => {
+    console.log('content in active block: ', contentBlocks[activeBlock])
+  }, [activeBlock])
 
   // content blocks helpers
   const addTextBlock = () => {
@@ -95,19 +95,13 @@ export default function NewPostPage() {
     setContentBlocks(newContentBlocks);
   };
   const toggleEditable = (index) => {
-    const updatedBlocks = contentBlocks.map((block, i) => {
-        return {
-            ...block,
-            isEditable: i === index ? !block.isEditable : false
-        };
-    });
-
-    setContentBlocks(updatedBlocks);
-
-    // Set activeBlock to the current index if it's being made editable,
-    // or reset to null if no block is editable
-    const isCurrentBlockEditable = updatedBlocks[index].isEditable;
-    setActiveBlock(isCurrentBlockEditable ? index : null);
+    if (index === activeBlock) {
+      // If the block is already active
+      setActiveBlock(null); // Set to null
+    } else {
+      // If the block is not active
+      setActiveBlock(index); // Set to the clicked block
+    }
 };
   const handleFocus = (index) => {
     // Set the isEditable to true for the focused block
@@ -138,36 +132,27 @@ export default function NewPostPage() {
     }
   };
   const toggleBold = () => {
-    console.log('inside toggle bold. activeBlock: ', activeBlock, 'type: ', contentBlocks[activeBlock].type)
-    if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return; // No text block is active
-    console.log('active text block')
-    const currentContent = contentBlocks[activeBlock].content;
-    const newState = RichUtils.toggleInlineStyle(currentContent, 'BOLD');
-
-    // Now use your method to update the contentBlocks state
-    const newContentBlocks = [...contentBlocks];
-    newContentBlocks[activeBlock] = { ...newContentBlocks[activeBlock], content: newState };
-    setContentBlocks(newContentBlocks);
-  };
-  const toggleAlignment = (alignment) => {
     if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return;
 
-    const editorState = contentBlocks[activeBlock].content;
-    const contentState = editorState.getCurrentContent(); // Get the ContentState from EditorState
-    const selectionState = editorState.getSelection();
+    let editorState = contentBlocks[activeBlock].content;
+    const selection = editorState.getSelection();
 
-    const blockKey = selectionState.getStartKey();
-    const block = contentState.getBlockForKey(blockKey);
-    const newBlock = block.set('data', block.getData().merge({ textAlign: alignment }));
+    // Check if the selection is collapsed (cursor, no highlighted text)
+    if (selection.isCollapsed()) {
+      const currentStyle = editorState.getCurrentInlineStyle();
 
-    const newContentState = contentState.merge({
-        blockMap: contentState.getBlockMap().set(blockKey, newBlock),
-        selectionAfter: selectionState
-    });
+      // Toggle the BOLD style based on whether it's currently active
+      editorState = currentStyle.has('BOLD')
+        ? EditorState.setInlineStyleOverride(editorState, currentStyle.remove('BOLD'))
+        : EditorState.setInlineStyleOverride(editorState, currentStyle.add('BOLD'));
+    } else {
+      // For highlighted text, toggle the BOLD style as usual
+      editorState = RichUtils.toggleInlineStyle(editorState, 'BOLD');
+    }
 
-    const newState = EditorState.push(editorState, newContentState, 'change-block-data');
-    updateEditorState(activeBlock, newState);
-};
+    // Update the state
+    updateEditorState(activeBlock, editorState);
+  };
   // photo block helpers
   const updatePhotoContent = (index, dataUrls) => {
     console.log('dataUrls in updatePhotoContent: ', dataUrls);
@@ -236,6 +221,8 @@ export default function NewPostPage() {
               onFocus={() => handleFocus(index)}
               onBlur={() => handleBlur(index)}
               onToggleBold={toggleBold}
+              setActiveBlock={setActiveBlock}
+              index={index}
             />
           )}
           {block.type === 'photo' &&
@@ -265,3 +252,18 @@ export default function NewPostPage() {
   );
 }
 
+const toggleEditable = (index) => {
+  const updatedBlocks = contentBlocks.map((block, i) => {
+      return {
+          ...block,
+          isEditable: i === index ? !block.isEditable : false
+      };
+  });
+
+  setContentBlocks(updatedBlocks);
+
+  // Set activeBlock to the current index if it's being made editable,
+  // or reset to null if no block is editable
+  const isCurrentBlockEditable = updatedBlocks[index].isEditable;
+  setActiveBlock(isCurrentBlockEditable ? index : null);
+};

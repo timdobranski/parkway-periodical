@@ -34,6 +34,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   };
   // if there are selected files, render previews
   useEffect(() => {
+    console.log('photo isEditable changed: ', isEditable);
     if (!isEditable) {
       let urls = [];
       let readersToComplete = selectedFiles.reduce((count, fileObj) =>
@@ -90,6 +91,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   };
 
   const renderPreviews = () => {
+    console.log('selectedFiles in renderPreviews: ', selectedFiles)
     return selectedFiles.map((fileObj, index) => {
       const imageUrl = fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src;
       return (

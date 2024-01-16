@@ -56,6 +56,6 @@ export default function Video({ updateVideoUrl, src, isEditable }) {
       return <video src={embedUrl} controls />;
     }
 
-    return <p className={styles.noVideoMessage}>No video URL provided</p>;
+    return <p className={styles.noVideoMessage}>No valid URL provided</p>;
   }
 }
