@@ -59,7 +59,7 @@
   align-items: center;
   justify-content: flex-start;
   /* background-color: rgba(255, 255, 255, 0.691); */
-  background-image: url('../public/images/gradient3.png');
+  background-image: url('../public/images/gradient3small.webp');
   background-size: cover;
   background-position: center;
   /* background: linear-gradient(to right, rgba(92, 201, 255, .7), rgba(30, 101, 152, .7)); */
@@ -154,7 +154,7 @@
     justify-content: flex-start;
     background-color: white;
     background: linear-gradient(to right, rgb(92, 201, 255), rgb(30, 101, 152));
-    background-image: url('../public/images/gradient3.png');
+    background-image: url('../public/images/gradient3small.webp');
     background-size: cover;
     background-position: center;
     /* margin-top: 150px; */
