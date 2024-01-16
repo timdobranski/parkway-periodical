@@ -97,23 +97,31 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
       return (
         <div key={index} className={styles.photoPreviewContainer}>
           {/* {selectedFiles.length > 1 ? formatSelectionInterface() : null} */}
-          <div src={imageUrl} className={styles.photoPreview} >
-          <Image src={imageUrl} alt={`Preview ${index}`} fill={true}/>
-          </div>
-          <input
+          <img src={imageUrl} className={styles.photoPreview} alt={`Preview ${index}`} />
+          {/* <Image src={imageUrl} alt={`Preview ${index}`} fill={true}/> */}
+
+          {/* <input
             type="text"
             value={fileObj.caption}
             onChange={(e) => handleCaptionChange(index, e.target.value)}
             placeholder="Enter caption"
             className={styles.captionInput}
             onKeyDown={(e) => {if (e.key === 'Enter') {setActiveBlock(null)} }}
-          />
+          /> */}
+          <textarea
+  value={fileObj.caption}
+  onChange={(e) => handleCaptionChange(index, e.target.value)}
+  placeholder="Enter caption"
+  className={styles.captionInput}
+  onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+  rows={4}  // Example: Set the number of rows to make it visibly larger
+/>
         </div>
       );
     });
   };
   const renderPhotosGrid = (photos) => {
-    console.log('photos passed to renderphotosGrid: ', photos)
+    // console.log('photos passed to renderphotosGrid: ', photos)
     return (
       <div className={styles.photosGrid}>
         {photos.map((photo, index) => (

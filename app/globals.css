@@ -145,9 +145,8 @@
 @media (max-width: 768px) {
   .appContainer {
     box-sizing: border-box !important;
-
     width: 100vw;
-    height: calc(100vh - 150px);
+    height: calc(100vh);
     overflow-y: auto !important;
     display: flex;
     flex-direction: column;
@@ -155,8 +154,14 @@
     justify-content: flex-start;
     background-color: white;
     background: linear-gradient(to right, rgb(92, 201, 255), rgb(30, 101, 152));
-    margin: 0;
-    margin-top: 150px;
+    background-image: url('../public/images/gradient3.png');
+    background-size: cover;
+    background-position: center;
+    /* margin-top: 150px; */
+  }
+  .post {
+    width: 92vw !important;
+    margin-top: 50px;
   }
 
 }
@@ -169,34 +174,6 @@
   border-top-color: #3498db;
   -webkit-animation: spin 1s linear infinite;
   animation: spin 1s linear infinite;
-}
-
-.DraftEditor-root {
-  width: 100%;
-  /* min-height: 100px; */
-  min-width: 500px;
-  border: dashed rgb(118, 118, 118) 2px;
-  /* background: rgb(231, 231, 231);
-  background: black; */
-  margin: 1rem;
-  padding: 1rem;
-  font-size: 1.25rem;
-  border-radius: 10px;
-}
-.DraftEditor-root:focus {
-  border: 2px solid blue;
-  /* background-color: lightgray; */
-}
-.align-left {
-  text-align: left;
-}
-
-.align-center {
-  text-align: center;
-}
-
-.align-right {
-  text-align: right;
 }
 .hiddenImage {
   opacity: 0;

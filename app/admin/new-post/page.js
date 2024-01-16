@@ -7,6 +7,7 @@ import styles from './new-post.module.css';
 import { EditorState, RichUtils } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import Text from '../../../components/Text/Text';
+import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import Photo from '../../../components/Photo/Photo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -42,8 +43,13 @@ export default function NewPostPage() {
   const addTextBlock = () => {
     const newBlock = { type: 'text', content: EditorState.createEmpty() };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    setActiveBlock(contentBlocks.length); // New block's index
+    setActiveBlock(contentBlocks.length);
   };
+  const addPrimeTextBlock = () => {
+        const newBlock = { type: 'text', content: '' };
+    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
+    setActiveBlock(contentBlocks.length);
+  }
   const addVideoBlock = () => {
     const newBlock = { type: 'video', content: '', };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
@@ -121,57 +127,15 @@ export default function NewPostPage() {
     setContentBlocks(updatedBlocks);
   };
   // text block helpers
-  const updateEditorState = (index, newState) => {
-    const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: newState };
-    setContentBlocks(newContentBlocks);
+
+  const updateActiveTextEditorState = (newText) => {
+    setContentBlocks(contentBlocks.map((block, index) => {
+      if (index === activeBlock) {
+        return { ...block, content: newText };
+      }
+      return block;
+    }));
   };
-  const updateActiveTextEditorState = (newState) => {
-    if (activeBlock !== null) {
-      updateEditorState(activeBlock, newState);
-    }
-  };
-  const toggleBold = () => {
-    if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return;
-
-    let editorState = contentBlocks[activeBlock].content;
-    const selection = editorState.getSelection();
-
-    // Check if the selection is collapsed (cursor, no highlighted text)
-    if (selection.isCollapsed()) {
-      const currentStyle = editorState.getCurrentInlineStyle();
-
-      // Toggle the BOLD style based on whether it's currently active
-      editorState = currentStyle.has('BOLD')
-        ? EditorState.setInlineStyleOverride(editorState, currentStyle.remove('BOLD'))
-        : EditorState.setInlineStyleOverride(editorState, currentStyle.add('BOLD'));
-    } else {
-      // For highlighted text, toggle the BOLD style as usual
-      editorState = RichUtils.toggleInlineStyle(editorState, 'BOLD');
-    }
-
-    // Update the state
-    updateEditorState(activeBlock, editorState);
-  };
-  const toggleAlignment = (alignment) => {
-    if (activeBlock === null || contentBlocks[activeBlock].type !== 'text') return;
-
-    const editorState = contentBlocks[activeBlock].content;
-    const contentState = editorState.getCurrentContent(); // Get the ContentState from EditorState
-    const selectionState = editorState.getSelection();
-
-    const blockKey = selectionState.getStartKey();
-    const block = contentState.getBlockForKey(blockKey);
-    const newBlock = block.set('data', block.getData().merge({ textAlign: alignment }));
-
-    const newContentState = contentState.merge({
-        blockMap: contentState.getBlockMap().set(blockKey, newBlock),
-        selectionAfter: selectionState
-    });
-
-    const newState = EditorState.push(editorState, newContentState, 'change-block-data');
-    updateEditorState(activeBlock, newState);
-};
   // photo block helpers
   const updatePhotoContent = (index, dataUrls) => {
     console.log('dataUrls in updatePhotoContent: ', dataUrls);
@@ -213,10 +177,10 @@ export default function NewPostPage() {
     <div className='pageWrapper'>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar
-        onToggleBold={toggleBold}
-        onToggleLeftAlign={() => toggleAlignment('left')}
-        onToggleCenterAlign={() => toggleAlignment('center')}
-        onToggleRightAlign={() => toggleAlignment('right')}
+        // onToggleBold={toggleBold}
+        // onToggleLeftAlign={() => toggleAlignment('left')}
+        // onToggleCenterAlign={() => toggleAlignment('center')}
+        // onToggleRightAlign={() => toggleAlignment('right')}
         onAddText={addTextBlock}
         onAddPhoto={addPhotoBlock}
         onAddVideo={addVideoBlock}
@@ -234,15 +198,11 @@ export default function NewPostPage() {
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
           </div>
           {block.type === 'text' && (
-            <Text
-              editorState={block.content}
-              setEditorState={(newState) => updateActiveTextEditorState(newState)}
-              isEditable={index === activeBlock}
-              onFocus={() => handleFocus(index)}
-              onBlur={() => handleBlur(index)}
-              onToggleBold={toggleBold}
-              setActiveBlock={setActiveBlock}
-              index={index}
+
+            <PrimeText
+            isEditable={index === activeBlock}
+            textState={block.content}
+            setTextState={updateActiveTextEditorState}
             />
           )}
           {block.type === 'photo' &&

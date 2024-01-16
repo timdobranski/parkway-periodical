@@ -35,6 +35,7 @@
   margin: 0;
 }
 .imageRow {
+  box-sizing: border-box;
   display: flex;
   height: 33.33vh;
   white-space: nowrap;
@@ -43,6 +44,7 @@
   align-items: center;
   position: relative;
   z-index: 0;
+  margin: .5rem 0
 }
 .imageRow:nth-child(1) {
   animation: scrollSlow 30s linear infinite;
@@ -58,11 +60,15 @@
 
 .image {
   display: inline-block;
+  box-sizing: border-box;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
   transform-origin: center;
   position: relative;
+  margin: 0 .25rem;
+  border: solid white 6px;
+  border-radius: 5px;
   z-index: 5; /* Normal state z-index */
 }
 .image:hover {
@@ -78,7 +84,7 @@
   cursor: pointer;
   /* border: solid white 6px; */
   border-radius: 5px;
-  outline: solid white 5px;
+  /* outline: solid white 5px; */
 }
 .hoveredRow {
   z-index: 15; /* Ensure this is higher than the z-index of unhovered rows and images */
@@ -124,7 +130,6 @@
   width: 75%;
   margin-left:2rem;
   margin-top: 0;
-  /* border: solid white 2px; */
   padding: 0;
 }
 .enter {
@@ -140,4 +145,36 @@
   background-color: rgb(34, 171, 240);
   padding: 1rem;
   border-radius: 10px;
+}
+@media(max-width: 768px) {
+  .introContainer {
+    position: absolute;
+    right: 10vw;
+    width: 80vw;
+    height: 20vh;
+    border-radius: 10px;
+    transform: skew(-10deg) translate(-55%, -50%);
+    border: none;
+
+  }
+  .introImage {
+    width: 90%;
+    margin-left: 0;
+    margin-top: 0;
+    padding: 0;
+  }
+  .enter {
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: black;
+    /* border: solid white 2px; */
+  }
+  .enter:hover {
+    cursor: pointer;
+    background-color: rgb(34, 171, 240);
+    padding: 1rem;
+    border-radius: 10px;
+  }
 }
