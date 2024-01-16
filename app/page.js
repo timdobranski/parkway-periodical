@@ -63,6 +63,7 @@ export default function Home() {
 
 
   useEffect(() => {
+    console.log('loaded images: ', loadedImages)
     if (loadedImages === totalImages) {
       setAllImagesLoaded(true);
     }
