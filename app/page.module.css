@@ -82,7 +82,7 @@
   z-index: 10; /* This will be applied on hover via React state */
   transform: scale(1.2); /* Ensure this matches your desired hover effect */
   cursor: pointer;
-  border: solid black 6px;
+  border: solid rgb(255, 255, 255) 6px;
   border-radius: 5px;
   /* outline: solid white 5px; */
 }

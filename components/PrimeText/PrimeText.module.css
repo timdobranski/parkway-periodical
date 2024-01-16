@@ -6,3 +6,11 @@
   margin-bottom: 1rem;
   width: 100%;
 }
+.PrimeTextContainer .p-editor-toolbar .p-editor-button {
+  font-size: 20px; /* Adjust the size as needed */
+}
+
+/* Increase the text size inside the editor */
+.PrimeTextContainer .p-editor-content {
+  font-size: 26px; /* Adjust the size as needed */
+}
