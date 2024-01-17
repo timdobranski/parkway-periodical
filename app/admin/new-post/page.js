@@ -262,7 +262,7 @@ async function handleSubmit() {
           </div>
         </div>
       ))}
-
+        {contentBlocks.length === 0 && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
       </div>
     </div>
   );

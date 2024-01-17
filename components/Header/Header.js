@@ -40,7 +40,7 @@ export default function Header() {
 
   return (
     <div className={styles.headerContainer}>
-      {user && (<Link href='/admin/home' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
+      {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
       <div className={styles.logoContainer} onClick={() => router.push('/')}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
