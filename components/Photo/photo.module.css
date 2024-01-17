@@ -1,14 +1,14 @@
 .previewWrapper {
   width: 100%;
-  margin: 0 auto;
+  box-sizing: content-box;
+  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   border: dashed black 2px;
   border-radius: 10px;
-  margin: 1rem;
-  padding: 1rem;
+
 
 }
 .photoPreviewContainer {
@@ -35,21 +35,41 @@
   height: auto;
   margin: 1rem;
 }
-.photosGrid {
+/* .photosGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(45%, 1fr)); /* Adjust minmax as needed */
-  gap: 10px; /* Space between grid items */
+  grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+  gap: 10px;
   width: 100%;
   padding: 0;
   margin: 2rem;
+} */
+.photosGrid {
+  display: grid;
+  gap: 10px; /* Adjust as needed */
+  justify-content: center;
+  border: solid red 2px;
+  width: 100%;
 }
-.carouselWrapper {
-  margin: 4rem;
+
+.photosGridSingle {
+  grid-template-columns: repeat(1, 1fr);
 }
+
+.photosGridTwoColumns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.photosGridThreeColumns {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .gridPhotoContainer {
 
 }
 
+.carouselWrapper {
+  margin: 4rem;
+}
 .gridPhoto {
   width: 100%;
   height: auto;
@@ -103,7 +123,7 @@
   margin: .25rem;
   padding: .25rem;
   border-radius: 4px;
-  color: red;
+  color: rgb(254, 93, 120);
   position: absolute;
   top: 1rem;
   right: 0;

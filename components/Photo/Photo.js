@@ -103,7 +103,6 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
       files.map((fileObj, idx) => { return idx === index ? { ...fileObj, caption: newCaption } : fileObj})
     );
   };
-
   const renderPreviews = () => {
     console.log('selectedFiles in renderPreviews: ', selectedFiles)
     return selectedFiles.map((fileObj, index) => {
@@ -135,11 +134,18 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
     });
   };
   const renderPhotosGrid = (photos) => {
-    // console.log('photos passed to renderphotosGrid: ', photos)
+    let gridClass = '';
+    if (photos.length === 1) {
+      gridClass = styles.photosGridSingle;
+    } else if (photos.length % 3 === 0 || (photos.length % 2 !== 0 && photos.length % 3 !== 0)) {
+      gridClass = styles.photosGridThreeColumns;
+    } else if (photos.length % 2 === 0) {
+      gridClass = styles.photosGridTwoColumns;
+    }
+
     return (
-      <div className={styles.photosGrid}>
+      <div className={`${styles.photosGrid} ${gridClass}`}>
         {photos.map((photo, index) => (
-          console.log('photo caption: ', photo.caption),
           <div key={index} className={styles.gridPhotoContainer}>
             <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} />
             {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}

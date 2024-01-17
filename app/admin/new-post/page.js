@@ -84,8 +84,6 @@ async function handleSubmit() {
   }
 }
 
-
-
   // content blocks helpers
   const addPrimeTextBlock = () => {
         const newBlock = { type: 'text', content: '' };
@@ -235,7 +233,6 @@ async function handleSubmit() {
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
           </div>
           {block.type === 'text' && (
-
             <PrimeText
             isEditable={index === activeBlock}
             textState={block.content}
@@ -260,8 +257,8 @@ async function handleSubmit() {
               src={block.content}
             />}
           <div className={styles.blockControlsRight}>
-          <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
           <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
+          <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
           </div>
         </div>
       ))}

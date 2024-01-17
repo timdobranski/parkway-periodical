@@ -105,7 +105,8 @@
 }
 .post, .postPreview {
   position: relative;
-  width: 1400px !important;
+  width: 80vw;
+  min-width: 700px;
   box-sizing: border-box;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -123,7 +124,7 @@
   margin: 1rem;
 }
 .postPreview {
-  margin: 2rem;
+  /* margin: 2rem; */
   height: auto;
   display: flex;
   flex-direction: column;
