@@ -7,7 +7,7 @@ export default function Video({ updateVideoUrl, src, isEditable, setActiveBlock 
   const [url, setUrl] = useState(src || '');
 
   useEffect(() => {
-    if (!isEditable) {
+    if (!isEditable && updateVideoUrl) {
       updateVideoUrl(url);
     }
   }, [isEditable]);

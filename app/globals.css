@@ -112,7 +112,7 @@
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
   backdrop-filter: blur(10px);
   text-align: center;
-  min-height: 800px;
+  /* min-height: 800px; */
   padding: 2rem;
   font-size: 1.5rem;
   font-family: Louis George Cafe;

@@ -9,13 +9,11 @@ import TextControls from '../TextControls/TextControls';
 
 export default function PostNavbar({
   onAddText, onAddPhoto, onAddVideo,
-  editorState, onToggleBold,
+  editorState, handleSubmit,
   activeBlock, activeBlockType, updateEditorState,
-  onToggleLeftAlign, onToggleCenterAlign, onToggleRightAlign,
 }) {
 
   const isTextBlockActive = activeBlock !== null && activeBlockType === 'text';
-
 
 
   return (
@@ -34,9 +32,8 @@ export default function PostNavbar({
         <FontAwesomeIcon icon={faVideo} className={styles.icon} />
         <h3>Add a Video</h3>
       </div>
-      <div onClick={onAddVideo} className={styles.navbarItem}>
-        {/* <FontAwesomeIcon icon={faVideo} className={styles.icon} /> */}
-        <h3 className={styles.publishButton}>PUBLISH</h3>
+      <div className={styles.navbarItem} onClick={handleSubmit}>
+        <h3 className={styles.publishButton} >PUBLISH</h3>
       </div>
       </div>
     </div>

@@ -109,13 +109,13 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
             onKeyDown={(e) => {if (e.key === 'Enter') {setActiveBlock(null)} }}
           /> */}
           <textarea
-  value={fileObj.caption}
-  onChange={(e) => handleCaptionChange(index, e.target.value)}
-  placeholder="Enter caption"
-  className={styles.captionInput}
-  onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
-  rows={4}  // Example: Set the number of rows to make it visibly larger
-/>
+            value={fileObj.caption}
+            onChange={(e) => handleCaptionChange(index, e.target.value)}
+            placeholder="Enter caption (optional)"
+            className={styles.captionInput}
+            onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+            rows={4}  // Example: Set the number of rows to make it visibly larger
+          />
         </div>
       );
     });

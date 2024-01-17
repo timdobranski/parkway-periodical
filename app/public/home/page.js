@@ -1,34 +1,64 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import supabase from '../../../utils/supabase';
 import styles from './home.module.css';
+import Photo from '../../../components/Photo/Photo';
+import Video from '../../../components/Video/Video';
 
 export default function Home() {
-  const [images, setImages] = useState([]);
-  const imageCount = 30; // Adjusted for 3 rows of 6 images each
-  const imagePath = "/images/intro/"; // Correctly defined imagePath
+  const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    const loadedImages = [];
-    for (let i = 1; i <= imageCount; i++) {
-      loadedImages.push(`${imagePath}${i}.png`);
-    }
-    setImages(loadedImages);
+    const getPosts = async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*');
+      console.log('data: ', data);
+
+      const parsedData = data.map(post => {
+        return {
+          ...post,
+          content: JSON.parse(post.content)
+        };
+      });
+      console.log('parsedData: ', parsedData);
+      setPosts(parsedData);
+    };
+    getPosts();
   }, []);
+
+
+  if (!posts || posts.length === 0) {
+    return <div>Loading posts...</div>;
+  }
 
   return (
     <div className='publicPageWrapper'>
-      <div className='post'>
-      <h1>Posts will be displayed here</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        {/* <div className={styles.textPhoto}>
-          PARKWAY PERIODICAL
-        </div> */}
-
-      </div>
-
-
+      {posts.map((post, i) => (
+        <div className='post' key={i}>
+          {post.content.map((block, index) => (
+            <React.Fragment key={index}>
+              {block.type === 'text' && (
+                <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div>
+              )}
+              {block.type === 'photo' && (
+                <Photo
+                  isEditable={index === activeBlock}
+                  src={block.content.src} // Assuming block.content is an object with src property
+                  format={block.format || 'grid'}
+                />
+              )}
+              {block.type === 'video' && (
+                <Video
+                  src={block.content}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      ))}
     </div>
   );
+
 }

@@ -39,12 +39,54 @@ export default function NewPostPage() {
     console.log('content in active block: ', contentBlocks[activeBlock])
   }, [activeBlock])
 
+
+// Helper function to upload image to Supabase Storage
+async function uploadImageToSupabase(file) {
+  const filePath = `${file.name}`;
+  let { error, data } = await supabase.storage.from('post-photos').upload(filePath, file);
+
+  if (error) throw new Error('Error uploading image: ', error.message);
+
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${filePath}`;
+}
+
+// Handler to submit content blocks
+async function handleSubmit() {
+  console.log('inside handle submit');
+  try {
+    // Process content blocks
+    const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
+      if (block.type === 'photo') {
+        // Process photo blocks
+        const processedPhotos = await Promise.all(block.content.map(async (photo) => {
+          const uploadedImageUrl = await uploadImageToSupabase(photo.src);
+          return { ...photo, src: uploadedImageUrl };
+        }));
+        return { ...block, content: processedPhotos };
+      }
+      return block;
+    }));
+
+    // Prepare post object with content as jsonb
+    const post = {
+      // Include other post fields if necessary
+      content: JSON.stringify(processedBlocks)
+    };
+
+    // Submit post object to Supabase table
+    const { error } = await supabase.from('posts').insert([post]);
+    if (error) throw new Error('Error submitting content blocks: ', error.message);
+
+    // Redirect or update state as needed
+    router.push('/public/home');
+  } catch (error) {
+    console.error('Error in handleSubmit: ', error);
+  }
+}
+
+
+
   // content blocks helpers
-  const addTextBlock = () => {
-    const newBlock = { type: 'text', content: EditorState.createEmpty() };
-    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    setActiveBlock(contentBlocks.length);
-  };
   const addPrimeTextBlock = () => {
         const newBlock = { type: 'text', content: '' };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
@@ -174,20 +216,15 @@ export default function NewPostPage() {
 
 
   return (
-    <div className='pageWrapper'>
+    <div className='publicPageWrapper'>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar
-        // onToggleBold={toggleBold}
-        // onToggleLeftAlign={() => toggleAlignment('left')}
-        // onToggleCenterAlign={() => toggleAlignment('center')}
-        // onToggleRightAlign={() => toggleAlignment('right')}
-        onAddText={addTextBlock}
+        onAddText={addPrimeTextBlock}
         onAddPhoto={addPhotoBlock}
         onAddVideo={addVideoBlock}
         activeBlock={activeBlock}
-        editorState={safeEditorState}
-        updateEditorState={updateActiveTextEditorState}
         setActiveBlock={setActiveBlock}
+        handleSubmit={handleSubmit}
       />
 
       <div className='postPreview'>
@@ -234,18 +271,18 @@ export default function NewPostPage() {
   );
 }
 
-const toggleEditable = (index) => {
-  const updatedBlocks = contentBlocks.map((block, i) => {
-      return {
-          ...block,
-          isEditable: i === index ? !block.isEditable : false
-      };
-  });
+// const toggleEditable = (index) => {
+//   const updatedBlocks = contentBlocks.map((block, i) => {
+//       return {
+//           ...block,
+//           isEditable: i === index ? !block.isEditable : false
+//       };
+//   });
 
-  setContentBlocks(updatedBlocks);
+//   setContentBlocks(updatedBlocks);
 
-  // Set activeBlock to the current index if it's being made editable,
-  // or reset to null if no block is editable
-  const isCurrentBlockEditable = updatedBlocks[index].isEditable;
-  setActiveBlock(isCurrentBlockEditable ? index : null);
-};
+//   // Set activeBlock to the current index if it's being made editable,
+//   // or reset to null if no block is editable
+//   const isCurrentBlockEditable = updatedBlocks[index].isEditable;
+//   setActiveBlock(isCurrentBlockEditable ? index : null);
+// };
