@@ -79,9 +79,11 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
   }, [src]);
 
   const handleFileChange = (event) => {
-    // Create objects for each file with an empty caption
-    const fileObjects = Array.from(event.target.files).map(file => ({ file, caption: '' }));
-    setSelectedFiles(fileObjects);
+    // Create objects for each new file with an empty caption
+    const newFileObjects = Array.from(event.target.files).map(file => ({ file, caption: '' }));
+
+    // Append new files to the existing ones
+    setSelectedFiles(existingFiles => [...existingFiles, ...newFileObjects]);
   };
 
   const handleCaptionChange = (index, newCaption) => {
@@ -100,14 +102,6 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
           <img src={imageUrl} className={styles.photoPreview} alt={`Preview ${index}`} />
           {/* <Image src={imageUrl} alt={`Preview ${index}`} fill={true}/> */}
 
-          {/* <input
-            type="text"
-            value={fileObj.caption}
-            onChange={(e) => handleCaptionChange(index, e.target.value)}
-            placeholder="Enter caption"
-            className={styles.captionInput}
-            onKeyDown={(e) => {if (e.key === 'Enter') {setActiveBlock(null)} }}
-          /> */}
           <textarea
             value={fileObj.caption}
             onChange={(e) => handleCaptionChange(index, e.target.value)}
