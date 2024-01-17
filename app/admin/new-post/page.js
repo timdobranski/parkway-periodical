@@ -267,19 +267,3 @@ async function handleSubmit() {
     </div>
   );
 }
-
-// const toggleEditable = (index) => {
-//   const updatedBlocks = contentBlocks.map((block, i) => {
-//       return {
-//           ...block,
-//           isEditable: i === index ? !block.isEditable : false
-//       };
-//   });
-
-//   setContentBlocks(updatedBlocks);
-
-//   // Set activeBlock to the current index if it's being made editable,
-//   // or reset to null if no block is editable
-//   const isCurrentBlockEditable = updatedBlocks[index].isEditable;
-//   setActiveBlock(isCurrentBlockEditable ? index : null);
-// };

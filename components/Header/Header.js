@@ -47,7 +47,7 @@ export default function Header() {
       <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
 
       <div className={styles.navContainer}>
-        <Link href='/public/neww-post'><h2>HOME</h2></Link>
+        <Link href='/public/home'><h2>HOME</h2></Link>
         <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
         <Link href='/public/about'><h2>ABOUT</h2></Link>
       </div>
