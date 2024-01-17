@@ -19,6 +19,7 @@
   justify-content: flex-start;
 }
 .photoWrapper {
+  position: relative;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -83,9 +84,32 @@
   font-size: 1em;
   z-index: 2; /* Ensure it's above the image */
 }
+.titleInput, .captionInput {
+  width: 80%;
+  font-size: 1rem;
+  margin: 1rem;
+  padding: .5rem;
+  border-radius: 5px;
+  border: 1px solid black;
+}
 .captionInput {
   width: 80%;
 }
 .noPhotoMessage {
   width: 100%;
+}
+.removePhotoIcon {
+  background-color: rgba(0, 0, 0, .5);
+  margin: .25rem;
+  padding: .25rem;
+  border-radius: 4px;
+  color: red;
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 25px;
+  height: 25px;
+}
+.removePhotoIcon:hover {
+  cursor: pointer;
 }
