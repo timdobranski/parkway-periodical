@@ -19,7 +19,7 @@ export default function PostNavbar({
   return (
     <div className={styles.navbarWrapper}>
 
-      <div className={styles.navbarRow}>
+      {/* <div className={styles.navbarRow}> */}
         <div onClick={onAddText} className={styles.navbarItem}>
         <FontAwesomeIcon icon={faFont} className={styles.icon} />
         <h3>Add Text</h3>
@@ -32,10 +32,9 @@ export default function PostNavbar({
         <FontAwesomeIcon icon={faVideo} className={styles.icon} />
         <h3>Add a Video</h3>
       </div>
-      <div className={styles.navbarItem} onClick={handleSubmit}>
-        <h3 className={styles.publishButton} >PUBLISH</h3>
-      </div>
-      </div>
+
+        <h3 className={styles.publishButton} onClick={handleSubmit} >PUBLISH</h3>
+
     </div>
   )
 }

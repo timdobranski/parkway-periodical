@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const [user, setUser] = useState(null);
+  const [navbar, setNavbar] = useState('0'); // ['home', 'archive', 'about'
   const router = useRouter();
 
   useEffect(() => {
@@ -30,17 +31,23 @@ export default function Header() {
     getAndSetUser();
   }, []);
 
+  useEffect(() => {
+    if (user) {
+
+    }
+  }, [user]);
 
 
   return (
     <div className={styles.headerContainer}>
+      {user && (<Link href='/admin/home' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
       <div className={styles.logoContainer} onClick={() => router.push('/')}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
       <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
-      {/* <img className={styles.profilePic} src={'/images/header.png'} alt="Profile Picture"  width={800}/> */}
+
       <div className={styles.navContainer}>
-        <Link href='/public/home'><h2>HOME</h2></Link>
+        <Link href='/public/neww-post'><h2>HOME</h2></Link>
         <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
         <Link href='/public/about'><h2>ABOUT</h2></Link>
       </div>

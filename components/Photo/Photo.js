@@ -104,35 +104,45 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
     );
   };
   const renderPreviews = () => {
-    console.log('selectedFiles in renderPreviews: ', selectedFiles)
-    return selectedFiles.map((fileObj, index) => {
-      const imageUrl = fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src;
-      return (
-        <>
-        <div key={index} className={styles.photoPreviewContainer}>
-          <div className={styles.photoWrapper}>
-            <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon} onClick={() => handleRemovePhoto(index)} />
-            <img src={imageUrl} className={styles.photoPreview} alt={`Preview ${index}`} />
+    let gridClass = '';
+    if (selectedFiles.length === 1) {
+      gridClass = styles.photosGridSingle;
+    } else if (selectedFiles.length % 3 === 0 || (selectedFiles.length % 2 !== 0 && selectedFiles.length % 3 !== 0)) {
+      gridClass = styles.photosGridThreeColumns;
+    } else if (selectedFiles.length % 2 === 0) {
+      gridClass = styles.photosGridTwoColumns;
+    }
+
+    return (
+      <div className={`${styles.photosGrid} ${gridClass}`}>
+        {selectedFiles.map((fileObj, index) => (
+          <div key={index} className={styles.gridPhotoContainer}>
+            <div className={styles.photoWrapper}>
+              <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon} onClick={() => handleRemovePhoto(index)} />
+              <img src={fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src}
+                   className={styles.photoPreview}
+                   alt={`Preview ${index}`} />
+            </div>
+            <input
+              value={fileObj.title}
+              onChange={(e) => handleTitleChange(index, e.target.value)}
+              placeholder="Enter title"
+              className={styles.titleInput}
+            />
+            <textarea
+              value={fileObj.caption}
+              onChange={(e) => handleCaptionChange(index, e.target.value)}
+              placeholder="Enter caption (optional)"
+              className={styles.captionInput}
+              onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+              rows={4}
+            />
           </div>
-          <input
-          value={fileObj.title}
-          onChange={(e) => handleTitleChange(index, e.target.value)}
-          placeholder="Enter title"
-          className={styles.titleInput}
-        />
-          <textarea
-            value={fileObj.caption}
-            onChange={(e) => handleCaptionChange(index, e.target.value)}
-            placeholder="Enter caption (optional)"
-            className={styles.captionInput}
-            onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
-            rows={4}  // Example: Set the number of rows to make it visibly larger
-          />
-        </div>
-        </>
-      );
-    });
+        ))}
+      </div>
+    );
   };
+
   const renderPhotosGrid = (photos) => {
     let gridClass = '';
     if (photos.length === 1) {

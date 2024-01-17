@@ -4,7 +4,7 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: auto;
+  height: 65px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -20,8 +20,8 @@
   width: 40px;
   height: 40px;
   top: 50%;
-  transform: translateY(-50%);
-  left: 20px;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .title {
   font-size: 3rem;
@@ -33,7 +33,7 @@
   top: 0;
   font-family: Nadall;
 }
-.navContainer {
+.navContainerLeft {
   position: absolute;
   display: flex;
   top: 50%;
@@ -42,19 +42,29 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.navContainerRight {
+  position: absolute;
+  display: flex;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
 }
 
-.navContainer a {
+.navContainerLeft a, .navContainerRight a {
   text-decoration: none;
 }
-.navContainer a:focus {
+.navContainerLeft a:focus, .navContainerRight a:focus {
   outline: none;
 }
-.navContainer h2 {
+.navContainerLeft h2, .navContainerRight h2 {
   margin: 0rem 3rem .75rem 3rem;
   font-family: Louis George Cafe;
-  color: rgb(254, 113, 113);
+  color: rgb(0, 174, 255);
   font-size: 1.5rem;
   font-weight:normal;
   text-decoration: none;

@@ -1,7 +1,6 @@
 .previewWrapper {
   width: 100%;
   box-sizing: content-box;
-  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,8 +19,9 @@
 }
 .photoWrapper {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
-  margin: 0 auto;
+  margin: 0rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -33,22 +33,15 @@
 .photoPreview {
   width: 100%;
   height: auto;
-  margin: 1rem;
+  margin: 0;
+  box-sizing: border-box;
 }
-/* .photosGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
-  gap: 10px;
-  width: 100%;
-  padding: 0;
-  margin: 2rem;
-} */
 .photosGrid {
   display: grid;
   gap: 10px; /* Adjust as needed */
   justify-content: center;
-  border: solid red 2px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .photosGridSingle {
@@ -60,10 +53,12 @@
 }
 
 .photosGridThreeColumns {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Using minmax for more flexibility */
 }
 
 .gridPhotoContainer {
+  /* margin: 1rem; */
+  box-sizing: border-box;
 
 }
 
@@ -74,6 +69,7 @@
   width: 100%;
   height: auto;
   border-radius: 10px;
+  box-sizing: border-box;
 }
 .icon {
   padding: .5rem;

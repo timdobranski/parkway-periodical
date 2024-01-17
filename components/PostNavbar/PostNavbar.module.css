@@ -8,10 +8,11 @@
   background-color: rgb(237, 247, 255);
   margin: 0;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
   z-index: 2;
+
 }
 .rowsWrapper {
   width: 80%;
@@ -33,6 +34,13 @@
   justify-content: center;
   align-items: center;
   padding: 0 .5rem .25rem .5rem;
+  margin: .25rem;
+}
+.navbarItem:hover {
+  cursor: pointer;
+  color: white;
+  background-color: rgb(36, 137, 196);
+  border-radius: 4px;
 }
 .navbarItem h3 {
   margin: 0 2rem 0 2rem;
@@ -51,7 +59,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1rem;
   width: 100px;
   height: 40px;
   background-color: rgb(255, 126, 126);

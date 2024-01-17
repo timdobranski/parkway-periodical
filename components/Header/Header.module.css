@@ -10,11 +10,10 @@
   justify-content: center;
   align-items: flex-start;
   background-color: rgba(255, 255, 255, .6);
-  /* background: linear-gradient(to bottom, rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)); */
   backdrop-filter: blur(3px);
   text-align: center;
   z-index: 1;
-  /* border-bottom: solid 2px rgb(89, 89, 89); */
+
 }
 
 .logoContainer {
@@ -27,13 +26,6 @@
 }
 
 .title {
-  /* position: relative;
-  margin: 0 auto;
-  top: 1rem;;
-  font-family: Nadall;
-  background-image: linear-gradient(to right, rgb(0, 158, 243), rgb(0, 100, 166));
-  -webkit-background-clip: text; /* For WebKit browsers */
-
   font-family: Louis George Cafe;
   font-size: 5rem; /* Large font size to see the effect clearly */
   font-weight: bold; /* Bold text to make the effect more noticeable */
@@ -65,7 +57,7 @@
 .navContainer a:focus {
   outline: none;
 }
-.navContainer h2, .authNavContainer h2 {
+.navContainer h2 {
   margin: 0rem 2rem .75rem 2rem;
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
@@ -78,7 +70,7 @@
   border: none !important;
 
 }
-.navContainer h2:hover, .authNavContainer h2:hover {
+.navContainer h2:hover{
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
@@ -131,7 +123,6 @@
     /* border: solid red 4px; */
   }
   .navContainer h2 {
-
     font-family: Louis George Cafe;
     color: red;
     font-size: 1.25rem;
@@ -141,5 +132,30 @@
     border: none !important;
 
   }
+}
+.adminHomeLink {
+  position: absolute;
+  height: 50px;
+  top: 3rem;
+  left: 8rem;
+  transform: translateY(-50%);
+  font-family: Louis George Cafe;
+  color: rgb(0, 0, 0);
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  background: rgb(0, 173, 253);
+  padding: .5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  text-align: center;
+}
+.adminHomeLink:hover {
+  cursor: pointer;
+  background: rgb(84, 195, 255);
 
+  transition: transform .3s ease-in-out
 }

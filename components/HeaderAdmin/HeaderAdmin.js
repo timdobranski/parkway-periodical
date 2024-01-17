@@ -14,8 +14,7 @@ export default function Header() {
       <div className={styles.logoContainer}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
-      <h1 className={styles.title}>Parkway Periodical</h1>
-      <div className={styles.navContainer}>
+      <div className={styles.navContainerLeft}>
         {/* <Link href='/'> */}
 
         <h2>NEW POST</h2>
@@ -24,8 +23,19 @@ export default function Header() {
           <h2>VIEW/EDIT POSTS</h2>
           {/* </Link> */}
         {/* <Link href='/about'> */}
-          <h2>LOG OUT</h2>
+          <h2>SETTINGS</h2>
           {/* ></Link> */}
+      </div>
+      <div className={styles.navContainerRight}>
+        <Link href='/'>
+        <h2>HOME</h2>
+        </Link>
+        <Link href='/archive'>
+          <h2>ARCHIVE</h2>
+          </Link>
+        <Link href='/about'>
+          <h2>ABOUT</h2>
+          </Link>
       </div>
     </div>
   )
