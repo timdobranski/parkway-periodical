@@ -19,9 +19,9 @@ export default function Header() {
 
         <h2>NEW POST</h2>
         {/* </Link> */}
-        {/* <Link href='/archive'> */}
+        <Link href='/admin/view-posts'>
           <h2>VIEW/EDIT POSTS</h2>
-          {/* </Link> */}
+          </Link>
         {/* <Link href='/about'> */}
           <h2>SETTINGS</h2>
           {/* ></Link> */}

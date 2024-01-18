@@ -36,6 +36,11 @@
   margin: 0;
   box-sizing: border-box;
 }
+.photoTitle {
+  font-weight: bold;
+  font-size: 1.75rem;
+  color: rgb(0, 95, 168);
+}
 .photosGrid {
   display: grid;
   gap: 10px; /* Adjust as needed */

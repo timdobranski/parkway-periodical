@@ -45,6 +45,7 @@ export default function Header() {
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
       <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
+      <p>The latest news and updates from Parkway Sports & Health Science Academy</p>
 
       <div className={styles.navContainer}>
         <Link href='/public/home'><h2>HOME</h2></Link>
