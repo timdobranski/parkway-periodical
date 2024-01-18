@@ -62,25 +62,54 @@ export default function PostNavbar({
 
 
         <div className={styles.navbarSection}>
-        <h3 className={styles.navbarSectionTitle}>Add Content</h3>
-        <div className={styles.navbarSectionRow}>
-          <div onClick={onAddText} className={styles.navbarSectionItem}>
-            <FontAwesomeIcon icon={faFont} className={styles.icon} />
-            <h3>Text</h3>
-          </div>
-          <div onClick={onAddPhoto} className={styles.navbarSectionItem}>
-            <FontAwesomeIcon icon={faTableCells} className={styles.icon} />
-            <h3>Photo Grid</h3>
-          </div>
-          <div onClick={onAddPhoto} className={styles.navbarSectionItem}>
-            <FontAwesomeIcon icon={faTv} className={styles.icon} />
-            <h3>Photo Carousel</h3>
-          </div>
-          <div onClick={onAddVideo} className={styles.navbarSectionItem}>
-            <FontAwesomeIcon icon={faVideo} className={styles.icon} />
-            <h3>Video</h3>
+          <h3 className={styles.navbarSectionTitle}>Add Text</h3>
+          <div className={styles.navbarSectionRow}>
+            <div onClick={onAddText} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faFont} className={styles.icon} />
+              <h3>Text</h3>
+            </div>
+
+            <div onClick={onAddVideo} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faFont} className={styles.icon} />
+              <h3>Header</h3>
+            </div>
           </div>
         </div>
+
+        <div className={styles.navbarSection}>
+          <div className={styles.divider}></div>
+        </div>
+
+        <div className={styles.navbarSection}>
+          <h3 className={styles.navbarSectionTitle}>Add Photos</h3>
+          <div className={styles.navbarSectionRow}>
+          <div onClick={onAddPhoto} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faTv} className={styles.icon} />
+              <h3>Photo</h3>
+            </div>
+            <div onClick={onAddPhoto} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faTableCells} className={styles.icon} />
+              <h3>Photo Gallery</h3>
+            </div>
+            <div onClick={onAddPhoto} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faTv} className={styles.icon} />
+              <h3>Photo Carousel</h3>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.navbarSection}>
+          <div className={styles.divider}></div>
+        </div>
+
+        <div className={styles.navbarSection}>
+          <h3 className={styles.navbarSectionTitle}>Add Video</h3>
+          <div className={styles.navbarSectionRow}>
+          <div onClick={onAddVideo} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faVideo} className={styles.icon} />
+              <h3>Video</h3>
+            </div>
+          </div>
         </div>
 
         <h3 className={styles.publishButton} onClick={handleSubmit} >PUBLISH</h3>
