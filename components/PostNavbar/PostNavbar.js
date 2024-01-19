@@ -64,14 +64,13 @@ export default function PostNavbar({
         <div className={styles.navbarSection}>
           <h3 className={styles.navbarSectionTitle}>Add Text</h3>
           <div className={styles.navbarSectionRow}>
+          <div onClick={onAddText} className={styles.navbarSectionItem}>
+              <FontAwesomeIcon icon={faFont} className={styles.icon} />
+              <h3>Header</h3>
+            </div>
             <div onClick={onAddText} className={styles.navbarSectionItem}>
               <FontAwesomeIcon icon={faFont} className={styles.icon} />
               <h3>Text</h3>
-            </div>
-
-            <div onClick={onAddVideo} className={styles.navbarSectionItem}>
-              <FontAwesomeIcon icon={faFont} className={styles.icon} />
-              <h3>Header</h3>
             </div>
           </div>
         </div>
@@ -84,7 +83,7 @@ export default function PostNavbar({
           <h3 className={styles.navbarSectionTitle}>Add Photos</h3>
           <div className={styles.navbarSectionRow}>
           <div onClick={onAddPhoto} className={styles.navbarSectionItem}>
-              <FontAwesomeIcon icon={faTv} className={styles.icon} />
+              <FontAwesomeIcon icon={faImage} className={styles.icon} />
               <h3>Photo</h3>
             </div>
             <div onClick={onAddPhoto} className={styles.navbarSectionItem}>

@@ -30,7 +30,7 @@ export default function Home() {
 
 
   if (!posts || posts.length === 0) {
-    return <div>Loading posts...</div>;
+    return <div className='post'>No posts to display yet!</div>;
   }
 
   return (

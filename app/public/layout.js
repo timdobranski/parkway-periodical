@@ -10,10 +10,11 @@ export default function PublicLayout({ children }) {
 
   return (
 
-      <div className='appContainer'>
+      <div className='background'>
         <Header />
-        {/* <Gallery images={images} /> */}
-        {children}
+        <div className='publicPageWrapper'>
+          {children}
+        </div>
       </div>
 
   )

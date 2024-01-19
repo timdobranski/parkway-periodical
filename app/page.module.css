@@ -1,16 +1,3 @@
-.introWrapper {
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-  /* overflow: hidden; */
-  padding: 0;
-  margin: 0;
-}
-
-.image {
-  object-fit: cover;
-  height: 100%;
-}
 @keyframes scrollSlow {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -25,82 +12,10 @@
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-
-.introWrapper {
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-}
-.imageRow {
-  box-sizing: border-box;
-  display: flex;
-  height: 33.33vh;
-  white-space: nowrap;
-  overflow:visible;
-  width: 200vw;
-  align-items: center;
-  position: relative;
-  z-index: 0;
-  margin: .5rem 0
-}
-.imageRow:nth-child(1) {
-  animation: scrollSlow 30s linear infinite;
-}
-
-.imageRow:nth-child(2) {
-  animation: scrollMedium 45s linear infinite;
-}
-
-.imageRow:nth-child(3) {
-  animation: scrollFast 37s linear infinite;
-}
-
-.image {
-  display: inline-block;
-  box-sizing: border-box;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-  transform-origin: center;
-  position: relative;
-  margin: 0 .25rem;
-  border: solid white 6px;
-  border-radius: 5px;
-  z-index: 5; /* Normal state z-index */
-}
-.image:hover {
-  cursor: pointer;
-  transform: scale(1.1);
-  transform-origin: center;
-  /* Removed z-index from here */
-}
-
-.hoveredImage {
-  z-index: 10; /* This will be applied on hover via React state */
-  transform: scale(1.2); /* Ensure this matches your desired hover effect */
-  cursor: pointer;
-  border: solid rgb(255, 255, 255) 6px;
-  border-radius: 5px;
-  /* outline: solid white 5px; */
-}
-.hoveredRow {
-  z-index: 15; /* Ensure this is higher than the z-index of unhovered rows and images */
-}
-.hiddenImage {
-  opacity: 0;
-}
-.fadeIn {
-  animation: fadeInAnimation 2s ease-out;
-}
-
 @keyframes fadeInAnimation {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
 .introContainer {
   position: absolute;
   z-index: 20;
@@ -126,21 +41,82 @@
 .introContainer:hover {
   cursor: pointer;
 }
-.introImage {
+.enterBox {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+.imageRow {
+  box-sizing: border-box;
+  display: flex;
+  height: 33.33vh;
+  white-space: nowrap;
+  overflow:visible;
+  width: 200vw;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  margin: .5rem 0
+}
+.imageRow:nth-child(1) {
+  animation: scrollSlow 30s linear infinite;
+}
+.imageRow:nth-child(2) {
+  animation: scrollMedium 45s linear infinite;
+}
+.imageRow:nth-child(3) {
+  animation: scrollFast 37s linear infinite;
+}
+.image {
+  display: inline-block;
+  box-sizing: border-box;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  transform-origin: center;
+  position: relative;
+  margin: 0 .25rem;
+  border: solid white 6px;
+  border-radius: 5px;
+  z-index: 5; /* Normal state z-index */
+}
+
+.hoveredImage {
+  z-index: 10; /* This will be applied on hover via React state */
+  transform: scale(1.2); /* Ensure this matches your desired hover effect */
+  cursor: pointer;
+  border: solid rgb(255, 255, 255) 6px;
+  border-radius: 5px;
+  transform-origin: center;
+  /* outline: solid white 5px; */
+}
+.hoveredRow {
+  z-index: 15; /* Ensure this is higher than the z-index of unhovered rows and images */
+}
+.hiddenImage {
+  opacity: 0;
+}
+.fadeIn {
+  animation: fadeInAnimation 2s ease-out;
+}
+
+.titledLogo {
   width: 75%;
   margin-left:2rem;
   margin-top: 0;
   padding: 0;
 }
-.enter {
+.enterButton {
   padding: 1rem;
   margin: 1rem;
   font-size: 2rem;
   font-weight: normal;
   color: black;
-  /* border: solid white 2px; */
 }
-.enter:hover {
+.enterButton:hover {
   cursor: pointer;
   background-color: rgb(34, 171, 240);
   padding: 1rem;

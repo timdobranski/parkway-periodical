@@ -35,13 +35,14 @@
 }
 .navContainerLeft {
   position: absolute;
-  display: flex;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  /* border: solid red 1px; */
 }
 .navContainerRight {
   position: absolute;
@@ -62,7 +63,7 @@
   outline: none;
 }
 .navContainerLeft h2, .navContainerRight h2 {
-  margin: 0rem 3rem .75rem 3rem;
+  margin: 0rem 3rem 0 3rem;
   font-family: Louis George Cafe;
   color: rgb(0, 174, 255);
   font-size: 1.5rem;
