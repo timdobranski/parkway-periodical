@@ -9,7 +9,7 @@ import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import Text from '../../../components/Text/Text';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
-import Photo from '../../../components/Photo/Photo';
+import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
@@ -36,8 +36,8 @@ export default function NewPostPage() {
   }, [router]);
 
   useEffect(() => {
-    console.log('content in active block: ', contentBlocks[activeBlock])
-  }, [activeBlock])
+    console.log('contentblocks: ', contentBlocks)
+  }, [contentBlocks])
 
 
 // Helper function to upload image to Supabase Storage
@@ -95,8 +95,8 @@ async function handleSubmit() {
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
-  const addPhotoBlock = () => {
-    const newBlock = { type: 'photo', content: null};
+  const addPhotoBlock = (format) => {
+    const newBlock = { type: 'photo', content: null, format: format || 'grid'};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
@@ -177,23 +177,10 @@ async function handleSubmit() {
     }));
   };
   // photo block helpers
-  const updatePhotoContent = (index, dataUrls) => {
-    console.log('dataUrls in updatePhotoContent: ', dataUrls);
+  const updatePhotoContent = (index, photos) => {
+    console.log('photos passed to updatePhotoContent: ', photos);
     const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: dataUrls };
-    setContentBlocks(newContentBlocks);
-  };
-  const handlePhotoSelect = (file, blockIndex) => {
-    // Update the photo block with the file object for later upload
-    updatePhotoContent(blockIndex, file);
-  };
-  const updatePhotoFormat = (index, format) => {
-    const newContentBlocks = contentBlocks.map((block, idx) => {
-      if (idx === index && block.type === 'photo') {
-        return { ...block, format };
-      }
-      return block;
-    });
+    newContentBlocks[index] = { ...newContentBlocks[index], content: photos };
     setContentBlocks(newContentBlocks);
   };
   // video block helpers
@@ -240,13 +227,12 @@ async function handleSubmit() {
             />
           )}
           {block.type === 'photo' &&
-            <Photo
+            <PhotoBlock
               key={index}
+              blockIndex={index}
               updatePhotoContent={(files) => updatePhotoContent(index, files)}
-              updatePhotoFormat={(format) => updatePhotoFormat(index, format)}
               isEditable={index === activeBlock}
-              src={block.content}
-              format={block.format || 'grid'}
+              src={block}
               setActiveBlock={setActiveBlock}
             />}
           {block.type === 'video' &&

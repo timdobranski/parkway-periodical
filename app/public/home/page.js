@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import supabase from '../../../utils/supabase';
 import styles from './home.module.css';
-import Photo from '../../../components/Photo/Photo';
+import Photo from '../../../components/PhotoBlock/PhotoBlock';
 import Video from '../../../components/Video/Video';
 
 export default function Home() {

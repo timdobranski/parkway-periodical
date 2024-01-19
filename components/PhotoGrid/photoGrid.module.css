@@ -64,7 +64,8 @@
 .gridPhotoContainer {
   /* margin: 1rem; */
   box-sizing: border-box;
-
+  width: 80%;
+  margin: 0 auto;
 }
 
 .carouselWrapper {
