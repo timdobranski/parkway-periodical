@@ -20,6 +20,7 @@
   margin: 0;
   width: 100vw;
   height: 100vh;
+  box-sizing: border-box;
   /* overflow-y: auto; */
   /* display: flex;
   flex-direction: column;
@@ -32,21 +33,24 @@
 
 .adminPageWrapper {
   position: relative;
-  top: 0px;
-  width: 100%;
-  height: auto;
+  top: 130px;
+  width: 100vw;
+  height: calc(100vh - 130px);
+  /* height: auto; */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   font-family: Louis George Cafe;
+  overflow-y: auto;
+
   /* border: solid greenyellow 4px; */
 }
 .publicPageWrapper {
   position: relative;
   top: 150px;
-  width: 100%;
+  width: 100vw;
   height: auto;
   box-sizing: border-box;
   display: flex;

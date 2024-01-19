@@ -214,7 +214,7 @@ async function handleSubmit() {
 
 
   return (
-    <div className='publicPageWrapper'>
+    <>
       {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar
         onAddText={addPrimeTextBlock}
@@ -264,6 +264,6 @@ async function handleSubmit() {
       ))}
         {contentBlocks.length === 0 && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
       </div>
-    </div>
+    </>
   );
 }
