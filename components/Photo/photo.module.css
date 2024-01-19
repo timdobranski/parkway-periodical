@@ -119,18 +119,41 @@
 .noPhotoMessage {
   width: 100%;
 }
-.removePhotoIcon {
+.photoEditMenu {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+.photoEditMenuIconWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.photoEditMenuIconLabel{
+  font-weight: normal;
+}
+.removePhotoIcon, .cropIcon, .resizeIcon {
   background-color: rgba(0, 0, 0, .5);
   margin: .25rem;
   padding: .25rem;
   border-radius: 4px;
   color: rgb(254, 93, 120);
-  position: absolute;
+
+  /* position: absolute;
   top: 1rem;
-  right: 0;
+  right: 0; */
+
   width: 25px;
   height: 25px;
 }
 .removePhotoIcon:hover {
   cursor: pointer;
+}
+.cropIcon {
+  color: white;
+}
+.resizeIcon {
+  color: white;
 }

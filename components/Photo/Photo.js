@@ -5,7 +5,7 @@ import styles from './photo.module.css';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTableCells, faTv, faX } from '@fortawesome/free-solid-svg-icons';
+import { faTableCells, faTv, faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 
 export default function Photo({ updatePhotoContent, src, isEditable, updatePhotoFormat, format, setActiveBlock }) {
@@ -86,7 +86,7 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
     const newFileObjects = Array.from(event.target.files).map(file => ({
       file,
       caption: '',
-      title: '', // Add title property
+      title: ''
     }));
     setSelectedFiles(existingFiles => [...existingFiles, ...newFileObjects]);
   };
@@ -118,7 +118,19 @@ export default function Photo({ updatePhotoContent, src, isEditable, updatePhoto
         {selectedFiles.map((fileObj, index) => (
           <div key={index} className={styles.gridPhotoContainer}>
             <div className={styles.photoWrapper}>
+              <div className={styles.photoEditMenu}>
+
+                <div className={styles.photoEditMenuIconWrapper}>
+                  <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
+                  <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
+                </div>
+
+                <div className={styles.photoEditMenuIconWrapper}>
+              <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
+              <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
+                </div>
               <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon} onClick={() => handleRemovePhoto(index)} />
+              </div>
               <img src={fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src}
                    className={styles.photoPreview}
                    alt={`Preview ${index}`} />

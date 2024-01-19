@@ -30,10 +30,10 @@ export default function Header() {
         <Link href='/'>
         <h2>HOME</h2>
         </Link>
-        <Link href='/archive'>
+        <Link href='/public/archive'>
           <h2>ARCHIVE</h2>
           </Link>
-        <Link href='/about'>
+        <Link href='/public/about'>
           <h2>ABOUT</h2>
           </Link>
       </div>

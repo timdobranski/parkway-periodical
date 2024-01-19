@@ -5,7 +5,7 @@ export default function About() {
 
 
   return (
-    <div className='publicPageWrapper'>
+    <>
       <div className='post'>
         <h1>About Us</h1>
 
@@ -58,6 +58,6 @@ export default function About() {
         </div>
       </div>
       </div>
-    </div>
+    </>
   );
 }
