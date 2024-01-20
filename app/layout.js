@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div className='blackBackground'>
+        <div className='background'>
           {children}
         </div>
       </body>

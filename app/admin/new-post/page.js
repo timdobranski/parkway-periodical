@@ -41,28 +41,46 @@ export default function NewPostPage() {
 
 
 // Helper function to upload image to Supabase Storage
-async function uploadImageToSupabase(file) {
-  const filePath = `${file.name}`;
-  let { error, data } = await supabase.storage.from('post-photos').upload(filePath, file);
+async function uploadImageToSupabase(base64String, fileName) {
+  // Convert base64 string to a Blob
+  const fetchResponse = await fetch(base64String);
+  const blob = await fetchResponse.blob();
 
-  if (error) throw new Error('Error uploading image: ', error.message);
+  // Generate a unique file name if not provided
+  const uniqueFileName = fileName || `image_${new Date().getTime()}`;
 
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${filePath}`;
+  const filePath = `${uniqueFileName}.webp`; // Assuming the image is in webp format
+  let { error, data } = await supabase.storage.from('posts/photos').upload(filePath, blob);
+
+  if (error) {
+    console.error('Detailed error uploading image:', error);
+    throw new Error('Error uploading image');
+  }
+
+  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/photos/${filePath}`;
 }
 
 // Handler to submit content blocks
 async function handleSubmit() {
   console.log('inside handle submit');
   try {
-    // Process content blocks
     const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
       if (block.type === 'photo') {
         // Process photo blocks
         const processedPhotos = await Promise.all(block.content.map(async (photo) => {
-          const uploadedImageUrl = await uploadImageToSupabase(photo.src);
-          return { ...photo, src: uploadedImageUrl };
+          if (typeof photo.src === 'string' && photo.src.startsWith('data:')) {
+            const uploadedImageUrl = await uploadImageToSupabase(photo.src, photo.title);
+            return { ...photo, src: uploadedImageUrl };
+          }
+          return photo; // Return as is if not a data URL
         }));
-        return { ...block, content: processedPhotos };
+
+        // Instead of returning the block with nested content, return the photo content directly
+        return {
+          type: block.type,
+          content: processedPhotos,
+          format: block.format // Assuming format is a property you want to keep at this level
+        };
       }
       return block;
     }));
@@ -83,6 +101,7 @@ async function handleSubmit() {
     console.error('Error in handleSubmit: ', error);
   }
 }
+
 
   // content blocks helpers
   const addPrimeTextBlock = () => {

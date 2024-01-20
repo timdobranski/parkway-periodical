@@ -82,7 +82,7 @@ export default function Home() {
         <img src='images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.titledLogo} />
         <h1 className={styles.enterButton}>ENTER</h1>
       </div>
-      <div className={`${styles.enterBox} ${allImagesLoaded ? styles.fadeIn : ''}`}>
+      <div className={`${styles.galleryWrapper} ${allImagesLoaded ? styles.fadeIn : ''}`}>
         {rows.map((rowImages, rowIndex) => (
           <div
             key={rowIndex}

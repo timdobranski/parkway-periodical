@@ -8,7 +8,7 @@ import Video from '../../../components/Video/Video';
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
-
+  const activeBlock = null;
   useEffect(() => {
     const getPosts = async () => {
       const { data, error } = await supabase
@@ -34,7 +34,7 @@ export default function Home() {
   }
 
   return (
-    <div className='publicPageWrapper'>
+    <>
       {posts.map((post, i) => (
         <div className='post' key={i}>
           {post.content.map((block, index) => (
@@ -44,8 +44,7 @@ export default function Home() {
               )}
               {block.type === 'photo' && (
                 <Photo
-                  isEditable={index === activeBlock}
-                  src={block.content.src} // Assuming block.content is an object with src property
+                  src={block}
                   format={block.format || 'grid'}
                 />
               )}
@@ -58,7 +57,7 @@ export default function Home() {
           ))}
         </div>
       ))}
-    </div>
+      </>
   );
 
 }

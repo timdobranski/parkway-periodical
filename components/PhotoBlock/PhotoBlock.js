@@ -71,6 +71,8 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
   };
   const handleRemovePhoto = (index) => {
     setSelectedPhotos(files => files.filter((_, idx) => idx !== index));
+    document.querySelector('input[type="file"]').value = '';
+
   };
   const handleTitleChange = (index, newTitle) => {
     setSelectedPhotos(files =>
@@ -154,12 +156,12 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
     switch (src.format) {
       case 'single-photo-caption-below':
-      // case 'single-photo-caption-above':
-      // case 'single-photo-caption-left':
-      // case 'single-photo-caption-right':
-      // case '3xColumn':
-      // case '2xColumn':
-      // case 'grid':
+      case 'single-photo-caption-above':
+      case 'single-photo-caption-left':
+      case 'single-photo-caption-right':
+      case '3xColumn':
+      case '2xColumn':
+      case 'grid':
         return <PhotoGrid photos={src} />;
       case 'carousel':
         return

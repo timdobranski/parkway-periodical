@@ -10,12 +10,12 @@ export default function PublicLayout({ children }) {
 
   return (
 
-      <div className='background'>
+      <>
         <Header />
         <div className='publicPageWrapper'>
           {children}
         </div>
-      </div>
+      </>
 
   )
 }
