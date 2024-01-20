@@ -4,7 +4,7 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: fit-content;
+  height: 110px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -27,7 +27,7 @@
 
 .title {
   font-family: Louis George Cafe;
-  font-size: 5rem; /* Large font size to see the effect clearly */
+  font-size: 4rem; /* Large font size to see the effect clearly */
   font-weight: bold; /* Bold text to make the effect more noticeable */
   width: max-content; /* Adjust the width to the content */
   margin: auto; /* Center the text */
@@ -39,7 +39,7 @@
   -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
   background-clip: text; /* Clip the background with the text */
   color: transparent;
-  margin-bottom: -20px;
+  margin-bottom: -10px;
 }
 .subtitle {
   font-family: Louis George Cafe;

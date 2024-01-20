@@ -30,11 +30,13 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className='background'>
+    // <div className='background'>
+    <>
       <HeaderAdmin />
       <div className='adminPageWrapper'>
         {children}
       </div>
-    </div>
+    </>
+    // </div>
   );
 }
