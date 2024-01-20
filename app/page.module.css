@@ -46,13 +46,13 @@
   height: 100vh;
   box-sizing: border-box;
   overflow: hidden;
-  padding: 0;
-  margin: 0;
+  padding-bottom: .5rem;
+  margin-bottom: 0;
 }
 .imageRow {
   box-sizing: border-box;
   display: flex;
-  height: 33.33vh;
+  height: calc(33.33% - .5rem);
   white-space: nowrap;
   overflow:visible;
   width: 200vw;
@@ -60,15 +60,6 @@
   position: relative;
   z-index: 0;
   margin: .5rem 0
-}
-.imageRow:nth-child(1) {
-  animation: scrollSlow 30s linear infinite;
-}
-.imageRow:nth-child(2) {
-  animation: scrollMedium 45s linear infinite;
-}
-.imageRow:nth-child(3) {
-  animation: scrollFast 37s linear infinite;
 }
 .image {
   display: inline-block;
@@ -81,12 +72,21 @@
   margin: 0 .25rem;
   border: solid white 6px;
   border-radius: 5px;
-  z-index: 5; /* Normal state z-index */
+  z-index: 5;
+}
+.imageRow:nth-child(1) {
+  animation: scrollSlow 30s linear infinite;
+}
+.imageRow:nth-child(2) {
+  animation: scrollMedium 45s linear infinite;
+}
+.imageRow:nth-child(3) {
+  animation: scrollFast 37s linear infinite;
 }
 
 .hoveredImage {
   z-index: 10; /* This will be applied on hover via React state */
-  transform: scale(1.2); /* Ensure this matches your desired hover effect */
+  transform: scale(1.1); /* Ensure this matches your desired hover effect */
   cursor: pointer;
   border: solid rgb(255, 255, 255) 6px;
   border-radius: 5px;
