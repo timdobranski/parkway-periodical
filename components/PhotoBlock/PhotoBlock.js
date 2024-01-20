@@ -154,12 +154,12 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
     switch (src.format) {
       case 'single-photo-caption-below':
-      case 'single-photo-caption-above':
-      case 'single-photo-caption-left':
-      case 'single-photo-caption-right':
-      case '3xColumn':
-      case '2xColumn':
-      case 'grid':
+      // case 'single-photo-caption-above':
+      // case 'single-photo-caption-left':
+      // case 'single-photo-caption-right':
+      // case '3xColumn':
+      // case '2xColumn':
+      // case 'grid':
         return <PhotoGrid photos={src} />;
       case 'carousel':
         return

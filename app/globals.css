@@ -30,6 +30,18 @@
   background-size: cover;
   background-position: center;
 }
+.blackBackground {
+  background-color: black;
+  background: linear-gradient(to right, rgb(92, 201, 255), rgb(255, 83, 120));
+  background-image: url('../public/images/gradient3small.webp');
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
 
 .adminPageWrapper {
   position: relative;
@@ -147,12 +159,4 @@
 }
 .hiddenImage {
   opacity: 0;
-}
-.blackBackground {
-  background-color: black;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
 }

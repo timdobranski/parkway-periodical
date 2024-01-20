@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
 export default function PhotoCarousel({ photos }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -9,8 +10,13 @@ export default function PhotoCarousel({ photos }) {
     setCurrentPhotoIndex(index);
   };
 
+  console.log('photos passed to PhotoCarousel: ', photos);
+
+  if (!photos || photos.length === 0) { return <h1>loading</h1>}
+
   return (
     <div className={styles.carouselWrapper}>
+      <h1>loading</h1>
     <Carousel
       dynamicHeight={true}
       autoPlay={false}
@@ -18,7 +24,7 @@ export default function PhotoCarousel({ photos }) {
       selectedItem={currentPhotoIndex}
       onChange={handleCarouselChange}
     >
-      {photos.map((photoObj, index) => (
+      {photos.content.map((photoObj, index) => (
         <div key={index} className={styles.carouselSlide}>
           <img src={photoObj.src} alt={`Photo ${index}`} />
           {photoObj.title && (
