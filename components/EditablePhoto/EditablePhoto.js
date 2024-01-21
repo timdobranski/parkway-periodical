@@ -164,6 +164,7 @@ export default function EditablePhoto({
       onDragStart={(e) => onDragStart(e, index)}
       onDragOver={onDragOver}
       onDrop={(e) => onDrop(e, index)}
+      className={styles.draggableWrapper}
     >
       <div className={styles.photoWrapper}>
         <div className={styles.photoEditMenu}>

@@ -125,3 +125,12 @@
   margin: .25rem;
   font-size: 1rem;
 }
+.draggableWrapper {
+  padding-top: 1rem;
+  border-radius: 10px;
+}
+.draggableWrapper:hover {
+  cursor: move;
+  border: solid rgb(0, 0, 0) 1px;
+  background-color: rgba(0, 0, 0, .5);
+}
