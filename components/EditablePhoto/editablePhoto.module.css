@@ -76,3 +76,52 @@
   height: auto; /* Maintain aspect ratio */
   z-index: 50;
 }
+.ReactCrop .ReactCrop__crop-mask,
+.ReactCrop .ReactCrop__drag-bar,
+.ReactCrop .ReactCrop__drag-handle {
+  background: rgba(0, 0, 0, 0.7); /* Adjust the alpha for desired darkness */
+}
+.cropControlsWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  margin: 1rem;
+}
+.cropManualDimensions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.cropManualDimensions * {
+  margin: .25rem;
+}
+.cropManualDimensions input {
+  width: 50px;
+  text-align: center;
+}
+.manualCropLabels, .manualCropInputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.cropManualDimensions p {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+}
+.lockWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+.lockWrapper * {
+  margin: .25rem;
+  font-size: 1rem;
+}

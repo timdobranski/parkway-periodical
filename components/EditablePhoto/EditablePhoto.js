@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
+import { faX, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -16,13 +16,21 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
     y: 0,
     aspect: 16 / 9
   });
+  const [cropSize, setCropSize] = useState({ width: 80, height: 80 }); // In percent or pixels
+  const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
   const [src, setSrc] = useState(fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src);
   const [imageRef, setImageRef] = useState(null);
   const [cropActive, setCropActive] = useState(false);
+  const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
+
 
   const onImageLoaded = (image) => {
     setImageRef(image);
+    if (lockAspectRatio) {
+      const aspectRatio = image.naturalWidth / image.naturalHeight;
+      setCrop({ ...crop, aspect: aspectRatio });
+    }
   };
   const onCropChange = (crop, percentCrop) => {
     setCrop(percentCrop);
@@ -111,6 +119,7 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
         crop={crop}
         onImageLoaded={onImageLoaded}
         onChange={onCropChange}
+        overlayColor="rgba(0, 0, 0, 0.6)"
       >
         <img src={src} className={styles.photoPreview} alt={`Preview ${index}`} />
       </ReactCrop>
@@ -118,7 +127,36 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
       <img src={src} className={styles.photoPreview} alt={`Preview ${index}`} />
     )}
       {cropActive && (
+        <div className={styles.cropControlsWrapper}>
+          <div className={styles.cropManualDimensions}>
+              <p>Width</p>
+               <input
+              type="number"
+              value={cropSize.width}
+              onChange={(e) => setCropSize({ ...cropSize, width: e.target.value })}
+              placeholder="Width"
+              className={styles.cropManualDimensionsInput}
+            />
+            <p>Height</p>
+            <input
+              type="number"
+              value={cropSize.height}
+              onChange={(e) => setCropSize({ ...cropSize, height: e.target.value })}
+              placeholder="Height"
+              className={styles.cropManualDimensionsInput}
+            />
+
+            <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+              <option value="percent">Percent</option>
+              <option value="pixels">Pixels</option>
+            </select>
+            </div>
+            <span className={styles.lockWrapper}>
+            <p>Aspect Ratio Lock:</p>
+            <FontAwesomeIcon icon={lockAspectRatio ? faLock : faLockOpen} onClick={() => setLockAspectRatio(!lockAspectRatio)} className={styles.lockIcon} />
+            </span>
       <button onClick={finalizeCrop}>Confirm Crop</button>
+      </div>
     )}
       </div>
       <input
