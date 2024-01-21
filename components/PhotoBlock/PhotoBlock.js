@@ -12,6 +12,8 @@ import Image from 'next/image';
 
 export default function PhotoBlock({ updatePhotoContent, src, isEditable, setActiveBlock, blockIndex }) {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
+  const [draggedPhotoIndex, setDraggedPhotoIndex] = useState(null);
+
   // when the editable status changes, if there are photos uploaded, save them
   useEffect(() => {
     if (!isEditable && selectedPhotos.length > 0) {
@@ -70,6 +72,23 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     }));
     setSelectedPhotos(existingFiles => [...existingFiles, ...newFileObjects]);
   };
+  const onDragStart = (e, index) => {
+    setDraggedPhotoIndex(index);
+  };
+
+  const onDragOver = (e) => {
+    e.preventDefault(); // Necessary for onDrop to fire
+  };
+
+  const onDrop = (e, dropIndex) => {
+    if (draggedPhotoIndex !== null) {
+      const newPhotos = [...selectedPhotos];
+      // Swap the photos
+      [newPhotos[draggedPhotoIndex], newPhotos[dropIndex]] = [newPhotos[dropIndex], newPhotos[draggedPhotoIndex]];
+      setSelectedPhotos(newPhotos);
+      setDraggedPhotoIndex(null);
+    }
+  };
   const handleRemovePhoto = (index) => {
     setSelectedPhotos(files => files.filter((_, idx) => idx !== index));
     document.querySelector('input[type="file"]').value = '';
@@ -110,6 +129,11 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
             handleCaptionChange={handleCaptionChange}
             handleRemovePhoto={handleRemovePhoto}
             index={index}
+            selectedPhotos={selectedPhotos}
+            setSelectedPhotos={setSelectedPhotos}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
             />
             ))}
         </div>

@@ -7,7 +7,9 @@ import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitleChange, handleCaptionChange, handleRemovePhoto, index }) {
+export default function EditablePhoto({
+  fileObj, updatePhotoContent, handleTitleChange, handleCaptionChange, handleRemovePhoto,
+  onDragStart, onDragOver, onDrop, index, selectedPhotos, setSelectedPhotos }) {
   const [crop, setCrop] = useState({
     unit: '%',
     width: 100,
@@ -19,7 +21,6 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
   const [cropSize, setCropSize] = useState({ width: 100, height: 100 }); // In percent or pixels
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
-  // const [src, setSrc] = useState(fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src);
   const [imageRef, setImageRef] = useState(null);
   const [cropActive, setCropActive] = useState(false);
   const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
@@ -158,7 +159,12 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
   if (!fileObj) { return null }
 
   return (
-    <div>
+    <div
+      draggable
+      onDragStart={(e) => onDragStart(e, index)}
+      onDragOver={onDragOver}
+      onDrop={(e) => onDrop(e, index)}
+    >
       <div className={styles.photoWrapper}>
         <div className={styles.photoEditMenu}>
           <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
