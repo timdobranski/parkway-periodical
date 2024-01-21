@@ -19,12 +19,14 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
   const [cropSize, setCropSize] = useState({ width: 100, height: 100 }); // In percent or pixels
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
-  const [src, setSrc] = useState(fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src);
+  // const [src, setSrc] = useState(fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src);
   const [imageRef, setImageRef] = useState(null);
   const [cropActive, setCropActive] = useState(false);
   const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
   const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
   const debounceTimer = useRef(null);
+
+  useEffect(() => { console.log('fileObj: ', fileObj)}, [fileObj])
 
   useEffect(() => {
     if (lockAspectRatio && imageRef) {
@@ -34,11 +36,13 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
       setCrop({ ...crop, aspect: undefined });
     }
   }, [lockAspectRatio, imageRef]);
+
   useEffect(() => {
     const newWidth = unit === 'percent' ? debouncedCropSize.width : pixelsToPercent(debouncedCropSize.width, 'width');
     const newHeight = unit === 'percent' ? debouncedCropSize.height : pixelsToPercent(debouncedCropSize.height, 'height');
     setCrop({ ...crop, width: newWidth, height: newHeight });
   }, [debouncedCropSize, unit, imageRef]);
+
   useEffect(() => {
     clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
@@ -46,6 +50,7 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
     }, 500);
     return () => clearTimeout(debounceTimer.current);
   }, [cropSize]);
+
   const enforceCropConstraints = () => {
     const maxWidth = unit === 'percent' ? 100 : imageRef.naturalWidth;
     const maxHeight = unit === 'percent' ? 100 : imageRef.naturalHeight;
@@ -58,6 +63,7 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
   useEffect(() => {
     enforceCropConstraints();
   }, [unit, imageRef]);
+
   const onImageLoaded = (image) => {
     setImageRef(image);
     if (lockAspectRatio) {
@@ -149,7 +155,7 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
     return (value / 100) * imageSize;
   };
 
-  if (!fileObj || !src) { return null }
+  if (!fileObj) { return null }
 
   return (
     <div>
@@ -179,10 +185,10 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
         onChange={onCropChange}
         overlayColor="rgba(0, 0, 0, 0.6)"
       >
-        <img src={src} className={styles.photoPreview} alt={`Preview ${index}`} />
+      <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} />
       </ReactCrop>
     ) : (
-      <img src={src} className={styles.photoPreview} alt={`Preview ${index}`} />
+      <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} />
     )}
       {cropActive && (
         <div className={styles.cropControlsWrapper}>

@@ -58,12 +58,13 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
   }, [src]);
 
   useEffect(() => {
-    console.log('uploaded photos: ', selectedPhotos);
+    // console.log('uploaded photos: ', selectedPhotos);
   }, [selectedPhotos])
 
   const handleFileChange = (event) => {
     const newFileObjects = Array.from(event.target.files).map(file => ({
       file,
+      src: URL.createObjectURL(file), // Immediately create a URL
       caption: '',
       title: ''
     }));
@@ -75,6 +76,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
   };
   const handleTitleChange = (index, newTitle) => {
+    console.log('new title: ', newTitle);
     setSelectedPhotos(files =>
       files.map((fileObj, idx) => idx === index ? { ...fileObj, title: newTitle } : fileObj)
     );

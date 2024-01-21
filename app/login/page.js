@@ -40,6 +40,7 @@ export default function Login() {
           placeholder="Email"
           className={styles.loginInput}
         />
+
       <div className={styles.inputContainer}>
           <input
               type={showPassword ? "text" : "password"}
