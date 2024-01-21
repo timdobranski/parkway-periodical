@@ -103,6 +103,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
             <EditablePhoto
             key={index}
             fileObj={fileObj}
+            updatePhotoContent={updatePhotoContent}
             handleTitleChange={handleTitleChange}
             handleCaptionChange={handleCaptionChange}
             handleRemovePhoto={handleRemovePhoto}

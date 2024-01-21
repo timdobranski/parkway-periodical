@@ -8,8 +8,8 @@
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: flex-start;
-  border-radius: 10px;
-  overflow: hidden;
+  /* border-radius: 10px; */
+  /* overflow: hidden; */
 }
 .photoPreview {
   width: 100%;
@@ -70,4 +70,9 @@
 }
 .captionInput {
   width: 80%;
+}
+.ReactCrop {
+  width: 100%; /* Take full width of the container */
+  height: auto; /* Maintain aspect ratio */
+  z-index: 50;
 }
