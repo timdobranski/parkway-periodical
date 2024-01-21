@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './photoBlock.module.css';
 import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import PhotoGrid from '../PhotoGrid/PhotoGrid';
+import EditablePhoto from '../EditablePhoto/EditablePhoto';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
@@ -94,49 +95,21 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     }
 
     return (
-      <div className={`${styles.photosGrid} ${gridClass}`}>
-          <input type="file" accept="image/*" onChange={handleFileChange} multiple className={styles.photoInput}/>
-        {selectedPhotos.map((fileObj, index) => (
-          <div key={index} className={styles.gridPhotoContainer}>
-            <div className={styles.photoWrapper}>
+      <div className={styles.previewWrapper}>
+        <input type="file" accept="image/*" onChange={handleFileChange} multiple className={styles.photoInput}/>
 
-              <div className={styles.photoEditMenu}>
-                <div className={styles.photoEditMenuIconWrapper}>
-                  <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-                  <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
-                </div>
-
-                <div className={styles.photoEditMenuIconWrapper}>
-                  <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
-                  <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
-                </div>
-
-                <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
-                  <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon}  />
-                  <h3 className={styles.photoEditMenuIconLabel}>Remove</h3>
-                </div>
-              </div>
-
-              <img src={fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src}
-                   className={styles.photoPreview}
-                   alt={`Preview ${index}`} />
-            </div>
-            <input
-              value={fileObj.title}
-              onChange={(e) => handleTitleChange(index, e.target.value)}
-              placeholder="Enter title"
-              className={styles.titleInput}
+        <div className={`${styles.photosGrid} ${gridClass}`}>
+          {selectedPhotos.map((fileObj, index) => (
+            <EditablePhoto
+            key={index}
+            fileObj={fileObj}
+            handleTitleChange={handleTitleChange}
+            handleCaptionChange={handleCaptionChange}
+            handleRemovePhoto={handleRemovePhoto}
+            index={index}
             />
-            <textarea
-              value={fileObj.caption}
-              onChange={(e) => handleCaptionChange(index, e.target.value)}
-              placeholder="Enter caption (optional)"
-              className={styles.captionInput}
-              onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
-              rows={4}
-            />
-          </div>
-        ))}
+            ))}
+        </div>
       </div>
     );
   };

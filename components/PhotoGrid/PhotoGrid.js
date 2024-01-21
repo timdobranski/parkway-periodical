@@ -24,8 +24,6 @@ export default function PhotoGrid ({ photos }) {
     setGridClassName(gridClass);
   }, [])
 
-  console.log('photos passed to renderPhotosGrid: ', photos)
-
       if (!photos || !photos.content || photos.content.length === 0) {
       return <div>no photos to display</div>;
     }

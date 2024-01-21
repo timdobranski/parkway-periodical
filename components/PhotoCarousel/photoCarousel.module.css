@@ -1,0 +1,23 @@
+.carouselWrapper {
+  margin: 4rem;
+}
+.icon {
+  padding: .5rem;
+  border-radius: 4px;
+  margin: .5rem;
+}
+
+.carouselSlide {
+  position: relative;
+}
+.carouselCaption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0; /* Ensures full width */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: white;
+  padding: 10px;
+  font-size: 1em;
+  z-index: 2; /* Ensure it's above the image */
+}
