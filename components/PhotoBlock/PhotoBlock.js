@@ -11,7 +11,6 @@ import Image from 'next/image';
 
 export default function PhotoBlock({ updatePhotoContent, src, isEditable, setActiveBlock, blockIndex }) {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
-
   // when the editable status changes, if there are photos uploaded, save them
   useEffect(() => {
     if (!isEditable && selectedPhotos.length > 0) {
@@ -84,7 +83,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       files.map((fileObj, idx) => { return idx === index ? { ...fileObj, caption: newCaption } : fileObj})
     );
   };
-  const renderPreviews = () => {
+  const renderEditableView = () => {
     let gridClass = '';
     if (selectedPhotos.length === 1) {
       gridClass = styles.photosGridSingle;
@@ -96,6 +95,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
     return (
       <div className={`${styles.photosGrid} ${gridClass}`}>
+          <input type="file" accept="image/*" onChange={handleFileChange} multiple className={styles.photoInput}/>
         {selectedPhotos.map((fileObj, index) => (
           <div key={index} className={styles.gridPhotoContainer}>
             <div className={styles.photoWrapper}>
@@ -140,16 +140,9 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       </div>
     );
   };
-
-
-  if (isEditable) {
-    return (
-      <div className={styles.previewWrapper}>
-        <input type="file" accept="image/*" onChange={handleFileChange} multiple className={styles.photoInput}/>
-        <div className={styles.photoWrapper}>{renderPreviews()}</div>
-      </div>
-    );
-  } else {
+  const renderPreview = () => {
+    console.log('inside renderPreview, src: ', src);
+    // This function handles rendering content when isEditable is false
     if (!src || src.length === 0) {
       return <p className={styles.noPhotoMessage}>No photo provided</p>;
     }
@@ -164,10 +157,12 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       case 'grid':
         return <PhotoGrid photos={src} />;
       case 'carousel':
-        return
-          <PhotoCarousel photos={src} />
+        return <PhotoCarousel photos={src} />;
       default:
         return <p>Invalid photo format: {src.format}</p>;
     }
-  }
+  };
+
+  return isEditable ? renderEditableView() : src.content && src.content.length > 0 ? renderPreview() : 'loading';
+
 }

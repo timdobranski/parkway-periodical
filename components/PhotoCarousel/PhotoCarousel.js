@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import styles from './photoCarousel.module.css';
 
 export default function PhotoCarousel({ photos }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
@@ -16,7 +17,6 @@ export default function PhotoCarousel({ photos }) {
 
   return (
     <div className={styles.carouselWrapper}>
-      <h1>loading</h1>
     <Carousel
       dynamicHeight={true}
       autoPlay={false}
