@@ -59,7 +59,6 @@ async function uploadImageToSupabase(base64String, fileName) {
 
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/photos/${filePath}`;
 }
-
 // Handler to submit content blocks
 async function handleSubmit() {
   console.log('inside handle submit');
@@ -101,8 +100,6 @@ async function handleSubmit() {
     console.error('Error in handleSubmit: ', error);
   }
 }
-
-
   // content blocks helpers
   const addPrimeTextBlock = () => {
         const newBlock = { type: 'text', content: '' };
@@ -125,8 +122,8 @@ async function handleSubmit() {
     setContentBlocks(updatedBlocks);
 
     // Adjust activeBlock if necessary
-    if (index === activeBlock || index < activeBlock || activeBlock >= updatedBlocks.length) {
-        setActiveBlock(updatedBlocks.length > 0 ? 0 : null); // Set to first block or null
+    if (index === activeBlock) {
+        setActiveBlock(null);
     }
   };
   const moveBlockUp = (index) => {

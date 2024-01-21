@@ -29,7 +29,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
               reader.onloadend = () => {
                   urls.push({ src: reader.result, caption: fileObj.caption, title: fileObj.title });
                   if (--readersToComplete === 0) {
-                    console.log('urls to be set as content in photo block: ', urls)
+                    // console.log('urls to be set as content in photo block: ', urls)
                       updatePhotoContent(urls);
                   }
               };
@@ -43,7 +43,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
   // if there are existing photos, render them
   useEffect(() => {
-    console.log('photos passed to PhotoBlock(src): ', src)
+    // console.log('photos passed to PhotoBlock(src): ', src)
     if (src && src.content && src.content.length > 0) {
       const fileObjects = src.content.map(photo => ({
         file: null, // No file object available for existing photos

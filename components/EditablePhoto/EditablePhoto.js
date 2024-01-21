@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
@@ -14,23 +14,60 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
     height: 100,
     x: 0,
     y: 0,
-    aspect: 16 / 9
+    // aspect: 16 / 9
   });
-  const [cropSize, setCropSize] = useState({ width: 80, height: 80 }); // In percent or pixels
+  const [cropSize, setCropSize] = useState({ width: 100, height: 100 }); // In percent or pixels
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
   const [src, setSrc] = useState(fileObj.file ? URL.createObjectURL(fileObj.file) : fileObj.src);
   const [imageRef, setImageRef] = useState(null);
   const [cropActive, setCropActive] = useState(false);
   const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
+  const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
+  const debounceTimer = useRef(null);
 
+  useEffect(() => {
+    if (lockAspectRatio && imageRef) {
+      const aspectRatio = imageRef.naturalWidth / imageRef.naturalHeight;
+      setCrop({ ...crop, aspect: aspectRatio });
+    } else {
+      setCrop({ ...crop, aspect: undefined });
+    }
+  }, [lockAspectRatio, imageRef]);
+  useEffect(() => {
+    const newWidth = unit === 'percent' ? debouncedCropSize.width : pixelsToPercent(debouncedCropSize.width, 'width');
+    const newHeight = unit === 'percent' ? debouncedCropSize.height : pixelsToPercent(debouncedCropSize.height, 'height');
+    setCrop({ ...crop, width: newWidth, height: newHeight });
+  }, [debouncedCropSize, unit, imageRef]);
+  useEffect(() => {
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setDebouncedCropSize(cropSize);
+    }, 500);
+    return () => clearTimeout(debounceTimer.current);
+  }, [cropSize]);
+  const enforceCropConstraints = () => {
+    const maxWidth = unit === 'percent' ? 100 : imageRef.naturalWidth;
+    const maxHeight = unit === 'percent' ? 100 : imageRef.naturalHeight;
+    setCropSize({
+      width: Math.min(cropSize.width, maxWidth),
+      height: Math.min(cropSize.height, maxHeight)
+    });
+  };
 
+  useEffect(() => {
+    enforceCropConstraints();
+  }, [unit, imageRef]);
   const onImageLoaded = (image) => {
     setImageRef(image);
     if (lockAspectRatio) {
       const aspectRatio = image.naturalWidth / image.naturalHeight;
       setCrop({ ...crop, aspect: aspectRatio });
     }
+  };
+  const updateCropSize = (newSize) => {
+    setCropSize(newSize);
+    setCrop({ ...crop, width: newSize.width, height: newSize.height });
   };
   const onCropChange = (crop, percentCrop) => {
     setCrop(percentCrop);
@@ -90,6 +127,27 @@ export default function EditablePhoto({ fileObj, updatePhotoContent, handleTitle
       }, 'image/jpeg');
     });
   }
+  const handleWidthChange = (e) => {
+    const value = e.target.value;
+    const newWidth = unit === 'percent' ? value : percentToPixels(value, 'width');
+    setCropSize({ ...cropSize, width: newWidth });
+  };
+  const handleHeightChange = (e) => {
+    const value = e.target.value;
+    const newHeight = unit === 'percent' ? value : percentToPixels(value, 'height');
+    setCropSize({ ...cropSize, height: newHeight });
+  };
+  const pixelsToPercent = (value, dimension) => {
+    if (!imageRef) return 0;
+    const imageSize = dimension === 'width' ? imageRef.naturalWidth : imageRef.naturalHeight;
+    return (value / imageSize) * 100;
+  };
+  // Convert percent to pixels
+  const percentToPixels = (value, dimension) => {
+    if (!imageRef) return 0;
+    const imageSize = dimension === 'width' ? imageRef.naturalWidth : imageRef.naturalHeight;
+    return (value / 100) * imageSize;
+  };
 
   if (!fileObj || !src) { return null }
 

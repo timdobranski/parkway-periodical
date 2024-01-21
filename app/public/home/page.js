@@ -13,7 +13,8 @@ export default function Home() {
     const getPosts = async () => {
       const { data, error } = await supabase
         .from('posts')
-        .select('*');
+        .select('*')
+        .order('id', { ascending: false });
       console.log('data: ', data);
 
       const parsedData = data.map(post => {

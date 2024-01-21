@@ -1,52 +1,24 @@
-.previewWrapper {
-  width: 100%;
-  box-sizing: content-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  border: dashed black 2px;
-  border-radius: 10px;
-
-
-}
-.photoPreviewContainer {
-  width: 45%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-.photoWrapper {
-  position: relative;
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: flex-start;
-}
-.photoInput {
-  margin: 1rem;
-}
-.photoPreview {
-  width: 100%;
-  height: auto;
-  margin: 0;
-  box-sizing: border-box;
-}
 .photoTitle {
   font-weight: bold;
   font-size: 1.75rem;
-  color: rgb(0, 95, 168);
+  color: rgb(255, 255, 255);
+  width: 80%;
+  margin: 0 auto;
+  background: linear-gradient(90deg, rgb(33, 197, 252), rgb(0, 148, 193));
+  border-radius: 3px;
+  transform: skew(-10deg);
+
 }
 .photosGrid {
   display: grid;
-  gap: 10px; /* Adjust as needed */
+  gap: 10px;
   justify-content: center;
   width: 100%;
   box-sizing: border-box;
+}
+
+.photosGridSingle, .photosGridTwoColumns, .photosGridThreeColumns {
+  width: 100%;
 }
 
 .photosGridSingle {
@@ -58,103 +30,23 @@
 }
 
 .photosGridThreeColumns {
-  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Using minmax for more flexibility */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-
 .gridPhotoContainer {
-  /* margin: 1rem; */
   box-sizing: border-box;
-  width: 80%;
   margin: 0 auto;
+  width: 100%;
 }
 
-.carouselWrapper {
-  margin: 4rem;
-}
 .gridPhoto {
-  width: 100%;
+  width: 90%;
   height: auto;
   border-radius: 10px;
   box-sizing: border-box;
-}
-.icon {
-  padding: .5rem;
-  border-radius: 4px;
-  margin: .5rem;
-}
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
 
-.selectedIcon {
-  background: rgb(101, 191, 255);
-  padding: .5rem;
-  border-radius: 4px;
-  margin: .5rem;
-}
-.icon:hover {
-  cursor: pointer;
-}
-.carouselSlide {
-  position: relative;
-}
-.carouselCaption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0; /* Ensures full width */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  color: white;
-  padding: 10px;
-  font-size: 1em;
-  z-index: 2; /* Ensure it's above the image */
-}
-.titleInput, .captionInput {
-  width: 80%;
-  font-size: 1rem;
-  margin: 1rem;
-  padding: .5rem;
-  border-radius: 5px;
-  border: 1px solid black;
-}
-.captionInput {
-  width: 80%;
 }
 .noPhotoMessage {
   width: 100%;
-}
-.photoEditMenu {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-}
-.photoEditMenuIconWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.photoEditMenuIconLabel{
-  font-weight: normal;
-}
-.removePhotoIcon, .cropIcon, .resizeIcon {
-  background-color: rgba(0, 0, 0, .5);
-  margin: .25rem;
-  padding: .25rem;
-  border-radius: 4px;
-  color: rgb(254, 93, 120);
-
-  /* position: absolute;
-  top: 1rem;
-  right: 0; */
-
-  width: 25px;
-  height: 25px;
-}
-.removePhotoIcon:hover {
-  cursor: pointer;
-}
-.cropIcon {
-  color: white;
-}
-.resizeIcon {
-  color: white;
 }
