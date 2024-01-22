@@ -59,9 +59,10 @@
   align-items: center;
   position: relative;
   z-index: 0;
-  margin: .5rem 0
+  margin: .5rem 0;
+  position: relative;
 }
-.image {
+/* .image {
   display: inline-block;
   box-sizing: border-box;
   height: 100%;
@@ -73,7 +74,7 @@
   border: solid white 6px;
   border-radius: 5px;
   z-index: 5;
-}
+} */
 .imageRow:nth-child(1) {
   animation: scrollSlow 30s linear infinite;
 }
@@ -153,4 +154,60 @@
     padding: 1rem;
     border-radius: 10px;
   }
+}
+
+
+
+/* new stuff for css tint ---------------------------------------------------*/
+.image {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: all 0.5s ease-in-out;
+  filter: grayscale(100%);
+  z-index:1;
+  border: solid white 6px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.imageContainerRed {
+  box-sizing: border-box;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 100%;
+  z-index: 1;
+  margin: 0 .25rem;
+}
+.imageContainerRed::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(255, 86, 74);
+  mix-blend-mode: overlay;
+}
+.imageContainerBlue::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(35, 182, 255);
+  mix-blend-mode: overlay;
+}
+
+/* Remove tint and grayscale on hover of individual image */
+.image:hover {
+  filter: grayscale(0%);
+}
+
+.imageContainerRed:hover::after {
+  opacity: 0;
 }

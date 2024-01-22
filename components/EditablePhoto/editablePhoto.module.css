@@ -132,5 +132,5 @@
 .draggableWrapper:hover {
   cursor: move;
   border: solid rgb(0, 0, 0) 1px;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, .3);
 }
