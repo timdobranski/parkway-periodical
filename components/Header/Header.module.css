@@ -9,7 +9,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background-color: rgba(255, 255, 255, .6);
+  background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(3px);
   text-align: center;
   z-index: 1;
@@ -33,7 +33,7 @@
   margin: auto; /* Center the text */
   margin-bottom: 0;
   text-align: center; /* Ensure the text is centered */
-  -webkit-text-stroke: 2px rgb(255, 255, 255);
+  /* -webkit-text-stroke: 2px rgb(255, 255, 255); */
   background: url('/images/texture.jpeg') no-repeat center / cover;
   /* background: linear-gradient(to right, rgb(0, 118, 182), rgb(1, 112, 203)); */
   -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
@@ -69,7 +69,7 @@
   margin: 0rem 2rem .75rem 2rem;
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
-  color: rgb(2, 58, 105);
+  color: rgb(43, 133, 207);
   font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none;

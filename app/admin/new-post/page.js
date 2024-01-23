@@ -16,8 +16,8 @@ import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesom
 export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [contentBlocks, setContentBlocks] = useState([]);
-  const [activeBlock, setActiveBlock] = useState(null);
+  const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: ''}]);
+  const [activeBlock, setActiveBlock] = useState(0);
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -39,6 +39,9 @@ export default function NewPostPage() {
     console.log('contentblocks: ', contentBlocks)
   }, [contentBlocks])
 
+  useEffect(() => {
+
+  }, [])
 
 // Helper function to upload image to Supabase Storage
 async function uploadImageToSupabase(base64String, fileName) {
@@ -182,8 +185,16 @@ async function handleSubmit() {
     }));
     setContentBlocks(updatedBlocks);
   };
+  // title block helper
+  const updateTitle = (newText) => {
+    setContentBlocks(contentBlocks.map((block, index) => {
+      if (index === activeBlock) {
+        return { ...block, content: newText };
+      }
+      return block;
+    }));
+  };
   // text block helpers
-
   const updateActiveTextEditorState = (newText) => {
     setContentBlocks(contentBlocks.map((block, index) => {
       if (index === activeBlock) {
@@ -235,6 +246,28 @@ async function handleSubmit() {
             <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
           </div>
+          {block.type === 'title' && (
+            index === activeBlock ? (
+              <div className={styles.titleInputWrapper}>
+              <h2 className={styles.postTitleInputLabel}>Enter Post Title</h2>
+              <input
+                type="text"
+                value={block.content}
+                onChange={(e) => updateTitle(e.target.value)}
+                className={styles.titleInput}
+              />
+              </div>
+            ) : (
+              <div className={'postTitleWrapper'}>
+                <div className='postTitle'>
+                  {block.content}
+                </div>
+                  <div className={styles.date}>
+                    {new Date().toLocaleDateString()} {/* Render the current date */}
+                  </div>
+              </div>
+            )
+          )}
           {block.type === 'text' && (
             <PrimeText
             isEditable={index === activeBlock}
@@ -260,11 +293,11 @@ async function handleSubmit() {
             />}
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
-          <FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>
+          {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>)}
           </div>
         </div>
       ))}
-        {contentBlocks.length === 0 && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
+        {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
       </div>
     </>
   );

@@ -40,6 +40,17 @@ export default function Home() {
         <div className='post' key={i}>
           {post.content.map((block, index) => (
             <React.Fragment key={index}>
+             {block.type === 'title' && (
+              <div className='postTitleWrapper'>
+                <div className='postTitle'>
+                  {block.content}
+                </div>
+                <div className='postDate'>
+                  {new Date().toLocaleDateString()} {/* Render the current date */}
+                </div>
+              </div>
+            )
+          }
               {block.type === 'text' && (
                 <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div>
               )}

@@ -8,9 +8,6 @@
   background: linear-gradient(90deg, rgb(0, 166, 222), rgb(0, 148, 193));
   border: solid 2px rgb(0, 101, 141);
   box-shadow:  0 0 10px rgba(0, 147, 180, 0.749);
-
-
-
   border-radius: 3px;
   transform: skew(-10deg);
 
@@ -41,11 +38,13 @@
 .gridPhotoContainer {
   box-sizing: border-box;
   margin: 0 auto;
-  width: 100%;
+  max-width: 100%;
+  max-height: 50vh;
 }
 
 .gridPhoto {
-  width: 90%;
+  max-height: 50vh;
+  max-width: 90%;
   height: auto;
   border-radius: 10px;
   box-sizing: border-box;

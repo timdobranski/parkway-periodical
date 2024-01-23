@@ -117,8 +117,13 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
     return (
       <div className={styles.previewWrapper}>
-        <input type="file" accept="image/*" onChange={handleFileChange} multiple className={styles.photoInput}/>
-
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          {...(!src.format.includes('single') && { multiple: true })}
+          className={styles.photoInput}
+        />
         <div className={`${styles.photosGrid} ${gridClass}`}>
           {selectedPhotos.map((fileObj, index) => (
             <EditablePhoto
