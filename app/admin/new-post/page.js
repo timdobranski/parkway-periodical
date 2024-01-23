@@ -249,18 +249,19 @@ async function handleSubmit() {
           {block.type === 'title' && (
             <div className={'postTitleWrapper'}>
            {index === activeBlock ? (
-              <div className={'postTitleWrapper'}>
+              <div className={'postTitleWrapper'} >
               {/* <h2 className={styles.postTitleInputLabel}>Enter Post Title</h2> */}
               <input
                 type="text"
                 value={block.content}
                 onChange={(e) => updateTitle(e.target.value)}
-                className='postTitle editableTitle'
+                className='postTitle'
                 placeholder="Enter title"
+                onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
               />
               </div>
             ) : (
-              <div className={'postTitleWrapper'}>
+              <div className={'postTitleWrapper'} onClick={() => setActiveBlock(index)}>
                 <div className='postTitle'>
                   {block.content}
                 </div>
