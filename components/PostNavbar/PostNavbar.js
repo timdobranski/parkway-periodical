@@ -100,7 +100,7 @@ export default function PostNavbar({
           <div className={styles.navbarSectionRow}>
           <div onClick={() => onAddPhoto('single-photo-caption-below')} className={styles.navbarSectionItem}>
               <FontAwesomeIcon icon={faImage} className={styles.icon} />
-              <h3>Photo</h3>
+              <h3>Single Photo</h3>
             </div>
             <div onClick={() => onAddPhoto('grid')} className={styles.navbarSectionItem}>
               <FontAwesomeIcon icon={faTableCells} className={styles.icon} />

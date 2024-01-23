@@ -2,8 +2,11 @@
   padding-top: 1rem;
   border-radius: 10px;
   height: 100%;
-  /* max-height: 50vh; */
-  border: solid blue 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 2rem;
 }
 .draggableWrapper:hover {
   cursor: move;
@@ -15,7 +18,8 @@
   box-sizing: border-box;
   width: fit-content;
   max-width: 70%;
-  margin: 0 auto;
+
+  /* margin: 1rem; */
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -23,7 +27,7 @@
   max-height: 50vh;
   /* border-radius: 10px; */
   overflow: hidden;
-  border: solid red 2px;
+
 }
 .photoPreview {
   max-width: 100%;

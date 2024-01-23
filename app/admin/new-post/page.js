@@ -247,14 +247,16 @@ async function handleSubmit() {
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
           </div>
           {block.type === 'title' && (
-            index === activeBlock ? (
-              <div className={styles.titleInputWrapper}>
-              <h2 className={styles.postTitleInputLabel}>Enter Post Title</h2>
+            <div className={'postTitleWrapper'}>
+           {index === activeBlock ? (
+              <div className={'postTitleWrapper'}>
+              {/* <h2 className={styles.postTitleInputLabel}>Enter Post Title</h2> */}
               <input
                 type="text"
                 value={block.content}
                 onChange={(e) => updateTitle(e.target.value)}
-                className={styles.titleInput}
+                className='postTitle editableTitle'
+                placeholder="Enter title"
               />
               </div>
             ) : (
@@ -262,11 +264,12 @@ async function handleSubmit() {
                 <div className='postTitle'>
                   {block.content}
                 </div>
-                  <div className={styles.date}>
-                    {new Date().toLocaleDateString()} {/* Render the current date */}
-                  </div>
               </div>
-            )
+            )}
+            <div className={styles.date}>
+            {new Date().toLocaleDateString()} {/* Render the current date */}
+          </div>
+          </div>
           )}
           {block.type === 'text' && (
             <PrimeText
