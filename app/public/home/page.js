@@ -52,18 +52,23 @@ export default function Home() {
             )
           }
               {block.type === 'text' && (
-                <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div>
+                <div className='blockWrapper'>
+                  <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div>
+                </div>
               )}
               {block.type === 'photo' && (
+                <div className='blockWrapper'>
                 <Photo
                   src={block}
                   format={block.format || 'grid'}
                 />
-              )}
+              </div>
+              )
+              }
               {block.type === 'video' && (
-                <Video
-                  src={block.content}
-                />
+                <div className='blockWrapper'>
+                  <Video src={block.content} />
+                </div>
               )}
             </React.Fragment>
           ))}

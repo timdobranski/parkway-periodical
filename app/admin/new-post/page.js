@@ -9,6 +9,7 @@ import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import Text from '../../../components/Text/Text';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
+import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
@@ -241,60 +242,47 @@ async function handleSubmit() {
 
       <div className='postPreview'>
       {contentBlocks.map((block, index) => (
-        <div key={index} className={styles.blockContainer}>
+        <div key={index} className='blockWrapper'>
           <div className={styles.blockControlsLeft}>
             <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
           </div>
           {block.type === 'title' && (
-            <div className={'postTitleWrapper'}>
-           {index === activeBlock ? (
-              <div className={'postTitleWrapper'} >
-              {/* <h2 className={styles.postTitleInputLabel}>Enter Post Title</h2> */}
-              <input
-                type="text"
-                value={block.content}
-                onChange={(e) => updateTitle(e.target.value)}
-                className='postTitle'
-                placeholder="Enter title"
-                onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+              <PostTitle
+                isEditable={index === activeBlock}
+                title={block.content}
+                updateTitle={updateTitle}
+                index={index}
+                activeBlock={activeBlock}
+                setActiveBlock={setActiveBlock}
               />
-              </div>
-            ) : (
-              <div className={'postTitleWrapper'} onClick={() => setActiveBlock(index)}>
-                <div className='postTitle'>
-                  {block.content}
-                </div>
-              </div>
-            )}
-            <div className={styles.date}>
-            {new Date().toLocaleDateString()} {/* Render the current date */}
-          </div>
-          </div>
           )}
           {block.type === 'text' && (
             <PrimeText
             isEditable={index === activeBlock}
             textState={block.content}
             setTextState={updateActiveTextEditorState}
+            onClick={() => setActiveBlock(index)}
             />
           )}
           {block.type === 'photo' &&
-            <PhotoBlock
-              key={index}
-              blockIndex={index}
-              updatePhotoContent={(files) => updatePhotoContent(index, files)}
-              isEditable={index === activeBlock}
-              src={block}
-              setActiveBlock={setActiveBlock}
-            />}
+              <PhotoBlock
+                key={index}
+                blockIndex={index}
+                updatePhotoContent={(files) => updatePhotoContent(index, files)}
+                isEditable={index === activeBlock}
+                src={block}
+                setActiveBlock={setActiveBlock}
+              />
+          }
           {block.type === 'video' &&
             <Video
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
               setActiveBlock={setActiveBlock}
               isEditable={index === activeBlock}
               src={block.content}
-            />}
+            />
+            }
           <div className={styles.blockControlsRight}>
           <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
           {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>)}

@@ -3,7 +3,7 @@
 import styles from './photoGrid.module.css';
 import { useState, useEffect } from 'react';
 
-export default function PhotoGrid ({ photos }) {
+export default function PhotoGrid ({ photos, setActiveBlock, blockIndex }) {
   const [gridClassName, setGridClassName] = useState('');
   const [photoClassName, setPhotoClassName] = useState('');
 
@@ -72,7 +72,7 @@ export default function PhotoGrid ({ photos }) {
     {photos.content.map((photo, index) => (
   <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
 
-        <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} />
+        <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto}  onClick={() => setActiveBlock(blockIndex)}/>
 
         {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
         {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}

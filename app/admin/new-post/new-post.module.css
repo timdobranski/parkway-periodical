@@ -12,12 +12,12 @@
   /* overflow-y: auto;  */
   /* border: solid greenyellow 4px; */
 }
-.blockContainer {
+.blockWrapper {
   display: flex;
   align-items: center;
   width: 100%;
   padding: 0;
-  margin: 0;
+  margin: 3rem;;
 }
 
 .blockControlsLeft, .blockControlsRight {
@@ -65,51 +65,4 @@
   /* color: red; */
   height: 25px;
   width:25px;
-}
-.postTitleInputLabel {
-  display: block;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 0;
-  padding: 0;
-  margin-bottom: .5rem;
-  margin-top: .5rem;
-}
-.titleInputWrapper {
-  /* border: solid red 3px; */
-  width: 100%;
-}
-.titleInput {
-width: 60%;
-border-radius: 5px;
-border: solid rgb(111, 111, 111) 1px;
-font-size: 2rem;
-padding: .5rem;
-
-}
-.titleWrapper {
-  /* border: solid red 3px; */
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-}
-.title {
-  font-size: 2rem;
-  display: block;
-  background-color:rgb(23, 197, 255);
-  background: linear-gradient(90deg, rgb(255, 114, 114) 0%, rgba(23, 197, 255, 1) 50%, rgb(255, 103, 103) 100%);
-  font-weight: bold;
-  padding: .5rem 2rem .5rem 2rem;
-  transform: skew(-15deg);
-  border-radius: 3px;
-  border: solid white 2px;
-  margin: .5rem;
-  width: 80%;
-  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
-}
-.date {
-  margin: 1rem;
 }

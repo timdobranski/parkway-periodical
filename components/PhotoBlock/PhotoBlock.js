@@ -160,7 +160,13 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       case '3xColumn':
       case '2xColumn':
       case 'grid':
-        return <PhotoGrid photos={src} />;
+        return (
+          <PhotoGrid
+            photos={src}
+            setActiveBlock={setActiveBlock}
+            blockIndex={blockIndex}
+            onClick={() => setActiveBlock(blockIndex)}
+          />)
       case 'carousel':
         return <PhotoCarousel photos={src} />;
       default:
