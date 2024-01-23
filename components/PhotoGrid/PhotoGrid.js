@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './photoGrid.module.css';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function PhotoGrid ({ photos, setActiveBlock, blockIndex }) {
   const [gridClassName, setGridClassName] = useState('');
@@ -67,18 +67,27 @@ export default function PhotoGrid ({ photos, setActiveBlock, blockIndex }) {
   console.log('gridClassName: ', gridClassName);
   console.log('format: ', photos.format);
   return (
-    <div className={`${styles.photosGrid} ${styles[gridClassName] }`}>
-
-    {photos.content.map((photo, index) => (
-  <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
-
-        <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto}  onClick={() => setActiveBlock(blockIndex)}/>
-
-        {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
-        {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
+    <>
+      <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
+        {/* Loop to render all photos */}
+        {photos.content.map((photo, index) => (
+          <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
+            <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} onClick={() => setActiveBlock(blockIndex)} />
+          </div>
+        ))}
       </div>
-    ))}
 
-  </div>
+      <div className={`${styles.photosCaptionGrid} ${styles[gridClassName]}`}>
+        {/* Loop to render all titles and captions */}
+        {photos.content.map((photo, index) => (
+          <div key={index} className={`${styles.photoInfoContainer}`}>
+            {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
+            {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
+          </div>
+        ))}
+      </div>
+    </>
   );
+
+
 }
