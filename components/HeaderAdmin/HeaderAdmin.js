@@ -15,10 +15,9 @@ export default function Header() {
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
       <div className={styles.navContainerLeft}>
-        {/* <Link href='/'> */}
-
-        <h2>NEW POST</h2>
-        {/* </Link> */}
+        <Link href='/admin/new-post'>
+          <h2>NEW POST</h2>
+        </Link>
         <Link href='/admin/view-posts'>
           <h2>VIEW/EDIT POSTS</h2>
           </Link>

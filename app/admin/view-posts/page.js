@@ -2,6 +2,7 @@
 
 import supabase from '../../../utils/supabase.js'
 import { useEffect, useState } from 'react'
+import styles from './view-posts.module.css'
 
 export default function ViewPosts () {
   const [posts, setPosts] = useState([])
@@ -14,7 +15,14 @@ export default function ViewPosts () {
         .select('*')
       if (error) { console.log(error) }
       console.log('data: ', data)
-      setPosts(data)
+      const parsedData = data.map(post => {
+        return {
+          ...post,
+          content: JSON.parse(post.content)
+        };
+      });
+      console.log('parsedData: ', parsedData);
+      setPosts(parsedData);
       }
     getPosts()
   }, [])
@@ -29,7 +37,20 @@ export default function ViewPosts () {
   return (
     <>
     {posts.map((post, i) => {
-      return (<h1 key={i}>{post.title || `No title for this post`}</h1>)
+      const date = new Date(post.created_at);
+      const pacificTime = date.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' });
+
+      return (
+        <div className={styles.postListingContainer} key={i}>
+          <h2>{pacificTime || `No subtitle for this post`}</h2>
+          <h1 key={i}>{post.content[0].content || `No title for this post`}</h1>
+          <div className={styles.postControlMenu}>
+            <button>View Post</button>
+            <button>Edit Post</button>
+            <button className={styles.deletePostButton}>Delete Post</button>
+          </div>
+        </div>
+      )
     })}
 
   </>
