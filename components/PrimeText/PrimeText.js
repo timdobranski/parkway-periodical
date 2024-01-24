@@ -19,7 +19,7 @@ export default function PrimeText({ isEditable, textState, setTextState }) {
   }
   return (
     <div className={styles.PrimeTextContainer}>
-      <Editor value={textState} onTextChange={(e) => setTextState(e.htmlValue)} style={{height:'200px'}}/>
+      <Editor value={textState} onTextChange={(e) => setTextState(e.htmlValue)} />
     </div>
   )
 }

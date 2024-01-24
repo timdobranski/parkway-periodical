@@ -2,8 +2,13 @@
 
 import styles from './photoGrid.module.css';
 import React, { useState, useEffect } from 'react';
+import EditablePhoto from '../EditablePhoto/EditablePhoto';
 
-export default function PhotoGrid ({ photos, setActiveBlock, blockIndex }) {
+export default function PhotoGrid ({
+  photos, setActiveBlock, blockIndex, isEditable, updatePhotoContent, setPhotoContent, handleTitleChange, format,
+  handleCaptionChange, handleRemovePhoto, onDragStart, onDragOver, onDrop, index, selectedPhotos, setSelectedPhotos
+
+}) {
   const [gridClassName, setGridClassName] = useState('');
   const [photoClassName, setPhotoClassName] = useState('');
 
@@ -16,17 +21,17 @@ export default function PhotoGrid ({ photos, setActiveBlock, blockIndex }) {
   // 6. single-photo-caption-above
   // 7. single-photo-caption-below
 
-
+  // determine the format and set the grid class accordingly
   useEffect(() => {
     console.log('photos passed to PhotoGrid: ', photos);
-    if (!photos || !photos.content || photos.content.length === 0) {
+    console.log('format of photos: ', format);
+    if (!photos || photos.length === 0) {
       return; // Return early if no photos
     }
-
     let gridClass = '';
     let photoClass = '';
 
-    switch (photos.format) {
+    switch (format) {
       case 'single-photo-caption-right':
         gridClass = 'singlePhotoGrid';
         photoClass = 'photoWithCaptionRight';
@@ -56,37 +61,62 @@ export default function PhotoGrid ({ photos, setActiveBlock, blockIndex }) {
         gridClass = styles.photosGrid; // Default case
         break;
     }
-
     setGridClassName(gridClass);
     setPhotoClassName(photoClass);
   }, [photos]);
 
-  if (!photos || !photos.content || photos.content.length === 0 || !gridClassName) {
+  useEffect(() => {
+    console.log('grid class name: ', gridClassName);
+  }), [gridClassName];
+
+  if (!photos || photos.length === 0 ) {
     return <div>No photos to display</div>;
   }
-  console.log('gridClassName: ', gridClassName);
-  console.log('format: ', photos.format);
-  return (
-    <>
-      <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
-        {/* Loop to render all photos */}
-        {photos.content.map((photo, index) => (
-          <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
-            <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} onClick={() => setActiveBlock(blockIndex)} />
-          </div>
-        ))}
-      </div>
 
-      <div className={`${styles.photosCaptionGrid} ${styles[gridClassName]}`}>
-        {/* Loop to render all titles and captions */}
-        {photos.content.map((photo, index) => (
-          <div key={index} className={`${styles.photoInfoContainer}`}>
+
+
+
+  return (
+<>
+  <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
+    {photos.map((photo, index) => (
+      <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
+        {isEditable ? (
+          <EditablePhoto
+            isEditable={isEditable}
+            fileObj={photo}
+            index={index}
+            handleTitleChange={handleTitleChange}
+            handleCaptionChange={handleCaptionChange}
+            handleRemovePhoto={handleRemovePhoto}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+            updatePhotoContent={updatePhotoContent}
+            selectedPhotos={selectedPhotos}
+            setSelectedPhotos={setSelectedPhotos}
+          />
+        ) : (
+          <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} onClick={() => setActiveBlock(blockIndex)} />
+        )}
+      </div>
+    ))}
+  </div>
+
+  <div className={`${styles.gridCaptionContainer} ${styles[gridClassName]}`}>
+    {photos.map((photo, index) => (
+      <div key={index} className={`${styles.photoInfoContainer}`}>
+        {isEditable ? ( null
+        ) : (
+          <>
             {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
             {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
-          </div>
-        ))}
+          </>
+        )}
       </div>
-    </>
+    ))}
+  </div>
+</>
   );
 
 

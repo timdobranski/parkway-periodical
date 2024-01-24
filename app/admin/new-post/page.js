@@ -6,7 +6,6 @@ import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
 import { EditorState, RichUtils } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
-import Text from '../../../components/Text/Text';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import PostTitle from '../../../components/PostTitle/PostTitle';

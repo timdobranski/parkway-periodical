@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import  { RichUtils,  } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faVideo, faFont, faBars, faTv, faTableCells } from '@fortawesome/free-solid-svg-icons';
-import TextControls from '../TextControls/TextControls';
 
 export default function PostNavbar({
   onAddText, onAddPhoto, onAddVideo,

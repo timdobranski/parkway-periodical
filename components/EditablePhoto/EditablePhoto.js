@@ -160,10 +160,10 @@ export default function EditablePhoto({
 
   return (
     <div
-      draggable
-      onDragStart={(e) => onDragStart(e, index)}
-      onDragOver={onDragOver}
-      onDrop={(e) => onDrop(e, index)}
+      // draggable
+      // onDragStart={(e) => onDragStart(e, index)}
+      // onDragOver={onDragOver}
+      // onDrop={(e) => onDrop(e, index)}
       className={styles.draggableWrapper}
     >
       <div className={styles.photoWrapper}>
@@ -195,7 +195,12 @@ export default function EditablePhoto({
       <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} />
       </ReactCrop>
     ) : (
-      <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} />
+      <img src={fileObj.src}
+      draggable
+      onDragStart={(e) => onDragStart(e, index)}
+      onDragOver={onDragOver}
+      onDrop={(e) => onDrop(e, index)}
+      className={styles.photoPreview} alt={`Preview ${index}`} />
     )}
       {cropActive && (
         <div className={styles.cropControlsWrapper}>
