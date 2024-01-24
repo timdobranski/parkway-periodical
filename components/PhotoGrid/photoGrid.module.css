@@ -18,6 +18,7 @@
   justify-content: center;
   width: 100%;
   box-sizing: border-box;
+  align-items: center;
 }
 
 .photosGridSingle, .photosGridTwoColumns, .photosGridThreeColumns {
@@ -29,15 +30,19 @@
 }
 
 .photosGridTwoColumns {
+  display: grid;
+  justify-items: center;
+  align-items: center;
   grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 2;
+
 }
 
 .photosGridThreeColumns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: 2;
-  /* border: solid red 3px; */
-  justify-items: center; /* Center horizontally */
+  /* grid-template-rows: 2; */
+  justify-items: center;
   align-items: center;
 }
 .gridPhotoContainer {

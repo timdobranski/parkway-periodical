@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
@@ -18,6 +18,7 @@ export default function NewPostPage() {
   const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: ''}]);
   const [activeBlock, setActiveBlock] = useState(0);
+  const prevLengthRef = useRef(contentBlocks.length);
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -40,9 +41,22 @@ export default function NewPostPage() {
   }, [contentBlocks])
 
   useEffect(() => {
+    const currentLength = contentBlocks.length;
+    const prevLength = prevLengthRef.current;
 
-  }, [])
+    if (currentLength > prevLength) {
+      // Wait for the next DOM update
+      setTimeout(() => {
+        window.scrollTo({
+          left: 0,
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 0);
+    }
 
+    prevLengthRef.current = currentLength;
+  }, [contentBlocks]);
 // Helper function to upload image to Supabase Storage
 async function uploadImageToSupabase(base64String, fileName) {
   // Convert base64 string to a Blob
@@ -108,16 +122,31 @@ async function handleSubmit() {
         const newBlock = { type: 'text', content: '' };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length);
+    window.scrollTo({
+      left: 0,
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
   }
   const addVideoBlock = () => {
     const newBlock = { type: 'video', content: '', };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
+    window.scrollTo({
+      left: 0,
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = (format) => {
     const newBlock = { type: 'photo', content: null, format: format || 'grid'};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
+    window.scrollTo({
+      left: 0,
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
   };
   const removeBlock = (index) => {
     // Remove the selected block

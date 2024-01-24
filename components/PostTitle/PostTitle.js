@@ -5,7 +5,6 @@ export default function PostTitle({ isEditable, title, updateTitle, index, activ
   return (
     <div className={'postTitleWrapper'}>
     {index === activeBlock ? (
-      //  <div className={'postTitleWrapper'} >
        <input
          type="text"
          value={title}
@@ -14,11 +13,10 @@ export default function PostTitle({ isEditable, title, updateTitle, index, activ
          placeholder="Enter title"
          onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
        />
-      //  </div>
      ) : (
        <div className={'postTitleWrapper'} onClick={() => setActiveBlock(index)}>
          <div className='postTitle'>
-           {title}
+           {title || 'Enter title'}
          </div>
        </div>
      )}

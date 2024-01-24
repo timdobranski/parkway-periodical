@@ -6,7 +6,7 @@ export default function About() {
 
   return (
     <>
-      <div className='post'>
+      <div className={styles.aboutWrapper}>
         <h1>About Us</h1>
 
         <p>Welcome to the Parkway Periodical!</p>
