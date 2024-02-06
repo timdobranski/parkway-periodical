@@ -34,7 +34,6 @@
 }
 .photoPreview:hover {
   cursor: move;
-  /* filter:brightness(.8) */
 }
 .photoEditMenu {
   position: absolute;

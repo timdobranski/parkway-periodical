@@ -5,6 +5,7 @@ import supabase from '../../../utils/supabase';
 import styles from './home.module.css';
 import Photo from '../../../components/PhotoBlock/PhotoBlock';
 import Video from '../../../components/Video/Video';
+import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
@@ -58,10 +59,14 @@ export default function Home() {
               )}
               {block.type === 'photo' && (
                 <div className='blockWrapper'>
-                <Photo
-                  src={block}
-                  format={block.format || 'grid'}
-                />
+               <PhotoBlock
+                // key={index}
+                // blockIndex={index}
+                // updatePhotoContent={(files) => updatePhotoContent(index, files)}
+                isEditable={false}
+                src={block}
+                // setActiveBlock={setActiveBlock}
+              />
               </div>
               )
               }

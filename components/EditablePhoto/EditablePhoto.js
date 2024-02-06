@@ -160,10 +160,6 @@ export default function EditablePhoto({
 
   return (
     <div
-      // draggable
-      // onDragStart={(e) => onDragStart(e, index)}
-      // onDragOver={onDragOver}
-      // onDrop={(e) => onDrop(e, index)}
       className={styles.draggableWrapper}
     >
       <div className={styles.photoWrapper}>

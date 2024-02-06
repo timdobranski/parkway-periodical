@@ -35,11 +35,9 @@ export default function NewPostPage() {
     };
     getAndSetUser();
   }, [router]);
-
   useEffect(() => {
     console.log('contentblocks: ', contentBlocks)
   }, [contentBlocks])
-
   useEffect(() => {
     const currentLength = contentBlocks.length;
     const prevLength = prevLengthRef.current;
@@ -59,12 +57,12 @@ export default function NewPostPage() {
   }, [contentBlocks]);
 // Helper function to upload image to Supabase Storage
 async function uploadImageToSupabase(base64String, fileName) {
-  // Convert base64 string to a Blob
   const fetchResponse = await fetch(base64String);
   const blob = await fetchResponse.blob();
 
-  // Generate a unique file name if not provided
-  const uniqueFileName = fileName || `image_${new Date().getTime()}`;
+  // Use a combination of timestamp and a random string to ensure filename uniqueness
+  const uniqueSuffix = `${new Date().getTime()}_${Math.random().toString(36).substring(2, 15)}`;
+  const uniqueFileName = fileName ? `${fileName}_${uniqueSuffix}` : `image_${uniqueSuffix}`;
 
   const filePath = `${uniqueFileName}.webp`; // Assuming the image is in webp format
   let { error, data } = await supabase.storage.from('posts/photos').upload(filePath, blob);
@@ -76,47 +74,47 @@ async function uploadImageToSupabase(base64String, fileName) {
 
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/photos/${filePath}`;
 }
-// Handler to submit content blocks
+
 async function handleSubmit() {
   console.log('inside handle submit');
   try {
     const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
-      if (block.type === 'photo') {
-        // Process photo blocks
-        const processedPhotos = await Promise.all(block.content.map(async (photo) => {
+      // Check if block type is 'title' and content is falsy
+      if (block.type === 'title' && !block.content) {
+        block.content = `Weekly Update`;
+      } else if (block.type === 'photo') {
+        const photoPromises = block.content.map(async (photo) => {
           if (typeof photo.src === 'string' && photo.src.startsWith('data:')) {
-            const uploadedImageUrl = await uploadImageToSupabase(photo.src, photo.title);
-            return { ...photo, src: uploadedImageUrl };
+            return uploadImageToSupabase(photo.src, photo.title).then(uploadedImageUrl => ({ ...photo, src: uploadedImageUrl }));
           }
-          return photo; // Return as is if not a data URL
-        }));
+          return Promise.resolve(photo); // Resolve immediately if not a data URL
+        });
 
-        // Instead of returning the block with nested content, return the photo content directly
+        // Use Promise.all to ensure the order of photos is preserved
+        const processedPhotos = await Promise.all(photoPromises);
+
         return {
           type: block.type,
           content: processedPhotos,
-          format: block.format // Assuming format is a property you want to keep at this level
+          format: block.format
         };
       }
       return block;
     }));
 
-    // Prepare post object with content as jsonb
     const post = {
-      // Include other post fields if necessary
       content: JSON.stringify(processedBlocks)
     };
 
-    // Submit post object to Supabase table
     const { error } = await supabase.from('posts').insert([post]);
     if (error) throw new Error('Error submitting content blocks: ', error.message);
 
-    // Redirect or update state as needed
     router.push('/public/home');
   } catch (error) {
     console.error('Error in handleSubmit: ', error);
   }
 }
+
   // content blocks helpers
   const addPrimeTextBlock = () => {
         const newBlock = { type: 'text', content: '' };
