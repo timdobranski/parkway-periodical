@@ -64,13 +64,27 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
   }, [selectedPhotos])
 
   const handleFileChange = (event) => {
-    const newFileObjects = Array.from(event.target.files).map(file => ({
+    const files = Array.from(event.target.files);
+    let readersToComplete = files.length;
+
+    const newFileObjects = files.map(file => ({
       file,
-      src: URL.createObjectURL(file), // Immediately create a URL
+      src: '', // Temporarily set src to an empty string
       caption: '',
       title: ''
     }));
-    setSelectedPhotos(existingFiles => [...existingFiles, ...newFileObjects]);
+
+    files.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        newFileObjects[index].src = reader.result; // Set the src to the data:image URL
+        if (--readersToComplete === 0) {
+          // Once all files are processed, update the state
+          setSelectedPhotos(existingFiles => [...existingFiles, ...newFileObjects]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
   const onDragStart = (e, index) => {
     e.stopPropagation();

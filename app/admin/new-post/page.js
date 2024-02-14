@@ -36,7 +36,7 @@ export default function NewPostPage() {
     getAndSetUser();
   }, [router]);
   useEffect(() => {
-    console.log('contentblocks: ', contentBlocks)
+    console.log('ROOT PAGE contentblocks changed: ', contentBlocks)
   }, [contentBlocks])
   useEffect(() => {
     const currentLength = contentBlocks.length;
@@ -232,7 +232,7 @@ async function handleSubmit() {
   };
   // photo block helpers
   const updatePhotoContent = (index, photos) => {
-    console.log('photos passed to updatePhotoContent: ', photos);
+    // console.log('photos passed to updatePhotoContent: ', photos);
     const newContentBlocks = [...contentBlocks];
     newContentBlocks[index] = { ...newContentBlocks[index], content: photos };
     setContentBlocks(newContentBlocks);

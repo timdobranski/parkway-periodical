@@ -27,7 +27,7 @@ export default function EditablePhoto({
   const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
   const debounceTimer = useRef(null);
 
-  // useEffect(() => { console.log('fileObj: ', fileObj)}, [fileObj])
+  useEffect(() => { console.log('fileObj changed. fileObj.src: ', fileObj.src)}, [fileObj])
 
   useEffect(() => {
     if (lockAspectRatio && imageRef) {
@@ -105,7 +105,7 @@ export default function EditablePhoto({
         // Create a copy of the array to avoid mutating the state directly
         const updatedPhotos = [...prevPhotos];
         // Update the src for the fileObj at the specific index
-        const updatedFileObj = { ...updatedPhotos[index], src: croppedImageUrl };
+        const updatedFileObj = { ...updatedPhotos[index], src: croppedImageUrl, file: croppedImageUrl };
         updatedPhotos[index] = updatedFileObj;
 
         // Return the updated array for the state update
@@ -200,12 +200,12 @@ export default function EditablePhoto({
           </ReactCrop>
     ) : (
       <img src={fileObj.src}
-      draggable
-      onDragStart={(e) => onDragStart(e, index)}
-      onDragOver={onDragOver}
-      onDrop={(e) => onDrop(e, index)}
-      className={styles.photoPreview} alt={`Preview ${index}`} />
-    )}
+        draggable
+        onDragStart={(e) => onDragStart(e, index)}
+        onDragOver={onDragOver}
+        onDrop={(e) => onDrop(e, index)}
+        className={styles.photoPreview} alt={`Preview ${index}`} />
+      )}
       {cropActive && (
         <div className={styles.cropControlsWrapper}>
           <div className={styles.cropManualDimensions}>
