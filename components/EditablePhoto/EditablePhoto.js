@@ -90,6 +90,7 @@ export default function EditablePhoto({
     console.log('inside finalizeCrop: completedCrop: ', completedCrop)
     if (completedCrop && imageRef.current) {
       makeClientCrop(completedCrop);
+      toggleCrop();
     }
   };
   const makeClientCrop = async (crop) => {
