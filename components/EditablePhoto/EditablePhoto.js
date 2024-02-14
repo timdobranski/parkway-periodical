@@ -21,13 +21,13 @@ export default function EditablePhoto({
   const [cropSize, setCropSize] = useState({ width: 100, height: 100 }); // In percent or pixels
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
-  const [imageRef, setImageRef] = useState(null);
+  const imageRef = useRef(null);
   const [cropActive, setCropActive] = useState(false);
   const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
   const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
   const debounceTimer = useRef(null);
 
-  useEffect(() => { console.log('fileObj: ', fileObj)}, [fileObj])
+  // useEffect(() => { console.log('fileObj: ', fileObj)}, [fileObj])
 
   useEffect(() => {
     if (lockAspectRatio && imageRef) {
@@ -66,7 +66,7 @@ export default function EditablePhoto({
   }, [unit, imageRef]);
 
   const onImageLoaded = (image) => {
-    setImageRef(image);
+    imageRef.current = image;
     if (lockAspectRatio) {
       const aspectRatio = image.naturalWidth / image.naturalHeight;
       setCrop({ ...crop, aspect: aspectRatio });
@@ -87,53 +87,60 @@ export default function EditablePhoto({
     }
   };
   const finalizeCrop = () => {
-    if (crop && imageRef) {
-      makeClientCrop(crop);
+    console.log('inside finalizeCrop: completedCrop: ', completedCrop)
+    if (completedCrop && imageRef.current) {
+      makeClientCrop(completedCrop);
     }
   };
   const makeClientCrop = async (crop) => {
-    if (imageRef && crop.width && crop.height) {
+    if (imageRef.current && crop.width && crop.height) {
       const croppedImageUrl = await getCroppedImg(
-        imageRef,
+        imageRef.current,
         crop,
-        'newFile.jpeg'
+        `newFile_${index}.jpeg` // Assuming index is the identifier for the image
       );
-      setSrc(croppedImageUrl);
+      // Use setSelectedPhotos to update the src of the current fileObj
+      setSelectedPhotos(prevPhotos => {
+        // Create a copy of the array to avoid mutating the state directly
+        const updatedPhotos = [...prevPhotos];
+        // Update the src for the fileObj at the specific index
+        const updatedFileObj = { ...updatedPhotos[index], src: croppedImageUrl };
+        updatedPhotos[index] = updatedFileObj;
+
+        // Return the updated array for the state update
+        return updatedPhotos;
+      });
     }
   };
-  const getCroppedImg = (image, crop, fileName) => {
+  const getCroppedImg = async (image, crop, fileName) => {
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
+    const pixelCrop = {
+      x: crop.x * scaleX,
+      y: crop.y * scaleY,
+      width: crop.width * scaleX,
+      height: crop.height * scaleY,
+    };
+    canvas.width = pixelCrop.width;
+    canvas.height = pixelCrop.height;
     const ctx = canvas.getContext('2d');
 
     ctx.drawImage(
       image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
+      pixelCrop.x,
+      pixelCrop.y,
+      pixelCrop.width,
+      pixelCrop.height,
       0,
       0,
-      crop.width,
-      crop.height
+      pixelCrop.width,
+      pixelCrop.height
     );
 
-    return new Promise((resolve, reject) => {
-      canvas.toBlob(blob => {
-        if (!blob) {
-          reject(new Error('Canvas is empty'));
-          return;
-        }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(fileUrl);
-        const fileUrl = window.URL.createObjectURL(blob);
-        resolve(fileUrl);
-      }, 'image/jpeg');
-    });
-  }
+    // Convert the canvas to a base64 data URL in WebP format
+    return canvas.toDataURL('image/webp');
+  };
   const handleWidthChange = (e) => {
     const value = e.target.value;
     const newWidth = unit === 'percent' ? value : percentToPixels(value, 'width');
@@ -181,15 +188,15 @@ export default function EditablePhoto({
         </div>
 
         {cropActive ? (
-      <ReactCrop
-        src={src}
-        crop={crop}
-        onImageLoaded={onImageLoaded}
-        onChange={onCropChange}
-        overlayColor="rgba(0, 0, 0, 0.6)"
-      >
-      <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} />
-      </ReactCrop>
+          <ReactCrop
+            crop={crop}
+            onImageLoaded={onImageLoaded}
+            onChange={onCropChange}
+            onComplete={setCompletedCrop}
+            overlayColor="rgba(0, 0, 0, 0.6)"
+          >
+            <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} ref={imageRef}/>
+          </ReactCrop>
     ) : (
       <img src={fileObj.src}
       draggable

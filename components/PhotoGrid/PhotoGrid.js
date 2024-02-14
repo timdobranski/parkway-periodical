@@ -23,8 +23,8 @@ export default function PhotoGrid ({
 
   // determine the format and set the grid class accordingly
   useEffect(() => {
-    console.log('photos passed to PhotoGrid: ', photos);
-    console.log('format of photos: ', format);
+    // console.log('photos passed to PhotoGrid: ', photos);
+    // console.log('format of photos: ', format);
     if (!photos || photos.length === 0) {
       return; // Return early if no photos
     }
@@ -65,9 +65,9 @@ export default function PhotoGrid ({
     setPhotoClassName(photoClass);
   }, [photos]);
 
-  useEffect(() => {
-    console.log('grid class name: ', gridClassName);
-  }), [gridClassName];
+  // useEffect(() => {
+  //   console.log('grid class name: ', gridClassName);
+  // }), [gridClassName];
 
   if (!photos || photos.length === 0 ) {
     return <div>No photos to display</div>;
