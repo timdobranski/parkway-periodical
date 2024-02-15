@@ -22,14 +22,14 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
           count + (fileObj.file instanceof File ? 1 : 0), 0);
 
       if (readersToComplete === 0) {
-          updatePhotoContent(selectedPhotos.map(({ src, caption, title }) => ({ src, caption, title })));
+          updatePhotoContent(selectedPhotos.map(({ src, caption, title, style }) => ({ src, caption, title, style })));
           return;
       }
       selectedPhotos.forEach(fileObj => {
           if (fileObj.file instanceof File) {
               const reader = new FileReader();
               reader.onloadend = () => {
-                  urls.push({ src: reader.result, caption: fileObj.caption, title: fileObj.title });
+                  urls.push({ src: reader.result, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
                   if (--readersToComplete === 0) {
                     // console.log('urls to be set as content in photo block: ', urls)
                       updatePhotoContent(urls);
@@ -37,7 +37,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
               };
               reader.readAsDataURL(fileObj.file);
           } else {
-              urls.push({ src: fileObj.src, caption: fileObj.caption, title: fileObj.title });
+              urls.push({ src: fileObj.src, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
           }
       });
     }
@@ -51,7 +51,8 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
         file: null, // No file object available for existing photos
         caption: photo.caption || '',
         src: photo.src, // Keep the existing URL
-        title: photo.title
+        title: photo.title,
+        style: photo.style
       }));
       setSelectedPhotos(fileObjects);
     } else {
@@ -60,7 +61,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
   }, [src]);
 
   useEffect(() => {
-    console.log('selectedPhotos state changed to: ', selectedPhotos);
+    console.log('selectedPhotos state changed: ', selectedPhotos);
   }, [selectedPhotos])
 
   const handleFileChange = (event) => {
@@ -71,7 +72,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       file,
       src: '', // Temporarily set src to an empty string
       caption: '',
-      title: ''
+      title: '',
     }));
 
     files.forEach((file, index) => {

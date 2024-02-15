@@ -79,7 +79,9 @@ export default function PhotoGrid ({
   return (
 <>
   <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
-    {photos.map((photo, index) => (
+    {photos.map((photo, index) => {
+      console.log('photo: ', photo)
+      return (
       <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
         {isEditable ? (
           <EditablePhoto
@@ -97,10 +99,11 @@ export default function PhotoGrid ({
             setSelectedPhotos={setSelectedPhotos}
           />
         ) : (
-          <img src={photo.src} alt={`Photo ${index}`} className='gridPhoto' onClick={() => setActiveBlock(blockIndex)} />
+          <img src={photo.src} alt={`Photo ${index}`} className='gridPhoto' onClick={() => setActiveBlock(blockIndex)} style={photo.style}/>
         )}
       </div>
-    ))}
+      )
+        })}
   </div>
 
   <div className={`${styles.gridCaptionContainer} ${styles[gridClassName]}`}>

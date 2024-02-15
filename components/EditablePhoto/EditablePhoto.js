@@ -10,12 +10,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 export default function EditablePhoto({
   fileObj, updatePhotoContent, handleTitleChange, handleCaptionChange, handleRemovePhoto,
   onDragStart, onDragOver, onDrop, index, selectedPhotos, setSelectedPhotos }) {
-  const [crop, setCrop] = useState({
-    unit: '%',
-    width: 100,
-    height: 100,
-    x: 0,
-    y: 0,
+  const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0,
     // aspect: 16 / 9
   });
   const [cropSize, setCropSize] = useState({ width: 100, height: 100 }); // In percent or pixels
@@ -27,7 +22,7 @@ export default function EditablePhoto({
   const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
   const debounceTimer = useRef(null);
 
-  useEffect(() => { console.log('fileObj changed. fileObj.src: ', fileObj.src)}, [fileObj])
+  useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
 
   useEffect(() => {
     if (lockAspectRatio && imageRef) {
@@ -37,13 +32,11 @@ export default function EditablePhoto({
       setCrop({ ...crop, aspect: undefined });
     }
   }, [lockAspectRatio, imageRef]);
-
   useEffect(() => {
     const newWidth = unit === 'percent' ? debouncedCropSize.width : pixelsToPercent(debouncedCropSize.width, 'width');
     const newHeight = unit === 'percent' ? debouncedCropSize.height : pixelsToPercent(debouncedCropSize.height, 'height');
     setCrop({ ...crop, width: newWidth, height: newHeight });
   }, [debouncedCropSize, unit, imageRef]);
-
   useEffect(() => {
     clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
@@ -51,7 +44,11 @@ export default function EditablePhoto({
     }, 500);
     return () => clearTimeout(debounceTimer.current);
   }, [cropSize]);
+  useEffect(() => {
+    enforceCropConstraints();
+  }, [unit, imageRef]);
 
+  // CROP HANDLERS
   const enforceCropConstraints = () => {
     const maxWidth = unit === 'percent' ? 100 : imageRef.naturalWidth;
     const maxHeight = unit === 'percent' ? 100 : imageRef.naturalHeight;
@@ -60,11 +57,6 @@ export default function EditablePhoto({
       height: Math.min(cropSize.height, maxHeight)
     });
   };
-
-  useEffect(() => {
-    enforceCropConstraints();
-  }, [unit, imageRef]);
-
   const onImageLoaded = (image) => {
     imageRef.current = image;
     if (lockAspectRatio) {
@@ -157,11 +149,36 @@ export default function EditablePhoto({
     const imageSize = dimension === 'width' ? imageRef.naturalWidth : imageRef.naturalHeight;
     return (value / imageSize) * 100;
   };
-  // Convert percent to pixels
   const percentToPixels = (value, dimension) => {
     if (!imageRef) return 0;
     const imageSize = dimension === 'width' ? imageRef.naturalWidth : imageRef.naturalHeight;
     return (value / 100) * imageSize;
+  };
+
+  // RESIZE HANDLERS
+  const handleResize = () => {
+    // For simplicity, let's say we want to increase the width and height by 10% on each click
+    const newWidth = cropSize.width * 1.1;
+    const newHeight = cropSize.height * 1.1;
+
+    // Update cropSize state
+    setCropSize({ width: newWidth, height: newHeight });
+
+    // Update the fileObj with the new style information
+    updateFileObjWithStyle(newWidth, newHeight);
+  };
+  // Function to update the fileObj with new style
+  const updateFileObjWithStyle = (newWidth, newHeight) => {
+    console.log('updateFileObjWithStyle ran')
+    setSelectedPhotos(prevPhotos => {
+      const updatedPhotos = [...prevPhotos];
+      const updatedFileObj = {
+        ...updatedPhotos[index],
+        style: { width: newWidth, height: newHeight } // Assuming you want to store dimensions in a 'style' key
+      };
+      updatedPhotos[index] = updatedFileObj;
+      return updatedPhotos;
+    });
   };
 
   if (!fileObj) { return null }
@@ -177,7 +194,7 @@ export default function EditablePhoto({
           <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
           <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
         </div>
-          <div className={styles.photoEditMenuIconWrapper}>
+          <div className={styles.photoEditMenuIconWrapper}onClick={handleResize}>
             <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
             <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
           </div>
@@ -196,11 +213,12 @@ export default function EditablePhoto({
             onComplete={setCompletedCrop}
             overlayColor="rgba(0, 0, 0, 0.6)"
           >
-            <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef}/>
+            <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
           </ReactCrop>
     ) : (
       <img src={fileObj.src}
         draggable
+        style={fileObj.style}
         onDragStart={(e) => onDragStart(e, index)}
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, index)}
