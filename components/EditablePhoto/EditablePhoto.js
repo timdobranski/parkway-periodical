@@ -257,20 +257,27 @@ export default function EditablePhoto({
       </div>
     )}
       </div>
-      <input
-        value={fileObj.title}
-        onChange={(e) => handleTitleChange(index, e.target.value)}
-        placeholder="Enter title"
-        className={styles.titleInput}
-      />
-      <textarea
-        value={fileObj.caption}
-        onChange={(e) => handleCaptionChange(index, e.target.value)}
-        placeholder="Enter caption (optional)"
-        className={styles.captionInput}
-        onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
-        rows={4}
-      />
+      {cropActive ? (
+          null
+        ) : (
+        <>
+        <input
+          value={fileObj.title}
+          onChange={(e) => handleTitleChange(index, e.target.value)}
+          placeholder="Enter title"
+          className={styles.titleInput}
+          />
+        <textarea
+          value={fileObj.caption}
+          onChange={(e) => handleCaptionChange(index, e.target.value)}
+          placeholder="Enter caption (optional)"
+          className={styles.captionInput}
+          onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+          rows={4}
+          />
+          </>
+        )
+      }
     </div>
   )
 }
