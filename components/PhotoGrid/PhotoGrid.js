@@ -97,7 +97,7 @@ export default function PhotoGrid ({
             setSelectedPhotos={setSelectedPhotos}
           />
         ) : (
-          <img src={photo.src} alt={`Photo ${index}`} className={styles.gridPhoto} onClick={() => setActiveBlock(blockIndex)} />
+          <img src={photo.src} alt={`Photo ${index}`} className='gridPhoto' onClick={() => setActiveBlock(blockIndex)} />
         )}
       </div>
     ))}

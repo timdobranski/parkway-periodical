@@ -15,18 +15,22 @@
 .photosGrid {
   display: grid;
   gap: 10px;
-  justify-content: center;
+  justify-content: center !important;
   width: 100%;
   box-sizing: border-box;
   align-items: center;
+
 }
 
 .photosGridSingle, .photosGridTwoColumns, .photosGridThreeColumns {
   width: 100%;
 }
 
-.photosGridSingle {
+.singlePhotoGrid {
   grid-template-columns: repeat(1, 1fr);
+  align-items: center;
+  justify-items: center;
+
 }
 
 .photosGridTwoColumns {
@@ -34,7 +38,7 @@
   justify-items: center;
   align-items: center;
   grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 2;
+  grid-template-rows: 2;
 
 }
 
@@ -78,6 +82,10 @@
   box-sizing: border-box;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 1rem;
+}
+.photoWithCaptionBelow {
+  /* border: solid red 4px; */
+  width: 100%
 }
 .noPhotoMessage {
   width: 100%;

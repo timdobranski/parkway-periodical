@@ -74,14 +74,16 @@
 }
 .post, .postPreview {
   position: relative;
-  width: 70vw;
-  min-width: 768px;
+
+  width: 1250px;
+  max-width: 80vw;
+  min-width: 50vw;
+
   box-sizing: border-box;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, .9);
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
   backdrop-filter: blur(10px);
-  /* text-align: center; */
   height: auto;
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -95,7 +97,7 @@
 }
 .postPreview {
   /* margin: 2rem; */
-  min-width: 700px;
+  /* min-width: 700px; */
   height: auto;
 }
 .blockWrapper {
@@ -207,4 +209,14 @@
 }
 .postBody {
   margin: 0;
+}
+
+.gridPhoto, .ReactCrop {
+  max-height: 50vh;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1rem;
 }

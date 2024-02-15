@@ -171,22 +171,22 @@ export default function EditablePhoto({
       className={styles.draggableWrapper}
     >
       <div className={styles.photoWrapper}>
+      {!cropActive &&
         <div className={styles.photoEditMenu}>
           <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
           <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
           <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
         </div>
-
           <div className={styles.photoEditMenuIconWrapper}>
             <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
             <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
           </div>
-
           <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
             <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon}  />
             <h3 className={styles.photoEditMenuIconLabel}>Remove</h3>
           </div>
         </div>
+      }
 
         {cropActive ? (
           <ReactCrop
@@ -196,7 +196,7 @@ export default function EditablePhoto({
             onComplete={setCompletedCrop}
             overlayColor="rgba(0, 0, 0, 0.6)"
           >
-            <img src={fileObj.src} className={styles.photoPreview} alt={`Preview ${index}`} ref={imageRef}/>
+            <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef}/>
           </ReactCrop>
     ) : (
       <img src={fileObj.src}
@@ -204,7 +204,7 @@ export default function EditablePhoto({
         onDragStart={(e) => onDragStart(e, index)}
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, index)}
-        className={styles.photoPreview} alt={`Preview ${index}`} />
+        className='gridPhoto' alt={`Preview ${index}`} />
       )}
       {cropActive && (
         <div className={styles.cropControlsWrapper}>

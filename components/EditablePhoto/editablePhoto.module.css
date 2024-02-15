@@ -1,5 +1,5 @@
 .draggableWrapper {
-  padding-top: 1rem;
+  /* padding-top: 1rem; */
   border-radius: 10px;
   height: 100%;
   display: flex;
@@ -16,16 +16,16 @@
   position: relative;
   box-sizing: border-box;
   width: fit-content;
-  max-width: 100%;
-  margin: 0;
+  max-width: 70%;
+  /* max-height: 50vh; */
   padding: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: flex-start;
-  max-height: 50vh;
-  border-radius: 10px;
-  overflow: hidden;
+  /* max-height: 50vh; */
+  border-radius: 30px !important;
+  /* overflow: hidden; */
 }
 .photoPreview {
   max-width: 100%;
@@ -91,7 +91,7 @@
   width: 80%;
 }
 .ReactCrop {
-  width: 100%; /* Take full width of the container */
+  width: 100%;
   height: auto; /* Maintain aspect ratio */
   z-index: 50;
 }
