@@ -269,10 +269,11 @@ async function handleSubmit() {
       <div className='postPreview'>
       {contentBlocks.map((block, index) => (
         <div key={index} className='blockWrapper'>
+          {block.type === 'title' ? (null) : (
           <div className={styles.blockControlsLeft}>
-            <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>
+            {index > 1 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
             <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-          </div>
+          </div> )}
           {block.type === 'title' && (
               <PostTitle
                 isEditable={index === activeBlock}

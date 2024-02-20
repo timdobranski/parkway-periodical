@@ -3,10 +3,13 @@
 import supabase from '../../../utils/supabase.js'
 import { useEffect, useState } from 'react'
 import styles from './view-posts.module.css'
+import { useRouter } from 'next/navigation';
+
 
 export default function ViewPosts () {
   const [posts, setPosts] = useState([])
   const [titleInput, setTitleInput] = useState('')
+  const router = useRouter();
 
   useEffect(() => {
     const getPosts = async () => {
@@ -31,6 +34,10 @@ export default function ViewPosts () {
     console.log('posts: ', posts)
   }, [posts])
 
+  const handleViewPostClick = (id) => {
+    router.push(`/public/home?postId=${id}`)
+  }
+
   if (!posts) { return (<h1>{`Loading`}</h1>)}
   if (posts.length === 0) { return (<h1>No posts yet!</h1>)}
 
@@ -45,7 +52,7 @@ export default function ViewPosts () {
           <h2>{pacificTime || `No subtitle for this post`}</h2>
           <h1 key={i}>{post.content[0].content || `No title for this post`}</h1>
           <div className={styles.postControlMenu}>
-            <button>View Post</button>
+          <button onClick={() => handleViewPostClick(post.id)}>View Post</button>
             <button>Edit Post</button>
             <button className={styles.deletePostButton}>Delete Post</button>
           </div>

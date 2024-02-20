@@ -13,7 +13,6 @@ export default function PrimeText({ isEditable, textState, setTextState }) {
   if (!isEditable) {
     return (
       <div className={styles.PrimeTextContainer} dangerouslySetInnerHTML={{ __html: textState }}>
-        {/* HTML content will be rendered here */}
       </div>
     )
   }

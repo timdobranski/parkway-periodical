@@ -7,30 +7,44 @@ import Photo from '../../../components/PhotoBlock/PhotoBlock';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import { format } from 'date-fns';
+import { useSearchParams } from 'next/navigation'
+
 
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
   const activeBlock = null;
+  const searchParams = useSearchParams()
+  const postId = searchParams.get('postId')
+
   useEffect(() => {
     const getPosts = async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from('posts')
-        .select('*')
-        .order('id', { ascending: false });
-      console.log('data: ', data);
+        .select('*');
 
-      const parsedData = data.map(post => {
-        return {
+      if (postId) {
+        query = query.eq('id', postId);
+      } else {
+        query = query.order('id', { ascending: false });
+      }
+
+      const { data, error } = await query;
+      if (data) {
+        const parsedData = data.map(post => ({
           ...post,
           content: JSON.parse(post.content)
-        };
-      });
-      console.log('parsedData: ', parsedData);
-      setPosts(parsedData);
+        }));
+        setPosts(parsedData);
+      }
+
+      if (error) {
+        console.error('Error fetching posts:', error);
+      }
     };
+
     getPosts();
-  }, []);
+  }, [postId]);
 
 
   if (!posts || posts.length === 0) {
