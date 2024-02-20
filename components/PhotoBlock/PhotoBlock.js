@@ -167,7 +167,21 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
         );
         break;
       case 'carousel':
-        content = <PhotoCarousel photos={src} />;
+        content = (
+          <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
+
+            {isEditable &&
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                {...(!src.format.includes('single') && { multiple: true })}
+                className={styles.photoInput}
+              />
+            }
+            <PhotoCarousel photos={selectedPhotos} />;
+          </div>
+        )
         break;
       default:
         content = <p>Invalid photo format: {src.format}</p>;
