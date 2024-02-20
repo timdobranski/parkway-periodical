@@ -21,6 +21,7 @@ export default function EditablePhoto({
   const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
   const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
   const debounceTimer = useRef(null);
+  const [resizeActive, setResizeActive] = useState(false);
 
   useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
 
@@ -154,15 +155,41 @@ export default function EditablePhoto({
     const imageSize = dimension === 'width' ? imageRef.naturalWidth : imageRef.naturalHeight;
     return (value / 100) * imageSize;
   };
+  const cropControls = (
+    <div className={styles.cropControlsWrapper}>
+      <div className={styles.cropManualDimensions}>
+          <p>Width</p>
+           <input
+          type="number"
+          value={cropSize.width}
+          onChange={(e) => setCropSize({ ...cropSize, width: e.target.value })}
+          placeholder="Width"
+          className={styles.cropManualDimensionsInput}
+        />
+        <p>Height</p>
+        <input
+          type="number"
+          value={cropSize.height}
+          onChange={(e) => setCropSize({ ...cropSize, height: e.target.value })}
+          placeholder="Height"
+          className={styles.cropManualDimensionsInput}
+        />
 
+        <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+          <option value="percent">Percent</option>
+          <option value="pixels">Pixels</option>
+        </select>
+        </div>
+        <span className={styles.lockWrapper}>
+        <p>Aspect Ratio Lock:</p>
+        <FontAwesomeIcon icon={lockAspectRatio ? faLock : faLockOpen} onClick={() => setLockAspectRatio(!lockAspectRatio)} className={styles.lockIcon} />
+        </span>
+  <button onClick={finalizeCrop}>Confirm Crop</button>
+  </div>
+  )
   // RESIZE HANDLERS
   const handleResize = () => {
-    // For simplicity, let's say we want to increase the width and height by 10% on each click
-    const newWidth = cropSize.width * 1.1;
-    const newHeight = cropSize.height * 1.1;
-
-    // Update cropSize state
-    setCropSize({ width: newWidth, height: newHeight });
+    setResizeActive(true);
 
     // Update the fileObj with the new style information
     updateFileObjWithStyle(newWidth, newHeight);
@@ -205,16 +232,20 @@ export default function EditablePhoto({
         </div>
       }
 
-        {cropActive ? (
-          <ReactCrop
-            crop={crop}
-            onImageLoaded={onImageLoaded}
-            onChange={onCropChange}
-            onComplete={setCompletedCrop}
-            overlayColor="rgba(0, 0, 0, 0.6)"
-          >
-            <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
-          </ReactCrop>
+{
+  cropActive ? (
+    <ReactCrop
+      crop={crop}
+      onImageLoaded={onImageLoaded}
+      onChange={onCropChange}
+      onComplete={setCompletedCrop}
+      overlayColor="rgba(0, 0, 0, 0.6)"
+    >
+      <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
+    </ReactCrop>
+  ) : resizeActive ? (
+    // Your resize component or logic here
+  null
     ) : (
       <img src={fileObj.src}
         draggable
@@ -223,39 +254,10 @@ export default function EditablePhoto({
         onDragOver={onDragOver}
         onDrop={(e) => onDrop(e, index)}
         className='gridPhoto' alt={`Preview ${index}`} />
-      )}
-      {cropActive && (
-        <div className={styles.cropControlsWrapper}>
-          <div className={styles.cropManualDimensions}>
-              <p>Width</p>
-               <input
-              type="number"
-              value={cropSize.width}
-              onChange={(e) => setCropSize({ ...cropSize, width: e.target.value })}
-              placeholder="Width"
-              className={styles.cropManualDimensionsInput}
-            />
-            <p>Height</p>
-            <input
-              type="number"
-              value={cropSize.height}
-              onChange={(e) => setCropSize({ ...cropSize, height: e.target.value })}
-              placeholder="Height"
-              className={styles.cropManualDimensionsInput}
-            />
+    )
+  }
 
-            <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-              <option value="percent">Percent</option>
-              <option value="pixels">Pixels</option>
-            </select>
-            </div>
-            <span className={styles.lockWrapper}>
-            <p>Aspect Ratio Lock:</p>
-            <FontAwesomeIcon icon={lockAspectRatio ? faLock : faLockOpen} onClick={() => setLockAspectRatio(!lockAspectRatio)} className={styles.lockIcon} />
-            </span>
-      <button onClick={finalizeCrop}>Confirm Crop</button>
-      </div>
-    )}
+      {cropActive && {cropControls}}
       </div>
       {cropActive ? (
           null

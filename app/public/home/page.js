@@ -6,6 +6,8 @@ import styles from './home.module.css';
 import Photo from '../../../components/PhotoBlock/PhotoBlock';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import { format } from 'date-fns';
+
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
@@ -47,7 +49,7 @@ export default function Home() {
                   {block.content}
                 </div>
                 <div className='postDate'>
-                  {new Date().toLocaleDateString()} {/* Render the current date */}
+                {format(new Date(post.created_at), 'MMMM do, yyyy')}
                 </div>
               </div>
             )
