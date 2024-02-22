@@ -257,7 +257,7 @@ export default function EditablePhoto({
     )
   }
 
-      {cropActive && {cropControls}}
+      {cropActive && cropControls}
       </div>
       {cropActive ? (
           null
