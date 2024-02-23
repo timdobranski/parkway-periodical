@@ -170,7 +170,8 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
         content = (
           <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
 
-            {isEditable &&
+            {isEditable ?
+            <>
               <input
                 type="file"
                 accept="image/*"
@@ -178,8 +179,27 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
                 {...(!src.format.includes('single') && { multiple: true })}
                 className={styles.photoInput}
               />
+              <PhotoGrid
+                format={'2xColumn'}
+                isEditable={isEditable}
+                photos={selectedPhotos}
+                setActiveBlock={setActiveBlock}
+                blockIndex={blockIndex}
+                onClick={() => setActiveBlock(blockIndex)}
+                updatePhotoContent={updatePhotoContent}
+                handleTitleChange={handleTitleChange}
+                handleCaptionChange={handleCaptionChange}
+                handleRemovePhoto={handleRemovePhoto}
+                selectedPhotos={selectedPhotos}
+                setSelectedPhotos={setSelectedPhotos}
+                onDragStart={onDragStart}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
+              />
+            </> :
+            <PhotoCarousel photos={selectedPhotos} />
             }
-            <PhotoCarousel photos={selectedPhotos} />;
+
           </div>
         )
         break;

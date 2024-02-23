@@ -24,9 +24,9 @@ export default function PhotoCarousel({ photos }) {
       selectedItem={currentPhotoIndex}
       onChange={handleCarouselChange}
     >
-      {photos.content.map((photoObj, index) => (
+      {photos.map((photoObj, index) => (
         <div key={index} className={styles.carouselSlide}>
-          <img src={photoObj.src} alt={`Photo ${index}`} />
+          <img src={photoObj.src} alt={`Photo ${index}`} className={styles.slideImg}/>
           {photoObj.title && (
             <p className={styles.carouselCaption}>{photoObj.title}</p>
           )}
@@ -39,6 +39,6 @@ export default function PhotoCarousel({ photos }) {
       </p>
     )}
   </div>
-  );
+  )
 
 }

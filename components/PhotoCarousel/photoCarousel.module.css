@@ -1,23 +1,49 @@
 .carouselWrapper {
   margin: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* border: solid red 4px; */
+  /* max-height: 75vh; */
+  height: 75vh;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding-top: 1rem;
+  border-radius: 10px;
 }
 .icon {
   padding: .5rem;
   border-radius: 4px;
   margin: .5rem;
 }
-
 .carouselSlide {
-  position: relative;
+  max-height: 40vh;
+  width: auto;
+  overflow: hidden;
+  border: solid red 4px;
+}
+.slideImg {
+  max-height: 40vh;
+  width: auto;
+  object-fit: contain;
+  border: solid blue 4px;
 }
 .carouselCaption {
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0; /* Ensures full width */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.2);
   color: white;
   padding: 10px;
   font-size: 1em;
-  z-index: 2; /* Ensure it's above the image */
+  z-index: 2;
+  border: solid green 4px;
+}
+.carousel {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0;
 }

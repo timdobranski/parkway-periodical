@@ -59,9 +59,7 @@
   font-family: Louis George Cafe;
   margin-bottom: 2rem;
   overflow-y: auto;
-  /* border: solid greenyellow 4px; */
 }
-/* All returned section elements */
 .blogContainer {
   width: 95vw !important;
   padding: 0;
