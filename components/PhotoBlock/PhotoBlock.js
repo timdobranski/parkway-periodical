@@ -5,7 +5,6 @@ import styles from './photoBlock.module.css';
 import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import PhotoGrid from '../PhotoGrid/PhotoGrid';
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
@@ -17,30 +16,30 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
   // when the editable status changes, if there are photos uploaded, save them
   useEffect(() => {    if (!isEditable && selectedPhotos.length > 0) {
-      let urls = [];
-      let readersToComplete = selectedPhotos.reduce((count, fileObj) =>
-          count + (fileObj.file instanceof File ? 1 : 0), 0);
+    let urls = [];
+    let readersToComplete = selectedPhotos.reduce((count, fileObj) =>
+      count + (fileObj.file instanceof File ? 1 : 0), 0);
 
-      if (readersToComplete === 0) {
-          updatePhotoContent(selectedPhotos.map(({ src, caption, title, style }) => ({ src, caption, title, style })));
-          return;
-      }
-      selectedPhotos.forEach(fileObj => {
-          if (fileObj.file instanceof File) {
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                  urls.push({ src: reader.result, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
-                  if (--readersToComplete === 0) {
-                    // console.log('urls to be set as content in photo block: ', urls)
-                      updatePhotoContent(urls);
-                  }
-              };
-              reader.readAsDataURL(fileObj.file);
-          } else {
-              urls.push({ src: fileObj.src, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
-          }
-      });
+    if (readersToComplete === 0) {
+      updatePhotoContent(selectedPhotos.map(({ src, caption, title, style }) => ({ src, caption, title, style })));
+      return;
     }
+    selectedPhotos.forEach(fileObj => {
+      if (fileObj.file instanceof File) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          urls.push({ src: reader.result, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
+          if (--readersToComplete === 0) {
+            // console.log('urls to be set as content in photo block: ', urls)
+            updatePhotoContent(urls);
+          }
+        };
+        reader.readAsDataURL(fileObj.file);
+      } else {
+        urls.push({ src: fileObj.src, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
+      }
+    });
+  }
   }, [isEditable]);
 
   // if there are existing photos, add them to selectedPhotos
@@ -171,33 +170,33 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
           <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
 
             {isEditable ?
-            <>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                {...(!src.format.includes('single') && { multiple: true })}
-                className={styles.photoInput}
-              />
-              <PhotoGrid
-                format={'2xColumn'}
-                isEditable={isEditable}
-                photos={selectedPhotos}
-                setActiveBlock={setActiveBlock}
-                blockIndex={blockIndex}
-                onClick={() => setActiveBlock(blockIndex)}
-                updatePhotoContent={updatePhotoContent}
-                handleTitleChange={handleTitleChange}
-                handleCaptionChange={handleCaptionChange}
-                handleRemovePhoto={handleRemovePhoto}
-                selectedPhotos={selectedPhotos}
-                setSelectedPhotos={setSelectedPhotos}
-                onDragStart={onDragStart}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
-              />
-            </> :
-            <PhotoCarousel photos={selectedPhotos} />
+              <>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  {...(!src.format.includes('single') && { multiple: true })}
+                  className={styles.photoInput}
+                />
+                <PhotoGrid
+                  format={'2xColumn'}
+                  isEditable={isEditable}
+                  photos={selectedPhotos}
+                  setActiveBlock={setActiveBlock}
+                  blockIndex={blockIndex}
+                  onClick={() => setActiveBlock(blockIndex)}
+                  updatePhotoContent={updatePhotoContent}
+                  handleTitleChange={handleTitleChange}
+                  handleCaptionChange={handleCaptionChange}
+                  handleRemovePhoto={handleRemovePhoto}
+                  selectedPhotos={selectedPhotos}
+                  setSelectedPhotos={setSelectedPhotos}
+                  onDragStart={onDragStart}
+                  onDragOver={onDragOver}
+                  onDrop={onDrop}
+                />
+              </> :
+              <PhotoCarousel photos={selectedPhotos} />
             }
 
           </div>

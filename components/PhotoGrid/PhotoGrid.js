@@ -77,49 +77,49 @@ export default function PhotoGrid ({
 
 
   return (
-<>
-  <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
-    {photos.map((photo, index) => {
-      console.log('photo: ', photo)
-      return (
-      <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
-        {isEditable ? (
-          <EditablePhoto
-            isEditable={isEditable}
-            fileObj={photo}
-            index={index}
-            handleTitleChange={handleTitleChange}
-            handleCaptionChange={handleCaptionChange}
-            handleRemovePhoto={handleRemovePhoto}
-            onDragStart={onDragStart}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
-            updatePhotoContent={updatePhotoContent}
-            selectedPhotos={selectedPhotos}
-            setSelectedPhotos={setSelectedPhotos}
-          />
-        ) : (
-          <img src={photo.src} alt={`Photo ${index}`} className='gridPhoto' onClick={() => setActiveBlock(blockIndex)} style={photo.style}/>
-        )}
-      </div>
-      )
+    <>
+      <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
+        {photos.map((photo, index) => {
+          console.log('photo: ', photo)
+          return (
+            <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
+              {isEditable ? (
+                <EditablePhoto
+                  isEditable={isEditable}
+                  fileObj={photo}
+                  index={index}
+                  handleTitleChange={handleTitleChange}
+                  handleCaptionChange={handleCaptionChange}
+                  handleRemovePhoto={handleRemovePhoto}
+                  onDragStart={onDragStart}
+                  onDragOver={onDragOver}
+                  onDrop={onDrop}
+                  updatePhotoContent={updatePhotoContent}
+                  selectedPhotos={selectedPhotos}
+                  setSelectedPhotos={setSelectedPhotos}
+                />
+              ) : (
+                <img src={photo.src} alt={`Photo ${index}`} className='gridPhoto' onClick={() => setActiveBlock(blockIndex)} style={photo.style}/>
+              )}
+            </div>
+          )
         })}
-  </div>
-
-  <div className={`${styles.gridCaptionContainer} ${styles[gridClassName]}`}>
-    {photos.map((photo, index) => (
-      <div key={index} className={`${styles.photoInfoContainer}`}>
-        {isEditable ? ( null
-        ) : (
-          <>
-            {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
-            {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
-          </>
-        )}
       </div>
-    ))}
-  </div>
-</>
+
+      <div className={`${styles.gridCaptionContainer} ${styles[gridClassName]}`}>
+        {photos.map((photo, index) => (
+          <div key={index} className={`${styles.photoInfoContainer}`}>
+            {isEditable ? ( null
+            ) : (
+              <>
+                {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
+                {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    </>
   );
 
 

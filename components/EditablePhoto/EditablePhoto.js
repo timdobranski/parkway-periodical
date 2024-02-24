@@ -158,8 +158,8 @@ export default function EditablePhoto({
   const cropControls = (
     <div className={styles.cropControlsWrapper}>
       <div className={styles.cropManualDimensions}>
-          <p>Width</p>
-           <input
+        <p>Width</p>
+        <input
           type="number"
           value={cropSize.width}
           onChange={(e) => setCropSize({ ...cropSize, width: e.target.value })}
@@ -179,13 +179,13 @@ export default function EditablePhoto({
           <option value="percent">Percent</option>
           <option value="pixels">Pixels</option>
         </select>
-        </div>
-        <span className={styles.lockWrapper}>
+      </div>
+      <span className={styles.lockWrapper}>
         <p>Aspect Ratio Lock:</p>
         <FontAwesomeIcon icon={lockAspectRatio ? faLock : faLockOpen} onClick={() => setLockAspectRatio(!lockAspectRatio)} className={styles.lockIcon} />
-        </span>
-  <button onClick={finalizeCrop}>Confirm Crop</button>
-  </div>
+      </span>
+      <button onClick={finalizeCrop}>Confirm Crop</button>
+    </div>
   )
   // RESIZE HANDLERS
   const handleResize = () => {
@@ -215,12 +215,12 @@ export default function EditablePhoto({
       className={styles.draggableWrapper}
     >
       <div className={styles.photoWrapper}>
-      {!cropActive &&
+        {!cropActive &&
         <div className={styles.photoEditMenu}>
           <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
-          <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-          <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
-        </div>
+            <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
+            <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
+          </div>
           <div className={styles.photoEditMenuIconWrapper}onClick={handleResize}>
             <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
             <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
@@ -230,55 +230,55 @@ export default function EditablePhoto({
             <h3 className={styles.photoEditMenuIconLabel}>Remove</h3>
           </div>
         </div>
-      }
+        }
 
-{
-  cropActive ? (
-    <ReactCrop
-      crop={crop}
-      onImageLoaded={onImageLoaded}
-      onChange={onCropChange}
-      onComplete={setCompletedCrop}
-      overlayColor="rgba(0, 0, 0, 0.6)"
-    >
-      <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
-    </ReactCrop>
-  ) : resizeActive ? (
-    // Your resize component or logic here
-  null
-    ) : (
-      <img src={fileObj.src}
-        draggable
-        style={fileObj.style}
-        onDragStart={(e) => onDragStart(e, index)}
-        onDragOver={onDragOver}
-        onDrop={(e) => onDrop(e, index)}
-        className='gridPhoto' alt={`Preview ${index}`} />
-    )
-  }
+        {
+          cropActive ? (
+            <ReactCrop
+              crop={crop}
+              onImageLoaded={onImageLoaded}
+              onChange={onCropChange}
+              onComplete={setCompletedCrop}
+              overlayColor="rgba(0, 0, 0, 0.6)"
+            >
+              <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
+            </ReactCrop>
+          ) : resizeActive ? (
+          // Your resize component or logic here
+            null
+          ) : (
+            <img src={fileObj.src}
+              draggable
+              style={fileObj.style}
+              onDragStart={(e) => onDragStart(e, index)}
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, index)}
+              className='gridPhoto' alt={`Preview ${index}`} />
+          )
+        }
 
-      {cropActive && cropControls}
+        {cropActive && cropControls}
       </div>
       {cropActive ? (
-          null
-        ) : (
+        null
+      ) : (
         <>
-        <input
-          value={fileObj.title}
-          onChange={(e) => handleTitleChange(index, e.target.value)}
-          placeholder="Enter title"
-          className={styles.titleInput}
+          <input
+            value={fileObj.title}
+            onChange={(e) => handleTitleChange(index, e.target.value)}
+            placeholder="Enter title"
+            className={styles.titleInput}
           />
-        <textarea
-          value={fileObj.caption}
-          onChange={(e) => handleCaptionChange(index, e.target.value)}
-          placeholder="Enter caption (optional)"
-          className={styles.captionInput}
-          onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
-          rows={4}
+          <textarea
+            value={fileObj.caption}
+            onChange={(e) => handleCaptionChange(index, e.target.value)}
+            placeholder="Enter caption (optional)"
+            className={styles.captionInput}
+            onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+            rows={4}
           />
-          </>
-        )
+        </>
+      )
       }
     </div>
   )
