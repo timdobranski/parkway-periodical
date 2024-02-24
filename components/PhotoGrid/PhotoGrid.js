@@ -33,7 +33,7 @@ export default function PhotoGrid ({
 
     switch (format) {
       case 'single-photo-caption-right':
-        gridClass = 'singlePhotoGrid';
+        gridClass = 'photoWithCaptionRight';
         photoClass = 'photoWithCaptionRight';
         break;
       case 'single-photo-caption-left':
@@ -50,8 +50,8 @@ export default function PhotoGrid ({
         gridClass = 'photosGridTwoColumns';
         break;
       case 'single-photo-caption-above':
-        gridClass = styles.singlePhotoGrid;
-        photoClass = styles.photoWithCaptionAbove;
+        gridClass = 'singlePhotoGrid';
+        photoClass = 'photoWithCaptionAbove';
         break;
       case 'single-photo-caption-below':
         gridClass = 'singlePhotoGrid';

@@ -6,6 +6,7 @@ import styles from './home.module.css';
 import Photo from '../../../components/PhotoBlock/PhotoBlock';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import PrimeText from '../../../components/PrimeText/PrimeText';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation'
 
@@ -70,7 +71,10 @@ export default function Home() {
           }
               {block.type === 'text' && (
                 <div className='blockWrapper'>
-                  <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div>
+                  {/* <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div> */}
+                  <PrimeText
+                    textState={block.content}
+                  />
                 </div>
               )}
               {block.type === 'photo' && (

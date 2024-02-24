@@ -6,7 +6,10 @@
   /* margin-bottom: 1rem; */
   width: 80%;
   min-width: 650px;
-
+  margin: 0;
+}
+.PrimeTextContainer * {
+  margin: 0;
 }
 .PrimeTextContainer .p-editor-toolbar .p-editor-button {
   font-size: 20px; /* Adjust the size as needed */

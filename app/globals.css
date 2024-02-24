@@ -109,6 +109,8 @@
   margin: 2rem 0rem 2rem 0rem;
   /* border: solid rgb(0, 0, 0) 1px; */
 }
+
+
 .loadingHeader {
   position: absolute;
   top: 0;
@@ -204,6 +206,12 @@
 }
 .ql-align-left {
   text-align: left;
+}
+.ql-font-monospace {
+  font-family: monospace;
+}
+.ql-font-serif {
+  font-family: serif;
 }
 .postBody {
   margin: 0;
