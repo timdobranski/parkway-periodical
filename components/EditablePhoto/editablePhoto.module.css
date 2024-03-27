@@ -10,8 +10,6 @@
   width: 100%;
   box-sizing: border-box;
 }
-.draggableWrapper:hover {
-}
 .photoWrapper {
   position: relative;
   box-sizing: border-box;

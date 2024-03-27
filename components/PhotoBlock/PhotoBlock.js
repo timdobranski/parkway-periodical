@@ -131,34 +131,6 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       case 'single-photo-caption-above':
       case 'single-photo-caption-left':
       case 'single-photo-caption-right':
-        // content = (
-        //   <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
-        //     {isEditable &&
-        //       <input
-        //         type="file"
-        //         accept="image/*"
-        //         onChange={handleFileChange}
-        //         {...(!src.format.includes('single') && { multiple: true })}
-        //         className={styles.photoInput}
-        //       />
-        //     }
-        //     <SinglePhoto
-        //       format={src.format}
-        //       captionPosition = {src.format.split('-').pop()}
-        //       photos={selectedPhotos}
-        //       setActiveBlock={setActiveBlock}
-        //       blockIndex={blockIndex}
-        //       onClick={() => setActiveBlock(blockIndex)}
-        //       updatePhotoContent={updatePhotoContent}
-        //       handleTitleChange={handleTitleChange}
-        //       handleCaptionChange={handleCaptionChange}
-        //       handleRemovePhoto={handleRemovePhoto}
-        //       selectedPhotos={selectedPhotos}
-        //       setSelectedPhotos={setSelectedPhotos}
-        //     />
-        //   </div>
-        // );
-        // break;
       case '3xColumn':
       case '2xColumn':
       case 'grid':
@@ -206,26 +178,33 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
                   {...(!src.format.includes('single') && { multiple: true })}
                   className={styles.photoInput}
                 />
-                <PhotoGrid
-                  format={'2xColumn'}
-                  isEditable={isEditable}
-                  photos={selectedPhotos}
-                  setActiveBlock={setActiveBlock}
-                  blockIndex={blockIndex}
-                  onClick={() => setActiveBlock(blockIndex)}
-                  updatePhotoContent={updatePhotoContent}
-                  handleTitleChange={handleTitleChange}
-                  handleCaptionChange={handleCaptionChange}
-                  handleRemovePhoto={handleRemovePhoto}
-                  selectedPhotos={selectedPhotos}
-                  setSelectedPhotos={setSelectedPhotos}
-                  onDragStart={onDragStart}
-                  onDragOver={onDragOver}
-                  onDrop={onDrop}
-                />
-              </> :
-              <PhotoCarousel photos={selectedPhotos} />
+              </> : null
             }
+            <PhotoCarousel
+              photos={selectedPhotos}
+              isEditable={isEditable}
+              handleTitleChange={handleTitleChange}
+              handleCaptionChange={handleCaptionChange}
+            />
+
+
+            {/* <PhotoGrid
+              format={'2xColumn'}
+              isEditable={isEditable}
+              photos={selectedPhotos}
+              setActiveBlock={setActiveBlock}
+              blockIndex={blockIndex}
+              onClick={() => setActiveBlock(blockIndex)}
+              updatePhotoContent={updatePhotoContent}
+              handleTitleChange={handleTitleChange}
+              handleCaptionChange={handleCaptionChange}
+              handleRemovePhoto={handleRemovePhoto}
+              selectedPhotos={selectedPhotos}
+              setSelectedPhotos={setSelectedPhotos}
+              onDragStart={onDragStart}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+            /> */}
 
           </div>
         )
