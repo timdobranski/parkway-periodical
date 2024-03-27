@@ -3,14 +3,16 @@
 import styles from './photoGrid.module.css';
 import React, { useState, useEffect } from 'react';
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
+// import SinglePhoto from '../SinglePhoto/SinglePhoto';
 
 export default function PhotoGrid ({
-  photos, setActiveBlock, blockIndex, isEditable, updatePhotoContent, setPhotoContent, handleTitleChange, format,
-  handleCaptionChange, handleRemovePhoto, onDragStart, onDragOver, onDrop, index, selectedPhotos, setSelectedPhotos
+  photos, setActiveBlock, blockIndex, isEditable, updatePhotoContent,  handleTitleChange, format,
+  handleCaptionChange, handleRemovePhoto, onDragStart, onDragOver, onDrop, selectedPhotos, setSelectedPhotos
 
 }) {
   const [gridClassName, setGridClassName] = useState('');
   const [photoClassName, setPhotoClassName] = useState('');
+  const [containerClassName, setContainerClassName] = useState('');
 
   // should handle cases where photos.format ===
   // 1. single-photo-caption-right
@@ -23,22 +25,27 @@ export default function PhotoGrid ({
 
   // determine the format and set the grid class accordingly
   useEffect(() => {
-    // console.log('photos passed to PhotoGrid: ', photos);
-    // console.log('format of photos: ', format);
+
     if (!photos || photos.length === 0) {
-      return; // Return early if no photos
+      return;
     }
     let gridClass = '';
     let photoClass = '';
+    let containerClass = '';
+
 
     switch (format) {
       case 'single-photo-caption-right':
         gridClass = 'photoWithCaptionRight';
         photoClass = 'photoWithCaptionRight';
+        containerClass = 'photoWithCaptionRight';
+
         break;
       case 'single-photo-caption-left':
         gridClass = 'singlePhotoGrid';
         photoClass = 'photoWithCaptionLeft';
+        containerClass = 'photoWithCaptionLeft';
+
         break;
       case '2xColumn':
         gridClass = 'photosGridTwoColumns';
@@ -63,21 +70,17 @@ export default function PhotoGrid ({
     }
     setGridClassName(gridClass);
     setPhotoClassName(photoClass);
+    setContainerClassName(containerClass);
+
   }, [photos]);
 
-  // useEffect(() => {
-  //   console.log('grid class name: ', gridClassName);
-  // }), [gridClassName];
 
   if (!photos || photos.length === 0 ) {
     return <div>No photos to display</div>;
   }
 
-
-
-
   return (
-    <>
+    <div className={`${styles.photoGridContainer} ${styles[containerClassName]}`}>
       <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
         {photos.map((photo, index) => {
           console.log('photo: ', photo)
@@ -85,6 +88,7 @@ export default function PhotoGrid ({
             <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
               {isEditable ? (
                 <EditablePhoto
+                  containerClassName={containerClassName}
                   isEditable={isEditable}
                   fileObj={photo}
                   index={index}
@@ -109,7 +113,23 @@ export default function PhotoGrid ({
       <div className={`${styles.gridCaptionContainer} ${styles[gridClassName]}`}>
         {photos.map((photo, index) => (
           <div key={index} className={`${styles.photoInfoContainer}`}>
-            {isEditable ? ( null
+            {isEditable ? (
+              <div className={styles.captionTitleContainer}>
+                <input
+                  value={photo.title}
+                  onChange={(e) => handleTitleChange(index, e.target.value)}
+                  placeholder="Enter title"
+                  className={styles.titleInput}
+                />
+                <textarea
+                  value={photo.caption}
+                  onChange={(e) => handleCaptionChange(index, e.target.value)}
+                  placeholder="Enter caption (optional)"
+                  className={styles.captionInput}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
+                  rows={4}
+                />
+              </div>
             ) : (
               <>
                 {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
@@ -119,8 +139,6 @@ export default function PhotoGrid ({
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
-
-
 }

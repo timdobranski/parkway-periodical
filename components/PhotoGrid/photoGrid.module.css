@@ -11,7 +11,10 @@
   border-radius: 3px;
   transform: skew(-10deg);
 }
-
+.photoGridContainer {
+  /* border: solid green 4px; */
+  width: 100%;
+}
 .photosGrid {
   display: grid;
   gap: 10px;
@@ -21,35 +24,27 @@
   align-items: center;
 
 }
-
 .photosGridSingle, .photosGridTwoColumns, .photosGridThreeColumns {
   width: 100%;
 }
-
 .singlePhotoGrid {
   grid-template-columns: repeat(1, 1fr);
   align-items: center;
   justify-items: center;
-
 }
-
 .photosGridTwoColumns {
   display: grid;
   justify-items: center;
   align-items: center;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 2;
-
 }
-
 .photosGridThreeColumns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  /* grid-template-rows: 2; */
   justify-items: center;
   align-items: center;
 }
-
 .gridPhotoContainer {
   box-sizing: border-box;
   display: flex;
@@ -57,23 +52,17 @@
   align-items: center;
   justify-content: center;
   max-width: 90%;
-
 }
 .gridCaptionContainer {
   width: 100%;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-around;
   margin-bottom: 1rem;
+  margin-top: 1.5rem;
   text-align: center;
-}
-.gridCaptionContainer div {
-  width: 33%;
-  box-sizing: border-box;
-  margin: 1rem;
-  /* border: solid red 2px; */
-  height: 100%;
+  /* border: solid yellow 4px; */
 }
 .gridPhoto {
   max-height: 50vh;
@@ -91,6 +80,34 @@
   display: flex;
   flex-direction: row;
 }
+.photoWithCaptionLeft {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+}
 .noPhotoMessage {
+  width: 100%;
+}
+.titleInput, .captionInput {
+  width: 80%;
+  font-size: 1rem;
+  margin: 1rem;
+  padding: .5rem;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+.captionInput {
+  width: 80%;
+}
+.captionTitleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  /* border: solid red 2px; */
+}
+.photoInfoContainer {
+  /* border: solid orange 2px; */
   width: 100%;
 }

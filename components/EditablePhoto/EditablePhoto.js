@@ -8,7 +8,7 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
 export default function EditablePhoto({
-  fileObj, updatePhotoContent, handleTitleChange, handleCaptionChange, handleRemovePhoto,
+  fileObj, updatePhotoContent, handleTitleChange, handleCaptionChange, handleRemovePhoto, containerClassName,
   onDragStart, onDragOver, onDrop, index, selectedPhotos, setSelectedPhotos }) {
   const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0,
     // aspect: 16 / 9
@@ -211,9 +211,9 @@ export default function EditablePhoto({
   if (!fileObj) { return null }
 
   return (
-    <div
-      className={styles.draggableWrapper}
-    >
+    // <div className={styles.draggableWrapper}>
+    <div className={`${styles.draggableWrapper} ${styles[containerClassName]}`}>
+
       <div className={styles.photoWrapper}>
         {!cropActive &&
         <div className={styles.photoEditMenu}>
@@ -259,10 +259,10 @@ export default function EditablePhoto({
 
         {cropActive && cropControls}
       </div>
-      {cropActive ? (
+      {/* {cropActive ? (
         null
       ) : (
-        <>
+        <div className={styles.captionTitleContainer}>
           <input
             value={fileObj.title}
             onChange={(e) => handleTitleChange(index, e.target.value)}
@@ -277,9 +277,9 @@ export default function EditablePhoto({
             onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
             rows={4}
           />
-        </>
+        </div>
       )
-      }
+      } */}
     </div>
   )
 }

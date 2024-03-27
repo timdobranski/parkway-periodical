@@ -147,3 +147,22 @@
   margin: .25rem;
   font-size: 1rem;
 }
+
+.photoWithCaptionRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.photoWithCaptionLeft {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-around;
+}
+.captionTitleContainer {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}

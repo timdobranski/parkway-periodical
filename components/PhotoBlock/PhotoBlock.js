@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import styles from './photoBlock.module.css';
 import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import PhotoGrid from '../PhotoGrid/PhotoGrid';
-import EditablePhoto from '../EditablePhoto/EditablePhoto';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
+// import EditablePhoto from '../EditablePhoto/EditablePhoto';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
+// import Image from 'next/image';
 
 // src is photo block parent state; selectedPhotos is photo block child state before saving
 export default function PhotoBlock({ updatePhotoContent, src, isEditable, setActiveBlock, blockIndex }) {
@@ -131,6 +131,34 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       case 'single-photo-caption-above':
       case 'single-photo-caption-left':
       case 'single-photo-caption-right':
+        // content = (
+        //   <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
+        //     {isEditable &&
+        //       <input
+        //         type="file"
+        //         accept="image/*"
+        //         onChange={handleFileChange}
+        //         {...(!src.format.includes('single') && { multiple: true })}
+        //         className={styles.photoInput}
+        //       />
+        //     }
+        //     <SinglePhoto
+        //       format={src.format}
+        //       captionPosition = {src.format.split('-').pop()}
+        //       photos={selectedPhotos}
+        //       setActiveBlock={setActiveBlock}
+        //       blockIndex={blockIndex}
+        //       onClick={() => setActiveBlock(blockIndex)}
+        //       updatePhotoContent={updatePhotoContent}
+        //       handleTitleChange={handleTitleChange}
+        //       handleCaptionChange={handleCaptionChange}
+        //       handleRemovePhoto={handleRemovePhoto}
+        //       selectedPhotos={selectedPhotos}
+        //       setSelectedPhotos={setSelectedPhotos}
+        //     />
+        //   </div>
+        // );
+        // break;
       case '3xColumn':
       case '2xColumn':
       case 'grid':
