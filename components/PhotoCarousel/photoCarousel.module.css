@@ -9,6 +9,7 @@
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  width: 100%;
 }
 .icon {
   padding: .5rem;
@@ -18,13 +19,14 @@
 .carouselSlide {
   position: relative;
   max-height: 40vh;
-  width: object-fit;
+  width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: solid blue 2px;
+  /* border: solid blue 2px; */
+  overflow: hidden;
 }
 .slideImg {
   max-height: 40vh;
@@ -50,7 +52,6 @@
 .arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {
   height: 30px;
   width: 30px;
-  /* margin: 1rem; */
   position: absolute;
   top:50%;
   transform: translate(0, -50%);
@@ -68,10 +69,10 @@
   transform: translate(0, -50%) scale(1.2);
 }
 .arrowLeft, .arrowLeftDisabled {
-  left: 1rem;
+  left: 2rem;
 }
 .arrowRight, .arrowRightDisabled {
-  right: 1rem;
+  right: 2rem;
 }
 .arrowLeftDisabled {
   background-color: rgba(0, 0, 0, 0.3)

@@ -40,14 +40,14 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
   const customNextArrow = (clickHandler, hasNext) =>
     <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null}  className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
 
-  if (!photos || photos.length === 0) { return <h1>Loading...</h1> }
+  if (!photos || photos.length === 0) { return <p>No photos uploaded yet</p> }
 
   return (
     <div className={styles.carouselWrapper}>
       <Carousel
         renderArrowPrev={customPrevArrow}
         renderArrowNext={customNextArrow}
-        dynamicHeight={true}
+        dynamicHeight={false}
         autoPlay={false}
         showThumbs={true}
         showStatus={false}
