@@ -44,6 +44,26 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
 
   return (
     <div className={styles.carouselWrapper}>
+
+      {photos[currentPhotoIndex] && (
+
+        isEditable ? (
+          <input
+            type="text"
+            className={styles.titleInput}
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+            placeholder='Enter title (optional)'
+          />
+        ) :
+          <>
+            {photos[currentPhotoIndex].title && (
+              <p className={styles.titleP}>{editedTitle}</p>
+            )}
+          </>
+      )}
+
+
       <Carousel
         renderArrowPrev={customPrevArrow}
         renderArrowNext={customNextArrow}
@@ -63,27 +83,16 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
       {photos[currentPhotoIndex] && (
 
         isEditable ? (
-          <>
-            <input
-              type="text"
-              className={styles.titleInput}
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              placeholder='Enter title (optional)'
-            />
-            <textarea
-              className={styles.captionInput}
-              value={editedCaption}
-              onChange={(e) => setEditedCaption(e.target.value)}
-              placeholder='Enter caption (optional)'
-            />
-          </>
+
+          <textarea
+            className={styles.captionInput}
+            value={editedCaption}
+            onChange={(e) => setEditedCaption(e.target.value)}
+            placeholder='Enter caption (optional)'
+          />
+
         ) :
           <>
-            {photos[currentPhotoIndex].title && (
-              <p className={styles.titleP}>{editedTitle}</p>
-            )}
-
             {photos[currentPhotoIndex].caption && (
               <p className={styles.currentPhotoCaption}>
                 {photos[currentPhotoIndex].caption}

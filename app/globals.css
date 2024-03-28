@@ -241,10 +241,15 @@
 
 }
 .slide-wrapper {
-  border: solid green 4px;
 }
 .thumbs-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  margin: 0 !important;
+
+}
+.thumbs-wrapper img {
+
 }
