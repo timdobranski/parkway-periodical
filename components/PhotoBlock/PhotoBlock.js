@@ -115,7 +115,6 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       files.map((fileObj, idx) => { return idx === index ? { ...fileObj, caption: newCaption } : fileObj})
     );
   };
-
   const renderPreview = () => {
     // if (!src || src.length === 0) {
     //   return <p className={styles.noPhotoMessage}>No photo provided</p>;
@@ -124,6 +123,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     // Determine what to render based on src.format
     let content;
     switch (src.format) {
+      case 'single-photo-no-caption':
       case 'single-photo-caption-below':
       case 'single-photo-caption-above':
       case 'single-photo-caption-left':
@@ -166,21 +166,44 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     }
     return content
   };
-
+  const handleStyles = {
+    topRight: {
+      top: '-10px',
+      right: '-10px',
+      width: '20px',
+      height: '20px',
+      background: 'rgba(0, 0, 0, .5)',
+      border: 'solid 4px black',
+      cursor: 'nesw-resize',
+    },
+  }
 
   return (
-    <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
-      {isEditable ?
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          {...(!src.format.includes('single') && { multiple: true })}
-          className={styles.photoInput}
-        />
-        : null
-      }
-      {renderPreview()}
-    </div>
+    // <Rnd
+    //   default={{
+    //     x: 0,
+    //     y: 0,
+    //     width: 320,
+    //     height: 200,
+    //   }}
+    //   onDragStart={(event) => {event.preventDefault()}}
+    //   resizeHandleStyles={handleStyles}
+
+    // >
+      <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
+        {isEditable ?
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            {...(!src.format.includes('single') && { multiple: true })}
+            className={styles.photoInput}
+          />
+          : null
+        }
+        {renderPreview()}
+      </div>
+    // </Rnd>
+
   )
 }

@@ -76,6 +76,9 @@
 .photoWithCaptionBelow {
   width: 100%
 }
+.photoWithNoCaption {
+  width: 100%;
+}
 .photoWithCaptionRight {
   display: flex;
   flex-direction: row;

@@ -72,11 +72,9 @@
 }
 .post, .postPreview {
   position: relative;
-
   width: 1250px;
   max-width: 80vw;
   min-width: 50vw;
-
   box-sizing: border-box;
   border-radius: 15px;
   background-color: rgba(255, 255, 255, .9);
@@ -251,4 +249,11 @@
 }
 .thumbs-wrapper img {
 
+}
+
+.bottomRight {
+  background: white;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  opacity: 0.5;
 }

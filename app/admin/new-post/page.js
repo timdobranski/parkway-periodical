@@ -4,14 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
-import { EditorState, RichUtils } from 'draft-js';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -55,69 +54,68 @@ export default function NewPostPage() {
 
     prevLengthRef.current = currentLength;
   }, [contentBlocks]);
-// Helper function to upload image to Supabase Storage
-async function uploadImageToSupabase(base64String, fileName) {
-  const fetchResponse = await fetch(base64String);
-  const blob = await fetchResponse.blob();
+  // Helper function to upload image to Supabase Storage
+  async function uploadImageToSupabase(base64String, fileName) {
+    const fetchResponse = await fetch(base64String);
+    const blob = await fetchResponse.blob();
 
-  // Use a combination of timestamp and a random string to ensure filename uniqueness
-  const uniqueSuffix = `${new Date().getTime()}_${Math.random().toString(36).substring(2, 15)}`;
-  const uniqueFileName = fileName ? `${fileName}_${uniqueSuffix}` : `image_${uniqueSuffix}`;
+    // Use a combination of timestamp and a random string to ensure filename uniqueness
+    const uniqueSuffix = `${new Date().getTime()}_${Math.random().toString(36).substring(2, 15)}`;
+    const uniqueFileName = fileName ? `${fileName}_${uniqueSuffix}` : `image_${uniqueSuffix}`;
 
-  const filePath = `${uniqueFileName}.webp`; // Assuming the image is in webp format
-  let { error, data } = await supabase.storage.from('posts/photos').upload(filePath, blob);
+    const filePath = `${uniqueFileName}.webp`; // Assuming the image is in webp format
+    let { error, data } = await supabase.storage.from('posts/photos').upload(filePath, blob);
 
-  if (error) {
-    console.error('Detailed error uploading image:', error);
-    throw new Error('Error uploading image');
+    if (error) {
+      console.error('Detailed error uploading image:', error);
+      throw new Error('Error uploading image');
+    }
+
+    return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/photos/${filePath}`;
   }
-
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/photos/${filePath}`;
-}
-
-async function handleSubmit() {
-  console.log('inside handle submit');
-  try {
-    const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
+  // publish post to supabase
+  async function handleSubmit() {
+    console.log('inside handle submit');
+    try {
+      const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
       // Check if block type is 'title' and content is falsy
-      if (block.type === 'title' && !block.content) {
-        block.content = `Weekly Update`;
-      } else if (block.type === 'photo') {
-        const photoPromises = block.content.map(async (photo) => {
-          if (typeof photo.src === 'string' && photo.src.startsWith('data:')) {
-            return uploadImageToSupabase(photo.src, photo.title).then(uploadedImageUrl => ({ ...photo, src: uploadedImageUrl }));
-          }
-          return Promise.resolve(photo); // Resolve immediately if not a data URL
-        });
+        if (block.type === 'title' && !block.content) {
+          block.content = `Weekly Update`;
+        } else if (block.type === 'photo') {
+          const photoPromises = block.content.map(async (photo) => {
+            if (typeof photo.src === 'string' && photo.src.startsWith('data:')) {
+              return uploadImageToSupabase(photo.src, photo.title).then(uploadedImageUrl => ({ ...photo, src: uploadedImageUrl }));
+            }
+            return Promise.resolve(photo); // Resolve immediately if not a data URL
+          });
 
-        // Use Promise.all to ensure the order of photos is preserved
-        const processedPhotos = await Promise.all(photoPromises);
+          // Use Promise.all to ensure the order of photos is preserved
+          const processedPhotos = await Promise.all(photoPromises);
 
-        return {
-          type: block.type,
-          content: processedPhotos,
-          format: block.format
-        };
-      }
-      return block;
-    }));
+          return {
+            type: block.type,
+            content: processedPhotos,
+            format: block.format
+          };
+        }
+        return block;
+      }));
 
-    const post = {
-      content: JSON.stringify(processedBlocks)
-    };
+      const post = {
+        content: JSON.stringify(processedBlocks)
+      };
 
-    const { error } = await supabase.from('posts').insert([post]);
-    if (error) throw new Error('Error submitting content blocks: ', error.message);
+      const { error } = await supabase.from('posts').insert([post]);
+      if (error) throw new Error('Error submitting content blocks: ', error.message);
 
-    router.push('/public/home');
-  } catch (error) {
-    console.error('Error in handleSubmit: ', error);
+      router.push('/public/home');
+    } catch (error) {
+      console.error('Error in handleSubmit: ', error);
+    }
   }
-}
-
   // content blocks helpers
   const addPrimeTextBlock = () => {
-        const newBlock = { type: 'text', content: '' };
+    const newBlock = { type: 'text', content: '' };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length);
     window.scrollTo({
@@ -153,7 +151,7 @@ async function handleSubmit() {
 
     // Adjust activeBlock if necessary
     if (index === activeBlock) {
-        setActiveBlock(null);
+      setActiveBlock(null);
     }
   };
   const moveBlockUp = (index) => {
@@ -194,7 +192,7 @@ async function handleSubmit() {
       // If the block is not active
       setActiveBlock(index); // Set to the clicked block
     }
-};
+  };
   const handleFocus = (index) => {
     // Set the isEditable to true for the focused block
     const updatedBlocks = contentBlocks.map((block, i) => ({
@@ -244,8 +242,8 @@ async function handleSubmit() {
     setContentBlocks(newContentBlocks);
   }
   const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
-  ? contentBlocks[activeBlock].content
-  : null;
+    ? contentBlocks[activeBlock].content
+    : null;
 
 
   if (!user) {
@@ -267,14 +265,14 @@ async function handleSubmit() {
       />
 
       <div className='postPreview'>
-      {contentBlocks.map((block, index) => (
-        <div key={index} className='blockWrapper'>
-          {block.type === 'title' ? (null) : (
-          <div className={styles.blockControlsLeft}>
-            {index > 1 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
-            <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-          </div> )}
-          {block.type === 'title' && (
+        {contentBlocks.map((block, index) => (
+          <div key={index} className='blockWrapper'>
+            {block.type === 'title' ? (null) : (
+              <div className={styles.blockControlsLeft}>
+                {index > 1 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
+                <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
+              </div> )}
+            {block.type === 'title' && (
               <PostTitle
                 isEditable={index === activeBlock}
                 title={block.content}
@@ -283,16 +281,16 @@ async function handleSubmit() {
                 activeBlock={activeBlock}
                 setActiveBlock={setActiveBlock}
               />
-          )}
-          {block.type === 'text' && (
-            <PrimeText
-            isEditable={index === activeBlock}
-            textState={block.content}
-            setTextState={updateActiveTextEditorState}
-            onClick={() => setActiveBlock(index)}
-            />
-          )}
-          {block.type === 'photo' &&
+            )}
+            {block.type === 'text' && (
+              <PrimeText
+                isEditable={index === activeBlock}
+                textState={block.content}
+                setTextState={updateActiveTextEditorState}
+                onClick={() => setActiveBlock(index)}
+              />
+            )}
+            {block.type === 'photo' &&
               <PhotoBlock
                 key={index}
                 blockIndex={index}
@@ -301,8 +299,8 @@ async function handleSubmit() {
                 src={block}
                 setActiveBlock={setActiveBlock}
               />
-          }
-          {block.type === 'video' &&
+            }
+            {block.type === 'video' &&
             <Video
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
               setActiveBlock={setActiveBlock}
@@ -310,12 +308,12 @@ async function handleSubmit() {
               src={block.content}
             />
             }
-          <div className={styles.blockControlsRight}>
-          <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
-          {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faX} onClick={() => removeBlock(index)} className={styles.iconX}/>)}
+            <div className={styles.blockControlsRight}>
+              <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
+              {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconX}/>)}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
         {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
       </div>
     </>

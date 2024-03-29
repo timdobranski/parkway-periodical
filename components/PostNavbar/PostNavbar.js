@@ -36,6 +36,16 @@ export default function PostNavbar({
               </div>
             </div>
           </div>
+          <div className={styles.navbarSectionItem} onClick={() => onAddPhoto('single-photo-caption-below')}>
+            <div className={styles.layoutWrapper}>
+              <div className={styles.layoutTopRowWrapper}>
+                <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
+              </div>
+              <div className={styles.layoutBottomRowWrapper}>
+                <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
+              </div>
+            </div>
+          </div>
 
           <div className={styles.navbarSectionItem} onClick={() => onAddPhoto('2xColumn')}>
             <div className={styles.layoutWrapper}>
@@ -97,7 +107,7 @@ export default function PostNavbar({
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Add Photos</h3>
         <div className={styles.navbarSectionRow}>
-          <div onClick={() => onAddPhoto('single-photo-caption-below')} className={styles.navbarSectionItem}>
+          <div onClick={() => onAddPhoto('single-photo-no-caption')} className={styles.navbarSectionItem}>
             <FontAwesomeIcon icon={faImage} className={styles.icon} />
             <h3>Single Photo</h3>
           </div>

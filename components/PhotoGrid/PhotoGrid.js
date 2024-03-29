@@ -20,7 +20,7 @@ export default function PhotoGrid ({
   // 3. 2xColumn
   // 4. 3xColumn
   // 5. grid
-  // 6. single-photo-caption-above
+  // 6. single-photo-no-caption
   // 7. single-photo-caption-below
 
   // determine the format and set the grid class accordingly
@@ -56,9 +56,9 @@ export default function PhotoGrid ({
       case 'grid':
         gridClass = 'photosGridTwoColumns';
         break;
-      case 'single-photo-caption-above':
+      case 'single-photo-no-caption':
         gridClass = 'singlePhotoGrid';
-        photoClass = 'photoWithCaptionAbove';
+        photoClass = 'singlePhotoNoCaption';
         break;
       case 'single-photo-caption-below':
         gridClass = 'singlePhotoGrid';
@@ -78,6 +78,7 @@ export default function PhotoGrid ({
   if (!photos || photos.length === 0 ) {
     return <div>No photos to display</div>;
   }
+
 
   return (
     <div className={`${styles.photoGridContainer} ${styles[containerClassName]}`}>
@@ -109,7 +110,7 @@ export default function PhotoGrid ({
           )
         })}
       </div>
-
+      {photoClassName !== 'singlePhotoNoCaption' &&
       <div className={`${styles.gridCaptionContainer} ${styles[gridClassName]}`}>
         {photos.map((photo, index) => (
           <div key={index} className={`${styles.photoInfoContainer}`}>
@@ -139,6 +140,7 @@ export default function PhotoGrid ({
           </div>
         ))}
       </div>
+      }
     </div>
   );
 }

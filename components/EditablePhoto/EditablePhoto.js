@@ -6,10 +6,11 @@ import { faX, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen }
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import { Rnd } from 'react-rnd';
 
 export default function EditablePhoto({
-  fileObj, updatePhotoContent, handleTitleChange, handleCaptionChange, handleRemovePhoto, containerClassName,
-  onDragStart, onDragOver, onDrop, index, selectedPhotos, setSelectedPhotos }) {
+  fileObj, isEditable, updatePhotoContent, handleRemovePhoto, containerClassName,
+  onDragStart, onDragOver, onDrop, index, setSelectedPhotos }) {
   const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0,
     // aspect: 16 / 9
   });
@@ -21,7 +22,12 @@ export default function EditablePhoto({
   const [unit, setUnit] = useState('percent'); // Options: 'percent' or 'pixels'
   const [debouncedCropSize, setDebouncedCropSize] = useState(cropSize);
   const debounceTimer = useRef(null);
-  const [resizeActive, setResizeActive] = useState(false);
+  // react rnd state
+
+  // default size
+  const [originalSize, setOriginalSize] = useState({ })
+  const [size, setSize] = useState({width: '300px', height: 'auto'});
+  const [position, setPosition] = useState({x: 500, y: 500});
 
   useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
 
@@ -33,11 +39,13 @@ export default function EditablePhoto({
       setCrop({ ...crop, aspect: undefined });
     }
   }, [lockAspectRatio, imageRef]);
+
   useEffect(() => {
     const newWidth = unit === 'percent' ? debouncedCropSize.width : pixelsToPercent(debouncedCropSize.width, 'width');
     const newHeight = unit === 'percent' ? debouncedCropSize.height : pixelsToPercent(debouncedCropSize.height, 'height');
     setCrop({ ...crop, width: newWidth, height: newHeight });
   }, [debouncedCropSize, unit, imageRef]);
+
   useEffect(() => {
     clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
@@ -45,9 +53,15 @@ export default function EditablePhoto({
     }, 500);
     return () => clearTimeout(debounceTimer.current);
   }, [cropSize]);
+
   useEffect(() => {
     enforceCropConstraints();
   }, [unit, imageRef]);
+
+  useEffect(() => {
+    // if false, update photo object with rnd state data
+
+  }, [isEditable])
 
   // CROP HANDLERS
   const enforceCropConstraints = () => {
@@ -194,6 +208,11 @@ export default function EditablePhoto({
     // Update the fileObj with the new style information
     updateFileObjWithStyle(newWidth, newHeight);
   };
+  // for react-rnd
+  const adjustSize = (event) => {
+    const { naturalWidth, naturalHeight } = event.target;
+    setOriginalSize({ width: naturalWidth, height: naturalHeight });
+  };
   // Function to update the fileObj with new style
   const updateFileObjWithStyle = (newWidth, newHeight) => {
     console.log('updateFileObjWithStyle ran')
@@ -207,79 +226,106 @@ export default function EditablePhoto({
       return updatedPhotos;
     });
   };
-
+  const handleStyles = {
+    topRight: {
+      top: '-10px',
+      right: '-10px',
+      width: '20px',
+      height: '20px',
+      background: 'rgba(0, 0, 0, .5)',
+      border: 'solid 4px black',
+      cursor: 'nesw-resize',
+    },
+    bottomRight: {
+      bottom: '-10px',
+      right: '-10px',
+      width: '20px',
+      height: '20px',
+      background: 'rgba(0, 0, 0, .5)',
+      border: 'solid 4px black',
+      cursor: 'nwse-resize',
+    },
+    bottomLeft: {
+      bottom: '-10px',
+      right: '10px',
+      width: '20px',
+      height: '20px',
+      background: 'rgba(0, 0, 0, .5)',
+      border: 'solid 4px black',
+      cursor: 'nesw-resize',
+    },
+    topLeft: {
+      top: '-10px',
+      right: '-10px',
+      width: '20px',
+      height: '20px',
+      background: 'rgba(0, 0, 0, .5)',
+      border: 'solid 4px black',
+      cursor: 'nwse-resize',
+    },
+  }
   if (!fileObj) { return null }
 
   return (
-    // <div className={styles.draggableWrapper}>
     <div className={`${styles.draggableWrapper} ${styles[containerClassName]}`}>
-
-      <div className={styles.photoWrapper}>
-        {!cropActive &&
-        <div className={styles.photoEditMenu}>
-          <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
-            <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-            <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
-          </div>
-          <div className={styles.photoEditMenuIconWrapper}onClick={handleResize}>
-            <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
-            <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
-          </div>
-          <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
-            <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon}  />
-            <h3 className={styles.photoEditMenuIconLabel}>Remove</h3>
-          </div>
-        </div>
-        }
-
-        {
-          cropActive ? (
-            <ReactCrop
-              crop={crop}
-              onImageLoaded={onImageLoaded}
-              onChange={onCropChange}
-              onComplete={setCompletedCrop}
-              overlayColor="rgba(0, 0, 0, 0.6)"
-            >
-              <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
-            </ReactCrop>
-          ) : resizeActive ? (
-          // Your resize component or logic here
-            null
-          ) : (
+      { cropActive ? (
+        <ReactCrop
+          crop={crop}
+          onImageLoaded={onImageLoaded}
+          onChange={onCropChange}
+          onComplete={setCompletedCrop}
+          overlayColor="rgba(0, 0, 0, 0.6)"
+        >
+          <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
+        </ReactCrop>
+      ) : (
+        <Rnd
+          bounds='.postPreview'
+          lockAspectRatio={true}
+          default={{ width: originalSize.width, height: originalSize.height , x:0, y:0 }}
+          // style={{ 'max-height': '50vh', }}
+          onDragStart={(event) => {event.preventDefault()}}
+          onDragStop={() => {}}
+          onResizeStop={() => {}}
+          resizeHandleStyles={handleStyles}
+          // minHeight={200}
+          // minWidth={200}
+          // maxHeight={600}
+          // maxWidth={800}
+        >
+          <div className={styles.photoWrapper}>
+            {!cropActive &&
+              <div className={styles.photoEditMenu}>
+                <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
+                  <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
+                  <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
+                </div>
+                {/* <div className={styles.photoEditMenuIconWrapper}onClick={handleResize}>
+                  <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
+                  <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
+                </div> */}
+                <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
+                  <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon}  />
+                  <h3 className={styles.photoEditMenuIconLabel}>Remove</h3>
+                </div>
+              </div>
+            }
             <img src={fileObj.src}
               draggable
-              style={fileObj.style}
               onDragStart={(e) => onDragStart(e, index)}
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, index)}
-              className='gridPhoto' alt={`Preview ${index}`} />
-          )
-        }
-
-        {cropActive && cropControls}
-      </div>
-      {/* {cropActive ? (
-        null
-      ) : (
-        <div className={styles.captionTitleContainer}>
-          <input
-            value={fileObj.title}
-            onChange={(e) => handleTitleChange(index, e.target.value)}
-            placeholder="Enter title"
-            className={styles.titleInput}
-          />
-          <textarea
-            value={fileObj.caption}
-            onChange={(e) => handleCaptionChange(index, e.target.value)}
-            placeholder="Enter caption (optional)"
-            className={styles.captionInput}
-            onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null) } }}
-            rows={4}
-          />
-        </div>
+              className='gridPhoto'
+              alt={`Preview ${index}`}
+              onLoad={adjustSize}
+            />
+          </div>
+        </Rnd>
       )
-      } */}
+      }
+
+      {cropActive && cropControls}
+
     </div>
   )
 }

@@ -145,7 +145,10 @@
   margin: .25rem;
   font-size: 1rem;
 }
+.photoWithNoCaption {
 
+  width: 100%;
+}
 .photoWithCaptionRight {
   display: flex;
   flex-direction: row;
