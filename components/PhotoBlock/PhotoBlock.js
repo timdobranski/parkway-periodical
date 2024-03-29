@@ -4,10 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './photoBlock.module.css';
 import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import PhotoGrid from '../PhotoGrid/PhotoGrid';
-// import EditablePhoto from '../EditablePhoto/EditablePhoto';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faX, faCropSimple, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
-// import Image from 'next/image';
+import { Rnd } from 'react-rnd';
 
 // src is photo block parent state; selectedPhotos is photo block child state before saving
 export default function PhotoBlock({ updatePhotoContent, src, isEditable, setActiveBlock, blockIndex }) {
@@ -58,7 +55,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       setSelectedPhotos([]);
     }
   }, [src]);
-
+  // console log selected photos when they change
   useEffect(() => {
     console.log('selectedPhotos state changed: ', selectedPhotos);
   }, [selectedPhotos])
@@ -120,9 +117,9 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
   };
 
   const renderPreview = () => {
-    if (!src || src.length === 0) {
-      return <p className={styles.noPhotoMessage}>No photo provided</p>;
-    }
+    // if (!src || src.length === 0) {
+    //   return <p className={styles.noPhotoMessage}>No photo provided</p>;
+    // }
 
     // Determine what to render based on src.format
     let content;
@@ -135,60 +132,55 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       case '2xColumn':
       case 'grid':
         content = (
-          <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
-            <PhotoGrid
-              format={src.format}
-              isEditable={isEditable}
-              photos={selectedPhotos}
-              setActiveBlock={setActiveBlock}
-              blockIndex={blockIndex}
-              onClick={() => setActiveBlock(blockIndex)}
-              updatePhotoContent={updatePhotoContent}
-              handleTitleChange={handleTitleChange}
-              handleCaptionChange={handleCaptionChange}
-              handleRemovePhoto={handleRemovePhoto}
-              selectedPhotos={selectedPhotos}
-              setSelectedPhotos={setSelectedPhotos}
-              onDragStart={onDragStart}
-              onDragOver={onDragOver}
-              onDrop={onDrop}
-            />
-          </div>
+          <PhotoGrid
+            format={src.format}
+            isEditable={isEditable}
+            photos={selectedPhotos}
+            setActiveBlock={setActiveBlock}
+            blockIndex={blockIndex}
+            onClick={() => setActiveBlock(blockIndex)}
+            updatePhotoContent={updatePhotoContent}
+            handleTitleChange={handleTitleChange}
+            handleCaptionChange={handleCaptionChange}
+            handleRemovePhoto={handleRemovePhoto}
+            selectedPhotos={selectedPhotos}
+            setSelectedPhotos={setSelectedPhotos}
+            onDragStart={onDragStart}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+          />
         );
         break;
       case 'carousel':
         content = (
-          <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
-            <PhotoCarousel
-              photos={selectedPhotos}
-              isEditable={isEditable}
-              handleTitleChange={handleTitleChange}
-              handleCaptionChange={handleCaptionChange}
-            />
-          </div>
+          <PhotoCarousel
+            photos={selectedPhotos}
+            isEditable={isEditable}
+            handleTitleChange={handleTitleChange}
+            handleCaptionChange={handleCaptionChange}
+          />
         )
         break;
       default:
-        content = <p>Invalid photo format</p>;
+        content = <p>Switch default error</p>;
     }
-
-    return (
-      <>
-        {isEditable ?
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            {...(!src.format.includes('single') && { multiple: true })}
-            className={styles.photoInput}
-          />
-          : null
-        }
-        {content};
-      </>
-    )
+    return content
   };
 
-  return renderPreview();
 
+  return (
+    <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
+      {isEditable ?
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          {...(!src.format.includes('single') && { multiple: true })}
+          className={styles.photoInput}
+        />
+        : null
+      }
+      {renderPreview()}
+    </div>
+  )
 }
