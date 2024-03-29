@@ -94,7 +94,7 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
         ) :
           <>
             {photos[currentPhotoIndex].caption && (
-              <p className={styles.currentPhotoCaption}>
+              <p className={styles.captionP}>
                 {photos[currentPhotoIndex].caption}
               </p>
             )}
