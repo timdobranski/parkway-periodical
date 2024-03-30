@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -290,7 +290,7 @@ export default function EditablePhoto({
           resizeHandleStyles={handleStyles}
           // minHeight={200}
           // minWidth={200}
-          // maxHeight={600}
+          // maxHeight={500}
           // maxWidth={800}
         >
           <div className={styles.photoWrapper}>
@@ -298,15 +298,15 @@ export default function EditablePhoto({
               <div className={styles.photoEditMenu}>
                 <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
                   <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-                  <h3 className={styles.photoEditMenuIconLabel}>Crop</h3>
+                  {/* <h3 className={styles.photoEditMenuIconLabel}>Crop</h3> */}
                 </div>
                 {/* <div className={styles.photoEditMenuIconWrapper}onClick={handleResize}>
                   <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
                   <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
                 </div> */}
                 <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
-                  <FontAwesomeIcon icon={faX} className={styles.removePhotoIcon}  />
-                  <h3 className={styles.photoEditMenuIconLabel}>Remove</h3>
+                  <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
+                  {/* <h3 className={styles.photoEditMenuIconLabel}>Remove</h3> */}
                 </div>
               </div>
             }

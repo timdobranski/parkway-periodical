@@ -1,7 +1,16 @@
+.videoBlockWrapper {
+  position: relative;
+  border: dashed black 2px;
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .youtubeVideoWrapper {
   position: relative; /* Added position relative */
-  width: 80%;
-  height: 500px; /* Fixed height, or use padding-top for aspect ratio */
+  width: 100%;
+  height: 100%;
   margin: 4rem;
   display: flex;
   flex-direction: column;
@@ -11,16 +20,20 @@
 }
 
 .youtubeVideoWrapper iframe {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
-  /* min-width: 700px; */
   height: 100%;
 
 }
+/* for a separate button if necessary */
+.videoInputWrapper {
 
+}
 .videoInput {
+  position: absolute;
+  top: -50px;
   width: 80%;
   margin: 0 auto;
   font-size: 1.25rem;
@@ -30,4 +43,14 @@
 }
 .noVideoMessage {
   width: 100%;
+}
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5); /* Adjust the color and opacity as needed */
+  cursor: move; /* Indicates that the element is draggable */
+  z-index: 10; /* Ensure it's above the iframe */
 }
