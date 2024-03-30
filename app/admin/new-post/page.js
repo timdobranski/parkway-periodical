@@ -300,11 +300,12 @@ export default function NewPostPage() {
       <div className='postPreview' style={{height: `${postHeight}px`}}>
         {contentBlocks.map((block, index) => (
           <div key={index} className='blockWrapper'>
-            {block.type === 'title' ? (null) : (
+            {/* {block.type === 'title' ? (null) : (
               <div className={styles.blockControlsLeft}>
                 {index > 1 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
                 <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-              </div> )}
+              </div>
+            )} */}
             {block.type === 'title' && (
               <PostTitle
                 isEditable={index === activeBlock}
@@ -339,23 +340,24 @@ export default function NewPostPage() {
               updateVideoStyle={(style) => updateVideoStyle(index, style)}
               setActiveBlock={setActiveBlock}
               isEditable={index === activeBlock}
+              toggleEditable={toggleEditable}
               src={block}
               blockIndex={index}
             />
             }
-            <div className={styles.blockControlsRight}>
-              <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
-              {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconX}/>)}
+            <div className={styles.blockControls}>
+              {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>)}
+              {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>)}
             </div>
           </div>
         ))}
         {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
         <div
-        className={styles.bottomResizer}
-        onMouseDown={handleMouseDown}
-      >
-        {/* This is the resize handler */}
-      </div>
+          className={styles.bottomResizer}
+          onMouseDown={handleMouseDown}
+        >
+          {/* This is the resize handler */}
+        </div>
       </div>
     </>
   );

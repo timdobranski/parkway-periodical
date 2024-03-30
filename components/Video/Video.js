@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import styles from './video.module.css'
 import { Rnd } from 'react-rnd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
-export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditable, setActiveBlock, blockIndex }) {
+export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
   const [url, setUrl] = useState(src.content || '');
 
   useEffect(() => {
@@ -114,34 +116,36 @@ export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditabl
 
   return (
     <div className={styles.videoBlockWrapper}>
-      {isEditable &&
-      <input
-        type="text"
-        value={url}
-        onChange={handleInputChange}
-        placeholder="Enter video URL"
-        className={styles.videoInput}
-        onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
-      />}
 
-
-      {src && src !== '' ? (
+      {src ? (
         isEditable ? (
           // Wrap the iframe with Rnd when isEditable is true
-          <Rnd
-            bounds='.postPreview'
-            // default={src.style}
-            size={{width: src.style.width, height: src.style.height}}
-            position={{x: src.style.x, y: src.style.y}}
-            onDragStop={onDragStop}
-            onResizeStop={onResizeStop}
-            resizeHandleStyles={handleStyles}
+          <>
+            <Rnd
+              bounds='.postPreview'
+              size={{width: src.style.width, height: src.style.height}}
+              position={{x: src.style.x, y: src.style.y}}
+              onDragStop={onDragStop}
+              onResizeStop={onResizeStop}
+              resizeHandleStyles={handleStyles}
             // lockAspectRatio={true}
-            // style={{ 'position:': 'relative', }}
-          >
-            <div className={styles.videoOverlay}></div>
-            {video}
-          </Rnd>
+            >
+              <div className={styles.blockControls}>
+                <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
+                <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+                <input
+                  type="text"
+                  value={url}
+                  onChange={handleInputChange}
+                  placeholder="Enter video URL"
+                  className={styles.videoInput}
+                  onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
+                />
+              </div>
+              <div className={styles.videoOverlay}></div>
+              {video}
+            </Rnd>
+          </>
         ) : (
           // Directly render the iframe when isEditable is false
           <div
