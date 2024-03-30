@@ -93,6 +93,7 @@ export default function PhotoGrid ({
                   isEditable={isEditable}
                   fileObj={photo}
                   index={index}
+                  blockIndex={blockIndex}
                   handleTitleChange={handleTitleChange}
                   handleCaptionChange={handleCaptionChange}
                   handleRemovePhoto={handleRemovePhoto}
@@ -104,7 +105,13 @@ export default function PhotoGrid ({
                   setSelectedPhotos={setSelectedPhotos}
                 />
               ) : (
-                <img src={photo.src} alt={`Photo ${index}`} className='gridPhoto' onClick={() => setActiveBlock(blockIndex)} style={photo.style}/>
+                <img
+                  src={photo.src}
+                  alt={`Photo ${index}`}
+                  className='gridPhoto'
+                  onClick={() => setActiveBlock(blockIndex)}
+                  style={photo.style}
+                />
               )}
             </div>
           )

@@ -25,9 +25,8 @@ export default function EditablePhoto({
   // react rnd state
 
   // default size
-  const [originalSize, setOriginalSize] = useState({ })
   const [size, setSize] = useState({width: '300px', height: 'auto'});
-  const [position, setPosition] = useState({x: 500, y: 500});
+  const [position, setPosition] = useState({x: fileObj.style.left || 500, y: fileObj.style.top || 500});
 
   useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
 
@@ -59,9 +58,32 @@ export default function EditablePhoto({
   }, [unit, imageRef]);
 
   useEffect(() => {
-    // if false, update photo object with rnd state data
 
-  }, [isEditable])
+    setSelectedPhotos(prevPhotos => {
+      // Clone the previous photos array
+      const updatedPhotos = [...prevPhotos];
+
+      // Update the specific photo object at 'index' with new size and position
+      const updatedPhoto = {
+        ...updatedPhotos[index],
+        style: {
+          ...updatedPhotos[index].style,
+          width: size.width, // Assuming size.width is a string like '300px'
+          height: size.height, // Assuming size.height is a string like '200px'
+          left: position.x, // Assuming position.x is a number
+          top: position.y, // Assuming position.y is a number
+        }
+      };
+
+      // Replace the old photo object with the updated one
+      updatedPhotos[index] = updatedPhoto;
+
+      // Return the modified array to update the state
+      return updatedPhotos;
+    });
+
+  }, [size, position]);
+
 
   // CROP HANDLERS
   const enforceCropConstraints = () => {
@@ -209,9 +231,13 @@ export default function EditablePhoto({
     updateFileObjWithStyle(newWidth, newHeight);
   };
   // for react-rnd
-  const adjustSize = (event) => {
-    const { naturalWidth, naturalHeight } = event.target;
-    setOriginalSize({ width: naturalWidth, height: naturalHeight });
+  const onDragStop = (e, d) => {
+    setPosition({ x: d.x, y: d.y });
+  };
+
+  const onResizeStop = (e, direction, ref, delta, position) => {
+    setSize({ width: ref.style.width, height: ref.style.height });
+    setPosition({ x: position.x, y: position.y });
   };
   // Function to update the fileObj with new style
   const updateFileObjWithStyle = (newWidth, newHeight) => {
@@ -282,11 +308,11 @@ export default function EditablePhoto({
         <Rnd
           bounds='.postPreview'
           lockAspectRatio={true}
-          default={{ width: originalSize.width, height: originalSize.height , x:0, y:0 }}
+          default={fileObj.style}
           // style={{ 'max-height': '50vh', }}
           onDragStart={(event) => {event.preventDefault()}}
-          onDragStop={() => {}}
-          onResizeStop={() => {}}
+          onDragStop={onDragStop}
+          onResizeStop={onResizeStop}
           resizeHandleStyles={handleStyles}
           // minHeight={200}
           // minWidth={200}
@@ -298,15 +324,10 @@ export default function EditablePhoto({
               <div className={styles.photoEditMenu}>
                 <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
                   <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-                  {/* <h3 className={styles.photoEditMenuIconLabel}>Crop</h3> */}
                 </div>
-                {/* <div className={styles.photoEditMenuIconWrapper}onClick={handleResize}>
-                  <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.resizeIcon}/>
-                  <h3 className={styles.photoEditMenuIconLabel}>Resize</h3>
-                </div> */}
+
                 <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
                   <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
-                  {/* <h3 className={styles.photoEditMenuIconLabel}>Remove</h3> */}
                 </div>
               </div>
             }
@@ -317,7 +338,7 @@ export default function EditablePhoto({
               onDrop={(e) => onDrop(e, index)}
               className='gridPhoto'
               alt={`Preview ${index}`}
-              onLoad={adjustSize}
+              style={fileObj.style}
             />
           </div>
         </Rnd>

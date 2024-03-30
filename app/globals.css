@@ -34,8 +34,8 @@
   position: relative;
   top: 130px;
   width: 100vw;
-  height: calc(100vh - 130px);
-  /* height: auto; */
+  /* height: calc(100vh - 130px); */
+  height: fit-content;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -43,8 +43,7 @@
   justify-content: flex-start;
   font-family: Louis George Cafe;
   overflow-y: auto;
-
-  /* border: solid greenyellow 4px; */
+  height: 300vh;
 }
 .publicPageWrapper {
   position: absolute;
@@ -76,11 +75,11 @@
   max-width: 80vw;
   min-width: 50vw;
   box-sizing: border-box;
-  border-radius: 15px;
+  /* border-radius: 15px; */
   background-color: rgba(255, 255, 255, .9);
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
   backdrop-filter: blur(10px);
-  height: auto;
+  min-height: 100vh;
   padding-top: 2rem;
   padding-bottom: 2rem;
   font-size: 1.5rem;
@@ -92,9 +91,7 @@
   margin: 2rem 0rem;
 }
 .postPreview {
-  /* margin: 2rem; */
-  /* min-width: 700px; */
-  height: auto;
+
 }
 .blockWrapper {
   box-sizing: border-box;
@@ -107,8 +104,6 @@
   margin: 2rem 0rem 2rem 0rem;
   /* border: solid rgb(0, 0, 0) 1px; */
 }
-
-
 .loadingHeader {
   position: absolute;
   top: 0;

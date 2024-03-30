@@ -69,6 +69,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       src: '', // Temporarily set src to an empty string
       caption: '',
       title: '',
+      style: {}
     }));
 
     files.forEach((file, index) => {
@@ -166,17 +167,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     }
     return content
   };
-  const handleStyles = {
-    topRight: {
-      top: '-10px',
-      right: '-10px',
-      width: '20px',
-      height: '20px',
-      background: 'rgba(0, 0, 0, .5)',
-      border: 'solid 4px black',
-      cursor: 'nesw-resize',
-    },
-  }
+
 
   return (
     // <Rnd

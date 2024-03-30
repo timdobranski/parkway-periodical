@@ -1,8 +1,8 @@
 .videoBlockWrapper {
   position: relative;
-  border: dashed black 2px;
+  /* border: dashed black 2px; */
   width: 100%;
-  min-height: 600px;
+  min-height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +50,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.5); /* Adjust the color and opacity as needed */
+  background: rgba(255, 255, 255, 0); /* Adjust the color and opacity as needed */
   cursor: move; /* Indicates that the element is draggable */
   z-index: 10; /* Ensure it's above the iframe */
+}
+
+.test {
+  color: rgba(0, 195, 255, 0.5)
 }

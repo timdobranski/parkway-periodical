@@ -18,6 +18,8 @@ export default function NewPostPage() {
   const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: ''}]);
   const [activeBlock, setActiveBlock] = useState(0);
   const prevLengthRef = useRef(contentBlocks.length);
+  const [postHeight, setPostHeight] = useState(500);
+  const minHeight = 500;
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -54,6 +56,32 @@ export default function NewPostPage() {
 
     prevLengthRef.current = currentLength;
   }, [contentBlocks]);
+
+
+  // post height helpers
+  let startY = 0; // Starting Y position of the mouse
+  let startHeight = 0; // Starting height of the div
+
+  const handleMouseDown = (e) => {
+    startY = e.clientY;
+    startHeight = postHeight;
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleMouseMove = (e) => {
+    const newHeight = startHeight + e.clientY - startY;
+    setPostHeight(Math.max(newHeight, minHeight)); // minHeight is the minimum allowed height of the div
+  };
+
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
+
+
+
   // Helper function to upload image to Supabase Storage
   async function uploadImageToSupabase(base64String, fileName) {
     const fetchResponse = await fetch(base64String);
@@ -125,7 +153,7 @@ export default function NewPostPage() {
     });
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', };
+    const newBlock = { type: 'video', content: '', style: { width:'1000px', height:'562.5px' , x:0, y:0 } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     window.scrollTo({
       left: 0,
@@ -241,6 +269,12 @@ export default function NewPostPage() {
     newContentBlocks[index] = { ...newContentBlocks[index], content: url };
     setContentBlocks(newContentBlocks);
   }
+  // style should be an object with height, width, top, and left values set to numbers
+  const updateVideoStyle = (index, style) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], style: style };
+    setContentBlocks(newContentBlocks);
+  }
   const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
     ? contentBlocks[activeBlock].content
     : null;
@@ -254,7 +288,6 @@ export default function NewPostPage() {
 
   return (
     <>
-      {/* <h1 className={styles.loginHeader}>New Post</h1> */}
       <PostNavbar
         onAddText={addPrimeTextBlock}
         onAddPhoto={addPhotoBlock}
@@ -264,7 +297,7 @@ export default function NewPostPage() {
         handleSubmit={handleSubmit}
       />
 
-      <div className='postPreview'>
+      <div className='postPreview' style={{height: `${postHeight}px`}}>
         {contentBlocks.map((block, index) => (
           <div key={index} className='blockWrapper'>
             {block.type === 'title' ? (null) : (
@@ -303,9 +336,10 @@ export default function NewPostPage() {
             {block.type === 'video' &&
             <Video
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
+              updateVideoStyle={(style) => updateVideoStyle(index, style)}
               setActiveBlock={setActiveBlock}
               isEditable={index === activeBlock}
-              src={block.content}
+              src={block}
             />
             }
             <div className={styles.blockControlsRight}>
@@ -315,6 +349,12 @@ export default function NewPostPage() {
           </div>
         ))}
         {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
+        <div
+        className={styles.bottomResizer}
+        onMouseDown={handleMouseDown}
+      >
+        {/* This is the resize handler */}
+      </div>
       </div>
     </>
   );
