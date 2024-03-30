@@ -340,6 +340,7 @@ export default function NewPostPage() {
               setActiveBlock={setActiveBlock}
               isEditable={index === activeBlock}
               src={block}
+              blockIndex={index}
             />
             }
             <div className={styles.blockControlsRight}>

@@ -5,7 +5,7 @@ import styles from './video.module.css'
 import { Rnd } from 'react-rnd';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
-export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditable, setActiveBlock }) {
+export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditable, setActiveBlock, blockIndex }) {
   const [url, setUrl] = useState(src.content || '');
 
   useEffect(() => {
@@ -144,7 +144,11 @@ export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditabl
           </Rnd>
         ) : (
           // Directly render the iframe when isEditable is false
-          <div style={{height: src.style.height, width: src.style.width, left: src.style.x, top: src.style.y, position: 'absolute'}}>
+          <div
+            style={{height: src.style.height, width: src.style.width, left: src.style.x, top: src.style.y, position: 'absolute'}}
+            onClick={() => setActiveBlock(blockIndex)}
+          >
+            <div className={styles.videoOverlay}></div>
             {video}
           </div>
         )
