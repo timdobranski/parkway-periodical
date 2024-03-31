@@ -9,6 +9,8 @@ import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -16,6 +18,9 @@ export default function NewPostPage() {
   const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}}]);
   const [bottomEdge, setBottomEdge] = useState(0);
   const [activeBlock, setActiveBlock] = useState(0);
+  const [verticalGridlines, setVerticalGridlines] = useState([625, 416.667, 312.5])
+  const [horizontalGridlines, setHorizontalGridlines] = useState([625, 416.667, 312.5])
+
 
 
   useEffect(() => {
@@ -61,12 +66,25 @@ export default function NewPostPage() {
     console.log('bottomEdge: ', bottomEdge)
     window.scrollTo({
       left: 0,
-      top: 1000,
+      top: bottomEdge,
       behavior: 'smooth'
     });
   }, [bottomEdge])
 
+  // on new block: add new gridlines for left, right, top, bottom and center vert/center horizontal
+  // during drag or resize: check for gridlines & force snap
+      // if within 5px of gridline, force snap
+      // if exactly on gridline, allow movement away from gridline, but toward will snap again
+      // on snap, update gridlines in contentblocks state
 
+  // on drag or resize stop: update gridlines using addGridlines function
+  // separate function for replace vs add gridlines?
+
+  const enableGridSnap = () => {
+
+  }
+  const addGridlines = () => {}
+  const removeGridlines = () => {}
 
   // Helper function to upload image to Supabase Storage
   async function uploadImageToSupabase(base64String, fileName) {
@@ -139,7 +157,7 @@ export default function NewPostPage() {
     });
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', style: { width: '1000px', height: '562.5px' , x: 0, y: bottomEdge } };
+    const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 0, y: bottomEdge } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     window.scrollTo({
       left: 0,
@@ -282,7 +300,14 @@ export default function NewPostPage() {
 
       <div className='postPreview' style={{height: `${bottomEdge + 500}px`}}>
         {contentBlocks.map((block, index) => (
-          <div key={index} className='blockWrapper'>
+          <>
+          {/* <div key={index} className='blockWrapper' style={{height: parseInt(block.style.height, 10) + block.style.y}}> */}
+            {block.type !== 'title' &&
+              <div className={styles.blockControlsLeft}>
+                {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
+                <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
+              </div>
+            }
             {block.type === 'title' && (
               <PostTitle
                 isEditable={index === activeBlock}
@@ -329,11 +354,13 @@ export default function NewPostPage() {
               removeBlock={() => removeBlock(index)}
             />
             }
-            {/* <div className={styles.blockControls}>
+            <div className={styles.blockControlsRight}>
               {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>)}
               {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>)}
-            </div> */}
-          </div>
+            </div>
+          {/* </div> */}
+          </>
+
         ))}
         {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
 

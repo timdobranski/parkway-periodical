@@ -4,16 +4,23 @@ import { useState, useEffect } from 'react';
 import styles from './video.module.css'
 import { Rnd } from 'react-rnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashCan, faFloppyDisk, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTrashCan, faFloppyDisk, faUpDownLeftRight, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+
 
 // update video style takes in an object with width, height, top, and left values set to numbers
 export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
   const [url, setUrl] = useState('');
-
+  const [blockHeight, setBlockHeight] = useState(parseInt(src.style.height, 10) + src.style.y);
+  const [blockContentHeight, setBlockContentHeight] = useState(parseInt(src.style.height, 10) );
+  const [blockPosition, setBlockPosition] = useState({x: src.style.x, y: src.style.y});
+  //
   useEffect(() => {
     updateVideoUrl(url);
   }, [url]);
-
+  useEffect(() => {
+    setBlockHeight(parseInt(blockContentHeight, 10) + blockPosition.y);
+  }, [blockContentHeight, blockPosition]);
 
   const handleInputChange = (event) => {
     setUrl(event.target.value);
@@ -38,7 +45,6 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       className={styles.youtubeVideoWrapper}
     />
   );
-
   const onDragStop = (e, d) => {
     // Extract the existing width and height from src.style
     const { width, height } = src.style;
@@ -46,16 +52,18 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     // Update the parent component's state with the new position and existing size
     updateBlockStyle({width, height, y: d.y, x: d.x});
   };
-
   const onResizeStop = (e, direction, ref, delta, position) => {
-    // Extract the existing top and left from src.style
+    // The fixed width of the parent container
+    const parentWidth = 1121;
+    // The new width of the content after the resize
+    const newContentWidth = ref.offsetWidth;
+    // Calculate the new x value to center the content horizontally within the parent
+    const newX = (parentWidth - newContentWidth) / 2;
+    // Use the existing top from src.style for the y position
     const top = src.style.y;
-    const left = src.style.x;
-
-    // Update the parent component's state with the new size and existing position
-    updateBlockStyle({width: ref.offsetWidth, height: ref.offsetHeight, y:top, x:left});
+    // Update the parent component's state with the new size and centered x position
+    updateBlockStyle({ width: newContentWidth, height: ref.offsetHeight, y: top, x: newX });
   };
-
   const invalidVideoLink = (
     <p>Invalid video link. Links must be YouTube or Google Drive.</p>
   )
@@ -111,42 +119,68 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
   // if editable and no url
   if (isEditable && url === '') {
     return (
-      <Rnd
-        bounds='.postPreview'
-        size={{width: '600px', height: '50px'}}
-        position={{x: src.style.x, y: src.style.y}}
-        onDragStart={(event) => {event.preventDefault()}}
-        onDragStop={onDragStop}
-        onResizeStop={onResizeStop}
-        maxHeight={50}
+      <div key={blockIndex} className='blockWrapper' style={{height: blockHeight + 'px'}}>
+        <Rnd
+          // bounds='.blockWrapper'
+          size={{width: src.style.width, height: src.style.height}}
+          position={{x: (src.style.x + (.5 * parseInt(src.style.width, 10))), y: src.style.y}}
+          onDragStart={(event) => {event.preventDefault()}}
+          onDrag={(e, d) => { setBlockPosition({x: d.x, y: d.y})}}
+          onResize={(e, direction, refToElement, delta, position) => {
+            setBlockPosition({ x: position.x, y: position.y });
+            setBlockContentHeight(parseInt(refToElement.style.height, 10));
+          }}
+          onDragStop={onDragStop}
+          onResizeStop={onResizeStop}
+          dragAxis='y'
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: 'solid 2px black',
+            backgroundColor: 'rgba(0, 0, 0, .1)',
+          }}
 
-      >
-        <div className={styles.blockControls}>
-          <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
-          <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-          <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
-          <input
-            type="text"
-            value={url}
-            onChange={handleInputChange}
-            placeholder="Enter video URL"
-            className={styles.videoInput}
-            onMouseDown={(e) => e.stopPropagation()}
-            onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
-          />
-        </div>
-        <p style={{height: '200px' }}>No video link added yet</p>
-      </Rnd>
+        >
+          <div className={styles.blockControls}>
+            <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
+            <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+            <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
+            <input
+              type="text"
+              value={url}
+              onChange={handleInputChange}
+              placeholder="Enter video URL"
+              className={styles.videoInput}
+              onMouseDown={(e) => e.stopPropagation()}
+              onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
+            />
+          </div>
+          <FontAwesomeIcon icon={faYoutube} className={styles.iconYoutube} />
+
+          <p style={{height: src.style.height, width: src.style.width, textAlign: 'center' }}>No video link added yet</p>
+        </Rnd>
+      </div>
     )
   }
   if (!isEditable && url === '') {
     return (
       <div className={styles.videoBlockWrapper}>
         <div
-          style={{height: src?.style?.height, width: src?.style?.width, left: src?.style?.x, top: src?.style?.y, position: 'absolute'}}
+          style={{
+            height: src?.style?.height,
+            width: src?.style?.width,
+            left: src?.style?.x,
+            top: src?.style?.y,
+            position: 'absolute',
+            border: 'dashed 2px black',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'
+          }}
           onClick={() => setActiveBlock(blockIndex)}
         >
-          <p>No video link added yet</p>
+          <FontAwesomeIcon icon={faYoutube} className={styles.iconYoutube} />
+          <p>Click to add video link</p>
         </div>
       </div>
     )
@@ -157,18 +191,25 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       {
         isEditable ? (
           // Wrap the iframe with Rnd when isEditable is true
-          <>
+          <div key={blockIndex} className='blockWrapper' style={{height: blockHeight + 'px'}}>
+
             <Rnd
-              bounds='.postPreview'
+              // bounds='.blockWrapper'
+              dragAxis='y'
               size={{width: src.style.width, height: src.style.height}}
               position={{x: src.style.x, y: src.style.y}}
               onDragStart={(event) => {event.preventDefault()}}
+              onDrag={(e, d) => { setBlockPosition({x: d.x, y: d.y})}}
+              onResize={(e, direction, refToElement, delta, position) => {
+                setBlockPosition({ x: position.x, y: position.y });
+                setBlockContentHeight(parseInt(refToElement.style.height, 10));
+              }}
               onDragStop={onDragStop}
               onResizeStop={onResizeStop}
               resizeHandleStyles={url ? handleStyles : null}
               // maxHeight={url ? 1 : null}
               // maxWidth={url ? 1 : null}
-            // lockAspectRatio={true}
+              lockAspectRatio={true}
             >
               <div className={styles.blockControls}>
                 <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
@@ -187,7 +228,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
               <div className={styles.videoOverlay}></div>
               {video}
             </Rnd>
-          </>
+          </div>
         ) : (
           // Directly render the iframe when isEditable is false
           <div
