@@ -11,14 +11,16 @@ import { faPencil, faTrashCan, faFloppyDisk, faUpDownLeftRight } from '@fortawes
 
 import { Editor } from 'primereact/editor';
 
-export default function PrimeText({ isEditable, src, updateBlockStyle, setTextState }) {
+export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
+  updateBlockStyle, setTextState, setActiveBlock, onClick, removeBlock
+}) {
+
 
   // deprecated DOMNodeInserted event listener
   useEffect(() => {
     if (!isEditable) return;
     // Select the elements inside the Rnd component that you want to make non-draggable
     const nonDraggableElements = document.querySelectorAll('.p-editor-content');
-
     // Function to prevent dragging
     const preventDrag = (e) => e.stopPropagation();
 
@@ -36,23 +38,36 @@ export default function PrimeText({ isEditable, src, updateBlockStyle, setTextSt
   }, [isEditable]);
 
 
-  useEffect(() => {
-    console.log('src inside PrimeText component changed: ', src)
-  }, [])
+
   // If not editable, return just the text
   if (!isEditable) {
-    return (
-      <div className={styles.PrimeTextContainer}>
+
+    if (src && !src.content) return (
+      <div className={styles.PrimeTextContainer} onClick={() => {setActiveBlock(blockIndex)}}>
         <p
-          style={
-            {height: src.style.height,
-              width: src.style.width,
-              left: src.style.x,
-              top: src.style.y,
-              position: 'absolute',
-              border: '1px solid black'
-            }}
-          dangerouslySetInnerHTML={{ __html: src.content }}>
+          style={{
+            height: src.style.height,
+            width: src.style.width,
+            left: src.style.x,
+            top: src.style.y,
+            position: 'absolute',
+            border: 'dashed black 2px'
+          }}
+        >No text added yet. Click to add.</p>
+      </div>
+    );
+    return (
+      <div className={styles.PrimeTextContainer} >
+        <p
+          onClick={() => {setActiveBlock(blockIndex)}}
+          style={{
+            height: src?.style?.height,
+            width: src?.style?.width,
+            left: src?.style?.x,
+            top: src?.style?.y,
+            position: 'absolute',
+          }}
+          dangerouslySetInnerHTML={{ __html: src?.content }}>
         </p>
       </div>
     )
@@ -104,7 +119,6 @@ export default function PrimeText({ isEditable, src, updateBlockStyle, setTextSt
     const { width, height } = src.style;
     updateBlockStyle({width, height, y: d.y, x: d.x});
   };
-
   const onResizeStop = (e, direction, ref, delta, position) => {
     // Extract the existing top and left from src.style
     const top = src.style.y;

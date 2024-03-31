@@ -33,7 +33,7 @@
   top: 0;
   font-family: Nadall;
 }
-.navContainerLeft {
+.navContainerRight {
   position: absolute;
   top: 50%;
   right: 0;
@@ -44,7 +44,7 @@
   align-items: center;
   /* border: solid red 1px; */
 }
-.navContainerRight {
+.navContainerLeft {
   position: absolute;
   display: flex;
   top: 50%;
@@ -83,6 +83,15 @@
 .navContainer h2:focus {
   outline: none;
   border: none;
+}
+.storageStatusWrapper {
+  /* background-color: rgb(44, 200, 252); */
+  padding: 0 1rem 0 1rem;
+  height: calc(100% - .5rem);
+}
+.storageStatusWrapper p {
+  background-color: rgb(44, 200, 252);
+  padding: .5rem;
 }
 
 @media (max-width: 768px) {

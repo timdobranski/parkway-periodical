@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react';
 import styles from './video.module.css'
 import { Rnd } from 'react-rnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTrashCan, faFloppyDisk, faUpDownLeftRight } from '@fortawesome/free-solid-svg-icons';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
 export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
-  const [url, setUrl] = useState(src.content || '');
+  const [url, setUrl] = useState('');
 
   useEffect(() => {
     updateVideoUrl(url);
@@ -108,13 +108,53 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     // console.log('link check result: ', (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url)))
     return (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url))
   }
+  // if editable and no url
+  if (isEditable && url === '') {
+    return (
+      <Rnd
+        bounds='.postPreview'
+        size={{width: '600px', height: '50px'}}
+        position={{x: src.style.x, y: src.style.y}}
+        onDragStart={(event) => {event.preventDefault()}}
+        onDragStop={onDragStop}
+        onResizeStop={onResizeStop}
+        maxHeight={50}
 
-
-
+      >
+        <div className={styles.blockControls}>
+          <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
+          <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+          <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
+          <input
+            type="text"
+            value={url}
+            onChange={handleInputChange}
+            placeholder="Enter video URL"
+            className={styles.videoInput}
+            onMouseDown={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
+          />
+        </div>
+        <p style={{height: '200px' }}>No video link added yet</p>
+      </Rnd>
+    )
+  }
+  if (!isEditable && url === '') {
+    return (
+      <div className={styles.videoBlockWrapper}>
+        <div
+          style={{height: src?.style?.height, width: src?.style?.width, left: src?.style?.x, top: src?.style?.y, position: 'absolute'}}
+          onClick={() => setActiveBlock(blockIndex)}
+        >
+          <p>No video link added yet</p>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className={styles.videoBlockWrapper}>
 
-      {src ? (
+      {
         isEditable ? (
           // Wrap the iframe with Rnd when isEditable is true
           <>
@@ -133,6 +173,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
               <div className={styles.blockControls}>
                 <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
                 <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+                <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
                 <input
                   type="text"
                   value={url}
@@ -157,7 +198,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
             {video}
           </div>
         )
-      ) : <p>No video link added yet</p>}
+      }
     </div>
   )
 }

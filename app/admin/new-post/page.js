@@ -9,8 +9,6 @@ import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -18,9 +16,7 @@ export default function NewPostPage() {
   const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}}]);
   const [bottomEdge, setBottomEdge] = useState(0);
   const [activeBlock, setActiveBlock] = useState(0);
-  const prevLengthRef = useRef(contentBlocks.length);
-  const [postHeight, setPostHeight] = useState(500);
-  const minHeight = 500;
+
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -41,25 +37,7 @@ export default function NewPostPage() {
     console.log('ROOT PAGE contentblocks changed: ', contentBlocks)
   }, [contentBlocks])
 
-  // supposed to make the page scroll to the bottom when a new block is added - doesnt work
-  useEffect(() => {
-    const currentLength = contentBlocks.length;
-    const prevLength = prevLengthRef.current;
-
-    if (currentLength > prevLength) {
-      // Wait for the next DOM update
-      setTimeout(() => {
-        window.scrollTo({
-          left: 0,
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth'
-        });
-      }, 0);
-    }
-
-    prevLengthRef.current = currentLength;
-  }, [contentBlocks]);
-
+  // calculate the bottom edge of the post
   useEffect(() => {
     // create a bottomEdges array to store the bottom edge of each content block
     const bottomEdges = [];
@@ -78,27 +56,15 @@ export default function NewPostPage() {
     setBottomEdge(result);
   }, [contentBlocks])
 
-  // post height helpers
-  let startY = 0; // Starting Y position of the mouse
-  let startHeight = 0; // Starting height of the div
-
-  const handleMouseDown = (e) => {
-    startY = e.clientY;
-    startHeight = postHeight;
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
-
-  const handleMouseMove = (e) => {
-    const newHeight = startHeight + e.clientY - startY;
-    setPostHeight(Math.max(newHeight, minHeight)); // minHeight is the minimum allowed height of the div
-  };
-
-  const handleMouseUp = () => {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-  };
+  // scroll to the bottom when a new content block is added
+  useEffect(() => {
+    console.log('bottomEdge: ', bottomEdge)
+    window.scrollTo({
+      left: 0,
+      top: 1000,
+      behavior: 'smooth'
+    });
+  }, [bottomEdge])
 
 
 
@@ -363,19 +329,14 @@ export default function NewPostPage() {
               removeBlock={() => removeBlock(index)}
             />
             }
-            <div className={styles.blockControls}>
+            {/* <div className={styles.blockControls}>
               {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>)}
               {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>)}
-            </div>
+            </div> */}
           </div>
         ))}
         {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
-        <div
-          className={styles.bottomResizer}
-          onMouseDown={handleMouseDown}
-        >
-          {/* This is the resize handler */}
-        </div>
+
       </div>
     </>
   );
