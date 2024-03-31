@@ -15,7 +15,8 @@ import { faTrashCan, faCaretUp, faCaretDown, faPencil, faFloppyDisk } from '@for
 export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: ''}]);
+  const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}}]);
+  const [bottomEdge, setBottomEdge] = useState(0);
   const [activeBlock, setActiveBlock] = useState(0);
   const prevLengthRef = useRef(contentBlocks.length);
   const [postHeight, setPostHeight] = useState(500);
@@ -39,6 +40,8 @@ export default function NewPostPage() {
   useEffect(() => {
     console.log('ROOT PAGE contentblocks changed: ', contentBlocks)
   }, [contentBlocks])
+
+  // supposed to make the page scroll to the bottom when a new block is added - doesnt work
   useEffect(() => {
     const currentLength = contentBlocks.length;
     const prevLength = prevLengthRef.current;
@@ -57,6 +60,24 @@ export default function NewPostPage() {
     prevLengthRef.current = currentLength;
   }, [contentBlocks]);
 
+  useEffect(() => {
+    if (contentBlocks.length <= 1) { return; }
+    // create a bottomEdges array to store the bottom edge of each content block
+    const bottomEdges = [];
+    // for each content block
+    contentBlocks.forEach((block) => {
+      console.log('block: ', block)
+      // calculate its bottom edge by adding its height to its y position
+      var bottomEdge = block.style.y + parseInt(block.style.height, 10);
+      bottomEdges.push(bottomEdge);
+    })
+    console.log('BOTTOM EDGES: ', bottomEdges)
+    // find the biggest number, add 50, and set the bottomEdge state to the result
+    const largestNumber = Math.max(...bottomEdges);
+    const result = largestNumber + 50; // add 50 pixels for padding
+    console.log('RESULT: ', result)
+    setBottomEdge(result);
+  }, [contentBlocks])
 
   // post height helpers
   let startY = 0; // Starting Y position of the mouse
@@ -143,7 +164,7 @@ export default function NewPostPage() {
   }
   // content blocks helpers
   const addPrimeTextBlock = () => {
-    const newBlock = { type: 'text', content: '' };
+    const newBlock = { type: 'text', content: '', style: { width:'1000px', height:'200px' , x:0, y: bottomEdge }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length);
     window.scrollTo({
@@ -153,7 +174,7 @@ export default function NewPostPage() {
     });
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', style: { width:'1000px', height:'562.5px' , x:0, y:0 } };
+    const newBlock = { type: 'video', content: '', style: { width: '1000px', height: '562.5px' , x: 0, y: bottomEdge } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     window.scrollTo({
       left: 0,
@@ -256,6 +277,11 @@ export default function NewPostPage() {
       return block;
     }));
   };
+  // const updateTextStyle = (index, style) => {
+  //   const newContentBlocks = [...contentBlocks];
+  //   newContentBlocks[index] = { ...newContentBlocks[index], style: style };
+  //   setContentBlocks(newContentBlocks);
+  // }
   // photo block helpers
   const updatePhotoContent = (index, photos) => {
     // console.log('photos passed to updatePhotoContent: ', photos);
@@ -270,7 +296,7 @@ export default function NewPostPage() {
     setContentBlocks(newContentBlocks);
   }
   // style should be an object with height, width, top, and left values set to numbers
-  const updateVideoStyle = (index, style) => {
+  const updateBlockStyle = (index, style) => {
     const newContentBlocks = [...contentBlocks];
     newContentBlocks[index] = { ...newContentBlocks[index], style: style };
     setContentBlocks(newContentBlocks);
@@ -297,15 +323,9 @@ export default function NewPostPage() {
         handleSubmit={handleSubmit}
       />
 
-      <div className='postPreview' style={{height: `${postHeight}px`}}>
+      <div className='postPreview' style={{height: `${bottomEdge + 500}px`}}>
         {contentBlocks.map((block, index) => (
           <div key={index} className='blockWrapper'>
-            {/* {block.type === 'title' ? (null) : (
-              <div className={styles.blockControlsLeft}>
-                {index > 1 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
-                <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-              </div>
-            )} */}
             {block.type === 'title' && (
               <PostTitle
                 isEditable={index === activeBlock}
@@ -319,9 +339,10 @@ export default function NewPostPage() {
             {block.type === 'text' && (
               <PrimeText
                 isEditable={index === activeBlock}
-                textState={block.content}
+                src={block}
                 setTextState={updateActiveTextEditorState}
                 onClick={() => setActiveBlock(index)}
+                updateBlockStyle={(style) => updateBlockStyle(index, style)}
               />
             )}
             {block.type === 'photo' &&
@@ -337,7 +358,7 @@ export default function NewPostPage() {
             {block.type === 'video' &&
             <Video
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
-              updateVideoStyle={(style) => updateVideoStyle(index, style)}
+              updateBlockStyle={(style) => updateBlockStyle(index, style)}
               setActiveBlock={setActiveBlock}
               isEditable={index === activeBlock}
               toggleEditable={toggleEditable}

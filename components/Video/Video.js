@@ -7,16 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
-export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
+export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
   const [url, setUrl] = useState(src.content || '');
 
   useEffect(() => {
     updateVideoUrl(url);
   }, [url]);
 
-  useEffect(() => {
-    console.log('src inside video component changed: ', src)
-  }, [])
 
   const handleInputChange = (event) => {
     setUrl(event.target.value);
@@ -47,7 +44,7 @@ export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditabl
     const { width, height } = src.style;
 
     // Update the parent component's state with the new position and existing size
-    updateVideoStyle({width, height, y: d.y, x: d.x});
+    updateBlockStyle({width, height, y: d.y, x: d.x});
   };
 
   const onResizeStop = (e, direction, ref, delta, position) => {
@@ -56,7 +53,7 @@ export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditabl
     const left = src.style.x;
 
     // Update the parent component's state with the new size and existing position
-    updateVideoStyle({width: ref.offsetWidth, height: ref.offsetHeight, y:top, x:left});
+    updateBlockStyle({width: ref.offsetWidth, height: ref.offsetHeight, y:top, x:left});
   };
 
   const invalidVideoLink = (
@@ -125,6 +122,7 @@ export default function Video({ updateVideoUrl, updateVideoStyle, src, isEditabl
               bounds='.postPreview'
               size={{width: src.style.width, height: src.style.height}}
               position={{x: src.style.x, y: src.style.y}}
+              onDragStart={(event) => {event.preventDefault()}}
               onDragStop={onDragStop}
               onResizeStop={onResizeStop}
               resizeHandleStyles={handleStyles}

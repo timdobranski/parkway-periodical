@@ -1,29 +1,25 @@
 .PrimeTextContainer {
+  position: relative;
   display: flex;
-  flex-grow: 1;
-  font-size: 1.5rem;
-  font-weight: 500;
+  /* font-size: 1.5rem; */
   /* line-height: 2rem; */
   color: #000000;
   /* margin-bottom: 1rem; */
-  min-width: 200px;
+  width: 100%;
   margin: 0;
+  padding: 0;
   max-width: 1250px;
-  max-height: 1000px
-  /* border: solid red 2px; */
-
+  max-height: 1000px;
 }
 /* .PrimeTextContainer * {
   margin: 0;
 } */
-.PrimeTextContainer .p-editor-toolbar .p-editor-button {
-  font-size: 20px; /* Adjust the size as needed */
+/* .PrimeTextContainer .p-editor-toolbar .p-editor-button {
+  font-size: 20px;
 }
-
-/* Increase the text size inside the editor */
 .PrimeTextContainer .p-editor-content {
-  font-size: 26px; /* Adjust the size as needed */
-}
+  font-size: 26px;
+} */
 .blockControls {
   position: absolute;
   color: white;
@@ -61,8 +57,12 @@
   /* background-color: rgb(23, 197, 255); */
   transition: transform .3s ease-in-out, color .3s ease-in-out;
 }
+.iconMove {
+  color: rgb(170, 234, 255);
+
+}
 .iconMove:hover {
-  color: greenyellow;
+  color: rgb(97, 195, 255);
   cursor: pointer;
 }
 .iconStatus {

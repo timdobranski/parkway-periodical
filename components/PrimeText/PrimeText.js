@@ -11,9 +11,11 @@ import { faPencil, faTrashCan, faFloppyDisk, faUpDownLeftRight } from '@fortawes
 
 import { Editor } from 'primereact/editor';
 
-export default function PrimeText({ isEditable, textState, setTextState }) {
+export default function PrimeText({ isEditable, src, updateBlockStyle, setTextState }) {
 
+  // deprecated DOMNodeInserted event listener
   useEffect(() => {
+    if (!isEditable) return;
     // Select the elements inside the Rnd component that you want to make non-draggable
     const nonDraggableElements = document.querySelectorAll('.p-editor-content');
 
@@ -31,11 +33,27 @@ export default function PrimeText({ isEditable, textState, setTextState }) {
         element.removeEventListener('mousedown', preventDrag);
       });
     };
-  }, []);
+  }, [isEditable]);
 
+
+  useEffect(() => {
+    console.log('src inside PrimeText component changed: ', src)
+  }, [])
+  // If not editable, return just the text
   if (!isEditable) {
     return (
-      <div className={styles.PrimeTextContainer} dangerouslySetInnerHTML={{ __html: textState }}>
+      <div className={styles.PrimeTextContainer}>
+        <p
+          style={
+            {height: src.style.height,
+              width: src.style.width,
+              left: src.style.x,
+              top: src.style.y,
+              position: 'absolute',
+              border: '1px solid black'
+            }}
+          dangerouslySetInnerHTML={{ __html: src.content }}>
+        </p>
       </div>
     )
   }
@@ -81,33 +99,39 @@ export default function PrimeText({ isEditable, textState, setTextState }) {
       borderRadius: '50%'
     },
   }
+  const onDragStop = (e, d) => {
+    // Extract the existing width and height from src.style
+    const { width, height } = src.style;
+    updateBlockStyle({width, height, y: d.y, x: d.x});
+  };
 
-
+  const onResizeStop = (e, direction, ref, delta, position) => {
+    // Extract the existing top and left from src.style
+    const top = src.style.y;
+    const left = src.style.x;
+    updateBlockStyle({width: ref.offsetWidth, height: ref.offsetHeight, y:top, x:left});
+  };
 
   return (
-    <Rnd
-      bounds='.postPreview'
-      // size={{width: src.style.width, height: src.style.height}}
-      // position={{x: src.style.x, y: src.style.y}}
-      // onDragStop={onDragStop}
-      // onResizeStop={onResizeStop}
-      resizeHandleStyles={handleStyles}
-      // lockAspectRatio={true}
-      style={{display: 'flex'}}
-      // minHeight={200}
-      minWidth={200}
-      maxHeight={800}
-      maxWidth={1250}
-    >
-      <div className={styles.blockControls}>
-        <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
-        <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-        <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
-      </div>
-
-      <div className={styles.PrimeTextContainer}>
-        <Editor value={textState} onTextChange={(e) => setTextState(e.htmlValue)} />
-      </div>
-    </Rnd>
+    <div className={styles.PrimeTextContainer}>
+      <Rnd
+        bounds='.postPreview'
+        size={{width: src.style.width, height: src.style.height}}
+        position={{x: src.style.x, y: src.style.y}}
+        onDragStop={onDragStop}
+        onResizeStop={onResizeStop}
+        resizeHandleStyles={handleStyles}
+        minWidth={200}
+        // lockAspectRatio={true}
+        style={{display: 'flex'}}
+      >
+        <div className={styles.blockControls}>
+          <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
+          <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+          <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
+        </div>
+        <Editor value={src.content} onTextChange={(e) => setTextState(e.htmlValue)} />
+      </Rnd>
+    </div>
   )
 }
