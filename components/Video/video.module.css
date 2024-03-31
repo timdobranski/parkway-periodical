@@ -1,6 +1,6 @@
 .videoBlockWrapper {
   position: relative;
-  border: dashed black 2px;
+  /* border: dashed black 2px; */
   width: 100%;
   min-height: 100px;
   display: flex;

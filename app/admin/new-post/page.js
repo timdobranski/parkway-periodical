@@ -61,7 +61,6 @@ export default function NewPostPage() {
   }, [contentBlocks]);
 
   useEffect(() => {
-    if (contentBlocks.length <= 1) { return; }
     // create a bottomEdges array to store the bottom edge of each content block
     const bottomEdges = [];
     // for each content block
@@ -277,11 +276,6 @@ export default function NewPostPage() {
       return block;
     }));
   };
-  // const updateTextStyle = (index, style) => {
-  //   const newContentBlocks = [...contentBlocks];
-  //   newContentBlocks[index] = { ...newContentBlocks[index], style: style };
-  //   setContentBlocks(newContentBlocks);
-  // }
   // photo block helpers
   const updatePhotoContent = (index, photos) => {
     // console.log('photos passed to updatePhotoContent: ', photos);
@@ -301,17 +295,14 @@ export default function NewPostPage() {
     newContentBlocks[index] = { ...newContentBlocks[index], style: style };
     setContentBlocks(newContentBlocks);
   }
-  const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
-    ? contentBlocks[activeBlock].content
-    : null;
+  // const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
+  //   ? contentBlocks[activeBlock].content
+  //   : null;
 
 
   if (!user) {
     return <div>Loading...</div>;
   }
-
-
-
   return (
     <>
       <PostNavbar
@@ -338,11 +329,15 @@ export default function NewPostPage() {
             )}
             {block.type === 'text' && (
               <PrimeText
+                blockIndex={index}
                 isEditable={index === activeBlock}
+                toggleEditable={toggleEditable}
                 src={block}
+                setActiveBlock={setActiveBlock}
                 setTextState={updateActiveTextEditorState}
                 onClick={() => setActiveBlock(index)}
                 updateBlockStyle={(style) => updateBlockStyle(index, style)}
+                removeBlock={() => removeBlock(index)}
               />
             )}
             {block.type === 'photo' &&
@@ -353,6 +348,7 @@ export default function NewPostPage() {
                 isEditable={index === activeBlock}
                 src={block}
                 setActiveBlock={setActiveBlock}
+                removeBlock={() => removeBlock(index)}
               />
             }
             {block.type === 'video' &&
@@ -364,6 +360,7 @@ export default function NewPostPage() {
               toggleEditable={toggleEditable}
               src={block}
               blockIndex={index}
+              removeBlock={() => removeBlock(index)}
             />
             }
             <div className={styles.blockControls}>

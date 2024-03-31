@@ -125,7 +125,9 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
               onDragStart={(event) => {event.preventDefault()}}
               onDragStop={onDragStop}
               onResizeStop={onResizeStop}
-              resizeHandleStyles={handleStyles}
+              resizeHandleStyles={url ? handleStyles : null}
+              // maxHeight={url ? 1 : null}
+              // maxWidth={url ? 1 : null}
             // lockAspectRatio={true}
             >
               <div className={styles.blockControls}>
@@ -137,6 +139,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
                   onChange={handleInputChange}
                   placeholder="Enter video URL"
                   className={styles.videoInput}
+                  onMouseDown={(e) => e.stopPropagation()}
                   onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
                 />
               </div>
