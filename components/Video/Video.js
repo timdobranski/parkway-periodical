@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './video.module.css'
 import { Rnd } from 'react-rnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashCan, faFloppyDisk, faUpDownLeftRight, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTrashCan, faFloppyDisk, faUpDown, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -121,11 +121,11 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     return (
       <div key={blockIndex} className='editableBlockWrapper' style={{height: blockHeight + 'px'}}>
         <Rnd
-          // bounds='.blockWrapper'
+          // bounds='.editableBlockWrapper'
           size={{width: src.style.width, height: src.style.height}}
-          position={{x: (src.style.x ), y: src.style.y}}
-          onDragStart={(event) => {event.preventDefault()}}
-          onDrag={(e, d) => { setBlockPosition({x: d.x, y: d.y})}}
+          position={{x: (src.style.x ), y: src.style.y < 0 ? 0 : src.style.y}}
+          // onDragStart={(event) => {event.preventDefault()}}
+          onDrag={(e, d) => { console.log('d.y:', d.y); setBlockPosition({x: d.x, y: d.y < 0 ? 0 : d.y})}}
           onResize={(e, direction, refToElement, delta, position) => {
             setBlockPosition({ x: position.x, y: position.y });
             setBlockContentHeight(parseInt(refToElement.style.height, 10));
@@ -146,7 +146,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
           <div className={styles.blockControls}>
             <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
             <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-            <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
+            <FontAwesomeIcon icon={faUpDown} className={styles.iconMove}/>
             <input
               type="text"
               value={url}
@@ -195,12 +195,12 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
           <div key={blockIndex} className='editableBlockWrapper' style={{height: blockHeight + 'px'}}>
 
             <Rnd
-              // bounds='.blockWrapper'
+              // bounds='.editableBlockWrapper'
               dragAxis='y'
               size={{width: src.style.width, height: src.style.height}}
               position={{x: src.style.x, y: src.style.y}}
               onDragStart={(event) => {event.preventDefault()}}
-              onDrag={(e, d) => { setBlockPosition({x: d.x, y: d.y})}}
+              onDrag={(e, d) => { setBlockPosition({x: d.x, y: d.y < 0 ? 0 : d.y})}}
               onResize={(e, direction, refToElement, delta, position) => {
                 setBlockPosition({ x: position.x, y: position.y });
                 setBlockContentHeight(parseInt(refToElement.style.height, 10));
@@ -215,7 +215,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
               <div className={styles.blockControls}>
                 <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
                 <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-                <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
+                <FontAwesomeIcon icon={faUpDown} className={styles.iconMove}/>
                 <input
                   type="text"
                   value={url}
