@@ -98,7 +98,18 @@
   height: fit-content;
   padding: 0;
   margin: 2rem 0rem 2rem 0rem;
-  border: dashed rgb(0, 0, 0) 2px;
+}
+.editableBlockWrapper {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: fit-content;
+  padding: 0;
+  margin: 2rem 0rem 2rem 0rem;
+  outline: dashed rgb(0, 0, 0) 2px;
 }
 .loadingHeader {
   position: absolute;

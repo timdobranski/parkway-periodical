@@ -157,7 +157,7 @@ export default function NewPostPage() {
     });
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 0, y: bottomEdge } };
+    const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 325, y: bottomEdge } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     window.scrollTo({
       left: 0,

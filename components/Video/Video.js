@@ -116,14 +116,14 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     // console.log('link check result: ', (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url)))
     return (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url))
   }
-  // if editable and no url
+  // EDITABLE BUT NO URL YET
   if (isEditable && url === '') {
     return (
-      <div key={blockIndex} className='blockWrapper' style={{height: blockHeight + 'px'}}>
+      <div key={blockIndex} className='editableBlockWrapper' style={{height: blockHeight + 'px'}}>
         <Rnd
           // bounds='.blockWrapper'
           size={{width: src.style.width, height: src.style.height}}
-          position={{x: (src.style.x + (.5 * parseInt(src.style.width, 10))), y: src.style.y}}
+          position={{x: (src.style.x ), y: src.style.y}}
           onDragStart={(event) => {event.preventDefault()}}
           onDrag={(e, d) => { setBlockPosition({x: d.x, y: d.y})}}
           onResize={(e, direction, refToElement, delta, position) => {
@@ -164,6 +164,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       </div>
     )
   }
+  // NOT EDITABLE AND NO URL
   if (!isEditable && url === '') {
     return (
       <div className={styles.videoBlockWrapper}>
@@ -185,13 +186,13 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       </div>
     )
   }
+  // EDITABLE AND URL IS VALID
   return (
     <div className={styles.videoBlockWrapper}>
-
       {
         isEditable ? (
           // Wrap the iframe with Rnd when isEditable is true
-          <div key={blockIndex} className='blockWrapper' style={{height: blockHeight + 'px'}}>
+          <div key={blockIndex} className='editableBlockWrapper' style={{height: blockHeight + 'px'}}>
 
             <Rnd
               // bounds='.blockWrapper'
@@ -230,13 +231,24 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
             </Rnd>
           </div>
         ) : (
-          // Directly render the iframe when isEditable is false
-          <div
-            style={{height: src.style.height, width: src.style.width, left: src.style.x, top: src.style.y, position: 'absolute'}}
+          // FINAL PREVIEW - NOT EDITABLE AND VALID URL
+          <div key={blockIndex} className='blockWrapper' style={{height: blockHeight + 'px'}}
             onClick={() => setActiveBlock(blockIndex)}
           >
-            <div className={styles.videoOverlay}></div>
-            {video}
+            <div
+              style={{
+                height: src?.style?.height,
+                width: src?.style?.width,
+                left: src?.style?.x,
+                top: src?.style?.y,
+                position: 'absolute',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
+                boxShadow: '0 0 10px 5px rgba(0, 0, 0, .5)',
+              }}
+            >
+              <div className={styles.videoOverlay}></div>
+              {video}
+            </div>
           </div>
         )
       }

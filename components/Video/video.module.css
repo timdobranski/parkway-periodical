@@ -40,6 +40,7 @@
   padding: .25rem;
   border-radius: 4px;
   border: solid rgb(67, 67, 67) 2px;
+  background: rgba(255, 255, 255, .9)
 }
 .noVideoMessage {
   width: 100%;
