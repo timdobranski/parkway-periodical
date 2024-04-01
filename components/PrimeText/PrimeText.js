@@ -129,25 +129,25 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   };
 
   return (
-    <div className={styles.PrimeTextContainer}>
-      <Rnd
-        bounds='.postPreview'
-        size={{width: src.style.width, height: src.style.height}}
-        position={{x: src.style.x, y: src.style.y}}
-        onDragStop={onDragStop}
-        onResizeStop={onResizeStop}
-        resizeHandleStyles={handleStyles}
-        minWidth={200}
-        // lockAspectRatio={true}
-        style={{display: 'flex'}}
-      >
-        <div className={styles.blockControls}>
-          <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
-          <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-          <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
-        </div>
-        <Editor value={src.content} onTextChange={(e) => setTextState(e.htmlValue)} />
-      </Rnd>
-    </div>
+    // <div className={styles.PrimeTextContainer}>
+    <Rnd
+      bounds='.blockWrapper'
+      size={{width: src.style.width, height: src.style.height}}
+      position={{x: src.style.x, y: src.style.y}}
+      onDragStop={onDragStop}
+      onResizeStop={onResizeStop}
+      resizeHandleStyles={handleStyles}
+      minWidth={200}
+      // lockAspectRatio={true}
+      style={{display: 'flex'}}
+    >
+      <div className={styles.blockControls}>
+        <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
+        <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+        <FontAwesomeIcon icon={faUpDownLeftRight} className={styles.iconMove}/>
+      </div>
+      <Editor value={src.content} onTextChange={(e) => setTextState(e.htmlValue)} />
+    </Rnd>
+    // </div>
   )
 }

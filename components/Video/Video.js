@@ -143,9 +143,8 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       console.log(`Updated size and position - Width: ${width}px, Height: ${height}px, X: ${x}, Y: ${y}`);
     }
   };
-  // EDITABLE
+
   return (
-    // <>
     <div
       ref={wrapperRef}
       style={{
@@ -160,14 +159,10 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       onMouseUp={(e) => { }}
     >
       {isEditable && blockControls}
-      {(isEditable && url !== '' ) &&
-        <>
-          <div className='resizeHandle' onMouseDown={startResize}><div></div></div>
-        </>
-      }
+      {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}><div></div></div>}
       {url !== '' ? video : emptyVideoLinkInputMessage}
     </div>
-    // </>
+
   )
 }
 
