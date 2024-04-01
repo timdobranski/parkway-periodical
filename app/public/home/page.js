@@ -47,6 +47,12 @@ export default function Home() {
     getPosts();
   }, [postId]);
 
+  const updateVideoUrl = (index, url) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], content: url };
+    setContentBlocks(newContentBlocks);
+  }
+
 
   if (!posts || posts.length === 0) {
     return <div className='post'>No posts to display yet!</div>;
@@ -58,17 +64,17 @@ export default function Home() {
         <div className='post' key={i}>
           {post.content.map((block, index) => (
             <React.Fragment key={index}>
-             {block.type === 'title' && (
-              <div className='postTitleWrapper'>
-                <div className='postTitle'>
-                  {block.content}
+              {block.type === 'title' && (
+                <div className='postTitleWrapper'>
+                  <div className='postTitle'>
+                    {block.content}
+                  </div>
+                  <div className='postDate'>
+                    {format(new Date(post.created_at), 'MMMM do, yyyy')}
+                  </div>
                 </div>
-                <div className='postDate'>
-                {format(new Date(post.created_at), 'MMMM do, yyyy')}
-                </div>
-              </div>
-            )
-          }
+              )
+              }
               {block.type === 'text' && (
                 <div className='blockWrapper'>
                   {/* <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div> */}
@@ -79,27 +85,30 @@ export default function Home() {
               )}
               {block.type === 'photo' && (
                 <div className='blockWrapper'>
-               <PhotoBlock
-                // key={index}
-                // blockIndex={index}
-                // updatePhotoContent={(files) => updatePhotoContent(index, files)}
-                isEditable={false}
-                src={block}
-                // setActiveBlock={setActiveBlock}
-              />
-              </div>
+                  <PhotoBlock
+                    // key={index}
+                    // blockIndex={index}
+                    // updatePhotoContent={(files) => updatePhotoContent(index, files)}
+                    isEditable={false}
+                    src={block}
+                    // setActiveBlock={setActiveBlock}
+                  />
+                </div>
               )
               }
               {block.type === 'video' && (
                 <div className='blockWrapper'>
-                  <Video src={block.content} />
+                  <Video
+                    src={block}
+                    isEditable={false}
+                  />
                 </div>
               )}
             </React.Fragment>
           ))}
         </div>
       ))}
-      </>
+    </>
   );
 
 }

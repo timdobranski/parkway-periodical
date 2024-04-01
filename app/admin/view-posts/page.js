@@ -16,6 +16,7 @@ export default function ViewPosts () {
       const { data, error } = await supabase
         .from('posts')
         .select('*')
+        .order('created_at', { ascending: false })
       if (error) { console.log(error) }
       console.log('data: ', data)
       const parsedData = data.map(post => {
@@ -26,7 +27,7 @@ export default function ViewPosts () {
       });
       console.log('parsedData: ', parsedData);
       setPosts(parsedData);
-      }
+    }
     getPosts()
   }, [])
 
@@ -43,23 +44,23 @@ export default function ViewPosts () {
 
   return (
     <>
-    {posts.map((post, i) => {
-      const date = new Date(post.created_at);
-      const pacificTime = date.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' });
+      {posts.map((post, i) => {
+        const date = new Date(post.created_at);
+        const pacificTime = date.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' });
 
-      return (
-        <div className={styles.postListingContainer} key={i}>
-          <h2>{pacificTime || `No subtitle for this post`}</h2>
-          <h1 key={i}>{post.content[0].content || `No title for this post`}</h1>
-          <div className={styles.postControlMenu}>
-          <button onClick={() => handleViewPostClick(post.id)}>View Post</button>
-            <button>Edit Post</button>
-            <button className={styles.deletePostButton}>Delete Post</button>
+        return (
+          <div className={styles.postListingContainer} key={i}>
+            <h2>{pacificTime || `No subtitle for this post`}</h2>
+            <h1 key={i}>{post.content[0].content || `No title for this post`}</h1>
+            <div className={styles.postControlMenu}>
+              <button onClick={() => handleViewPostClick(post.id)}>View Post</button>
+              <button>Edit Post</button>
+              <button className={styles.deletePostButton}>Delete Post</button>
+            </div>
           </div>
-        </div>
-      )
-    })}
+        )
+      })}
 
-  </>
+    </>
   )
 }

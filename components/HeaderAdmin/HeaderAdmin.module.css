@@ -92,6 +92,9 @@
 .storageStatusWrapper p {
   background-color: rgb(44, 200, 252);
   padding: .5rem;
+  font-family: Louis George Cafe;
+  font-size: 1.25rem;
+
 }
 
 @media (max-width: 768px) {

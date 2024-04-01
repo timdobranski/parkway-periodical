@@ -1,12 +1,6 @@
 .videoBlockWrapper {
   position: relative;
-  /* border: dashed black 2px; */
-  width: 100%;
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  /* box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5); */
 }
 .youtubeVideoWrapper {
   position: relative; /* Added position relative */
@@ -18,8 +12,31 @@
   align-items: center;
   justify-content: flex-start;
   margin: 0 auto;
-}
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
 
+}
+.editableYoutubeVideoWrapper {
+  position: relative; /* Added position relative */
+  width: 100%;
+  height: 100%;
+  margin: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 auto;
+  outline: dashed black 1px;
+}
+/* .resizeHandle {
+  z-index: 20;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, .5);
+  cursor: nwse-resize;
+} */
 .youtubeVideoWrapper iframe {
   position: relative;
   top: 0;
@@ -29,9 +46,6 @@
 
 }
 /* for a separate button if necessary */
-.videoInputWrapper {
-
-}
 .videoInput {
   position: relative;
   width: 400px;
@@ -43,8 +57,16 @@
   border: solid rgb(67, 67, 67) 2px;
   background: rgba(255, 255, 255, .9)
 }
-.noVideoMessage {
+.emptyVideoInputMessage{
   width: 100%;
+  height: 150px;
+  border: dashed black 2px;
+  text-align: center;
+  padding-top: 45px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 .videoOverlay {
   position: absolute;
@@ -52,8 +74,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0); /* Adjust the color and opacity as needed */
-  cursor: ns-resize;
+  background: rgba(0, 0, 0, .5); /* Adjust the color and opacity as needed */
   z-index: 10; /* Ensure it's above the iframe */
 }
 
@@ -67,7 +88,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   background-color: rgba(0, 0, 0, .5);
   margin: 0;
   padding: 0 1rem 0 1rem;
@@ -90,9 +111,9 @@
 }
 .iconYoutube {
   color: rgb(255, 107, 107);
-  height: 75px;
-  width: 75px;
-  margin-top: 4rem;
+  height: 50px;
+  width: 50px;
+  /* margin-top: 4rem; */
 }
 .iconMove:hover, .iconTrash:hover, .iconStatus:hover {
   cursor: pointer;

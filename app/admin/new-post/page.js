@@ -73,9 +73,9 @@ export default function NewPostPage() {
 
   // on new block: add new gridlines for left, right, top, bottom and center vert/center horizontal
   // during drag or resize: check for gridlines & force snap
-      // if within 5px of gridline, force snap
-      // if exactly on gridline, allow movement away from gridline, but toward will snap again
-      // on snap, update gridlines in contentblocks state
+  // if within 5px of gridline, force snap
+  // if exactly on gridline, allow movement away from gridline, but toward will snap again
+  // on snap, update gridlines in contentblocks state
 
   // on drag or resize stop: update gridlines using addGridlines function
   // separate function for replace vs add gridlines?
@@ -279,9 +279,9 @@ export default function NewPostPage() {
     newContentBlocks[index] = { ...newContentBlocks[index], style: style };
     setContentBlocks(newContentBlocks);
   }
-  // const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
-  //   ? contentBlocks[activeBlock].content
-  //   : null;
+  const safeEditorState = activeBlock !== null && contentBlocks[activeBlock]
+    ? contentBlocks[activeBlock].content
+    : null;
 
 
   if (!user) {
@@ -298,17 +298,11 @@ export default function NewPostPage() {
         handleSubmit={handleSubmit}
       />
 
-      <div className='postPreview' style={{height: `${bottomEdge + 500}px`}}>
+      <div className='post' style={{height: `${bottomEdge + 500}px`}}>
         {contentBlocks.map((block, index) => (
           <>
-          {/* <div key={index} className='blockWrapper' style={{height: parseInt(block.style.height, 10) + block.style.y}}> */}
-            {block.type !== 'title' &&
-              <div className={styles.blockControlsLeft}>
-                {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
-                <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-              </div>
-            }
-            {block.type === 'title' && (
+            {/* if the block is the title, render the title component */}
+            {block.type === 'title' ? (
               <PostTitle
                 isEditable={index === activeBlock}
                 title={block.content}
@@ -316,54 +310,66 @@ export default function NewPostPage() {
                 index={index}
                 activeBlock={activeBlock}
                 setActiveBlock={setActiveBlock}
-              />
-            )}
-            {block.type === 'text' && (
-              <PrimeText
-                blockIndex={index}
-                isEditable={index === activeBlock}
-                toggleEditable={toggleEditable}
-                src={block}
-                setActiveBlock={setActiveBlock}
-                setTextState={updateActiveTextEditorState}
-                onClick={() => setActiveBlock(index)}
-                updateBlockStyle={(style) => updateBlockStyle(index, style)}
-                removeBlock={() => removeBlock(index)}
-              />
-            )}
-            {block.type === 'photo' &&
-              <PhotoBlock
                 key={index}
-                blockIndex={index}
-                updatePhotoContent={(files) => updatePhotoContent(index, files)}
-                isEditable={index === activeBlock}
-                src={block}
-                setActiveBlock={setActiveBlock}
-                removeBlock={() => removeBlock(index)}
               />
-            }
-            {block.type === 'video' &&
-            <Video
-              updateVideoUrl={(url) => updateVideoUrl(index, url)}
-              updateBlockStyle={(style) => updateBlockStyle(index, style)}
-              setActiveBlock={setActiveBlock}
-              isEditable={index === activeBlock}
-              toggleEditable={toggleEditable}
-              src={block}
-              blockIndex={index}
-              removeBlock={() => removeBlock(index)}
-            />
-            }
-            <div className={styles.blockControlsRight}>
-              {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>)}
-              {block.type === 'title' ? (null) : (<FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>)}
-            </div>
-          {/* </div> */}
+            ) : (
+              // otherwise, render the appropriate block component
+              <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y}}>
+                {/* if the content block isn't the title, add up/down nav arrows */}
+
+                <div className={styles.blockControlsLeft}>
+                  {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
+                  <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
+                </div>
+
+                {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
+
+                {block.type === 'text' && (
+                  <PrimeText
+                    blockIndex={index}
+                    isEditable={index === activeBlock}
+                    toggleEditable={toggleEditable}
+                    src={block}
+                    setActiveBlock={setActiveBlock}
+                    setTextState={updateActiveTextEditorState}
+                    onClick={() => setActiveBlock(index)}
+                    updateBlockStyle={(style) => updateBlockStyle(index, style)}
+                    removeBlock={() => removeBlock(index)}
+                  />
+                )}
+                {block.type === 'photo' &&
+                <PhotoBlock
+                  key={index}
+                  blockIndex={index}
+                  updatePhotoContent={(files) => updatePhotoContent(index, files)}
+                  isEditable={index === activeBlock}
+                  src={block}
+                  setActiveBlock={setActiveBlock}
+                  removeBlock={() => removeBlock(index)}
+                />
+                }
+                {block.type === 'video' &&
+                <Video
+                  updateVideoUrl={(url) => updateVideoUrl(index, url)}
+                  updateBlockStyle={(style) => updateBlockStyle(index, style)}
+                  setActiveBlock={setActiveBlock}
+                  isEditable={index === activeBlock}
+                  toggleEditable={toggleEditable}
+                  src={block}
+                  blockIndex={index}
+                  removeBlock={() => removeBlock(index)}
+                />
+                }
+
+                <div className={styles.blockControlsRight}>
+                  <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
+                  <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>
+                </div>
+              </div>
+            )}
           </>
 
         ))}
-        {/* {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>} */}
-
       </div>
     </>
   );

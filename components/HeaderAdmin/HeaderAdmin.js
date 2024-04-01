@@ -76,7 +76,7 @@ export default function Header() {
 
       <div className={styles.navContainerRight}>
         <div className={styles.storageStatusWrapper}>
-          <p>Free Storage Used: {storageUsage ? `${storageUsage}%` : 'Loading...'}</p>
+          <p className={styles.storageUsed}>Free Storage Used: {storageUsage ? `${storageUsage}%` : 'Loading...'}</p>
         </div>
         <Link href='/admin/new-post'>
           <h2>NEW POST</h2>

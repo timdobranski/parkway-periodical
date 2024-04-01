@@ -37,7 +37,9 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
     };
   }, [isEditable]);
 
-
+  useEffect(() => {
+    console.log('src changed: ', src)
+  }, [src]);
 
   // If not editable, return just the text
   if (!isEditable) {

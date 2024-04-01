@@ -13,6 +13,7 @@
   /* border: solid greenyellow 4px; */
 }
 .blockWrapper {
+  position: relative;
   display: flex;
   align-items: center;
   width: 100%;
@@ -24,22 +25,27 @@
 .blockControlsRight, .blockControlsLeft {
   position: absolute;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, .5);
   margin: 0;
-  padding: 0 1rem 0 1rem;
-  right: -12rem;
-  top: 50%;
+  padding: .5rem 0 .5rem 0;
+  height: 120px;
 }
-
+.blockControlsLeft{
+  left: -10rem;
+}
+.blockControlsRight {
+  right: -10rem;
+}
 .blockControls .fa {
   cursor: pointer;
   margin: 5px;
 }
-.iconTrash, .iconStatus {
-  background-color: rgba(255, 255, 255, .8);
+.iconTrash, .iconStatus, .iconUp, .iconDown {
+  /* background-color: rgba(255, 255, 255, .8); */
+  color: white;
   margin-top: .5rem;
   margin-bottom: .5rem;
   height: 30px;
@@ -72,4 +78,7 @@
   position: absolute;
   bottom: 0;
   cursor: ns-resize;
+}
+.noBlocksMessage {
+  margin-top:4rem;
 }
