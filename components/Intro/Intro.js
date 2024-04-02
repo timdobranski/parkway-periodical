@@ -78,27 +78,33 @@ export default function Intro({ introRunning }) {
 
   return (
     <>
-      <div className={`${styles.galleryWrapper} ${allImagesLoaded ? styles.fadeIn : ''}`}>
+      <div className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}>
         {rows.map((rowImages, rowIndex) => (
           <div
             key={rowIndex}
             className={`${styles.imageRow} ${hoveredRowIndex === rowIndex ? styles.hoveredRow : ''}`}
           >
             {rowImages.map((src, index) => (
-              <img
+              <div
+                className={styles.imageContainer}
                 key={`${rowIndex}-${index}`}
-                src={src}
-                alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
-                className={`
-                ${styles.image}
-                ${allImagesLoaded ? "" : styles.hiddenImage}
-                ${!introRunning ? styles.blurredImage : ''}
-                ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}
-              `}                onLoad={handleImageLoad}
-                onMouseEnter={handleMouseEnter(rowIndex, index)}
-                onMouseLeave={handleMouseLeave(rowIndex, index)}
 
-              />
+              >
+                <img
+                  src={src}
+                  alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
+                  className={`
+                  ${styles.image}
+                  ${allImagesLoaded ? "" : styles.hiddenImage}
+                  ${!introRunning ? styles.blurredImage : ''}
+                  ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}
+                `}
+                  onLoad={handleImageLoad}
+                  onMouseEnter={handleMouseEnter(rowIndex, index)}
+                  onMouseLeave={handleMouseLeave(rowIndex, index)}
+
+                />
+              </div>
             ))}
           </div>
         ))}

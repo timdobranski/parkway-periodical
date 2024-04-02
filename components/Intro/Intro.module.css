@@ -37,6 +37,7 @@
   backdrop-filter: blur(10px);
   padding: 0;
   box-shadow: 0 0 20px 15px rgba(0, 0, 0, 0.5);
+
 }
 .introContainer * {
   transform: skew(10deg);
@@ -52,7 +53,9 @@
   padding-bottom: .5rem;
   margin-bottom: 0;
   background: rgba(0, 0, 0, 0);
-  /* backdrop-filter: blur(20px); */
+}
+.dimmedBackground {
+  backdrop-filter: brightness(40%);
 }
 .imageRow {
   box-sizing: border-box;
@@ -64,7 +67,21 @@
   align-items: center;
   position: relative;
   z-index: 0;
-  margin: .5rem 0
+  margin: .5rem 0;
+  /* box-shadow:  0px 0px 11px 0px rgba(0, 0, 0, .9); */
+
+}
+.imageContainer {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  z-index: 5;
+  margin: 0 .25rem;
+  padding: 0;
+  background: transparent;
+
+  box-shadow:  0px 0px 11px 0px rgba(0, 0, 0, .9);
+
 }
 .image {
   display: inline-block;
@@ -74,11 +91,38 @@
   transition: transform 0.5s ease;
   transform-origin: center;
   position: relative;
-  margin: 0 .25rem;
-  /* border: solid white 6px; */
-  /* border-radius: 5px; */
-  z-index: 5;
+  margin: 0;
+  z-index: 0;
+  box-shadow: inset 0px 0px 11px 0px rgba(0, 0, 0, 1);
+
 }
+/* .imageContainer::before,
+.imageContainer::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+
+}
+.imageContainer::before {
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: inherit;
+  filter: blur(10px) brightness(50%);
+  z-index: -1;
+  border: solid red 4px;
+}
+.imageContainer::before:hover {
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: inherit;
+  filter: none;
+  z-index: -1;
+  border: solid red 4px;
+} */
 .imageRow:nth-child(1) {
   animation: scrollSlow 40s linear infinite;
 }
@@ -90,13 +134,13 @@
 }
 
 .hoveredImage {
-  z-index: 10; /* This will be applied on hover via React state */
-  transform: scale(1.1); /* Ensure this matches your desired hover effect */
-  cursor: pointer;
-  border: solid rgb(255, 255, 255) 6px;
-  border-radius: 5px;
+  z-index: 10;
+  /* transform: scale(1.1);  */
+  /* cursor: pointer; */
+  outline: solid rgb(255, 255, 255) 6px;
+  border-radius: 1px;
   transform-origin: center;
-  /* outline: solid white 5px; */
+
 }
 .hoveredRow {
   z-index: 15; /* Ensure this is higher than the z-index of unhovered rows and images */
@@ -105,10 +149,13 @@
   opacity: 0;
 }
 .blurredImage {
-  /* filter: blur(20px); */
+  filter: brightness(50%);
+  box-shadow: inset 0 0 30px 10px rgba(0, 0, 0, 0.8);
+  /* opacity: 0.5; */
 }
 .hoveredImage:hover {
   filter: none; /* Removes the blur on hover */
+  opacity: 1;
 }
 .fadeIn {
   animation: fadeInAnimation 2s ease-out;

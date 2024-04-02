@@ -7,6 +7,7 @@ import Video from '../components/Video/Video';
 import PhotoBlock from '../components/PhotoBlock/PhotoBlock';
 import PrimeText from '../components/PrimeText/PrimeText';
 import Intro from '../components/Intro/Intro';
+import PostTitle from '../components/PostTitle/PostTitle';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation'
 import Header from '../components/Header/Header';
@@ -64,14 +65,9 @@ export default function Home() {
         {post.content.map((block, index) => (
           <React.Fragment key={index}>
             {block.type === 'title' && (
-              <div className='postTitleWrapper'>
-                <div className='postTitle'>
-                  {block.content}
-                </div>
-                <div className='postDate'>
-                  {format(new Date(post.created_at), 'MMMM do, yyyy')}
-                </div>
-              </div>
+              <PostTitle
+                title={block.content}
+              />
             )
             }
             {block.type === 'text' && (

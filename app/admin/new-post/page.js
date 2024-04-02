@@ -138,7 +138,7 @@ export default function NewPostPage() {
       const { error } = await supabase.from('posts').insert([post]);
       if (error) throw new Error('Error submitting content blocks: ', error.message);
 
-      router.push('/public/home');
+      router.push('/');
     } catch (error) {
       console.error('Error in handleSubmit: ', error);
     }
@@ -285,47 +285,54 @@ export default function NewPostPage() {
         setActiveBlock={setActiveBlock}
         handleSubmit={handleSubmit}
       />
+      <div className='adminFeedWrapper'>
 
-      <div className='post' style={{height: `${bottomEdge + 500}px`}}>
-        {contentBlocks.map((block, index) => (
-          <>
-            {/* if the block is the title, render the title component */}
-            {block.type === 'title' ? (
-              <PostTitle
-                isEditable={index === activeBlock}
-                title={block.content}
-                updateTitle={updateTitle}
-                index={index}
-                activeBlock={activeBlock}
-                setActiveBlock={setActiveBlock}
-                key={index}
-              />
-            ) : (
-              // otherwise, render the appropriate block component
-              <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}>
-                {/* if the content block isn't the title, add up/down nav arrows */}
-
-                <div className={styles.blockControlsLeft}>
-                  {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
-                  <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-                </div>
-
-                {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
-
-                {block.type === 'text' && (
-                  <PrimeText
-                    blockIndex={index}
+        <div className='post' style={{height: `${bottomEdge + 500}px`}}>
+          {contentBlocks.map((block, index) => (
+            <>
+              {/* if the block is the title, render the title component & save icon */}
+              {block.type === 'title' ? (
+                <>
+                  <PostTitle
                     isEditable={index === activeBlock}
-                    toggleEditable={toggleEditable}
-                    src={block}
+                    title={block.content}
+                    updateTitle={updateTitle}
+                    index={index}
+                    activeBlock={activeBlock}
                     setActiveBlock={setActiveBlock}
-                    setTextState={updateActiveTextEditorState}
-                    onClick={() => setActiveBlock(index)}
-                    updateBlockStyle={(style) => updateBlockStyle(index, style)}
-                    removeBlock={() => removeBlock(index)}
+                    key={index}
                   />
-                )}
-                {block.type === 'photo' &&
+                  <div className={styles.blockControlsRight}>
+                    <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
+                    {/* <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/> */}
+                  </div>
+                </>
+              ) : (
+              // otherwise, render the appropriate block component
+                <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}>
+                  {/* if the content block isn't the title, add up/down nav arrows */}
+
+                  <div className={styles.blockControlsLeft}>
+                    {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
+                    <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
+                  </div>
+
+                  {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
+
+                  {block.type === 'text' && (
+                    <PrimeText
+                      blockIndex={index}
+                      isEditable={index === activeBlock}
+                      toggleEditable={toggleEditable}
+                      src={block}
+                      setActiveBlock={setActiveBlock}
+                      setTextState={updateActiveTextEditorState}
+                      onClick={() => setActiveBlock(index)}
+                      updateBlockStyle={(style) => updateBlockStyle(index, style)}
+                      removeBlock={() => removeBlock(index)}
+                    />
+                  )}
+                  {block.type === 'photo' &&
                 <PhotoBlock
                   key={index}
                   blockIndex={index}
@@ -335,8 +342,8 @@ export default function NewPostPage() {
                   setActiveBlock={setActiveBlock}
                   removeBlock={() => removeBlock(index)}
                 />
-                }
-                {block.type === 'video' &&
+                  }
+                  {block.type === 'video' &&
                 <Video
                   updateVideoUrl={(url) => updateVideoUrl(index, url)}
                   updateBlockStyle={(style) => updateBlockStyle(index, style)}
@@ -347,17 +354,18 @@ export default function NewPostPage() {
                   blockIndex={index}
                   removeBlock={() => removeBlock(index)}
                 />
-                }
+                  }
 
-                <div className={styles.blockControlsRight}>
-                  <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
-                  <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>
+                  <div className={styles.blockControlsRight}>
+                    <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
+                    <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>
+                  </div>
                 </div>
-              </div>
-            )}
-          </>
+              )}
+            </>
 
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );
