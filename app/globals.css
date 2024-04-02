@@ -23,17 +23,18 @@
 /* The entire scrollbar */
 ::-webkit-scrollbar {
   width: 8px;  /* or any desired size */
-
 }
 
 /* The track (progress bar) of the scrollbar */
 ::-webkit-scrollbar-track {
   background: #ffffff;  /* or any color */
+  background: rgba(0, 0, 0, 0);
 }
 
 /* The handle (thumb) of the scrollbar */
 ::-webkit-scrollbar-thumb {
   background: rgb(255, 83, 83);
+  padding-right: 2px;
   /* border: solid white 1.5px; */
   /* border-radius: 10px; */
 }
@@ -99,9 +100,9 @@
 }
 .feedWrapper{
   position: absolute;
-  top: 120px;
+  top: 100px;
   left: 50%;
-  width: 1200px;
+  width: 1100px;
   transform: translateX(-50%);
   z-index: 2000;
   background-color: rgba(0, 89, 124, 0.8);
@@ -109,26 +110,47 @@
   animation: slideUp 1s ease-out forwards;
   overflow-y: auto;
   height: calc(100vh - 120px);
-  /* box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.35); */
-  /* box-shadow: 0 0 20px 10px rgba(0, 104, 145, 0.714); */
-  border: solid rgb(255, 255, 255) 8px;
-  border-right: 0;
+  height: 100vh;
+  /* border: solid rgb(255, 255, 255) 8px;
+  border: solid rgba(0, 113, 157, 0.7) 6px; */
+  border: solid white 6px;
+  /* border-right: 0; */
   border-bottom: 0;
+  padding-left: 8px; /* to account for scrollbar */
+  /* border-top: 0; */
 }
 
-.feedWrapper::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px; /* Height of the fading effect */
-  background-image: linear-gradient(to bottom, rgba(0, 89, 124, 0.8), rgba(255, 255, 255, 0));
-  pointer-events: none; /* Ensures clicks pass through */
+
+.welcomePostWrapper {
+  position: relative;
+  width: 1000px;
+  padding: 1rem 4rem 1rem 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background-color: rgba(255, 255, 255, 1);
+  backdrop-filter: blur(8px);
+  animation: slideUp 1s ease-out forwards;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+  font-family: Louis George Cafe;
+}
+.welcomeTitle {
+  font-weight: 400;
+  font-size: 4rem;
+  color: #0068a8;
+  padding: 0;
+  margin: 0;
+}
+.subtitle {
+  font-weight: 400;
+  font-size: 1.5rem;
+  font-style: italic;
 }
 .post, .postPreview {
   position: relative;
-  width: 1250px;
+  width: 1000px;
   max-width: 80vw;
   min-width: 50vw;
   box-sizing: border-box;
@@ -147,15 +169,16 @@
 }
 .post {
   position: relative;
-  width: calc(1200px - 8rem);
+  /* width: calc(1000px - 2rem); */
   height: 100%;
+  width: 1000px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(8px);
   animation: slideUp 1s ease-out forwards;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   /* border-radius: 20px; */
 }
 .blockWrapper {

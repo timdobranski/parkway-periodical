@@ -56,9 +56,17 @@ export default function Home() {
       <h1 className={styles.enterButton}>ENTER</h1>
     </div>
   )
+  const welcomePost = (
+    <div className='welcomePostWrapper'>
+      <h1 className='welcomeTitle'>Welcome!</h1>
+      <h3 className='subtitle'>{`Thanks for stopping by. Below you'll find all the latest news and events happening
+      here at Parkway`}</h3>
+    </div>
+  )
 
   const renderedPosts =
   <div className='feedWrapper'>
+    {welcomePost}
     {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>

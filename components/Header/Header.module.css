@@ -13,7 +13,7 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: 95px;
+  height: 90px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -25,7 +25,9 @@
   z-index: 2000;
   animation: slideDown 1s ease-out forwards;
   color: white;
-  /* border-bottom: solid rgba(255, 255, 255, 0.563) 5px; */
+  /* border: solid rgba(0, 40, 56, 0.8) 2px; */
+  border-bottom: solid rgb(0, 64, 98) 2px;
+  /* border-bottom: solid white 2px; */
   /* border-bottom: 1px solid rgb(0, 0, 0); */
 }
 
@@ -57,7 +59,7 @@
 }
 .subtitle {
   font-family: Louis George Cafe;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin: 0;
   font-style: italic;
 }
