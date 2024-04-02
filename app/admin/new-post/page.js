@@ -11,6 +11,7 @@ import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import Intro from '../../../components/Intro/Intro';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -61,7 +62,7 @@ export default function NewPostPage() {
     setBottomEdge(result);
   }, [contentBlocks])
 
-  // scroll to the bottom when a new content block is added
+  // NOT WORKING -- scroll to the bottom when a new content block is added
   useEffect(() => {
     console.log('bottomEdge: ', bottomEdge)
     window.scrollTo({
@@ -79,10 +80,7 @@ export default function NewPostPage() {
 
   // on drag or resize stop: update gridlines using addGridlines function
   // separate function for replace vs add gridlines?
-
-  const enableGridSnap = () => {
-
-  }
+  const enableGridSnap = () => {}
   const addGridlines = () => {}
   const removeGridlines = () => {}
 
@@ -150,20 +148,10 @@ export default function NewPostPage() {
     const newBlock = { type: 'text', content: '', style: { width:'1000px', height:'200px' , x:0, y: bottomEdge }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length);
-    window.scrollTo({
-      left: 0,
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
-    });
   }
   const addVideoBlock = () => {
     const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 325, y: bottomEdge } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    window.scrollTo({
-      left: 0,
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
-    });
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = (format) => {
@@ -314,7 +302,7 @@ export default function NewPostPage() {
               />
             ) : (
               // otherwise, render the appropriate block component
-              <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y}}>
+              <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}>
                 {/* if the content block isn't the title, add up/down nav arrows */}
 
                 <div className={styles.blockControlsLeft}>

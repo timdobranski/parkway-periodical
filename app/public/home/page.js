@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import supabase from '../../../utils/supabase';
 import styles from './home.module.css';
-import Photo from '../../../components/PhotoBlock/PhotoBlock';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import PrimeText from '../../../components/PrimeText/PrimeText';
+import Intro from '../../../components/Intro/Intro';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation'
 
@@ -47,22 +47,17 @@ export default function Home() {
     getPosts();
   }, [postId]);
 
-  const updateVideoUrl = (index, url) => {
-    const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: url };
-    setContentBlocks(newContentBlocks);
-  }
-
 
   if (!posts || posts.length === 0) {
     return <div className='post'>No posts to display yet!</div>;
   }
 
   return (
-    <>
+    <Intro>
       {posts.map((post, i) => (
         <div className='post' key={i}>
           {post.content.map((block, index) => (
+            (() => {console.log('block: ', block)})(),
             <React.Fragment key={index}>
               {block.type === 'title' && (
                 <div className='postTitleWrapper'>
@@ -108,7 +103,7 @@ export default function Home() {
           ))}
         </div>
       ))}
-    </>
+    </Intro>
   );
 
 }

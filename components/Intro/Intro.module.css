@@ -1,13 +1,159 @@
-.introContainer {
-  position: relative;
-  width: 50vw;
-  height: 50vh;
+@keyframes scrollSlow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-.imgContainer {
+@keyframes scrollMedium {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scrollFast {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes fadeInAnimation {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.introContainer {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 300px;
-  height: 300px;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: white;
+  font: 2rem 'Louis George Cafe';
+  font-weight: normal;
+  width: 800px;
+  height: 250px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  transform: skew(-10deg) translate(-50%, -50%);
+  border: solid 6px rgb(255, 255, 255);
+  backdrop-filter: blur(10px);
+  padding: 0;
+  box-shadow: 0 0 20px 15px rgba(0, 0, 0, 0.5);
+}
+.introContainer * {
+  transform: skew(10deg);
+}
+.introContainer:hover {
+  cursor: pointer;
+}
+.galleryWrapper {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-bottom: .5rem;
+  margin-bottom: 0;
+}
+.imageRow {
+  box-sizing: border-box;
+  display: flex;
+  height: calc(33.33% - .5rem);
+  white-space: nowrap;
+  overflow:visible;
+  width: 200vw;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  margin: .5rem 0
+}
+.image {
+  display: inline-block;
+  box-sizing: border-box;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  transform-origin: center;
+  position: relative;
+  margin: 0 .25rem;
+  border: solid white 6px;
+  /* border-radius: 5px; */
+  z-index: 5;
+}
+.imageRow:nth-child(1) {
+  animation: scrollSlow 30s linear infinite;
+}
+.imageRow:nth-child(2) {
+  animation: scrollMedium 45s linear infinite;
+}
+.imageRow:nth-child(3) {
+  animation: scrollFast 37s linear infinite;
+}
+
+.hoveredImage {
+  z-index: 10; /* This will be applied on hover via React state */
+  transform: scale(1.1); /* Ensure this matches your desired hover effect */
+  cursor: pointer;
+  border: solid rgb(255, 255, 255) 6px;
+  border-radius: 5px;
+  transform-origin: center;
+  /* outline: solid white 5px; */
+}
+.hoveredRow {
+  z-index: 15; /* Ensure this is higher than the z-index of unhovered rows and images */
+}
+.hiddenImage {
+  opacity: 0;
+}
+.fadeIn {
+  animation: fadeInAnimation 2s ease-out;
+}
+
+.titledLogo {
+  width: 75%;
+  margin-left:2rem;
+  margin-top: 0;
+  padding: 0;
+}
+.enterButton {
+  padding: 1rem;
+  margin: 1rem;
+  font-size: 2rem;
+  font-weight: normal;
+  color: black;
+}
+.enterButton:hover {
+  cursor: pointer;
+  background-color: rgb(34, 171, 240);
+  padding: 1rem;
+  border-radius: 10px;
+}
+@media(max-width: 768px) {
+  .introContainer {
+    position: absolute;
+    right: 10vw;
+    width: 80vw;
+    height: 20vh;
+    border-radius: 10px;
+    transform: skew(-10deg) translate(-55%, -50%);
+    border: none;
+
+  }
+  .introImage {
+    width: 90%;
+    margin-left: 0;
+    margin-top: 0;
+    padding: 0;
+  }
+  .enter {
+    padding: 1rem;
+    margin: 1rem;
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: black;
+    /* border: solid white 2px; */
+  }
+  .enter:hover {
+    cursor: pointer;
+    background-color: rgb(34, 171, 240);
+    padding: 1rem;
+    border-radius: 10px;
+  }
 }

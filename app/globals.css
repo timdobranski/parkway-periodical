@@ -12,7 +12,33 @@
   src: url('../public/fonts/Louis George Cafe Bold.ttf') format('truetype');
   font-weight: bold; /* or 700 */
 }
+@keyframes slideUp {
+  from {
+    transform: translateX(-50%) translateY(100vh);
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+/* The entire scrollbar */
+::-webkit-scrollbar {
+  width: 8px;  /* or any desired size */
+}
 
+/* The track (progress bar) of the scrollbar */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;  /* or any color */
+}
+
+/* The handle (thumb) of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background: #888;  /* or any color */
+}
+
+/* The handle (thumb) when hovering over it */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;  /* or any darker color */
+}
 .background {
   position: absolute;
   top: 0;
@@ -22,9 +48,9 @@
   height: 100vh;
   box-sizing: border-box;
   background: linear-gradient(to right, rgb(38, 189, 254), rgb(0, 94, 149)); /* gradient background */
-  /* background-image: url('../public/images/gradient3small.webp');
+  background-image: url('../public/images/gradient3small.webp');
   background-size: cover;
-  background-position: center; */
+  background-position: center;
   overflow: hidden;
   overflow-y: auto;
 }
@@ -67,15 +93,28 @@
   justify-content: flex-start;
   /* min-width: 0; */
 }
+.feedWrapper {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  width: 1200px;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background-color: rgba(0, 89, 124, 0.8);
+  backdrop-filter: blur(8px);
+  animation: slideUp 1s ease-out forwards;
+  overflow-y: auto;
+  height: calc(100vh - 120px);
+  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
+  border: solid rgb(255, 255, 255) 10px;
+}
 .post, .postPreview {
   position: relative;
   width: 1250px;
   max-width: 80vw;
   min-width: 50vw;
   box-sizing: border-box;
-  /* border-radius: 15px; */
   background-color: rgba(255, 255, 255, 1);
-  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
   backdrop-filter: blur(10px);
   min-height: 100vh;
   padding-top: 2rem;
@@ -87,6 +126,18 @@
   align-items: center;
   justify-content: flex-start;
   margin: 2rem 0rem;
+}
+.post {
+  position: relative;
+  width: calc(1200px - 8rem);
+  height: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background-color: rgba(255, 255, 255, 1);
+  backdrop-filter: blur(8px);
+  animation: slideUp 1s ease-out forwards;
+  margin-bottom: 20rem;
 }
 .blockWrapper {
   position: relative;
@@ -162,6 +213,7 @@
   margin: .5rem;
   width: 80%;
   box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
+  /* box-shadow: 0 0 20px 10px rgba(255, 48, 100, 0.7), inset 0 0 20px 10px rgba(255, 48, 100, 0.5); */
   text-align: center;
   font-weight: bold;
   font-family: Louis George Cafe;

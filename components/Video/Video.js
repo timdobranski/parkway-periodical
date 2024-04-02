@@ -21,9 +21,14 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     updateVideoUrl && updateVideoUrl(url);
     console.log('url changed: ', url)
   }, [url]);
+
   useEffect(() => {
     setBlockHeight(parseInt(blockContentHeight, 10) + blockPosition.y);
   }, [blockContentHeight, blockPosition]);
+
+  useEffect(() => {
+    console.log('src changed: ', src)
+  }, [src]);
 
   const startResize = (e) => {
     e.stopPropagation(); // Prevent the onClick of the parent from firing
@@ -144,6 +149,8 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     }
   };
 
+  if (!src) { return <p>Loading</p> }
+
   return (
     <div
       ref={wrapperRef}
@@ -160,9 +167,8 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     >
       {isEditable && blockControls}
       {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}><div></div></div>}
-      {url !== '' ? video : emptyVideoLinkInputMessage}
+      {(url !== '' || src.content !== '') ? video : emptyVideoLinkInputMessage}
     </div>
-
   )
 }
 

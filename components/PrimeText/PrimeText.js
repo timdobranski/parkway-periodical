@@ -131,7 +131,7 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   return (
     // <div className={styles.PrimeTextContainer}>
     <Rnd
-      bounds='.blockWrapper'
+      // bounds='.blockWrapper'
       size={{width: src.style.width, height: src.style.height}}
       position={{x: src.style.x, y: src.style.y}}
       onDragStop={onDragStop}

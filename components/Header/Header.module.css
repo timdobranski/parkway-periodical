@@ -1,3 +1,12 @@
+@keyframes slideDown {
+  from {
+    transform: translateY(-110px); /* Start just above the viewport */
+  }
+  to {
+    transform: translateY(0); /* Slide to its original position */
+  }
+}
+
 .headerContainer {
   box-sizing: border-box;
   position: absolute;
@@ -9,10 +18,11 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background-color: rgba(255, 255, 255, 1);
-  backdrop-filter: blur(3px);
+  background-color: rgba(255, 255, 255, .8);
+  backdrop-filter: blur(5px);
   text-align: center;
-  z-index: 1;
+  z-index: 2000;
+  animation: slideDown 1s ease-out forwards;
   /* border-bottom: 1px solid rgb(0, 0, 0); */
 }
 
@@ -158,7 +168,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 10px;
+
   text-align: center;
 }
 .adminHomeLink:hover {
