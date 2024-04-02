@@ -53,18 +53,21 @@
   color: white;
   font: 2rem 'Louis George Cafe';
   font-weight: normal;
-  width: 800px;
+  width: 700px;
   height: 250px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
   transform: skew(-10deg) translate(-50%, -50%);
-  border: solid 6px rgb(255, 255, 255);
+  border: solid 10px rgb(255, 255, 255);
   backdrop-filter: blur(10px);
   padding: 0;
-  box-shadow: 0 0 20px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 20px 15px rgba(0, 0, 0, 0.7);
+}
+.introContainer * {
+  transform: skew(10deg);
 }
 .introContainer:hover {
   cursor: pointer;
@@ -148,7 +151,7 @@
   cursor: pointer;
   background-color: rgb(34, 171, 240);
   padding: 1rem;
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 @media(max-width: 768px) {
   .introContainer {

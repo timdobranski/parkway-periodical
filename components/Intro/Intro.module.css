@@ -51,7 +51,8 @@
   overflow: hidden;
   padding-bottom: .5rem;
   margin-bottom: 0;
-  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0);
+  /* backdrop-filter: blur(20px); */
 }
 .imageRow {
   box-sizing: border-box;
@@ -74,18 +75,18 @@
   transform-origin: center;
   position: relative;
   margin: 0 .25rem;
-  border: solid white 6px;
+  /* border: solid white 6px; */
   /* border-radius: 5px; */
   z-index: 5;
 }
 .imageRow:nth-child(1) {
-  animation: scrollSlow 30s linear infinite;
+  animation: scrollSlow 40s linear infinite;
 }
 .imageRow:nth-child(2) {
-  animation: scrollMedium 45s linear infinite;
+  animation: scrollMedium 60s linear infinite;
 }
 .imageRow:nth-child(3) {
-  animation: scrollFast 37s linear infinite;
+  animation: scrollFast 50s linear infinite;
 }
 
 .hoveredImage {
