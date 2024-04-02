@@ -51,6 +51,7 @@
   overflow: hidden;
   padding-bottom: .5rem;
   margin-bottom: 0;
+  backdrop-filter: blur(20px);
 }
 .imageRow {
   box-sizing: border-box;
@@ -101,6 +102,12 @@
 }
 .hiddenImage {
   opacity: 0;
+}
+.blurredImage {
+  /* filter: blur(20px); */
+}
+.hoveredImage:hover {
+  filter: none; /* Removes the blur on hover */
 }
 .fadeIn {
   animation: fadeInAnimation 2s ease-out;

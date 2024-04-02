@@ -13,16 +13,19 @@
   top:0;
   left: 0;
   width: 100vw;
-  height: 110px;
+  height: 95px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background-color: rgba(255, 255, 255, .8);
-  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, .9);
+  background-color: rgba(0, 89, 124, 0.8);
+  backdrop-filter: blur(15px);
   text-align: center;
   z-index: 2000;
   animation: slideDown 1s ease-out forwards;
+  color: white;
+  /* border-bottom: solid rgba(255, 255, 255, 0.563) 5px; */
   /* border-bottom: 1px solid rgb(0, 0, 0); */
 }
 
@@ -37,24 +40,25 @@
 
 .title {
   font-family: Louis George Cafe;
-  font-size: 4rem; /* Large font size to see the effect clearly */
+  font-size: 3.5rem; /* Large font size to see the effect clearly */
   font-weight: bold; /* Bold text to make the effect more noticeable */
   width: max-content; /* Adjust the width to the content */
   margin: auto; /* Center the text */
   margin-bottom: 0;
   text-align: center; /* Ensure the text is centered */
   /* -webkit-text-stroke: 2px rgb(255, 255, 255); */
-  background: url('/images/texture.jpeg') no-repeat center / cover;
+  /* background: url('/images/texture.jpeg') no-repeat center / cover; */
   /* background: linear-gradient(to right, rgb(0, 118, 182), rgb(1, 112, 203)); */
   -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
   background-clip: text; /* Clip the background with the text */
   color: transparent;
+  color: white;
   margin-bottom: -10px;
 }
 .subtitle {
   font-family: Louis George Cafe;
   font-size: 1.5rem;
-  margin: 0.5rem;
+  margin: 0;
   font-style: italic;
 }
 
@@ -67,6 +71,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 .navContainer a {
@@ -80,8 +85,11 @@
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
   color: rgb(43, 133, 207);
+  color: rgb(255, 83, 83);
+  color: white;
   font-size: 1.5rem;
-  font-weight: bold;
+  /* font-weight: bold; */
+  font-weight: normal;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;
@@ -92,6 +100,7 @@
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
+  text-decoration-color:rgb(255, 83, 83);
 }
 
 .navContainer h2:focus {
@@ -163,7 +172,7 @@
   font-weight: bold;
   font-size: 1rem;
   text-decoration: none;
-  background: rgb(0, 173, 253);
+  background: rgb(255, 83, 83);
   padding: .5rem;
   display: flex;
   justify-content: center;

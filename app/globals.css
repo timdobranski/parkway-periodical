@@ -22,22 +22,25 @@
 }
 /* The entire scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;  /* or any desired size */
+  width: 10px;  /* or any desired size */
+
 }
 
 /* The track (progress bar) of the scrollbar */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;  /* or any color */
+  background: #ffffff;  /* or any color */
 }
 
 /* The handle (thumb) of the scrollbar */
 ::-webkit-scrollbar-thumb {
-  background: #888;  /* or any color */
+  background: #ff0000;
+  border: solid white 2.5px;
+  /* border-radius: 10px; */
 }
 
 /* The handle (thumb) when hovering over it */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;  /* or any darker color */
+  background: #29c6ff;  /* or any darker color */
 }
 .background {
   position: absolute;
@@ -105,8 +108,21 @@
   animation: slideUp 1s ease-out forwards;
   overflow-y: auto;
   height: calc(100vh - 120px);
-  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
-  border: solid rgb(255, 255, 255) 10px;
+  /* box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.35); */
+  /* box-shadow: 0 0 20px 10px rgba(0, 104, 145, 0.714); */
+  border: solid rgb(255, 255, 255) 8px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.feedWrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px; /* Height of the fading effect */
+  background-image: linear-gradient(to bottom, rgba(0, 89, 124, 0.8), rgba(255, 255, 255, 0));
+  pointer-events: none; /* Ensures clicks pass through */
 }
 .post, .postPreview {
   position: relative;
@@ -137,7 +153,8 @@
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(8px);
   animation: slideUp 1s ease-out forwards;
-  margin-bottom: 20rem;
+  margin-bottom: 4rem;
+  /* border-radius: 20px; */
 }
 .blockWrapper {
   position: relative;

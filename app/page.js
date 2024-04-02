@@ -111,7 +111,7 @@ export default function Home() {
 
   return (
     <div className={styles.homeWrapper}>
-      <Intro/>
+      <Intro introRunning={introRunning} />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null :<Header />}
       { introRunning ? null : posts.length > 0 ? (renderedPosts) : null}

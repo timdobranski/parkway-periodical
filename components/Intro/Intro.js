@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Intro.module.css';
 import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Intro({ introRunning }) {
   const [rows, setRows] = useState([[], [], []]);
   const baseImagePath = "/images/intro/";
   const hoverImagePath = "/images/introNaturalColor/";
@@ -89,10 +89,15 @@ export default function Home() {
                 key={`${rowIndex}-${index}`}
                 src={src}
                 alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
-                className={`${styles.image} ${allImagesLoaded ? "" : 'hiddenImage'} ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}`}
-                onLoad={handleImageLoad}
+                className={`
+                ${styles.image}
+                ${allImagesLoaded ? "" : styles.hiddenImage}
+                ${!introRunning ? styles.blurredImage : ''}
+                ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}
+              `}                onLoad={handleImageLoad}
                 onMouseEnter={handleMouseEnter(rowIndex, index)}
                 onMouseLeave={handleMouseLeave(rowIndex, index)}
+
               />
             ))}
           </div>
