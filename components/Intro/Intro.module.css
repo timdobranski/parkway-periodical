@@ -138,7 +138,7 @@
   /* transform: scale(1.1);  */
   /* cursor: pointer; */
   outline: solid rgb(255, 255, 255) 6px;
-  border-radius: 1px;
+  border-radius: 0px;
   transform-origin: center;
 
 }

@@ -15,9 +15,9 @@ import Header from '../components/Header/Header';
 
 export default function Home() {
   const [posts, setPosts] = useState(null);
-  // const activeBlock = null;
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
+  const skipIntro = useSearchParams();
   const [introRunning, setIntroRunning] = useState(true);
 
   // get and parse post data
@@ -50,6 +50,12 @@ export default function Home() {
     getPosts();
   }, [postId]);
 
+  useEffect(() => {
+    if (skipIntro) {
+      setIntroRunning(false);
+    }
+  }, [skipIntro])
+
   const welcomeModal = (
     <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
       <img src='../../images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.titledLogo} />
@@ -58,9 +64,10 @@ export default function Home() {
   )
   const welcomePost = (
     <div className='welcomePostWrapper'>
-      <h1 className='welcomeTitle'>Welcome!</h1>
+      <img src='/overhead.webp' alt='Parkway Logo' className='welcomeHeader' />
+      {/* <h1 className='welcomeTitle'>Welcome!</h1>
       <h3 className='subtitle'>{`Thanks for stopping by. Below you'll find all the latest news and events happening
-      here at Parkway`}</h3>
+      here at Parkway`}</h3> */}
     </div>
   )
 
