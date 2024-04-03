@@ -1,5 +1,55 @@
 .date {
-  margin: .5rem 0 0 0;
+
   padding: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 2rem;
   /* border: solid red 2px; */
+}
+.userWrapper {
+  /* border: solid black 2px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: .5rem 0 0 -.75rem;
+}
+.userIcon {
+  height: 80px;
+  width: 80px;
+  border: solid black 2px;
+  border-radius: 50%;
+  margin: .25rem;
+  padding: .5rem;
+}
+.userImage {
+  height: 60px;
+  width: 60px;
+  /* border: solid black 2px; */
+  border-radius: 50%;
+  margin: .25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensures the image does not spill outside the container */
+  background-size: cover;
+  background-position: center;
+}
+.userTitleWrapper {
+  margin-left: .5rem;
+display: flex;
+flex-direction: column;
+}
+.userName, .userPosition {
+ margin: 0;
+ padding: 0;
+ font-size: 1.25rem;
+}
+.userName {
+  font-weight: bold;
+}
+.userPosition {
+
+
 }

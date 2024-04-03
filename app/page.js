@@ -74,7 +74,8 @@ export default function Home() {
           <React.Fragment key={index}>
             {block.type === 'title' && (
               <PostTitle
-                title={block.content}
+                src={block}
+                author={JSON.parse(post.author)}
               />
             )
             }
@@ -118,7 +119,7 @@ export default function Home() {
       <Intro introRunning={introRunning} />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null :<Header />}
-      { introRunning ? null : posts.length > 0 ? (renderedPosts) : null}
+      { introRunning ? null : posts?.length > 0 ? (renderedPosts) : null}
     </div>
   );
 }

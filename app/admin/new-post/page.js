@@ -16,24 +16,35 @@ import Intro from '../../../components/Intro/Intro';
 export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}}]);
+  const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
   const [bottomEdge, setBottomEdge] = useState(0);
   const [activeBlock, setActiveBlock] = useState(0);
-  const [verticalGridlines, setVerticalGridlines] = useState([625, 416.667, 312.5])
-  const [horizontalGridlines, setHorizontalGridlines] = useState([625, 416.667, 312.5])
 
-
-
+  useEffect(() => {
+    console.log('user: ', user)
+  }, [user])
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
 
-      // Check if the session exists
       if (response.data.session) {
-        // If session exists, set the user
-        setUser(response.data.session.user);
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('auth_id', response.data.session.user.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user data:', error);
+          return;
+        }
+
+        if (data) {
+          // Append the user ID from your users table to the user object
+          const updatedUser = { ...response.data.session.user, supabase_user: data };
+          setUser(updatedUser);
+        }
       } else {
-        // If no session, redirect to /auth
         router.push('/auth');
       }
     };
@@ -42,7 +53,6 @@ export default function NewPostPage() {
   useEffect(() => {
     console.log('ROOT PAGE contentblocks changed: ', contentBlocks)
   }, [contentBlocks])
-
   // calculate the bottom edge of the post
   useEffect(() => {
     // create a bottomEdges array to store the bottom edge of each content block
@@ -61,7 +71,6 @@ export default function NewPostPage() {
     console.log('RESULT: ', result)
     setBottomEdge(result);
   }, [contentBlocks])
-
   // NOT WORKING -- scroll to the bottom when a new content block is added
   useEffect(() => {
     console.log('bottomEdge: ', bottomEdge)
@@ -71,6 +80,7 @@ export default function NewPostPage() {
       behavior: 'smooth'
     });
   }, [bottomEdge])
+
 
   // on new block: add new gridlines for left, right, top, bottom and center vert/center horizontal
   // during drag or resize: check for gridlines & force snap
@@ -105,7 +115,7 @@ export default function NewPostPage() {
   }
   // publish post to supabase
   async function handleSubmit() {
-    console.log('inside handle submit');
+    // console.log('inside handle submit');
     try {
       const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
       // Check if block type is 'title' and content is falsy
@@ -125,14 +135,17 @@ export default function NewPostPage() {
           return {
             type: block.type,
             content: processedPhotos,
-            format: block.format
+            format: block.format,
+            author: user.supabase_user
           };
         }
         return block;
       }));
 
       const post = {
-        content: JSON.stringify(processedBlocks)
+        content: JSON.stringify(processedBlocks),
+        'post-type': 'weekly-update',
+        author: JSON.stringify(user.supabase_user)
       };
 
       const { error } = await supabase.from('posts').insert([post]);
@@ -295,12 +308,13 @@ export default function NewPostPage() {
                 <>
                   <PostTitle
                     isEditable={index === activeBlock}
-                    title={block.content}
+                    src={block}
                     updateTitle={updateTitle}
                     index={index}
                     activeBlock={activeBlock}
                     setActiveBlock={setActiveBlock}
                     key={index}
+                    user={user.supabase_user}
                   />
                   <div className={styles.blockControlsRight}>
                     <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>

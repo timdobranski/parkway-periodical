@@ -236,13 +236,14 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  /* border: solid red 2px; */
 }
 .postTitle {
   font-size: 2.5rem;
   display: block;
   color: #0068a8;
 
-  width: auto;
+  width: fit-content;
   text-align: left;
   font-family: Louis George Cafe;
   font-weight: normal;
@@ -254,7 +255,8 @@
   /* text-decoration-color: red; */
 }
 .editable {
-
+  width: 100%;
+  border: solid red 2px;
   border: dashed rgb(0, 0, 0) 2px;
 
 }
