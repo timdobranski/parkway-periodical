@@ -51,10 +51,10 @@ export default function Home() {
   }, [postId]);
 
   useEffect(() => {
-    if (skipIntro) {
+    if (skipIntro === true) {
       setIntroRunning(false);
     }
-  }, [skipIntro])
+  }, [])
 
   const welcomeModal = (
     <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>

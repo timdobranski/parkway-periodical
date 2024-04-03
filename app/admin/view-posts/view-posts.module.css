@@ -27,8 +27,8 @@
   font-weight: normal;
   font-family: Louis George Cafe;
   font-size: 1.25rem;
-  background-color: rgb(140, 219, 253);
-  border: solid black 1px;
+  background-color: rgb(60, 197, 255);
+  border: none
 }
 .postControlMenu *:hover {
   cursor: pointer;
