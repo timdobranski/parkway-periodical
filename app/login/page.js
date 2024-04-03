@@ -41,20 +41,20 @@ export default function Login() {
           className={styles.loginInput}
         />
 
-      <div className={styles.inputContainer}>
+        <div className={styles.inputContainer}>
           <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className={styles.loginInput}
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className={styles.loginInput}
           />
           <FontAwesomeIcon
-              onClick={togglePasswordVisibility}
-              className={styles.togglePasswordIcon}
-              icon={showPassword ? faEye : faEyeSlash}
+            onClick={togglePasswordVisibility}
+            className={styles.togglePasswordIcon}
+            icon={showPassword ? faEye : faEyeSlash}
           />
-      </div>
+        </div>
 
         <button type="submit" className={styles.loginButton}>Login</button>
       </form>

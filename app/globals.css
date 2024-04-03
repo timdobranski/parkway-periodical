@@ -116,7 +116,6 @@
   border: solid white 6px;
   border-bottom: 0;
   padding-left: 8px; /* to account for scrollbar */
-
 }
 .feedWrapper::before {
   content: '';

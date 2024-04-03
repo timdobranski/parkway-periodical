@@ -31,11 +31,11 @@ export default function Header() {
     getAndSetUser();
   }, []);
 
-  useEffect(() => {
-    if (user) {
+  // useEffect(() => {
+  //   if (user) {
 
-    }
-  }, [user]);
+  //   }
+  // }, [user]);
 
 
   return (
@@ -46,12 +46,12 @@ export default function Header() {
       </div>
       <div>
         <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
-      <p className={styles.subtitle}>The latest news and updates from Parkway Sports & Health Science Academy</p>
+        <p className={styles.subtitle}>The latest news and updates from Parkway Sports & Health Science Academy</p>
 
       </div>
 
       <div className={styles.navContainer}>
-        <Link href='/?skipIntro=true'><h2>HOME</h2></Link>
+        <Link href='/public/home?skipIntro=true'><h2>HOME</h2></Link>
         <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
         <Link href='/public/about'><h2>ABOUT</h2></Link>
       </div>
