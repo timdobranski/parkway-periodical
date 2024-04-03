@@ -51,13 +51,14 @@
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  background: linear-gradient(to right, rgb(38, 189, 254), rgb(0, 94, 149)); /* gradient background */
-  background-image: url('../public/images/gradient3small.webp');
+  /* background: linear-gradient(to right, rgb(38, 189, 254), rgb(0, 94, 149)); */
+  /* background-image: url('../public/images/gradient3small.webp'); */
+  background-color: black;
   background-size: cover;
   background-position: center;
   overflow: hidden;
   overflow-y: auto;
-  backdrop-filter: brightness(0.5);
+  /* backdrop-filter: brightness(0.5); */
 }
 .adminPageWrapper {
   position: relative;
@@ -108,7 +109,7 @@
   z-index: 9999;
   background-color: rgba(0, 89, 124, 0.7);
   backdrop-filter: blur(5px);
-  animation: slideUp 1s ease-out forwards;
+  /* animation: slideUp 1s ease-out forwards; */
   overflow-y: auto;
   height: calc(100vh - 120px);
   height: 100vh;

@@ -22,11 +22,16 @@ export default function Home({ children }) {
 
 
   useEffect(() => {
-    console.log('SKIPINTRO: ', skipIntro, typeof skipIntro)
-    if (skipIntro === 'true') {
-      setIntroRunning(Boolean(JSON.parse(false)));
+    const skipIntroBool = Boolean(JSON.parse(skipIntro));
+    console.log('SKIPINTROBOOL: ', skipIntroBool, typeof skipIntroBool)
+    if (skipIntroBool === true) {
+      setIntroRunning(false);
     }
   }, [skipIntro])
+
+  useEffect(() => {
+    console.log('INTRO RUNNING: ', introRunning)
+  }, [introRunning])
 
   const welcomeModal = (
     <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
@@ -41,7 +46,7 @@ export default function Home({ children }) {
     <div className={styles.homeWrapper}>
       <Intro introRunning={introRunning} />
       { introRunning ? (welcomeModal) : null }
-      { introRunning ? null :<Header />}
+      { introRunning ? null :<Header skipAnimation={skipIntro}/>}
       { introRunning ? null : children}
       {/* { introRunning ? null : posts?.length > 0 ? (renderedPosts) : null} */}
     </div>

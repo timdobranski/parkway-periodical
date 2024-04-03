@@ -17,8 +17,8 @@ export default function Home() {
   const [posts, setPosts] = useState(null);
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
-  const skipIntro = useSearchParams('skipIntro');
-  const [introRunning, setIntroRunning] = useState(true);
+  // const skipIntro = useSearchParams('skipIntro');
+  // const [introRunning, setIntroRunning] = useState(true);
 
   // get and parse post data
   const getPosts = async () => {
@@ -50,11 +50,11 @@ export default function Home() {
     getPosts();
   }, [postId]);
 
-  useEffect(() => {
-    if (skipIntro === true) {
-      setIntroRunning(false);
-    }
-  }, [skipIntro])
+  // useEffect(() => {
+  //   if (skipIntro === true) {
+  //     setIntroRunning(false);
+  //   }
+  // }, [skipIntro])
 
   const welcomeModal = (
     <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>

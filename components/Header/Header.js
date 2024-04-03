@@ -51,8 +51,16 @@ export default function Header() {
       </div>
 
       <div className={styles.navContainer}>
-        <Link href='/public/home?skipIntro=true'><h2>HOME</h2></Link>
-        <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
+        {/* <Link href='/public/home?skipIntro=true'> */}
+        <h2
+          onClick={() => {router.push('/public/home?skipIntro=false')}}
+        >
+            HOME</h2>
+        <h2
+          onClick={() => {router.push('/public/archive')}}
+        >
+            ARCHIVE</h2>
+        {/* </Link> */}
         <Link href='/public/about'><h2>ABOUT</h2></Link>
       </div>
     </div>

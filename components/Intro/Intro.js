@@ -88,8 +88,8 @@ export default function Intro({ introRunning }) {
               <div
                 className={styles.imageContainer}
                 key={`${rowIndex}-${index}`}
-
               >
+                <div className={styles.overlay}></div>
                 <img
                   src={src}
                   alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
