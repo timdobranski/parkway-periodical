@@ -5,7 +5,8 @@ export default function About() {
 
 
   return (
-    <>
+    <div className='feedWrapper'>
+      <div className='post'>
       <div className={styles.aboutWrapper}>
         <h1>About Us</h1>
 
@@ -58,6 +59,7 @@ export default function About() {
         </div>
       </div>
       </div>
-    </>
+      </div>
+    </div>
   );
 }

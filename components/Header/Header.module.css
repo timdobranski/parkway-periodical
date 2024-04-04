@@ -65,7 +65,37 @@
   margin: 0;
   font-style: italic;
 }
-
+.socialWrapper {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  left: 6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.socialIcon {
+  width: 25px;
+  height: 25px;
+  margin: .5rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(0, 89, 124);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform .3s ease-in-out;
+}
+.socialIcon:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+  bottom: solid 2px rgb(124, 0, 0);
+}
 .navContainer {
   position: absolute;
   display: flex;
@@ -174,14 +204,14 @@
 }
 .adminHomeLink {
   position: absolute;
-  height: 50px;
-  top: 50%;
-  left: 8rem;
+  height: 30px;
+  top: 70%;
+  right: 2rem;
   transform: translateY(-50%);
   font-family: Louis George Cafe;
   color: rgb(0, 0, 0);
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 400;
   font-size: 1rem;
   text-decoration: none;
   background: rgb(255, 83, 83);
@@ -189,8 +219,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   text-align: center;
+}
+.adminHomeLink h2 {
+  font-weight: 400;
 }
 .adminHomeLink:hover {
   cursor: pointer;

@@ -47,7 +47,9 @@ export default function Home({ children }) {
       <Intro introRunning={introRunning} />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null :<Header skipAnimation={skipIntro}/>}
-      { introRunning ? null : children}
+      { introRunning ? null :
+       children
+       }
       {/* { introRunning ? null : posts?.length > 0 ? (renderedPosts) : null} */}
     </div>
   );

@@ -7,8 +7,10 @@ import Link from 'next/link';
 import supabase from '../../utils/supabase';
 import  { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
-export default function Header() {
+export default function Header({ skipAnimation }) {
   const [user, setUser] = useState(null);
   const [navbar, setNavbar] = useState('0'); // ['home', 'archive', 'about'
   const router = useRouter();
@@ -31,18 +33,17 @@ export default function Header() {
     getAndSetUser();
   }, []);
 
-  // useEffect(() => {
-  //   if (user) {
-
-  //   }
-  // }, [user]);
-
 
   return (
     <div className={styles.headerContainer}>
       {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
       <div className={styles.logoContainer} onClick={() => router.push('/')}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
+        <div className={styles.socialWrapper}>
+          <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link>
+          <Link href='https://www.instagram.com/parkwaypatriots/'><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} /></Link>
+          <Link href='https://x.com/pkmspatriots?s=20'><FontAwesomeIcon icon={faTwitter} className={styles.socialIcon} /></Link>
+        </div>
       </div>
       <div>
         <h1 className={styles.title}>PARKWAY PERIODICAL</h1>

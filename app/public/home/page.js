@@ -13,7 +13,7 @@ import { useSearchParams } from 'next/navigation'
 import Header from '../../../components/Header/Header';
 
 
-export default function Home() {
+export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState(null);
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
@@ -50,11 +50,9 @@ export default function Home() {
     getPosts();
   }, [postId]);
 
-  // useEffect(() => {
-  //   if (skipIntro === true) {
-  //     setIntroRunning(false);
-  //   }
-  // }, [skipIntro])
+  useEffect(() => {
+    console.log('INTRO RUNNING: ', introRunning)
+  })
 
   const welcomeModal = (
     <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
@@ -124,11 +122,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <Intro introRunning={introRunning} /> */}
-      {/* { introRunning ? (welcomeModal) : null } */}
-      {/* { introRunning ? null :<Header />} */}
-      {/* {welcomeModal} */}
-      {renderedPosts}
+      { introRunning ? welcomeModal : renderedPosts}
     </>
   );
 }
