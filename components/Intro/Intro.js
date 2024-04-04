@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Intro.module.css';
 import { useRouter } from 'next/navigation';
 
-export default function Intro({ introRunning }) {
+export default function Intro({ introRunning, setFinishedLoading }) {
   const [rows, setRows] = useState([[], [], []]);
   const baseImagePath = "/images/intro/";
   const hoverImagePath = "/images/introNaturalColor/";
@@ -73,12 +73,16 @@ export default function Intro({ introRunning }) {
   useEffect(() => {
     if (allImagesLoaded) {
       console.log('all images loaded');
+      setFinishedLoading(true);
     }
   }, [allImagesLoaded]);
 
   return (
     <>
-      <div className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}>
+      <div
+      className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}
+      style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')", backdropFilter: 'brightness(.5)' } : {}}
+      >
         {rows.map((rowImages, rowIndex) => (
           <div
             key={rowIndex}

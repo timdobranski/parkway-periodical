@@ -48,13 +48,13 @@
   height: 100vh;
   box-sizing: border-box;
   /* background: linear-gradient(to right, rgb(38, 189, 254), rgb(0, 94, 149)); */
-  background-image: url('../public/images/gradient3small.webp');
-  /* background-color: black; */
+  /* background-image: url('../public/images/gradient3small.webp'); */
+  background-color: black;
   background-size: cover;
   background-position: center;
   overflow: hidden;
   overflow-y: auto;
-  /* backdrop-filter: brightness(0.5); */
+  backdrop-filter: brightness(0.5);
 }
 .adminPageWrapper {
   position: relative;

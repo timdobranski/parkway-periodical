@@ -21,6 +21,7 @@ export default function Home({ children }) {
   const skipIntro = searchParams.get('skipIntro');
   const [introRunning, setIntroRunning] = useState(true);
   const [windowWidth, setWindowWidth] = useState(undefined);
+  const [finishedLoading, setFinishedLoading] = useState(false);
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
@@ -61,7 +62,7 @@ export default function Home({ children }) {
         alt='Intro Image'
         className={styles.logo}
       />
-      <h1 className={styles.enterButton}>ENTER</h1>
+      <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING...' }</h1>
     </div>
   )
 
@@ -69,7 +70,7 @@ export default function Home({ children }) {
 
   return (
     <div className={styles.homeWrapper}>
-      <Intro introRunning={introRunning} />
+      <Intro introRunning={introRunning} setFinishedLoading={setFinishedLoading}/>
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null :<Header skipAnimation={skipIntro}/>}
       { introRunning ? null :

@@ -25,6 +25,9 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  /* background-image: url('/images/gradient3small.webp');
+  backdrop-filter: brightness(0.5); */
+
   /* border: solid red 4px; */
 }
 /* .feedWrapper {
