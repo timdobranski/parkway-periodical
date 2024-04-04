@@ -75,5 +75,28 @@
 }
 .userPosition {
 
-
+}
+@media(max-width: 768px) {
+  .postTitle {
+    width: 80%;
+    margin: -1rem 0 1rem -1rem;
+    padding: 0 0 .5rem 0;
+  }
+  .date {
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1rem;
+  }
+  .userWrapper {
+    margin: -1rem 0 0 -1rem
+  }
+  .userImage {
+    height: 40px;
+    width: 40px;
+  }
+  .userName, .userPosition {
+    font-size: 1rem;
+  }
 }

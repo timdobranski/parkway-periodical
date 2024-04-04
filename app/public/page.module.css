@@ -25,7 +25,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-
+  /* border: solid red 4px; */
 }
 /* .feedWrapper {
   position: absolute;
@@ -202,5 +202,11 @@
     background-color: rgb(34, 171, 240);
     padding: 1rem;
     border-radius: 10px;
+  }
+  .homeWrapper {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    border: none;
   }
 }

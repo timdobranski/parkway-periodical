@@ -403,6 +403,12 @@
     background-position: center;
     /* margin-top: 150px; */
   }
+  /* .background h1, .background h2 .background h3, .background h4, .background h5, .background h6 {
+    font-size: 1.5rem !important;
+  } */
+  .feedWrapper h1, .feedWrapper h2, .feedWrapper h3, .feedWrapper h4, .feedWrapper h5, .feedWrapper h6 {
+    font-size: 1.5rem !important;
+  }
   ::-webkit-scrollbar-thumb {
     background: rgb(255, 255, 255, 0);
     padding-right: 2px;
@@ -412,18 +418,20 @@
     /* border-radius: 10px; */
   }
   .feedWrapper {
-    width: 100vw;
+    top: 90px;
+    width: 100%;
     border: none;
     box-shadow: none;
+    margin: 0;
+    padding: 0;
   }
   .welcomePostWrapper {
-    width: 96vw;
+    /* width: 96vw; */
     border: none;
   }
   .post {
-    width: 96vw !important;
-    margin-top: 50px;
-    border: solid green 2px;
+    max-width: 500px;
+    width: 95vw;
     overflow: hidden;
   }
   .blockWrapper {
@@ -432,5 +440,4 @@
   .blockWrapper iframe {
     width: 98vw;
   }
-
 }

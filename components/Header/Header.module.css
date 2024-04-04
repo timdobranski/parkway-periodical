@@ -175,13 +175,12 @@
 
 @media (max-width: 768px) {
   .headerContainer {
-    /* box-sizing: border-box; */
-    position: fixed;
+    position: absolute;
     margin: 0;
     top:0;
     left: 0;
     width: 100vw;
-    height:100px;
+    height:90px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
