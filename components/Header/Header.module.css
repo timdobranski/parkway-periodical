@@ -41,7 +41,10 @@
   left: 1rem;
   transform: translateY(-50%);
 }
+.logoContainer:hover {
+  cursor: pointer;
 
+}
 .title {
   font-family: Louis George Cafe;
   font-size: 3.5rem; /* Large font size to see the effect clearly */
