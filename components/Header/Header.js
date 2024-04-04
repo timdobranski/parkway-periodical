@@ -37,8 +37,8 @@ export default function Header({ skipAnimation }) {
   return (
     <div className={styles.headerContainer}>
       {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
-      <div className={styles.logoContainer} onClick={() => router.push('/')}>
-        <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
+      <div className={styles.logoContainer} >
+        <Image src={logo} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/')}/>
         <div className={styles.socialWrapper}>
           <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link>
           <Link href='https://www.instagram.com/parkwaypatriots/'><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} /></Link>

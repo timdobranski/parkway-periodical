@@ -45,19 +45,19 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
 
 
   return (
-    <div className={'postTitleWrapper'}>
+    <div className={styles.postTitleWrapper}>
       {isEditable ? (
         <input
           type="text"
           value={src?.content}
           onChange={(e) => updateTitle(e.target.value)}
-          className='postTitle editable'
+          className={`${styles.postTitle} editable`}
           placeholder="Enter title"
           onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null)}}}
         />
       ) : (
 
-        <h1 className='postTitle' onClick={() => setActiveBlock(index)}>
+        <h1 className={styles.postTitle} onClick={() => setActiveBlock(index)}>
           {src.content ? src.content : 'Enter title'}
         </h1>
 

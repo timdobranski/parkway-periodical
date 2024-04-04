@@ -22,26 +22,22 @@
 }
 /* The entire scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;  /* or any desired size */
+  width: 6px;
 }
-
 /* The track (progress bar) of the scrollbar */
 ::-webkit-scrollbar-track {
   background: #ffffff;  /* or any color */
   background: rgba(0, 0, 0, 0);
 }
-
 /* The handle (thumb) of the scrollbar */
 ::-webkit-scrollbar-thumb {
   background: rgb(255, 83, 83);
   padding-right: 2px;
-  /* border: solid white 1.5px; */
-  /* border-radius: 10px; */
-}
 
+}
 /* The handle (thumb) when hovering over it */
 ::-webkit-scrollbar-thumb:hover {
-  background: #29c6ff;  /* or any darker color */
+  background: #29c6ff;
 }
 .background {
   position: absolute;
@@ -90,7 +86,7 @@
   overflow-y: auto;
   /* outline: solid red 2px; */
 }
-.blogContainer {
+/* .blogContainer {
   width: 95vw !important;
   padding: 0;
   margin: 0;
@@ -98,8 +94,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* min-width: 0; */
-}
+} */
 .feedWrapper{
   position: absolute;
   top: 100px;
@@ -113,22 +108,12 @@
   overflow-y: auto;
   height: calc(100vh - 120px);
   height: 100vh;
-  border: solid rgba(0, 52, 73, 0.7) 2px;
+  /* border: solid rgba(0, 52, 73, 0.7) 2px; */
   border: solid white 6px;
   border-bottom: 0;
-  padding-left: 8px; /* to account for scrollbar */
+  padding-left: calc(2rem + 8px); /* to account for scrollbar on right side */
+  padding-right: 2rem;
 }
-.feedWrapper::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 50px; /* Adjust the height to control the fade area */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
-  pointer-events: none; /* Allows clicks to pass through */
-}
-
 .welcomePostWrapper {
   position: relative;
   width: 1000px;
@@ -162,6 +147,41 @@
   font-size: 1.5rem;
   font-style: italic;
 }
+.pageTitleWrapper {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* border: solid rgb(0, 0, 0) 6px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 2rem; */
+  /* background-color: rgba(0, 0, 0, 1); */
+}
+.pageTitle {
+  font-family: Louis George Cafe;
+  font-size: 2.5rem;
+  font-weight: bold;
+  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  color: rgb(250, 88, 88);
+  color: rgba(0, 89, 124, 0.7);
+  margin: 0rem;
+  border-bottom: solid rgb(255, 54, 54) 3px;
+}
+.smallerTitle {
+  font-family: Louis George Cafe;
+  font-size: 1.5rem;
+  font-weight: bold;
+  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  color: rgb(250, 88, 88);
+  color: rgba(0, 89, 124, 0.7);
+  margin: 0rem;
+  border-bottom: solid rgb(255, 54, 54) 3px;
+}
 .post, .postPreview {
   position: relative;
   width: 1000px;
@@ -184,8 +204,8 @@
 }
 .post {
   position: relative;
-  /* width: calc(1000px - 2rem); */
-  height: 100%;
+  text-align: center;
+  height: auto;
   width: 1000px;
   left: 50%;
   transform: translateX(-50%);
@@ -193,8 +213,8 @@
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(8px);
   animation: slideUp 1s ease-out forwards;
-  margin-bottom: 2rem;
-  /* border-radius: 20px; */
+  margin-bottom: 20rem;
+  padding: 2rem;
 }
 .blockWrapper {
   position: relative;
@@ -245,30 +265,7 @@
 .hiddenImage {
   opacity: 0;
 }
-.postTitleWrapper {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  /* border: solid red 2px; */
-}
-.postTitle {
-  font-size: 2.5rem;
-  display: block;
-  color: #0068a8;
 
-  width: fit-content;
-  text-align: left;
-  font-family: Louis George Cafe;
-  font-weight: normal;
-  /* padding: 0rem .5rem 0 .5rem; */
-  margin: 0;
-  /* text-decoration: underline; */
-  border-bottom: solid 3px rgb(0, 104, 145);
-  border-bottom: solid 3px rgb(255, 54, 54);
-  /* text-decoration-color: red; */
-}
 .editable {
   width: 100%;
   border: solid red 2px;

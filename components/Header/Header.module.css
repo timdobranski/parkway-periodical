@@ -23,7 +23,7 @@
   backdrop-filter: blur(6px);
   text-align: center;
   z-index: 2000;
-  /* animation: slideDown 1s ease-out forwards; */
+  animation: slideDown 1s ease-out forwards;
   color: white;
   /* border: solid rgba(0, 40, 56, 0.8) 2px; */
   border-bottom: solid rgb(0, 64, 98) 2px;
