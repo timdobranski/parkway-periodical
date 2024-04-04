@@ -133,12 +133,14 @@
 .fadeIn {
   animation: fadeInAnimation 2s ease-out;
 }
-
-.titledLogo {
+.logo {
   width: 75%;
   margin-left:2rem;
   margin-top: 0;
   padding: 0;
+}
+.mobileLogo{
+  display: none;
 }
 .enterButton {
   padding: 1rem;
@@ -163,19 +165,29 @@
 @media(max-width: 768px) {
   .introContainer {
     position: absolute;
-    right: 10vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* right: 10vw; */
     width: 80vw;
-    height: 20vh;
-    border-radius: 10px;
-    transform: skew(-10deg) translate(-55%, -50%);
+    height: 50vh;
     border: none;
-
+  }
+  .logo {
+    display: none;
+  }
+  .mobileLogo{
+    display: block;
+    width: 80%;
+    max-width: 100px;
   }
   .introImage {
     width: 90%;
-    margin-left: 0;
+    margin: 0;
     margin-top: 0;
     padding: 0;
+    border: solid red 2px;
   }
   .enter {
     padding: 1rem;

@@ -9,14 +9,18 @@ import PrimeText from '../../../components/PrimeText/PrimeText';
 import Intro from '../../../components/Intro/Intro';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import { format } from 'date-fns';
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
-
 
 export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState(null);
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
+
+  useEffect(() => {
+    // Your existing useEffect for fetching posts
+    getPosts();
+  }, [postId]);
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
@@ -54,14 +58,8 @@ export default function Home({ introRunning, setIntroRunning }) {
     console.log('INTRO RUNNING: ', introRunning)
   })
 
-  const welcomeModal = (
-    <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
-      <img src='../../images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.titledLogo} />
-      <h1 className={styles.enterButton}>ENTER</h1>
-    </div>
-  )
   const welcomePost = (
-    <div className='welcomePostWrapper'>
+    <div className={styles.welcomePostWrapper}>
       <img src='/overhead.webp' alt='Parkway Logo' className='welcomeHeader' />
       {/* <h1 className='welcomeTitle'>Welcome!</h1>
       <h3 className='subtitle'>{`Thanks for stopping by. Below you'll find all the latest news and events happening

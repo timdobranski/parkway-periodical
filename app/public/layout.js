@@ -11,7 +11,8 @@ import PostTitle from '../../components/PostTitle/PostTitle';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation'
 import Header from '../../components/Header/Header';
-
+import mobileLogo from '/public/images/logos/parkway.png';
+import desktopLogo from '/public/images/logos/titledLogoThumb.png';
 
 export default function Home({ children }) {
   const [posts, setPosts] = useState(null);
@@ -19,7 +20,22 @@ export default function Home({ children }) {
   const postId = searchParams.get('postId');
   const skipIntro = searchParams.get('skipIntro');
   const [introRunning, setIntroRunning] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(undefined);
 
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    // Set the initial width
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const skipIntroBool = Boolean(JSON.parse(skipIntro));
@@ -35,7 +51,16 @@ export default function Home({ children }) {
 
   const welcomeModal = (
     <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
-      <img src='../../images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.titledLogo} />
+      <img
+        src={'/images/logos/parkway.png'}
+        alt='Intro Image'
+        className={styles.mobileLogo}
+      />
+      <img
+        src={'/images/logos/titledLogoThumb.png'}
+        alt='Intro Image'
+        className={styles.logo}
+      />
       <h1 className={styles.enterButton}>ENTER</h1>
     </div>
   )

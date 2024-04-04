@@ -114,23 +114,7 @@
   padding-left: calc(2rem + 8px); /* to account for scrollbar on right side */
   padding-right: 2rem;
 }
-.welcomePostWrapper {
-  position: relative;
-  width: 1000px;
-  background-size: 100% auto;
-  padding: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2000;
-  background-color: rgba(255, 255, 255, 1);
-  backdrop-filter: blur(8px);
-  animation: slideUp 1s ease-out forwards;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
-  text-align: center;
-  font-family: Louis George Cafe;
-  border: solid white 8px;
-}
+
 .welcomeHeader {
   width: 100%;
   display: block;
@@ -402,6 +386,7 @@
 /* ------------------------------------------MOBILE STYLING---------------------------------------------- */
 
 @media (max-width: 768px) {
+
   .appContainer {
     box-sizing: border-box !important;
     width: 100vw;
