@@ -23,7 +23,7 @@
 :root {
   --primary-blue-transparent: rgba(0, 89, 124, 0.7);
   --primary-blue: rgba(0, 89, 124, 1);
-  --primary-red: rgba(255, 54, 54, 1);
+  --primary-red: rgb(250, 88, 88);
 }
 /* The entire scrollbar */
 ::-webkit-scrollbar {

@@ -59,7 +59,7 @@
   -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
   background-clip: text; /* Clip the background with the text */
   color: transparent;
-  color: rgb(250, 88, 88);
+  color: var(--primary-red);
   margin-bottom: -10px;
 }
 .subtitle {
@@ -169,7 +169,7 @@
   font-weight: 400;
   font-size: 1rem;
   text-decoration: none;
-  background: rgb(255, 83, 83);
+  background: var(--primary-red);
   display: flex;
   justify-content: center;
   align-items: center;
