@@ -65,7 +65,7 @@
 .subtitle {
   font-family: Louis George Cafe;
   font-size: 1.25rem;
-  margin: 0;
+  margin: .1rem 0 0 0;
   font-style: italic;
 }
 .socialWrapper {
