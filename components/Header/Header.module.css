@@ -99,12 +99,22 @@
   cursor: pointer;
   bottom: solid 2px rgb(124, 0, 0);
 }
-.navContainer {
+.rightSideMenu {
   position: absolute;
-  display: flex;
-  top: 0;
   right: 0;
-  margin: .5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 0;
+  padding: .5rem;
+  /* border: solid red 2px; */
+  height: 100%;
+}
+.navContainer {
+  position: relative;
+  display: flex;
+  margin-bottom: .5rem;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -118,7 +128,7 @@
   outline: none;
 }
 .navContainer h2 {
-  margin: 0rem 2rem .75rem 2rem;
+  margin: 0 1rem;
   /* font-family: Nadall; */
   font-family: Louis George Cafe;
   color: rgb(43, 133, 207);
@@ -131,7 +141,6 @@
   transform: scale(1);
   transition: transform .3s ease-in-out;
   border: none !important;
-
 }
 .navContainer h2:hover{
   transform: scale(1.2);
@@ -145,11 +154,6 @@
   border: none;
 }
 .adminHomeLink {
-  position: absolute;
-  height: 30px;
-  top: 70%;
-  right: 2rem;
-  transform: translateY(-50%);
   font-family: Louis George Cafe;
   color: rgb(0, 0, 0);
   font-size: 1.5rem;
@@ -157,22 +161,47 @@
   font-size: 1rem;
   text-decoration: none;
   background: rgb(255, 83, 83);
-  padding: .5rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
 .adminHomeLink h2 {
-  font-weight: 400;
+
 }
 .adminHomeLink:hover {
   cursor: pointer;
   background: rgb(84, 195, 255);
-
   transition: transform .3s ease-in-out
 }
+.filterWrapper {
+  position: absolute;
+  bottom: .5rem;
+  right: 0;
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: space-between;
 
+  /* border: solid red 2px; */
+}
+.searchBar, .filterSelect {
+  font-size: 1.25rem;
+  margin: 0 1rem;
+  padding: .25rem .1rem;
+  border: solid 1px rgb(0, 89, 124);
+  font-family: Louis George Cafe;
+}
+.searchBar {
+width: 60%;
+}
+.filterSelect {
+  width: 40%;
+  border-radius: 2px;
+  border: none;
+}
 @media (max-width: 768px) {
   .headerContainer {
     position: absolute;

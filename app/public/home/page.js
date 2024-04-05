@@ -49,10 +49,10 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching posts:', error);
     }
   };
-  useEffect(() => {
+  // useEffect(() => {
 
-    getPosts();
-  }, [postId]);
+  //   getPosts();
+  // }, [postId]);
 
   useEffect(() => {
     console.log('INTRO RUNNING: ', introRunning)
@@ -70,6 +70,23 @@ export default function Home({ introRunning, setIntroRunning }) {
   const renderedPosts =
     <div className='feedWrapper'>
       {welcomePost}
+      {/* <div className={styles.filterWrapper}>
+        <input type='text' placeholder='Search for news' className={styles.searchBar}/>
+        <select name='filter' id='filter' className={styles.filterSelect}>
+          <option value="" disabled selected hidden>Filter Posts</option>
+          <option value='all'>All Departments</option>
+          <option value='sports'>Sports</option>
+          <option value='health'>Science</option>
+          <option value='science'>Music</option>
+          <option value='academics'>Math</option>
+          <option value='academics'>English</option>
+          <option value='academics'>Social Science</option>
+          <option value='academics'>Extracurriculars</option>
+          <option value='academics'>2024/25 School Year</option>
+        </select>
+      </div> */}
+
+
       {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>
@@ -120,7 +137,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   return (
     <>
-      { introRunning ? welcomeModal : renderedPosts}
+      { introRunning ? null : renderedPosts}
     </>
   );
 }

@@ -36,7 +36,7 @@ export default function Header({ skipAnimation }) {
 
   return (
     <div className={styles.headerContainer}>
-      {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
+      {/* {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)} */}
       <div className={styles.logoContainer} >
         <Image src={logo} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/')}/>
         <div className={styles.socialWrapper}>
@@ -48,21 +48,15 @@ export default function Header({ skipAnimation }) {
       <div>
         <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
         <p className={styles.subtitle}>The latest news and updates from Parkway Sports & Health Science Academy</p>
-
       </div>
+      <div className={styles.rightSideMenu}>
+        <div className={styles.navContainer}>
+          <Link href='/public/home?skipIntro=false'><h2>HOME</h2></Link>
+          <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
+          <Link href='/public/about'><h2>ABOUT</h2></Link>
+          {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
+        </div>
 
-      <div className={styles.navContainer}>
-        {/* <Link href='/public/home?skipIntro=true'> */}
-        <h2
-          onClick={() => {router.push('/public/home?skipIntro=false')}}
-        >
-            HOME</h2>
-        <h2
-          onClick={() => {router.push('/public/archive')}}
-        >
-            ARCHIVE</h2>
-        {/* </Link> */}
-        <Link href='/public/about'><h2>ABOUT</h2></Link>
       </div>
     </div>
   )
