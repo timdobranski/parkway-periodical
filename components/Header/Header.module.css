@@ -117,7 +117,7 @@
   margin-bottom: .5rem;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   color: white;
 }
 
@@ -127,53 +127,60 @@
 .navContainer a:focus {
   outline: none;
 }
-.navContainer h2 {
+.navLink {
   margin: 0 1rem;
-  /* font-family: Nadall; */
   font-family: Louis George Cafe;
   color: rgb(43, 133, 207);
   color: rgb(255, 83, 83);
   color: white;
   font-size: 1.5rem;
-  /* font-weight: bold; */
   font-weight: normal;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;
   border: none !important;
+  height: fit-content;
 }
-.navContainer h2:hover{
+.navLink h2 {
+  font-family: Louis George Cafe;
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transform: scale(1);
+  transition: transform .3s ease-in-out;
+  border: none !important;
+  font-weight: normal;
+}
+.navLink:hover{
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color:rgb(255, 83, 83);
 }
 
-.navContainer h2:focus {
+.navLink:focus {
   outline: none;
   border: none;
 }
 .adminHomeLink {
   font-family: Louis George Cafe;
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-size: 1.5rem;
   font-weight: 400;
   font-size: 1rem;
   text-decoration: none;
   background: rgb(255, 83, 83);
-
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-.adminHomeLink h2 {
-
+  margin: 0;
+  padding: .5rem;
 }
 .adminHomeLink:hover {
   cursor: pointer;
   background: rgb(84, 195, 255);
-  transition: transform .3s ease-in-out
+
 }
 .filterWrapper {
   position: absolute;
@@ -202,6 +209,11 @@ width: 60%;
   border-radius: 2px;
   border: none;
 }
+
+
+
+
+
 @media (max-width: 768px) {
   .headerContainer {
     position: absolute;

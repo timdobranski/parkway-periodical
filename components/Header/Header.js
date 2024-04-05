@@ -51,10 +51,10 @@ export default function Header({ skipAnimation }) {
       </div>
       <div className={styles.rightSideMenu}>
         <div className={styles.navContainer}>
-          <Link href='/public/home?skipIntro=false'><h2>HOME</h2></Link>
-          <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
-          <Link href='/public/about'><h2>ABOUT</h2></Link>
-          {user && (<Link href='/admin/new-post' className={styles.adminHomeLink}><h2>ADMIN HOME</h2></Link>)}
+          <Link href='/public/home?skipIntro=false'><h2  className={styles.navLink}>HOME</h2></Link>
+          <Link href='/public/archive' ><h2  className={styles.navLink}>ARCHIVE</h2></Link>
+          <Link href='/public/about' ><h2  className={styles.navLink}>ABOUT</h2></Link>
+          {user && (<Link href='/admin/new-post'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
         </div>
 
       </div>

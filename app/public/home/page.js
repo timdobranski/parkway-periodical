@@ -70,10 +70,11 @@ export default function Home({ introRunning, setIntroRunning }) {
   const renderedPosts =
     <div className='feedWrapper'>
       {welcomePost}
-      {/* <div className={styles.filterWrapper}>
+      <div className={styles.filterWrapper}>
         <input type='text' placeholder='Search for news' className={styles.searchBar}/>
+        <button className={styles.searchButton}>SEARCH</button>
         <select name='filter' id='filter' className={styles.filterSelect}>
-          <option value="" disabled selected hidden>Filter Posts</option>
+          <option value="" disabled selected hidden>Browse Posts</option>
           <option value='all'>All Departments</option>
           <option value='sports'>Sports</option>
           <option value='health'>Science</option>
@@ -84,7 +85,7 @@ export default function Home({ introRunning, setIntroRunning }) {
           <option value='academics'>Extracurriculars</option>
           <option value='academics'>2024/25 School Year</option>
         </select>
-      </div> */}
+      </div>
 
 
       {posts &&
