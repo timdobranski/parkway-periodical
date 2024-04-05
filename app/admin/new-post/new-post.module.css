@@ -12,6 +12,19 @@
   /* overflow-y: auto;  */
   /* border: solid greenyellow 4px; */
 }
+.adminFeedWrapper {
+  background-image: url('/images/quad.png');
+  background-image: url('/images/overhead2.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  /* overflow: hidden; */
+}
 .blockWrapper {
   position: relative;
   display: flex;

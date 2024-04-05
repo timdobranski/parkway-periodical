@@ -51,7 +51,7 @@ export default function Home({ children }) {
   }, [introRunning])
 
   const welcomeModal = (
-    <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
+<div className={`${styles.introContainer} ${finishedLoading ? styles.fadeInFromWhite : styles.whiteBackground}`} onClick={() => setIntroRunning(false)}>
       <img
         src={'/images/logos/parkway.png'}
         alt='Intro Image'
@@ -62,7 +62,8 @@ export default function Home({ children }) {
         alt='Intro Image'
         className={styles.logo}
       />
-      <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING...' }</h1>
+      <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING... (click to skip)' }</h1>
+      {/* {finishedLoading ? null :  <p className={styles.clickToSkip}>Click to Skip</p>} */}
     </div>
   )
 
@@ -70,7 +71,9 @@ export default function Home({ children }) {
 
   return (
     <div className={styles.homeWrapper}>
-      <Intro introRunning={introRunning} setFinishedLoading={setFinishedLoading}/>
+      <Intro introRunning={introRunning}
+        setFinishedLoading={setFinishedLoading}
+      />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null :<Header skipAnimation={skipIntro}/>}
       { introRunning ? null :

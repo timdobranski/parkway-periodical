@@ -298,8 +298,8 @@ export default function NewPostPage() {
         setActiveBlock={setActiveBlock}
         handleSubmit={handleSubmit}
       />
-      <div className='adminFeedWrapper'>
-
+      <div className={styles.adminFeedWrapper}>
+        <div className='feedWrapper'>
         <div className='post' style={{height: `${bottomEdge + 500}px`}}>
           {contentBlocks.map((block, index) => (
             <>
@@ -379,6 +379,7 @@ export default function NewPostPage() {
             </>
 
           ))}
+        </div>
         </div>
       </div>
     </>

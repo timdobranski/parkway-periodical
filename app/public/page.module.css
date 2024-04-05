@@ -16,6 +16,7 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 .homeWrapper {
   position: absolute;
   width: 100vw;
@@ -45,8 +46,19 @@
   box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
 
 } */
-
-
+.clickToSkip {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 1rem;
+  color: rgb(255, 255, 255);
+  font-size: 1.5rem;
+  background-color: var(--primary-blue)
+}
+.whiteBackground {
+  background-color: white !important;
+}
 .introContainer {
   position: absolute;
   z-index: 200;
@@ -163,7 +175,6 @@
   border: solid red 2px;
   z-index: 5000;
 }
-
 
 @media(max-width: 768px) {
   .introContainer {

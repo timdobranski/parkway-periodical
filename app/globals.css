@@ -58,12 +58,12 @@
   background-size: cover;
   background-position: center;
   overflow: hidden;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   backdrop-filter: brightness(0.5);
 }
 .adminPageWrapper {
   position: relative;
-  top: 130px;
+  top: 135px;
   width: 100vw;
   /* height: calc(100vh - 130px); */
   height: fit-content;
@@ -74,7 +74,8 @@
   justify-content: flex-start;
   font-family: Louis George Cafe;
   overflow-y: auto;
-  height: 300vh;
+  height: 80vh;
+  border: none;
 }
 .publicPageWrapper {
   position: absolute;
@@ -111,7 +112,7 @@
   backdrop-filter: blur(5px);
   /* animation: slideUp 1s ease-out forwards; */
   overflow-y: auto;
-  height: calc(100vh - 120px);
+  /* height: calc(100vh - 120px); */
   height: 100vh;
   /* border: solid rgba(0, 52, 73, 0.7) 2px; */
   border: solid white 6px;
