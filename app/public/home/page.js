@@ -123,10 +123,27 @@ export default function Home({ introRunning, setIntroRunning }) {
             }
             {block.type === 'video' && (
               <div className='blockWrapper'>
-                <Video
+                {/* <Video
                   src={block}
                   isEditable={false}
+                /> */}
+                <iframe
+                  src={block.content}
+                  frameBorder="0"
+                  allowFullScreen
+                  title="Embedded video"
+                  className={styles.video}
+                  style={block.style}
                 />
+                <div className={styles.videoMobileWrapper}>
+                  <iframe
+                    src={block.content}
+                    frameBorder="0"
+                    allowFullScreen
+                    title="Embedded video"
+                    className={styles.videoMobile}
+                  />
+                </div>
               </div>
             )}
           </React.Fragment>

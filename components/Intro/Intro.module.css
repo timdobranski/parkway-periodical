@@ -203,7 +203,9 @@
     border-radius: 10px;
     transform: skew(-10deg) translate(-55%, -50%);
     border: none;
-
+  }
+  .dimmedBackground {
+    display: none; /* Hides the whole component on mobile */
   }
   .galleryWrapper {
 

@@ -39,11 +39,12 @@ export default function Header() {
 
       // Calculate the percentage of 1 GB used
       const percentageUsed = (totalSizeGB / 1) * 100;
+      const numberOfFiles = data.length;
 
-      console.log(`Total storage used in ${bucketName}/${folderPath}: ${totalSizeGB.toFixed(2)} GB`);
-      console.log(`Percentage of 1GB used: ${percentageUsed.toFixed(2)}%`);
-
-      return parseFloat(percentageUsed.toFixed(2));
+      return {
+        percentageUsed: parseFloat(percentageUsed.toFixed(2)),
+        numberOfFiles: numberOfFiles
+      };
 
     } catch (error) {
       console.error('Error calculating storage usage:', error);
@@ -89,7 +90,7 @@ export default function Header() {
         </div>
       </div>
       <div className={styles.storageStatusWrapper}>
-        <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage}%` : 'Loading...'}</p>
+        <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
       </div>
       <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
         <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
