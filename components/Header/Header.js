@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import supabase from '../../utils/supabase';
 import  { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faX } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,13 @@ export default function Header({ skipAnimation }) {
   const [user, setUser] = useState(null);
   const [leftNavbarOpen, setLeftNavbarOpen] = useState(false);
   const [rightNavbarOpen, setRightNavbarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(null);
   const router = useRouter();
+  const pathname = usePathname()
+
+  useEffect(() => {
+    console.log('PATHNAME: ', pathname)
+  }, [pathname])
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -35,9 +41,10 @@ export default function Header({ skipAnimation }) {
     getAndSetUser();
   }, []);
 
-  useEffect(() => {
-    console.log('leftNavbarOpen: ', leftNavbarOpen)
-  }, [leftNavbarOpen])
+  const isActive = (href) => {
+    // Check for exact match or specific condition
+    return pathname === href || router.pathname === '/public/home' && href === '/public/home' || router.pathname === '/public/archive' && href === '/public/archive' || router.pathname === '/public/about' && href === '/public/about';
+  };
 
   const desktopLeftNavbar = (
     <div className={styles.desktopLeftNavbarWrapper}>
@@ -66,9 +73,15 @@ export default function Header({ skipAnimation }) {
   const desktopRightNavbar = (
     <div className={styles.desktopRightNavbarWrapper}>
       <div className={styles.navContainer}>
-        <Link href='/public/home?skipIntro=false'><h2  className={styles.navLink}>HOME</h2></Link>
-        <Link href='/public/archive' ><h2  className={styles.navLink}>ARCHIVE</h2></Link>
-        <Link href='/public/about' ><h2  className={styles.navLink}>ABOUT</h2></Link>
+        <Link href='/public/home?skipIntro=false'>
+          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
+        </Link>
+        <Link href='/public/archive'>
+          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
+        </Link>
+        <Link href='/public/about'>
+          <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2>
+        </Link>
         {user && (<Link href='/admin/new-post'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
       </div>
     </div>
