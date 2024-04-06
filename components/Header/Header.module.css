@@ -6,12 +6,12 @@
     transform: translateY(0); /* Slide to its original position */
   }
 }
-@keyframes spinAndTranslate {
+@keyframes spin {
   from {
-    transform: translateY(-50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translateY(-50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 .headerContainer {
@@ -25,44 +25,34 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background-color: rgba(255, 255, 255, .9);
   background-color: rgba(0, 89, 124, 0.75);
   backdrop-filter: blur(6px);
   text-align: center;
   z-index: 2000;
   animation: slideDown 1s ease-out forwards;
   color: white;
-  /* border: solid rgba(0, 40, 56, 0.8) 2px; */
-  border-bottom: solid rgb(0, 64, 98) 2px;
   border-bottom: solid rgb(0, 65, 95) 2px;
-  /* border-bottom: 1px solid rgb(0, 0, 0); */
 }
 .slideIn {
   animation: slideDown 1s ease-out forwards;
 }
+.leftNavbarHandle, .rightNavbarHandle {
+  display: none;
+}
 .logoContainer {
-  position: absolute;
+  position: relative;
   width: 60px;
   height: 60px;
-  top: 50%;
-  left: 1rem;
-  transform: translateY(-50%);
+  margin: 0 3rem 0 1rem;
 
 }
 .logoContainer:hover {
-  animation: spinAndTranslate .5s linear forwards;
-}
-.logoContainer:hover {
+  animation: spin .5s linear forwards;
   cursor: pointer;
-
 }
-.titleWrapper {
-
-}
-.title, .mobileTitle {
+.title {
   font-family: Louis George Cafe;
   font-weight: bold;
-  /* width: max-content;  */
   margin: auto;
   margin-bottom: 0;
   text-align: center;
@@ -74,13 +64,7 @@
   color: transparent;
   color: var(--primary-red);
   margin-bottom: -10px;
-
-}
-.title {
   font-size: 3.5rem;
-}
-.mobileTitle {
-  display: none;
 }
 .subtitle {
   font-family: Louis George Cafe;
@@ -88,15 +72,39 @@
   margin: .1rem 0 0 0;
   font-style: italic;
 }
-.socialWrapper {
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  left: 6rem;
+.desktopRightNavbarWrapper, .desktopLeftNavbarWrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: .5rem;
+  height: 100%;
+}
+.desktopLeftNavbarWrapper {
+  /* border: solid red 2px; */
+  position: absolute;
+  left:0;
+
+}
+.desktopRightNavbarWrapper {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 0;
+  padding: .5rem;
+  height: 100%;
+
+}
+.socialWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
 }
 .socialIcon {
   width: 25px;
@@ -130,10 +138,6 @@
   padding: .5rem;
   /* border: solid red 2px; */
   height: 100%;
-}
-.mobileNavbarHandle {
-  display: none;
-
 }
 .navContainer {
   position: relative;
@@ -212,32 +216,89 @@
     position: relative;
     width: 100%;
     max-width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: .5rem;
+    height: auto;
+    margin: 0;
+  }
+  .leftNavbarHandle, .rightNavbarHandle {
+    display: inline-block;
+    position: relative;
+  }
+  .leftNavbarHandle {
+    margin-left: 0rem;
+    width: 40px;
+    height: 40px;
+  }
+  .rightNavbarHandle {
+    margin-right: 0rem;
+    width: 35px;
+    height: 35px;
+  }
+  .desktopNavbarWrapper {
+    display: none;
+  }
+  .rightSideMenu {
+    display: none;
   }
   .titleWrapper {
     width: 75%;
     max-width: 500px;
     height: fit-content;
+    text-align: center;
+    padding: 0 0 .5rem 0;
+    margin: 0 1.5rem;
     /* border: solid red 2px; */
   }
   .title {
-    font-size: 2.5rem;
+    font-size: 5rem;
     line-height: 1.0;
   }
   .subtitle {
     display: none;
   }
   .logoContainer {
-    position: relative;
-    top: 2rem;;
-    left: 0;
-    height: 12vw;
-    width: 12vw;
-    max-height: 50px;
-    max-width: 50px;
-    margin: .5rem;
+    display: none;
   }
   .mobileNavbarHandle {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+  }
+  .desktopLeftNavbarWrapper, .desktopRightNavbarWrapper {
+    display: none;
+  }
 
+  .mobileNavbarWrapper{
+    display: inline-block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    margin: 0;
+    z-index: 5000;
+  }
+  .socialWrapper {
+    /* display: none; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    overflow: hidden;
+    background: var(--primary-blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
   }
   .navContainer {
     position: absolute;

@@ -75,8 +75,8 @@ export default function Home({ introRunning, setIntroRunning }) {
       {welcomePost}
       <div className={styles.filterWrapper}>
         <div className={styles.searchWrapper}>
-          <input type='text' placeholder='Search for news' className={styles.searchBar}/>
-          <button className={styles.searchButton}>SEARCH</button>
+          <input type='text' placeholder='Search for topics' className={styles.searchBar}/>
+          <button className={styles.searchButton}>GO</button>
         </div>
         <select name='filter' id='filter' className={styles.filterSelect}>
           <option value="" disabled selected hidden>Browse Posts</option>
