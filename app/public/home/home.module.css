@@ -128,13 +128,14 @@ width: 80%;
   border: none;
 }
 .video {
-
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
 }
 .videoMobileWrapper {
   position: relative;
   width: 100%;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
   display: none; /* Initially hidden, will be shown in the media query */
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
 }
 .videoMobile {
   padding-left: 1rem;
@@ -146,10 +147,6 @@ width: 80%;
   height: 100%;
 }
 @media(max-width: 768px) {
-  .homeWrapper {
-    border: solid rgb(0, 255, 76) 4px;
-
-  }
   .video {
     display: none; /* Hide desktop video */
   }
