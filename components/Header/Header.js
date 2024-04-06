@@ -62,7 +62,6 @@ export default function Header({ skipAnimation }) {
         <FontAwesomeIcon icon={faX} className={styles.closeIcon} onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
         <p className={styles.visitUsOn}>VISIT US ON:</p>
         <div className={styles.socialLinksWrapper}>
-        <img src={'/images/logos/parkway.png'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/')}/>
           <Link href='https://www.facebook.com/PKMSkindness/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} />FACEBOOK</Link>
           <Link href='https://www.instagram.com/parkwaypatriots/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} />INSTAGRAM</Link>
           <Link href='https://x.com/pkmspatriots?s=20' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faTwitter} className={styles.socialIcon} />TWITTER</Link>
