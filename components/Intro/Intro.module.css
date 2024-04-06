@@ -1,16 +1,14 @@
 @keyframes scrollSlow {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
 }
-
 @keyframes scrollMedium {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
 }
-
 @keyframes scrollFast {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-50%); }
 }
 @keyframes fadeInAnimation {
   from { opacity: 0; }
@@ -135,13 +133,13 @@
   border: solid red 4px;
 } */
 .imageRow:nth-child(1) {
-  animation: scrollSlow 40s linear infinite;
+  animation: scrollSlow 80s linear infinite;
 }
 .imageRow:nth-child(2) {
-  animation: scrollMedium 60s linear infinite;
+  animation: scrollMedium 120s linear infinite;
 }
 .imageRow:nth-child(3) {
-  animation: scrollFast 50s linear infinite;
+  animation: scrollFast 100s linear infinite;
 }
 
 .hoveredImage {
