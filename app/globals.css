@@ -55,6 +55,10 @@
   background-color: black;
   overflow: hidden;
 }
+.background * {
+  font-family: Louis George Cafe;
+
+}
 .adminPageWrapper {
   position: relative;
   top: 135px;
@@ -71,37 +75,14 @@
   height: 80vh;
   border: none;
 }
-.publicPageWrapper {
-  position: absolute;
-  top: 90px;
-  left: 0;
-  width: 100vw;
-  height: calc(100vh - 92px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  font-family: Louis George Cafe;
 
-  overflow-y: auto;
-  /* outline: solid red 2px; */
-}
-/* .blogContainer {
-  width: 95vw !important;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-} */
 .feedWrapper{
   position: absolute;
   top: 100px;
   left: 50%;
   width: 1100px;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: 0;
   background-color: rgba(0, 89, 124, 0.7);
   backdrop-filter: blur(5px);
   /* animation: slideUp 1s ease-out forwards; */
@@ -317,7 +298,6 @@
   box-sizing: border-box !important;
   flex-grow: 1 !important;
 }
-
 .ql-align-right {
   text-align: right;
 }
@@ -336,7 +316,6 @@
 .postBody {
   margin: 0;
 }
-
 .gridPhoto, .ReactCrop {
   max-height: 50vh;
   max-width: 100%;
@@ -344,15 +323,12 @@
   border-radius: 10px;
   box-sizing: border-box;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-  /* margin-bottom: 1rem; */
-
 }
 .carousel-root {
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-
 .carousel-slider {
   position: relative;
   padding: 0;
@@ -372,7 +348,6 @@
 .thumbs-wrapper img {
 
 }
-
 .bottomRight {
   background: white;
   border: 1px solid #ddd;
@@ -385,7 +360,23 @@
 /* ------------------------------------------MOBILE STYLING---------------------------------------------- */
 
 @media (max-width: 768px) {
+  .background {
+    overflow-y: auto;
+    /* overflow-x: hidden; */
+    /* border: solid red 1px; */
+    margin: 0;
+    padding: 0;
+    max-width: 100vw !important;
+    width: 100vw !important;
+  }
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 
+  /* The handle (thumb) when hovering over it */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #29c6ff;
+  }
 
   .feedWrapper h1, .feedWrapper h2, .feedWrapper h3, .feedWrapper h4, .feedWrapper h5, .feedWrapper h6 {
     font-size: 1.75rem !important;
@@ -397,14 +388,17 @@
     position: absolute;
   }
   .feedWrapper {
+    position: relative;
     top: 0px;
-    width: 100vw;
+    width: 100%;
     max-width: 100vw;
     border: none;
     box-shadow: none;
     margin: 0;
     padding: 0;
     padding-left: 0;
+    height: fit-content;
+    /* border: solid red 1px; */
   }
   .welcomePostWrapper {
     /* width: 96vw; */

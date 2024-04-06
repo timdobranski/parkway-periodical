@@ -162,9 +162,6 @@
 }
 
 @media(max-width: 768px) {
-  .desktopHeaderWrapper {
-    display: none;
-  }
   .introContainer {
     position: absolute;
     display: flex;

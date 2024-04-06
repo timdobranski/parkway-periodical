@@ -163,7 +163,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       }}
       onClick={() => { !isEditable && setActiveBlock(blockIndex)}}
       className={styles.videoBlockWrapper}
-      onMouseUp={(e) => { }}
+
     >
       {isEditable && blockControls}
       {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}><div></div></div>}

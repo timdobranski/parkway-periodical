@@ -61,17 +61,11 @@ export default function Home({ introRunning, setIntroRunning }) {
   const welcomePost = (
     <div className={styles.welcomePostWrapper}>
       <img src='/overhead.webp' alt='Parkway Logo' className='welcomeHeader' />
-      {/* <h1 className='welcomeTitle'>Welcome!</h1>
-      <h3 className='subtitle'>{`Thanks for stopping by. Below you'll find all the latest news and events happening
-      here at Parkway`}</h3> */}
     </div>
   )
 
   const renderedPosts =
     <div className='feedWrapper'>
-      <div className={styles.mobileHeaderWrapper}>
-        <Header />
-      </div>
       {welcomePost}
       <div className={styles.filterWrapper}>
         <div className={styles.searchWrapper}>

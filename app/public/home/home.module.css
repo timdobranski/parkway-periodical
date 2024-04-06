@@ -135,7 +135,7 @@ width: 80%;
   width: 100%;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
   display: none; /* Initially hidden, will be shown in the media query */
-  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
+  /* box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5); */
 }
 .videoMobile {
   padding-left: 1rem;
@@ -145,13 +145,25 @@ width: 80%;
   left: 0;
   width: 100%;
   height: 100%;
+
+
 }
 @media(max-width: 768px) {
+  .mobileHeaderWrapper {
+    /* position: relative; */
+    width: 100vw;
+    height: auto;
+    /* position: absolute; */
+    /* border: solid red 2px; */
+    top: 0;
+    left: 0;
+
+  }
   .video {
     display: none; /* Hide desktop video */
   }
   .videoMobileWrapper {
-    display: block; /* Show mobile video wrapper */
+    display: block;
   }
   .imageRow {
     flex-direction: column;

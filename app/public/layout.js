@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import supabase from '../../utils/supabase';
-import styles from './page.module.css';
+import styles from './layout.module.css';
 import Video from '../../components/Video/Video';
 import PhotoBlock from '../../components/PhotoBlock/PhotoBlock';
 import PrimeText from '../../components/PrimeText/PrimeText';
@@ -70,16 +70,16 @@ export default function Home({ children }) {
 
 
   return (
-    <div className={styles.homeWrapper}>
+    <>
       <Intro introRunning={introRunning}
         setFinishedLoading={setFinishedLoading}
       />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null : <div className={styles.desktopHeaderWrapper}><Header skipAnimation={skipIntro}/></div>}
       { introRunning ? null :
-       children
-       }
+        children
+      }
       {/* { introRunning ? null : posts?.length > 0 ? (renderedPosts) : null} */}
-    </div>
+    </>
   );
 }
