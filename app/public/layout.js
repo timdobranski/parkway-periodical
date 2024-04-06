@@ -75,7 +75,7 @@ export default function Home({ children }) {
         setFinishedLoading={setFinishedLoading}
       />
       { introRunning ? (welcomeModal) : null }
-      { introRunning ? null :<Header skipAnimation={skipIntro}/>}
+      { introRunning ? null : <div className={styles.desktopHeaderWrapper}><Header skipAnimation={skipIntro}/></div>}
       { introRunning ? null :
        children
        }

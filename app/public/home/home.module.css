@@ -64,6 +64,10 @@
 .postBody{
   margin: 2rem;
 }
+.mobileHeaderWrapper {
+  display: none;
+
+}
 .welcomePostWrapper {
   position: relative;
   width: 1000px;
@@ -98,6 +102,12 @@
   padding: .25rem .1rem;
   border: solid 1px rgb(0, 89, 124);
   font-family: Louis George Cafe;
+}
+.searchWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  /* border: solid red 2px; */
 }
 .searchBar {
 width: 80%;
@@ -136,13 +146,15 @@ width: 80%;
   height: 100%;
 }
 @media(max-width: 768px) {
-  @media (max-width: 768px) {
-    .video {
-      display: none; /* Hide desktop video */
-    }
-    .videoMobileWrapper {
-      display: block; /* Show mobile video wrapper */
-    }
+  .homeWrapper {
+    border: solid rgb(0, 255, 76) 4px;
+
+  }
+  .video {
+    display: none; /* Hide desktop video */
+  }
+  .videoMobileWrapper {
+    display: block; /* Show mobile video wrapper */
   }
   .imageRow {
     flex-direction: column;
@@ -153,24 +165,43 @@ width: 80%;
   .textPhoto {
     font-size: 40px;
   }
+  .mobileHeaderWrapper {
+    display: block;
+  }
   .welcomePostWrapper {
     display: none;
   }
   .filterWrapper {
     position: relative;
     width: 100%;
-    /* border: solid red 2px; */
+    display: block;
     padding: .5rem .1rem .5rem .1rem;
   }
+  .searchWrapper {
+    /* border: solid red 2px; */
+    width: 100%;
+    padding: .25rem 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
   .searchBar {
-    width: 50%;
+    margin: .25rem;
+    width: 75%;
+    border: none;
   }
   .searchButton {
-    margin: 0 .25rem 0 0;
-    width: 50px;
+    margin: 0;
+    padding: .25rem;
     font-size: 1rem;
+    width: 20%;
+    height: 100%;
   }
   .filterSelect {
-
+    width: calc(100% - 1rem);
+    margin: .5rem;
+    border: none;
+    border-radius: 0;
   }
 }

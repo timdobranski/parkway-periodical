@@ -69,10 +69,15 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const renderedPosts =
     <div className='feedWrapper'>
+      <div className={styles.mobileHeaderWrapper}>
+        <Header />
+      </div>
       {welcomePost}
       <div className={styles.filterWrapper}>
-        <input type='text' placeholder='Search for news' className={styles.searchBar}/>
-        <button className={styles.searchButton}>SEARCH</button>
+        <div className={styles.searchWrapper}>
+          <input type='text' placeholder='Search for news' className={styles.searchBar}/>
+          <button className={styles.searchButton}>SEARCH</button>
+        </div>
         <select name='filter' id='filter' className={styles.filterSelect}>
           <option value="" disabled selected hidden>Browse Posts</option>
           <option value='all'>All Departments</option>

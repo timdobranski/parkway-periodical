@@ -6,7 +6,14 @@
     transform: translateY(0); /* Slide to its original position */
   }
 }
-
+@keyframes spinAndTranslate {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
 .headerContainer {
   box-sizing: border-box;
   position: absolute;
@@ -40,27 +47,40 @@
   top: 50%;
   left: 1rem;
   transform: translateY(-50%);
+
+}
+.logoContainer:hover {
+  animation: spinAndTranslate .5s linear forwards;
 }
 .logoContainer:hover {
   cursor: pointer;
 
 }
-.title {
+.titleWrapper {
+
+}
+.title, .mobileTitle {
   font-family: Louis George Cafe;
-  font-size: 3.5rem; /* Large font size to see the effect clearly */
-  font-weight: bold; /* Bold text to make the effect more noticeable */
-  width: max-content; /* Adjust the width to the content */
-  margin: auto; /* Center the text */
+  font-weight: bold;
+  /* width: max-content;  */
+  margin: auto;
   margin-bottom: 0;
-  text-align: center; /* Ensure the text is centered */
+  text-align: center;
   -webkit-text-stroke: 1px rgb(255, 255, 255);
   background: url('/images/texture.jpeg') no-repeat center / cover;
   background: linear-gradient(to right, rgb(0, 118, 182), rgb(1, 112, 203));
-  -webkit-background-clip: text; /* Clip the background with the text for WebKit browsers */
-  background-clip: text; /* Clip the background with the text */
+  -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
   color: var(--primary-red);
   margin-bottom: -10px;
+
+}
+.title {
+  font-size: 3.5rem;
+}
+.mobileTitle {
+  display: none;
 }
 .subtitle {
   font-family: Louis George Cafe;
@@ -110,6 +130,10 @@
   padding: .5rem;
   /* border: solid red 2px; */
   height: 100%;
+}
+.mobileNavbarHandle {
+  display: none;
+
 }
 .navContainer {
   position: relative;
@@ -180,71 +204,40 @@
 .adminHomeLink:hover {
   cursor: pointer;
   background: rgb(84, 195, 255);
-
 }
-.filterWrapper {
-  position: absolute;
-  bottom: .5rem;
-  right: 0;
-  width: 500px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: space-between;
-
-  /* border: solid red 2px; */
-}
-.searchBar, .filterSelect {
-  font-size: 1.25rem;
-  margin: 0 1rem;
-  padding: .25rem .1rem;
-  border: solid 1px rgb(0, 89, 124);
-  font-family: Louis George Cafe;
-}
-.searchBar {
-width: 60%;
-}
-.filterSelect {
-  width: 40%;
-  border-radius: 2px;
-  border: none;
-}
-
-
-
 
 
 @media (max-width: 768px) {
   .headerContainer {
-    position: absolute;
-    margin: 0;
-    top:0;
-    left: 0;
-    width: 100vw;
-    height:90px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    background-color: rgba(0, 89, 124, 0.75);
-    backdrop-filter: blur(6px);
-    z-index: 1;
-    border-bottom: solid 1px rgb(134, 134, 134);
+    position: relative;
+    width: 100%;
+    max-width: 100vw;
+  }
+  .titleWrapper {
+    width: 75%;
+    max-width: 500px;
+    height: fit-content;
+    /* border: solid red 2px; */
   }
   .title {
-    width: 100vw;
-    font-size: 2rem;
-    margin-top: .5rem;
+    font-size: 2.5rem;
+    line-height: 1.0;
   }
   .subtitle {
     display: none;
   }
-
   .logoContainer {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    margin: 0 auto;
-    display: none;
+    position: relative;
+    top: 2rem;;
+    left: 0;
+    height: 12vw;
+    width: 12vw;
+    max-height: 50px;
+    max-width: 50px;
+    margin: .5rem;
+  }
+  .mobileNavbarHandle {
+
   }
   .navContainer {
     position: absolute;
