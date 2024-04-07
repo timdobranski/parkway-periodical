@@ -98,9 +98,16 @@ export default function Header({ skipAnimation }) {
     <div className={styles.mobileRightNavbarWrapper}>
       <div className={styles.navContainer}>
         <FontAwesomeIcon icon={faX} className={styles.closeIcon} onClick={() => setRightNavbarOpen(!rightNavbarOpen)}/>
-        <div onClick={() => {  setRightNavbarOpen(false); router.push('/public/home')}}><h2  className={styles.navLink}>HOME</h2></div>
-        <div onClick={() => {  setRightNavbarOpen(false); router.push('/public/archive')}}><h2  className={styles.navLink}>ARCHIVE</h2></div>
-        <div onClick={() => {  setRightNavbarOpen(false); router.push('/public/about')}}><h2  className={styles.navLink}>ABOUT</h2></div>
+        <div
+          onClick={() => {  setRightNavbarOpen(false); router.push('/public/home')}}>
+          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
+        </div>
+        <div
+          onClick={() => {  setRightNavbarOpen(false); router.push('/public/archive')}}>
+          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2></div>
+        <div
+          onClick={() => {  setRightNavbarOpen(false); router.push('/public/about')}}>
+          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2></div>
       </div>
     </div>
   )

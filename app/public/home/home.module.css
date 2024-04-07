@@ -185,6 +185,8 @@ width: 80%;
     width: 100%;
     display: block;
     padding: .5rem .1rem .5rem .1rem;
+    animation: none;
+    left: 0;
   }
   .searchWrapper {
     /* border: solid red 2px; */

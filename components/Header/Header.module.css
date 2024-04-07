@@ -231,6 +231,10 @@
     padding: .5rem 1rem;;
     height: auto;
     margin: 0;
+    background-color: rgb(0, 92, 129);
+    animation: none;
+    border-bottom: 0;
+    background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
   }
   .leftNavbarHandle, .rightNavbarHandle {
     display: inline-block;
@@ -243,8 +247,8 @@
   }
   .rightNavbarHandle {
     margin-right: 0rem;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
   .desktopNavbarWrapper {
     display: none;
@@ -262,8 +266,10 @@
     /* border: solid red 2px; */
   }
   .title {
-    font-size: 2.5rem;
+    font-size: 7vw;
     line-height: 1.0;
+    /* font-weight: normal; */
+    -webkit-text-stroke: .5px rgb(255, 255, 255);
   }
   .subtitle {
     display: none;
@@ -316,7 +322,7 @@
   }
   .visitUsOn {
     font-size: 1.5rem;
-    margin: 5rem 0 0 0;
+    margin: 25vh 0 0 0;
   }
   .mobileSocialLink {
     color: white;
