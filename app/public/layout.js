@@ -61,7 +61,8 @@ export default function Home({ children }) {
         alt='Intro Image'
         className={styles.logo}
       />
-      <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING... (click to skip)' }</h1>
+      <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING...' }</h1>
+      {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
     </div>
   )
 
