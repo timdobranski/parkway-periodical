@@ -82,7 +82,7 @@ export default function Header({ skipAnimation }) {
   const desktopRightNavbar = (
     <div className={styles.desktopRightNavbarWrapper}>
       <div className={styles.navContainer}>
-        <Link href='/public/home?skipIntro=false'>
+        <Link href='/public/home'>
           <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
         </Link>
         <Link href='/public/archive'>

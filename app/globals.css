@@ -85,7 +85,7 @@
 }
 
 .feedWrapper{
-  position: absolute;
+  position: fixed;
   top: 100px;
   left: 50%;
   width: 1100px;
@@ -94,7 +94,7 @@
   z-index: 0;
   background-color: rgba(0, 89, 124, 0.7);
   backdrop-filter: blur(5px);
-  /* animation: slideUp 1s ease-out forwards; */
+  animation: slideUp 1s ease-out forwards;
   overflow-y: auto;
   height: 100%;
   height: calc(100vh - 100px);

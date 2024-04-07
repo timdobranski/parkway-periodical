@@ -20,23 +20,22 @@ export default function Home({ children }) {
   const postId = searchParams.get('postId');
   const skipIntro = searchParams.get('skipIntro');
   const [introRunning, setIntroRunning] = useState(true);
-  const [windowWidth, setWindowWidth] = useState(undefined);
+  // const [windowWidth, setWindowWidth] = useState(undefined);
   const [finishedLoading, setFinishedLoading] = useState(false);
 
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
+  // const handleResize = () => {
+  //   setWindowWidth(window.innerWidth);
+  // };
 
-  useEffect(() => {
-    // Set the initial width
-    handleResize();
+  // useEffect(() => {
+  //   // Set the initial width
+  //   handleResize();
 
-    // Add event listener
-    window.addEventListener('resize', handleResize);
-
-    // Remove event listener on cleanup
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  //   // Add event listener
+  //   window.addEventListener('resize', handleResize);
+  //   // Remove event listener on cleanup
+  //   return () => window.removeEventListener('resize', handleResize);
+  // }, []);
 
   useEffect(() => {
     const skipIntroBool = Boolean(JSON.parse(skipIntro));
@@ -51,7 +50,7 @@ export default function Home({ children }) {
   }, [introRunning])
 
   const welcomeModal = (
-<div className={`${styles.introContainer} ${finishedLoading ? styles.fadeInFromWhite : styles.whiteBackground}`} onClick={() => setIntroRunning(false)}>
+    <div className={`${styles.introContainer} ${finishedLoading ? styles.fadeInFromWhite : styles.whiteBackground}`} onClick={() => setIntroRunning(false)}>
       <img
         src={'/images/logos/parkway.png'}
         alt='Intro Image'
@@ -63,23 +62,22 @@ export default function Home({ children }) {
         className={styles.logo}
       />
       <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING... (click to skip)' }</h1>
-      {/* {finishedLoading ? null :  <p className={styles.clickToSkip}>Click to Skip</p>} */}
     </div>
   )
 
 
 
   return (
-    <>
-      <Intro introRunning={introRunning}
+    <div>
+      <Intro
+        introRunning={introRunning}
         setFinishedLoading={setFinishedLoading}
       />
       { introRunning ? (welcomeModal) : null }
-      { introRunning ? null : <div className={styles.desktopHeaderWrapper}><Header skipAnimation={skipIntro}/></div>}
+      { introRunning ? null : <Header skipAnimation={skipIntro} introRunning={introRunning}/>}
       { introRunning ? null :
         children
       }
-      {/* { introRunning ? null : posts?.length > 0 ? (renderedPosts) : null} */}
-    </>
+    </div>
   );
 }
