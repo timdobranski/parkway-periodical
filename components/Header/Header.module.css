@@ -14,6 +14,22 @@
     transform: rotate(360deg);
   }
 }
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+}
+
+
 .headerContainer {
   box-sizing: border-box;
   position: absolute;
@@ -52,7 +68,7 @@
 
 }
 .logoContainer:hover {
-  animation: spin .5s linear forwards;
+  animation: bounce .5s linear forwards;
   cursor: pointer;
 }
 .title {
