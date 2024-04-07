@@ -391,8 +391,9 @@
   .feedWrapper {
     position: relative;
     top: 0px;
-    width: 100%;
-    max-width: 100vw;
+    /* width: 100%; */
+    width: 100vw;
+    max-width: none;
     border: none;
     box-shadow: none;
     margin: 0;
@@ -401,24 +402,29 @@
     height: fit-content;
     background-color: rgba(0, 172, 240, 0.7);
     background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
-
     animation: none;
     /* border: solid red 1px; */
   }
   .welcomePostWrapper {
-    /* width: 96vw; */
     border: none;
   }
   .post {
-    max-width: 765px;
-    width: 95vw;
+    width: 96vw;
+    min-width: 300px !important;
+    max-width: none;
     overflow: hidden;
     animation: none;
+    border-radius: 15px;
+    padding: 1rem;
+    /* border: solid red 4px; */
   }
   .blockWrapper {
-    width: 98vw;
+    width: 100%;
+
+    padding: 0;
   }
   .blockWrapper iframe {
-    width: 98vw;
+    width: 100%;
+    margin: 0;
   }
 }

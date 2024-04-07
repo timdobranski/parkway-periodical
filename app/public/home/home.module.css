@@ -96,7 +96,7 @@
   animation: slideUp 1s ease-out forwards;
   /* border: solid red 2px; */
 }
-.searchBar, .filterSelect {
+.searchBar, .expandedSearchBar, .filterSelect {
   font-size: 1.25rem;
   margin: 0 1rem;
   padding: .25rem .1rem;
@@ -109,8 +109,9 @@
   width: 100%;
   /* border: solid red 2px; */
 }
-.searchBar {
-width: 80%;
+.searchBar, .searchBarExpanded {
+  width: 80%;
+
 }
 .searchButton {
   font-size: 1.25rem;
@@ -131,39 +132,33 @@ width: 80%;
   box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
 }
 .videoMobileWrapper {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
   display: none; /* Initially hidden, will be shown in the media query */
-  /* box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5); */
 }
-.videoMobile {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
 
-
-}
 @media(max-width: 768px) {
   .mobileHeaderWrapper {
-    /* position: relative; */
     width: 100vw;
     height: auto;
-    /* position: absolute; */
-    /* border: solid red 2px; */
     top: 0;
     left: 0;
-
   }
   .video {
-    display: none; /* Hide desktop video */
+    display: none;
   }
   .videoMobileWrapper {
     display: block;
+    width: 100%;
+    position: relative;
+    padding-top: 56.25%; /* Aspect ratio of 16:9 */
+    overflow: hidden;
+  }
+  .videoMobile {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
   .imageRow {
     flex-direction: column;
@@ -183,37 +178,74 @@ width: 80%;
   .filterWrapper {
     position: relative;
     width: 100%;
-    display: block;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
     padding: .5rem .1rem .5rem .1rem;
     animation: none;
     left: 0;
+
   }
   .searchWrapper {
-    /* border: solid red 2px; */
+    position: absolute;
+    flex-grow: 1;
     width: 100%;
-    padding: .25rem 0;
+    padding: 0;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+    /* border: solid red 2px; */
+    margin: 1rem 0;;
+    padding: 0 .5rem;
+  }
+  .searchIcon, .searchIconExpanded {
+    position: absolute;
+    top: 50%;
+    left: 2rem;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  .searchIcon {
+  }
+  .searchIconExpanded {
+  }
+  .searchBar, .searchBarExpanded {
+    height: 40px;
+    margin: 0 .25rem;
+    z-index: 1;
   }
   .searchBar {
-    margin: .25rem;
-    width: 75%;
+    position: relative;
+
+    width: 40px;
+    min-width: 0px;
+    border-radius: 50%;
+    padding: 5px;
+    text-align: center;
+    outline: none;
+    transition: width 0.4s ease-in-out, border-radius 0.1s ease-in-out 0.3s, background-color 0.4s;
+    background-color: rgb(255, 151, 151);
+  }
+  .searchBarExpanded {
+    position: relative;
+    width: 100%;
+    font-size: 1.25rem;
+    padding: 0 5px 0 40px;
     border: none;
+    border-radius: 20px;
+    transition: width 0.4s ease-in-out,  background-color 0.4s;
+    z-index: 1;
   }
   .searchButton {
-    margin: 0;
-    padding: .25rem;
-    font-size: 1rem;
-    /* width: 5%; */
-    min-width: 50px;
-    height: 100%;
+    display: none;
   }
   .filterSelect {
-    width: calc(100% - 1rem);
-    margin: .5rem;
+    position: relative;
+    right: 0;
+    width: calc(100% - 6rem);
+    min-width: 50px;
+    margin: .5rem 1rem .5rem 4rem;
     border: none;
-    border-radius: 0;
+    border-radius: 15;
   }
 }

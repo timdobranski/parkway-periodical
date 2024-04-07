@@ -11,11 +11,15 @@ import PostTitle from '../../../components/PostTitle/PostTitle';
 import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState(null);
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [searchExpanded, setSearchExpanded] = useState(false);
 
   useEffect(() => {
     // Your existing useEffect for fetching posts
@@ -63,28 +67,37 @@ export default function Home({ introRunning, setIntroRunning }) {
       <img src='/overhead.webp' alt='Parkway Logo' className='welcomeHeader' />
     </div>
   )
-
+  const filterAndSearchPosts = (
+    <div className={styles.filterWrapper}>
+      <div className={styles.searchWrapper}>
+        <FontAwesomeIcon icon={faMagnifyingGlass} className={searchExpanded ? styles.searchIconExpanded : styles.searchIcon} onClick={() => setSearchExpanded(!searchExpanded)} />
+        <input
+          type='search'
+          className={searchExpanded ? styles.searchBarExpanded : styles.searchBar}/>
+        <button className={styles.searchButton}>GO</button>
+        <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>{`Results for ${searchQuery}`}</p>
+      </div>
+      <select name='filter' id='filter'
+        className={`${styles.filterSelect}
+        `}
+      >
+        <option value="" disabled selected hidden>Browse Posts</option>
+        <option value='all'>All Departments</option>
+        <option value='sports'>Sports</option>
+        <option value='health'>Science</option>
+        <option value='science'>Music</option>
+        <option value='academics'>Math</option>
+        <option value='academics'>English</option>
+        <option value='academics'>Social Science</option>
+        <option value='academics'>Extracurriculars</option>
+        <option value='academics'>2024/25 School Year</option>
+      </select>
+    </div>
+  )
   const renderedPosts =
     <div className='feedWrapper'>
       {welcomePost}
-      <div className={styles.filterWrapper}>
-        <div className={styles.searchWrapper}>
-          <input type='text' placeholder='Search for topics' className={styles.searchBar}/>
-          <button className={styles.searchButton}>GO</button>
-        </div>
-        <select name='filter' id='filter' className={styles.filterSelect}>
-          <option value="" disabled selected hidden>Browse Posts</option>
-          <option value='all'>All Departments</option>
-          <option value='sports'>Sports</option>
-          <option value='health'>Science</option>
-          <option value='science'>Music</option>
-          <option value='academics'>Math</option>
-          <option value='academics'>English</option>
-          <option value='academics'>Social Science</option>
-          <option value='academics'>Extracurriculars</option>
-          <option value='academics'>2024/25 School Year</option>
-        </select>
-      </div>
+      {filterAndSearchPosts}
 
 
       {posts &&
@@ -122,10 +135,6 @@ export default function Home({ introRunning, setIntroRunning }) {
             }
             {block.type === 'video' && (
               <div className='blockWrapper'>
-                {/* <Video
-                  src={block}
-                  isEditable={false}
-                /> */}
                 <iframe
                   src={block.content}
                   frameBorder="0"
