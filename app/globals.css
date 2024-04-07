@@ -21,9 +21,10 @@
   }
 }
 :root {
-  --primary-blue-transparent: rgba(0, 89, 124, 0.7);
+  --primary-blue-transparent: rgba(0, 141, 197, 0.7);
   --primary-blue: rgba(0, 89, 124, 1);
   --primary-red: rgb(250, 88, 88);
+  --yellow: rgb(207, 165, 0);
 }
 /* The entire scrollbar */
 ::-webkit-scrollbar {
@@ -36,7 +37,7 @@
 }
 /* The handle (thumb) of the scrollbar */
 ::-webkit-scrollbar-thumb {
-  background: rgb(255, 83, 83);
+  background: var(--yellow);
   padding-right: 2px;
 }
 /* The handle (thumb) when hovering over it */

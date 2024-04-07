@@ -59,7 +59,7 @@ export default function Header({ skipAnimation }) {
   const desktopLeftNavbar = (
     <div className={styles.desktopLeftNavbarWrapper}>
       <div className={styles.socialWrapper}>
-        <img src={'/images/logos/parkway.png'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/')}/>
+        <img src={'/images/lemonAve.png'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/')}/>
         <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link>
         <Link href='https://www.instagram.com/parkwaypatriots/'><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} /></Link>
         <Link href='https://x.com/pkmspatriots?s=20'><FontAwesomeIcon icon={faTwitter} className={styles.socialIcon} /></Link>
@@ -118,13 +118,13 @@ export default function Header({ skipAnimation }) {
       {/* desktop version of left navbar */}
       {desktopLeftNavbar}
       {/* mobile navbar left handle (social links) */}
-      <img src={'/images/logos/parkway.png'} className={styles.leftNavbarHandle} alt="Parkway Academy Logo" fill='true' onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
+      <img src={'/images/lemonAve.png'} className={styles.leftNavbarHandle} alt="Parkway Academy Logo" fill='true' onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
       {/* mobile version of left navbar */}
       {leftNavbarOpen && mobileLeftNavbar}
       {/* title and subtitle */}
       <div className={styles.titleWrapper}>
-        <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
-        <p className={styles.subtitle}>The latest news and updates from Parkway Sports & Health Science Academy</p>
+        <h1 className={styles.title}>LEMON AVENUE</h1>
+        <p className={styles.subtitle}>Home of the Lemon Avenue Leopards</p>
       </div>
       {/* navbar right handle (pages) */}
       <FontAwesomeIcon icon={faBars} className={styles.rightNavbarHandle} onClick={() => setRightNavbarOpen(!rightNavbarOpen)}/>

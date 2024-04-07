@@ -35,8 +35,8 @@
 }
 .underline {
   text-decoration: underline !important;
-  text-decoration-color: var(--primary-red) !important;
-  border: solid red 2px;
+  text-decoration-color: var(--yellow) !important;
+  border: solid var(--yellow) 2px;
 }
 .slideIn {
   animation: slideDown 1s ease-out forwards;
@@ -56,7 +56,6 @@
   cursor: pointer;
 }
 .title {
-  font-family: Louis George Cafe;
   font-weight: bold;
   margin: auto;
   margin-bottom: 0;
@@ -67,7 +66,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  color: var(--primary-red);
+  color: rgb(207, 165, 0);
   margin-bottom: -10px;
   font-size: 3.5rem;
 }
@@ -121,7 +120,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: rgb(0, 89, 124);
+  color: var(--yellow);
   font-size: 1.5rem;
   font-weight: bold;
   text-decoration: none;
@@ -188,7 +187,7 @@
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
-  text-decoration-color:rgb(255, 83, 83);
+  text-decoration-color: var(--yellow);
 }
 
 .navLink:focus {
@@ -205,7 +204,7 @@
   font-weight: 400;
   font-size: 1rem;
   text-decoration: none;
-  background: var(--primary-red);
+  background: rgb(201, 180, 14);
   display: flex;
   justify-content: center;
   align-items: center;
