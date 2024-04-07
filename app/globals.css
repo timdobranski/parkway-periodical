@@ -88,7 +88,7 @@
   position: fixed;
   top: 100px;
   left: 50%;
-  width: 1100px;
+  width: 900px;
   transform: translateX(-50%);
   margin: 0 auto;
   z-index: 0;
@@ -108,6 +108,7 @@
 .welcomeHeader {
   width: 100%;
   display: block;
+  /* border: solid red 2px; */
 }
 .welcomeTitle {
   font-weight: 400;
@@ -115,6 +116,7 @@
   color: #0068a8;
   padding: 0;
   margin: 0;
+  border: solid rgb(102, 255, 255) 2px;
 }
 .subtitle {
   font-weight: 400;
@@ -172,7 +174,8 @@
   position: relative;
   text-align: center;
   height: auto;
-  width: 1000px;
+  width: 100%;
+  min-width: 500px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
