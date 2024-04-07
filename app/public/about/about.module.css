@@ -30,7 +30,6 @@
 .aboutWrapper {
   text-align: center;
   position: absolute;
-  top: 2rem;
   width: 1000px;
   display: flex;
   flex-direction: column;
@@ -39,6 +38,8 @@
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(8px);
   font-size: 1.25rem;
-  padding: 0 2rem 2rem 2rem;
-  margin-bottom: 2rem;
+  padding: 0 4rem 2rem 4rem;
+  margin-bottom: 4rem;
+  line-height: 1.3;
+  /* border: solid red 2px; */
 }

@@ -50,6 +50,7 @@
   margin-bottom: 0;
   background: rgba(0, 0, 0, 0);
   backdrop-filter: brightness(60%);
+  animation: none;
 
 }
 .dimmedBackground {
