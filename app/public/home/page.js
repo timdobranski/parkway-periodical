@@ -73,6 +73,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         <FontAwesomeIcon icon={faMagnifyingGlass} className={searchExpanded ? styles.searchIconExpanded : styles.searchIcon} onClick={() => setSearchExpanded(!searchExpanded)} />
         <input
           type='search'
+          placeholder='Search for topics'
           className={searchExpanded ? styles.searchBarExpanded : styles.searchBar}/>
         <button className={styles.searchButton}>GO</button>
         <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>{`Results for ${searchQuery}`}</p>
