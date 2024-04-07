@@ -1,3 +1,37 @@
+.pageWrapper {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #ffffff;
+  text-align: center;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  padding: 4rem 2rem 2rem 2rem;
+  width: 100vw;
+  background-image: url('/images/quad.png');
+  background-image: url('/images/overhead2.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  backdrop-filter: brightness(0.5);
+}
+.pageWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* Semi-transparent black overlay */
+  pointer-events: none; /* Allows clicks to pass through */
+}
+
 .postListingContainer {
   position: relative;
     margin: .5rem 0;
@@ -6,11 +40,13 @@
     align-items: center;
     justify-content: flex-start;
     width: 70vw;
-    /* border: solid white 2px; */
-    background-color: rgba(255, 255, 255, 1);
-    /* border-radius: 5px; */
+    background-color: rgba(255, 255, 255, 0.783);
+    background-color: var(--primary-blue-transparent);
+    border: solid white 4px;
+    backdrop-filter: blur(5px);
     font-size: 1.25rem;
-    font-weight: normal
+    font-weight: normal;
+    color: white;
   }
 .postListingContainer * {
     margin: .5rem .5rem;
@@ -27,7 +63,7 @@
   font-weight: normal;
   font-family: Louis George Cafe;
   font-size: 1.25rem;
-  background-color: rgb(60, 197, 255);
+  background-color: rgba(60, 197, 255, .7);
   border: none
 }
 .postControlMenu *:hover {

@@ -20,6 +20,16 @@ export default function Header({ skipAnimation }) {
   const pathname = usePathname()
 
   useEffect(() => {
+    const backgroundElement = document.querySelector('.background');
+    if (leftNavbarOpen || rightNavbarOpen) {
+      console.log('OVERFLOW HIDDEN');
+      if (backgroundElement) backgroundElement.classList.add('no-scroll');
+    } else {
+      if (backgroundElement) backgroundElement.classList.remove('no-scroll');
+    }
+  }, [leftNavbarOpen, rightNavbarOpen]);
+
+  useEffect(() => {
     console.log('PATHNAME: ', pathname)
   }, [pathname])
 
@@ -81,7 +91,6 @@ export default function Header({ skipAnimation }) {
         <Link href='/public/about'>
           <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2>
         </Link>
-        {user && (<Link href='/admin/new-post'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
       </div>
     </div>
   )
@@ -92,7 +101,6 @@ export default function Header({ skipAnimation }) {
         <div onClick={() => {  setRightNavbarOpen(false); router.push('/public/home')}}><h2  className={styles.navLink}>HOME</h2></div>
         <div onClick={() => {  setRightNavbarOpen(false); router.push('/public/archive')}}><h2  className={styles.navLink}>ARCHIVE</h2></div>
         <div onClick={() => {  setRightNavbarOpen(false); router.push('/public/about')}}><h2  className={styles.navLink}>ABOUT</h2></div>
-        {user && (<Link href='/admin/new-post'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
       </div>
     </div>
   )
@@ -117,6 +125,8 @@ export default function Header({ skipAnimation }) {
       {desktopRightNavbar}
       {/* mobile version of navbar */}
       {rightNavbarOpen && mobileRightNavbar}
+      {user && (<Link href='/admin/new-post'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
+
     </div>
 
   )

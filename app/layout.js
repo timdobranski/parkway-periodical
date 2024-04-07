@@ -1,15 +1,14 @@
 import './globals.css'
-import Header from '../components/Header/Header'
 
 export const metadata = {
   title: 'Parkway Periodical',
-  description: 'Weekly Updates At Parkway Academy',
+  description: 'News & Updates from Parkway Academy',
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body style={{width: '100vw'}}>
+      <body>
         <div className='background'>
           {children}
         </div>

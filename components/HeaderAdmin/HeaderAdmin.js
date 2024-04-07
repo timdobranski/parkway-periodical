@@ -103,9 +103,9 @@ export default function Header() {
           <Link href='/admin/view-posts'>
             <h2>VIEW/EDIT POSTS</h2>
           </Link>
-          {/* <Link href='/about'> */}
-          <h2>SETTINGS</h2>
-          {/* ></Link> */}
+          <Link href='/admin/settings'>
+            <h2>SETTINGS</h2>
+          </Link>
         </div>
       </div>
     </div>

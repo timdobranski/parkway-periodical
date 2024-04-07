@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 
 export default function ViewPosts () {
   const [posts, setPosts] = useState([])
-  const [titleInput, setTitleInput] = useState('')
   const router = useRouter();
 
   useEffect(() => {
@@ -43,7 +42,7 @@ export default function ViewPosts () {
   if (posts.length === 0) { return (<h1>No posts yet!</h1>)}
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       {posts.map((post, i) => {
         const date = new Date(post.created_at);
         const pacificTime = date.toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' });
@@ -61,6 +60,6 @@ export default function ViewPosts () {
         )
       })}
 
-    </>
+    </div>
   )
 }
