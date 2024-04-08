@@ -200,7 +200,7 @@
 }
 .searchBarExpanded {
   position: relative;
-  width: 110%;
+  width: 100%;
   font-size: 1.25rem;
   padding: 0 5px 0 40px;
   border: none;
@@ -273,14 +273,18 @@
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
-
+    align-items: center;
     padding: .5rem 0 .5rem 1rem;
     animation: none;
     left: 0;
-    border: solid red
+    /* border: solid red */
+  }
+  .searchBarExpanded {
+    /* border: solid green 2px; */
+    width: calc(100% - 1rem)
   }
   .filterSelect {
-    width: 70%;
-    margin-right: 2rem;
+    width: calc(100% - 30vw);
+    margin-right: 1vw;
   }
 }
