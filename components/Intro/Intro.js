@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 
 export default function Intro({ introRunning, setFinishedLoading }) {
   const [rows, setRows] = useState([[], [], []]);
-  const baseImagePath = "/images/intro/";
-  const hoverImagePath = "/images/introNaturalColor/";
+  // const baseImagePath = "/images/intro/";
+  const imagePath = "/images/intro/";
   const rowsDirectories = ['row1', 'row2', 'row3'];
   const imagesPerRow = 10;
   const router = useRouter();
@@ -15,19 +15,18 @@ export default function Intro({ introRunning, setFinishedLoading }) {
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const [hoveredRowIndex, setHoveredRowIndex] = useState(null); // Track hovered row index
   const [hoveredImageIndex, setHoveredImageIndex] = useState(null); // Track hovered image index
-  const totalImages = 60;
+  const totalImages = 30;
 
   const preloadImages = () => {
     rowsDirectories.forEach(rowDir => {
       for (let i = 1; i <= imagesPerRow; i++) {
         const img = new Image();
-        img.src = `${baseImagePath}${rowDir}/${i}.webp`;
-        const hoverImg = new Image();
-        hoverImg.src = `${hoverImagePath}${rowDir}/${i}.webp`;
+        img.src = `${imagePath}${rowDir}/${i}.webp`;
       }
     });
   };
 
+  //increment the loadedImages state when an image is finished loading
   const handleImageLoad = () => {
     setLoadedImages(prev => prev + 1);
   };
@@ -38,7 +37,6 @@ export default function Intro({ introRunning, setFinishedLoading }) {
     setHoveredRowIndex(rowIndex);
     setHoveredImageIndex(`${rowIndex}-${imageIndex}`); // Set the hovered image index
   };
-
   const handleMouseLeave = (rowIndex, imageIndex) => (e) => {
     const originalSrc = e.target.src.replace(hoverImagePath, baseImagePath);
     e.target.src = originalSrc;
@@ -46,6 +44,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
     setHoveredImageIndex(null);
   };
 
+  // on page load, preload images
   useEffect(() => {
     if (allImagesLoaded) { return };
     preloadImages();
@@ -53,7 +52,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
     const loadRowImages = (rowDir) => {
       const rowImages = [];
       for (let i = 1; i <= imagesPerRow; i++) {
-        rowImages.push(`${baseImagePath}${rowDir}/${i}.webp`);
+        rowImages.push(`${imagePath}${rowDir}/${i}.webp`);
       }
       return [...rowImages, ...rowImages];
     };
@@ -90,10 +89,10 @@ export default function Intro({ introRunning, setFinishedLoading }) {
           >
             {rowImages.map((src, index) => (
               <div
-                className={styles.imageContainer}
+                className={index % 2 === 0 ? styles.imageContainerRed : styles.imageContainerBlue}
                 key={`${rowIndex}-${index}`}
               >
-                <div className={styles.overlay}></div>
+                {/* <div className={styles.overlay}></div> */}
                 <img
                   src={src}
                   alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
@@ -104,8 +103,8 @@ export default function Intro({ introRunning, setFinishedLoading }) {
                   ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}
                 `}
                   onLoad={handleImageLoad}
-                  onMouseEnter={handleMouseEnter(rowIndex, index)}
-                  onMouseLeave={handleMouseLeave(rowIndex, index)}
+                  // onMouseEnter={handleMouseEnter(rowIndex, index)}
+                  // onMouseLeave={handleMouseLeave(rowIndex, index)}
 
                 />
               </div>
