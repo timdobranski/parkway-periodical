@@ -6,7 +6,14 @@
     transform: translateX(-50%) translateY(0);
   }
 }
-
+@keyframes slideUpNoPosition {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 .imageRow {
   display: flex;
 }
@@ -87,7 +94,7 @@
   border: solid white 8px;
 }
 .filterWrapper {
-  position: relative;
+  position: absolute;
   left:50%;
   width: 100%;
   display: flex;
@@ -150,6 +157,7 @@
   left: 0;
   border: none;
   margin: 0 auto;
+  animation: slideUpNoPosition 1s ease-out forwards;
 }
 .searchWrapper {
   position: absolute;
@@ -206,7 +214,7 @@
   position: relative;
   width: 100%;
   font-size: 1.25rem;
-  padding: 0 5px 0 40px;
+  padding: 0 5px 0 50px;
   border: none;
   border-radius: 20px;
   transition: width 0.4s ease-in-out,  background-color 0.4s;

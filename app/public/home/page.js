@@ -64,7 +64,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const welcomePost = (
     <div className={styles.welcomePostWrapper}>
-      <img src='/overhead.webp' alt='Parkway Logo' className='welcomeHeader' />
+      <img src='/overheadSmall.webp' alt='Parkway Logo' className='welcomeHeader' />
     </div>
   )
   const filterAndSearchPosts = (
