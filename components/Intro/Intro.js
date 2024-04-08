@@ -89,10 +89,10 @@ export default function Intro({ introRunning, setFinishedLoading }) {
           >
             {rowImages.map((src, index) => (
               <div
-                className={index % 2 === 0 ? styles.imageContainerRed : styles.imageContainerBlue}
+                className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage}`}
                 key={`${rowIndex}-${index}`}
               >
-                {/* <div className={styles.overlay}></div> */}
+                <div className={index % 2 === 0 ? styles.redOverlay : styles.blueOverlay}></div>
                 <img
                   src={src}
                   alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
