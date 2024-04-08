@@ -97,7 +97,7 @@
   animation: slideUp 1s ease-out forwards;
   /* border: solid red 2px; */
 }
-.searchBar, .expandedSearchBar, .filterSelect {
+.searchBar, .filterSelect {
   font-size: 1.25rem;
   margin: 0 1rem;
   padding: .25rem .1rem;
@@ -114,7 +114,7 @@
   /* border: solid red 2px; */
 }
 .searchBar, .searchBarExpanded {
-  width: 80%;
+  width: 100%;
 
 }
 .searchButton {
@@ -138,6 +138,94 @@
 .videoMobileWrapper {
   display: none; /* Initially hidden, will be shown in the media query */
 }
+.filterWrapper {
+  position: relative;
+  width: 80%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: flex-end;
+  padding: .5rem .1rem .5rem .1rem;
+  animation: none;
+  left: 0;
+  border: none;
+  margin: 0 auto;
+}
+.searchWrapper {
+  position: absolute;
+  flex-grow: 1;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  border: none;
+  margin: 1rem 0;;
+  padding: 0 .5rem;
+}
+.searchIcon, .searchIconExpanded {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border: solid white 2px;
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  padding: 10px;
+}
+.searchIcon {
+}
+.searchIconExpanded {
+  background-color: var(--primary-red);
+}
+.searchBar, .searchBarExpanded {
+  height: 40px;
+  margin: 0 .25rem;
+  z-index: 1;
+}
+.searchBar {
+  position: relative;
+  width: 40px;
+  min-width: 0px;
+  border-radius: 50%;
+  padding: 5px;
+  text-align: center;
+  outline: none;
+  transition: width 0.4s ease-in-out, border-radius 0.1s ease-in-out 0.3s, background-color 0.4s;
+  background-color: var(--primary-red);
+  color: var(--primary-red);
+}
+.searchBarExpanded {
+  position: relative;
+  width: 110%;
+  font-size: 1.25rem;
+  padding: 0 5px 0 40px;
+  border: none;
+  border-radius: 20px;
+  transition: width 0.4s ease-in-out,  background-color 0.4s;
+  border: solid white 2px;
+  z-index: 1;
+  border: none;
+}
+.searchBar::placeholder {
+  color: transparent;
+}
+.searchButton {
+  display: none;
+}
+.filterSelect {
+  position: relative;
+  right: 0;
+  width: 80%;
+  min-width: 50px;
+  margin: .5rem 2rem .5rem 1rem;
+  border: none;
+  border-radius: 15;
+}
+
 
 @media(max-width: 768px) {
   .mobileHeaderWrapper {
@@ -185,82 +273,14 @@
     display: flex;
     flex-direction: column-reverse;
     justify-content: center;
-    align-items: center;
-    padding: .5rem .1rem .5rem .1rem;
+
+    padding: .5rem 0 .5rem 1rem;
     animation: none;
     left: 0;
-    border: none;
-  }
-  .searchWrapper {
-    position: absolute;
-    flex-grow: 1;
-    width: 100%;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    /* border: solid red 2px; */
-    margin: 1rem 0;;
-    padding: 0 .5rem;
-  }
-  .searchIcon, .searchIconExpanded {
-    box-sizing: border-box;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 2rem;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    border: solid white 2px;
-    border-radius: 50%;
-    height: 18px;
-    width: 18px;
-    padding: 10px;
-  }
-  .searchIcon {
-  }
-  .searchIconExpanded {
-    background-color: var(--primary-red);
-  }
-  .searchBar, .searchBarExpanded {
-    height: 40px;
-    margin: 0 .25rem;
-    z-index: 1;
-  }
-  .searchBar {
-    position: relative;
-    width: 40px;
-    min-width: 0px;
-    border-radius: 50%;
-    padding: 5px;
-    text-align: center;
-    outline: none;
-    transition: width 0.4s ease-in-out, border-radius 0.1s ease-in-out 0.3s, background-color 0.4s;
-    background-color: var(--primary-red);
-  }
-  .searchBarExpanded {
-    position: relative;
-    width: 100%;
-    font-size: 1.25rem;
-    padding: 0 5px 0 40px;
-    border: none;
-    border-radius: 20px;
-    transition: width 0.4s ease-in-out,  background-color 0.4s;
-    border: solid white 2px;
-    z-index: 1;
-  }
-  .searchBar::placeholder {
-    color: transparent;
-  }
-  .searchButton {
-    display: none;
+    border: solid red
   }
   .filterSelect {
-    position: relative;
-    right: 0;
-    width: calc(100% - 5.5rem);
-    min-width: 50px;
-    margin: .5rem 1rem .5rem 3.5rem;
-    border: none;
-    border-radius: 15;
+    width: 70%;
+    margin-right: 2rem;
   }
 }

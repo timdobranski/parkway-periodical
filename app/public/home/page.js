@@ -75,7 +75,7 @@ export default function Home({ introRunning, setIntroRunning }) {
           type='search'
           placeholder='Search for topics'
           className={searchExpanded ? styles.searchBarExpanded : styles.searchBar}/>
-        <button className={styles.searchButton}>GO</button>
+
         <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>{`Results for ${searchQuery}`}</p>
       </div>
       <select name='filter' id='filter'
