@@ -176,7 +176,8 @@
   width: 18px;
   padding: 10px;
 }
-.searchIcon {
+.searchIcon:hover {
+
 }
 .searchIconExpanded {
   background-color: var(--primary-red);
@@ -185,6 +186,9 @@
   height: 40px;
   margin: 0 .25rem;
   z-index: 1;
+}
+.searchIcon:hover, .searchIconExpanded:hover {
+  cursor: pointer;
 }
 .searchBar {
   position: relative;
@@ -209,6 +213,10 @@
   border: solid white 2px;
   z-index: 1;
   border: none;
+}
+.searchBar:hover {
+  cursor: pointer;
+
 }
 .searchBar::placeholder {
   color: transparent;
