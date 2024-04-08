@@ -52,6 +52,7 @@ export default function Header({ skipAnimation }) {
   }, []);
 
   const isActive = (href) => {
+    console.log('isActive: ', pathname, href)
     // Check for exact match or specific condition
     return pathname === href || router.pathname === '/public/home' && href === '/public/home' || router.pathname === '/public/archive' && href === '/public/archive' || router.pathname === '/public/about' && href === '/public/about';
   };
@@ -104,10 +105,10 @@ export default function Header({ skipAnimation }) {
         </div>
         <div
           onClick={() => {  setRightNavbarOpen(false); router.push('/public/archive')}}>
-          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2></div>
+          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2></div>
         <div
           onClick={() => {  setRightNavbarOpen(false); router.push('/public/about')}}>
-          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2></div>
+          <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2></div>
       </div>
     </div>
   )

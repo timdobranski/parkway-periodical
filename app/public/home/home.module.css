@@ -189,7 +189,7 @@
     padding: .5rem .1rem .5rem .1rem;
     animation: none;
     left: 0;
-
+    border: none;
   }
   .searchWrapper {
     position: absolute;
@@ -203,16 +203,23 @@
     padding: 0 .5rem;
   }
   .searchIcon, .searchIconExpanded {
+    box-sizing: border-box;
     display: block;
     position: absolute;
     top: 50%;
     left: 2rem;
     transform: translate(-50%, -50%);
     z-index: 2;
+    border: solid white 2px;
+    border-radius: 50%;
+    height: 18px;
+    width: 18px;
+    padding: 10px;
   }
   .searchIcon {
   }
   .searchIconExpanded {
+    background-color: var(--primary-red);
   }
   .searchBar, .searchBarExpanded {
     height: 40px;
@@ -228,7 +235,7 @@
     text-align: center;
     outline: none;
     transition: width 0.4s ease-in-out, border-radius 0.1s ease-in-out 0.3s, background-color 0.4s;
-    background-color: rgb(255, 151, 151);
+    background-color: var(--primary-red);
   }
   .searchBarExpanded {
     position: relative;
@@ -238,6 +245,7 @@
     border: none;
     border-radius: 20px;
     transition: width 0.4s ease-in-out,  background-color 0.4s;
+    border: solid white 2px;
     z-index: 1;
   }
   .searchBar::placeholder {

@@ -158,7 +158,6 @@
 
 @media (max-width: 768px) {
   .headerContainer {
-    /* box-sizing: border-box; */
     position: fixed;
     margin: 0;
     top:0;

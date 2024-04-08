@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState(null);
@@ -70,7 +70,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const filterAndSearchPosts = (
     <div className={styles.filterWrapper}>
       <div className={styles.searchWrapper}>
-        <FontAwesomeIcon icon={faMagnifyingGlass} className={searchExpanded ? styles.searchIconExpanded : styles.searchIcon} onClick={() => setSearchExpanded(!searchExpanded)} />
+        <FontAwesomeIcon icon={searchExpanded ? faChevronLeft : faMagnifyingGlass} className={searchExpanded ? styles.searchIconExpanded : styles.searchIcon} onClick={() => setSearchExpanded(!searchExpanded)} />
         <input
           type='search'
           placeholder='Search for topics'

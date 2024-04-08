@@ -403,7 +403,7 @@
     background-color: rgba(0, 172, 240, 0.7);
     background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
     animation: none;
-    /* border: solid red 1px; */
+    border: none;
   }
   .welcomePostWrapper {
     border: none;

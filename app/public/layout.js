@@ -23,20 +23,6 @@ export default function Home({ children }) {
   // const [windowWidth, setWindowWidth] = useState(undefined);
   const [finishedLoading, setFinishedLoading] = useState(false);
 
-  // const handleResize = () => {
-  //   setWindowWidth(window.innerWidth);
-  // };
-
-  // useEffect(() => {
-  //   // Set the initial width
-  //   handleResize();
-
-  //   // Add event listener
-  //   window.addEventListener('resize', handleResize);
-  //   // Remove event listener on cleanup
-  //   return () => window.removeEventListener('resize', handleResize);
-  // }, []);
-
   useEffect(() => {
     const skipIntroBool = Boolean(JSON.parse(skipIntro));
     console.log('SKIPINTROBOOL: ', skipIntroBool, typeof skipIntroBool)
@@ -61,7 +47,7 @@ export default function Home({ children }) {
         alt='Intro Image'
         className={styles.logo}
       />
-      <h1 className={styles.enterButton}>{finishedLoading ? 'ENTER' : 'LOADING...' }</h1>
+      <h1 className={styles.enterButton}>{finishedLoading ? 'WELCOME!' : 'LOADING...' }</h1>
       {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
     </div>
   )
