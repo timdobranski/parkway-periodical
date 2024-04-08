@@ -80,7 +80,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
     <>
       <div
       className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}
-      style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')", backdropFilter: 'brightness(.5)' } : {}}
+      style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')"} : {}}
       >
         {rows.map((rowImages, rowIndex) => (
           <div
@@ -89,7 +89,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
           >
             {rowImages.map((src, index) => (
               <div
-                className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage}  ${allImagesLoaded ? "" : styles.hiddenImage}`}
+                className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage}  ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
                 key={`${rowIndex}-${index}`}
               >
                 <div className={index % 2 === 0 ? styles.redOverlay : styles.blueOverlay}></div>
@@ -100,12 +100,8 @@ export default function Intro({ introRunning, setFinishedLoading }) {
                   ${styles.image}
                   ${allImagesLoaded ? "" : styles.hiddenImage}
                   ${!introRunning ? styles.blurredImage : ''}
-                  ${hoveredImageIndex === `${rowIndex}-${index}` ? styles.hoveredImage : ''}
                 `}
                   onLoad={handleImageLoad}
-                  // onMouseEnter={handleMouseEnter(rowIndex, index)}
-                  // onMouseLeave={handleMouseLeave(rowIndex, index)}
-
                 />
               </div>
             ))}
