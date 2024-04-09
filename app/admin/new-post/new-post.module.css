@@ -21,7 +21,8 @@
   position: absolute;
   top: 40px;
   left: 0;
-  height: 100vh;
+  height: calc(100vh - 40px);
+  border: solid green 2px;
   width: 100vw;
   /* overflow: hidden; */
 }

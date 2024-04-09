@@ -33,9 +33,9 @@ export default function AdminLayout({ children }) {
     // <div className='background'>
     <>
       <HeaderAdmin />
-      {/* <div className='adminPageWrapper'> */}
+      <div className='adminPageWrapper'>
         {children}
-      {/* </div> */}
+      </div>
     </>
     // </div>
   );

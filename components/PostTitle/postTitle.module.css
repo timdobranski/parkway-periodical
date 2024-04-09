@@ -10,7 +10,8 @@
   font-size: 2.5rem;
   display: block;
   color: #0068a8;
-  width: fit-content;
+  width: 100%;
+  height: fit-content;
   text-align: left;
   font-family: Louis George Cafe;
   font-weight: normal;

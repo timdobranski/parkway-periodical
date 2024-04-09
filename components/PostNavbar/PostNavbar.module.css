@@ -1,21 +1,41 @@
 .navbarWrapper {
   position: fixed;
   box-sizing: border-box;
-  top: 40px;
-  left: 0;
-  width: 100vw;
-  height: fit-content;
-  min-width: 1000px;
+  top: 80px;
+  right: 0;
+  width: 250px;
+  height: calc(100vh - 40px);
   background-color: rgb(237, 247, 255);
-  background-color: var(--primary-blue-transparent);
+  /* background-color: var(--primary-blue-transparent); */
+  background-color: rgba(0, 0, 0, .5);
   backdrop-filter: blur(5px);
   margin: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   z-index: 2;
+  overflow-y: auto;
 
+}
+.publishButton {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  width: 100px;
+  height: 40px;
+  padding: .5 0;
+  background-color: rgb(255, 126, 126);
+  border-radius: 4px;
+  font-family: Louis George Cafe;
+  font-weight: bold !important;
+}
+.publishButton:hover {
+  cursor: pointer;
+  background-color: rgb(255, 126, 126);
+  color: black;
 }
 .rowsWrapper {
   width: 80%;
@@ -37,9 +57,10 @@
   justify-content: center;
   align-items: center;
   padding: 0 .25rem .25rem .25rem;
-  margin: .25rem .25rem .25rem .25rem;
-  height: 100%;
-
+  margin: .5rem;
+  height: auto;
+  /* border: solid green 2px; */
+  width: calc(100% - 1rem);
 }
 .navbarSectionTitle {
   margin: 0;
@@ -48,32 +69,29 @@
   font-weight: 400;
   color: white;
 }
-.navbarSectionRow {
-  display: flex;
-  flex-direction: row;
-  height: 60px;
-}
 .navbarSectionItem {
   font-family: Louis George Cafe;
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
-  padding: 0 .25rem .25rem .25rem;
+  padding: 0 .25rem;
   margin: .25rem .5rem .25rem .5rem;
-  height: 90%;
-  background-color: rgb(205, 234, 255);
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 2px;
+  height: 50px;
+  width: 100%;
+  /* background-color: rgb(205, 234, 255);
+  background-color: rgba(255, 255, 255, 0.75); */
+  background-color: white;
   font-size: 1.0rem;
+  /* border: solid blue 2px; */
 }
 .navbarSectionItem:hover {
   cursor: pointer;
   color: white;
   background-color: var(--primary-red);
   background-color: #fb6767;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 .navbarSectionItem h3 {
   margin: 0 .5rem 0 .5rem;
@@ -85,68 +103,25 @@
   height: 15px;
   width: 15px;
   margin: .5rem;
-}
-.publishButton {
-  position: absolute;
-  right: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  width: 100px;
-  height: 40px;
-  background-color: rgb(255, 126, 126);
-  border-radius: 4px;
-  font-family: Louis George Cafe;
-  font-weight: bold !important;
-}
-.publishButton:hover {
-  cursor: pointer;
-  background-color: rgb(255, 126, 126);
-  color: black;
-}
-.divider {
-  background: rgb(213, 225, 230);
-  height: 60px;
-  width: 2px;
-  margin: 0;
+  color: rgb(0, 150, 214);
+  /* border: solid blue 2px; */
 }
 
-
-.layoutWrapper{
-/* width: 100px; */
-height: 100%;
+.iconWrapper{
+height: calc(100% - .5rem);
+width: 75px;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: flex-start;
 padding: 0;
-border-radius: 5px;
-/* background-color: rgb(105, 181, 248); */
-margin: 0;
+/* border-radius: 5px; */
+background-color: rgb(92, 193, 255);
+
+border: solid rgb(0, 0, 0) 2px;
 }
-.layoutTopRowWrapper {
-display: flex;
-flex-direction: row;
-align-items: flex-end;
-justify-content: space-around;
-height: 50%;
-/* width: 100px !important; */
-margin: 0;
-padding: 0;
-/* border: solid red 1px; */
-}
-.layoutBottomRowWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items:flex-start;
-  justify-content: space-around;
-  height: 50%;
-  /* width: 100px !important; */
-  margin: 0;
-  padding: 0;
-  /* border: solid red 1px; */
-}
+
+
 .layoutSingleRowWrapper {
   display: flex;
   flex-direction: row;
@@ -156,6 +131,7 @@ padding: 0;
   /* width: 100px !important; */
   margin: 0;
   padding: 0;
+  /* border: solid black 2px; */
 }
 .layoutColumnPhoto {
   border: solid black 1px;
@@ -168,7 +144,9 @@ padding: 0;
 .layoutIcon {
   height: 15px;
   width: 15px;
-  margin: .1rem .25rem .1rem .25rem;
+  margin: .1rem .1rem .1rem .1rem;
+  color: rgb(0, 0, 0);
+  /* border: solid blue 2px; */
 }
 .layoutIconFullHeight {
   height: 20px;

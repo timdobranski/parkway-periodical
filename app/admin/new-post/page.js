@@ -298,8 +298,8 @@ export default function NewPostPage() {
         setActiveBlock={setActiveBlock}
         handleSubmit={handleSubmit}
       />
-      <div className={styles.adminFeedWrapper}>
-        <div className='feedWrapper'>
+      {/* <div className={styles.adminFeedWrapper}> */}
+      <div className='feedWrapper'>
         <div className='post' style={{height: `${bottomEdge + 500}px`}}>
           {contentBlocks.map((block, index) => (
             <>
@@ -322,7 +322,7 @@ export default function NewPostPage() {
                   </div>
                 </>
               ) : (
-              // otherwise, render the appropriate block component
+                // otherwise, render the appropriate block component
                 <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}>
                   {/* if the content block isn't the title, add up/down nav arrows */}
 
@@ -380,8 +380,8 @@ export default function NewPostPage() {
 
           ))}
         </div>
-        </div>
       </div>
+      {/* </div> */}
     </>
   );
 }
