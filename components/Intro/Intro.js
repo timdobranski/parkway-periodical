@@ -80,7 +80,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
     <>
       <div
         className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}
-        style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')", backgroundRepeat:'no-repeat'} : {}}
+        style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')"} : {}}
       >
         {rows.map((rowImages, rowIndex) => (
           <div
