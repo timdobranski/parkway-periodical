@@ -147,8 +147,7 @@
 }
 .imageRow:nth-child(2) {
   animation: scrollMedium 120s linear infinite;
-  flex-direction: row-reverse;
-
+  flex-direction: row-reverse !important;
 }
 .imageRow:nth-child(3) {
   animation: scrollFast 100s linear infinite;
@@ -256,6 +255,7 @@
   }
   .imageRow:nth-child(2) {
     animation: scrollMedium 50s linear infinite;
+    flex-direction: row-reverse;
   }
   .imageRow:nth-child(3) {
     animation: scrollFast 40s linear infinite;
