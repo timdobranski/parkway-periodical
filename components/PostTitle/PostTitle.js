@@ -51,7 +51,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
           type="text"
           value={src?.content}
           onChange={(e) => updateTitle(e.target.value)}
-          className={`${styles.postTitle} editable`}
+          className={`${styles.postTitle} outlined`}
           placeholder="Enter title"
           onKeyDown={(e) => { if (e.key === 'Enter') { setActiveBlock(null)}}}
         />

@@ -44,14 +44,16 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, .5);
   margin: 0;
-  padding: .5rem 0 .5rem 0;
-  height: 120px;
+  padding: 0;
+  /* height: 120px; */
+
 }
 .blockControlsLeft{
-  left: -10rem;
+  /* left: -10rem; */
 }
 .blockControlsRight {
-  right: -10rem;
+  top: -20px;
+  left: 2rem;
 }
 .blockControls .fa {
   cursor: pointer;

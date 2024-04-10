@@ -17,6 +17,8 @@
   font-weight: normal;
   /* padding: 0rem .5rem 0 .5rem; */
   margin: 0;
+  border: 0;
+  padding: 0;
   text-decoration: underline;
   text-decoration-color: red;
   /* border-bottom: none; */

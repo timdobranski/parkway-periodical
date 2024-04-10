@@ -47,7 +47,8 @@
   overflow: hidden !important;
 }
 .outlined {
-  border: solid black 2px;
+  outline: solid black 2px;
+  border: none;
 }
 .background {
   position: absolute;
@@ -101,7 +102,7 @@
   backdrop-filter: blur(5px) grayscale(1);
   animation: slideUp 1s ease-out forwards;
   overflow-y: auto;
-  overflow-x: visible;
+  overflow-x: visible !important;
   height: 100%;
   height: calc(100vh - 100px);
   border: solid white 6px;
@@ -243,12 +244,6 @@
   opacity: 0;
 }
 
-.editable {
-  width: 100%;
-  border: solid red 2px;
-  border: dashed rgb(0, 0, 0) 2px;
-
-}
 .postTitle::placeholder {
   color: #0083d5; /* Replace with your desired color */
   opacity: 1; /* Optional: Adjust the opacity as needed */
