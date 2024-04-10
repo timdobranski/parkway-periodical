@@ -147,6 +147,8 @@
 }
 .imageRow:nth-child(2) {
   animation: scrollMedium 120s linear infinite;
+  flex-direction: row-reverse;
+
 }
 .imageRow:nth-child(3) {
   animation: scrollFast 100s linear infinite;
@@ -170,17 +172,17 @@
 }
 .dimmedImage {
   filter: brightness(.4);
-  transition: .5s ease-out
+  transition: .5s ease-out;
 }
 .dimmedImage:hover {
   filter: none;
   transition: none;
 }
-.hoveredImage:hover {
+/* .hoveredImage:hover {
   filter: none;
   opacity: 1;
   transition: none;
-}
+} */
 /* used for the entire component wrapper after all images loaded */
 .fadeIn {
   animation: fadeInAnimation 2s ease-out;

@@ -37,8 +37,9 @@
   color: white;
   font: 2rem 'Louis George Cafe';
   font-weight: normal;
-  /* width: 700px; */
+  width: 700px;
   min-width: 100px;
+  /* min-height: 350px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,7 +78,8 @@
 .logo {
   position: relative;
   width: 75%;
-  margin: 4rem 2rem 0 0;
+  /* margin: 4rem 2rem 0 0; */
+  margin: 0;
   padding: 0;
 }
 .enterButton {
