@@ -189,7 +189,7 @@
   background-size: cover; /* Adjust as needed */
   background-position: center; /* Adjust as needed */
 }
-.titledLogo {
+/* .titledLogo {
   width: 75%;
   margin-left:2rem;
   margin-top: 0;
@@ -207,7 +207,7 @@
   background-color: rgb(34, 171, 240);
   padding: 1rem;
   border-radius: 10px;
-}
+} */
 @media(max-width: 768px) {
   .introContainer {
     position: absolute;
