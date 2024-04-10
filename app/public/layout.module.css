@@ -191,6 +191,7 @@
     /* right: 10vw; */
     /* width: 80vw; */
     /* height: 50vh; */
+    width: auto;
     border: none;
     padding: 2rem;
   }
