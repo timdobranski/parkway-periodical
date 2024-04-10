@@ -79,8 +79,8 @@ export default function Intro({ introRunning, setFinishedLoading }) {
   return (
     <>
       <div
-      className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}
-      style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')"} : {}}
+        className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}
+        style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')", backgroundRepeat:'no-repeat'} : {}}
       >
         {rows.map((rowImages, rowIndex) => (
           <div
@@ -92,7 +92,13 @@ export default function Intro({ introRunning, setFinishedLoading }) {
                 className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage}  ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
                 key={`${rowIndex}-${index}`}
               >
-                <div className={index % 2 === 0 ? styles.redOverlay : styles.blueOverlay}></div>
+                <div
+                  className={
+                    index % 2 === 0
+                      ? introRunning ? styles.redOverlay : styles.redOverlayFaded
+                      : introRunning ? styles.blueOverlay : styles.blueOverlayFaded
+                  }>
+                </div>
                 <img
                   src={src}
                   alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}

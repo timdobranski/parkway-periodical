@@ -19,9 +19,10 @@
   margin: 0;
   text-decoration: underline;
   text-decoration-color: red;
-  border-bottom: none;
+  /* border-bottom: none; */
   text-underline-offset: .4rem;
   text-decoration-thickness: 2px;
+  overflow-wrap: break-word;
 }
 
 .date {
