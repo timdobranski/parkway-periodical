@@ -326,10 +326,10 @@ export default function NewPostPage() {
                 <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}>
                   {/* if the content block isn't the title, add up/down nav arrows */}
 
-                  <div className={styles.blockControlsLeft}>
+                  {/* <div className={styles.blockControlsLeft}>
                     {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
                     <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-                  </div>
+                  </div> */}
 
                   {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
 
@@ -370,10 +370,10 @@ export default function NewPostPage() {
                 />
                   }
 
-                  <div className={styles.blockControlsRight}>
+                  {/* <div className={styles.blockControlsRight}>
                     <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
                     <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </>

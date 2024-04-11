@@ -47,7 +47,7 @@
   overflow: hidden !important;
 }
 .outlined {
-  outline: solid black 2px;
+  outline: dashed rgb(129, 129, 129) 1.5px;
   border: none;
 }
 .background {
@@ -81,7 +81,8 @@
   overflow-y: auto;
   height: calc(100vh - 40px);
   border: none;
-  background: linear-gradient(to right, rgb(61, 197, 255), rgb(0, 75, 142))
+  background-color: rgb(237, 237, 237);
+  /* background: linear-gradient(to right, rgb(61, 197, 255), rgb(0, 75, 142)) */
   /* background-image: url('/images/quad.png'); */
   /* background-image: url('/images/overhead2.webp');
   background-repeat: no-repeat;
@@ -217,10 +218,7 @@
   margin: 2rem 0rem 2rem 0rem;
   outline: dashed rgb(0, 0, 0) 2px;
 }
-.outlined {
-  outline: dashed rgb(0, 0, 0) 2px;
 
-}
 .loadingHeader {
   position: absolute;
   top: 0;

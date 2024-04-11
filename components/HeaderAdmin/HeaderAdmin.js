@@ -73,10 +73,17 @@ export default function Header() {
       <div className={styles.logoContainer}>
         <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
       </div>
-      <div className={styles.leftNavHandle} onClick={() => toggleNavOpen('left')}>
+      <div className={styles.leftNavHandle}
+        onMouseEnter={() => toggleNavOpen('left')}
+        onMouseLeave={() => setLeftNavOpen(false)}
+
+>
         <FontAwesomeIcon icon={faCaretDown} className={styles.downIcon}/>
         <p className={styles.viewPages}>PAGES</p>
-        <div className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
+        <div
+          onMouseLeave={() => setLeftNavOpen(false)}
+
+        className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
 
           <Link href='/'>
             <h2>HOME</h2>

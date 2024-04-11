@@ -1,0 +1,101 @@
+.loadingPlaceholder {
+  position: relative;
+  width: 150px; /* Set to your image size */
+  height: 150px; /* Set to your image size */
+  background-image: url('/images/animatedShield/shield2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: spin 1s linear infinite;
+  overflow: visible;
+  opacity: 0;
+}
+
+.wrapper {
+  position: relative;
+  width: 150px; /* Set to your image size */
+  height: 150px; /* Set to your image size */
+  background-image: url('/images/animatedShield/shield2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  animation: fadeIn 2s ease forwards;
+  overflow: visible;
+  opacity: 0;
+  /* overflow: hidden; */
+}
+.finalShield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/animatedShield/shieldNoAtom.png'); /* New background image */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0; /* Start fully transparent */
+  animation: fadeIn 0.2s ease forwards;
+  animation-delay: 1.5s;
+  z-index: 2;
+}
+/* Common styles for each item */
+.item {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Individual item backgrounds */
+.atom {
+  background-image: url('/images/animatedShield/atom.png');
+  z-index: 2;
+}
+.soccer { background-image: url('/images/animatedShield/soccer.png'); }
+.skateboard { background-image: url('/images/animatedShield/skateboard.png'); }
+
+@keyframes swirl-in-from-left {
+  0% { transform: translateX(-100%) rotate(0deg) scale(3); }
+  50% { transform: translate(-50px, 50px) rotate(270deg) scale(2); }
+  100% { transform: translateX(0) rotate(540deg) scale(1); }
+}
+
+@keyframes swirl-in-from-right {
+  0% { transform: translateX(100%) rotate(0deg) scale(3); }
+  50% { transform: translate(50px, -50px) rotate(180deg) scale(2); }
+  100% { transform: translateX(0) rotate(360deg) scale(1); }
+}
+
+@keyframes swirl-in-from-top {
+  0% { transform: translateY(-100%) rotate(0deg) scale(3); }
+  50% { transform: translate(-50px, -50px) rotate(180deg) scale(2); }
+  100% { transform: translateY(0) rotate(360deg) scale(1); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes continuous-rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.atom {
+  animation: swirl-in-from-left 1.5s linear forwards, continuous-rotation 5s linear infinite;
+  animation-delay: 0s, 1.5s;
+  transform-origin: 67.5% 61%;
+}
+.soccer {
+  animation: swirl-in-from-right 1.5s linear forwards;
+}
+.skateboard {
+  animation: swirl-in-from-top 1.5s linear forwards;
+}
