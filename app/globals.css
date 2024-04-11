@@ -414,7 +414,7 @@
     min-width: 300px !important;
     max-width: none;
     overflow: hidden;
-    animation: none;
+    /* animation: none; */
     border-radius: 15px;
     padding: 1rem;
     /* border: solid red 4px; */
