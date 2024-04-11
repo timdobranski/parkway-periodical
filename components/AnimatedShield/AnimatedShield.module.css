@@ -23,6 +23,8 @@
   overflow: visible;
   opacity: 0;
   margin: 0;
+  max-height: 150px;
+  max-width: none;
   /* overflow: hidden; */
 }
 .finalShield {
@@ -39,6 +41,9 @@
   animation: fadeIn 0.2s ease forwards;
   animation-delay: 1.5s;
   z-index: 2;
+  max-height: 150px;
+  min-width: 0;
+  height: auto;
 }
 /* Common styles for each item */
 .item {
@@ -54,8 +59,13 @@
 
 /* Individual item backgrounds */
 .atom {
-  background-image: url('/images/animatedShield/atom.png');
+  background-image: url('/images/animatedShield/atomCropped.png');
+  top: 45%;
+  left: 54%;
   z-index: 2;
+  height: 30%;
+  width: 30%;
+
   /* filter: blur(.25px); */
 }
 .soccer { background-image: url('/images/animatedShield/soccer.png'); }
@@ -78,6 +88,23 @@
   50% { transform: translate(-50px, -50px) rotate(180deg) scale(2); }
   100% { transform: translateY(0) rotate(360deg) scale(1); }
 }
+@keyframes swirl-in-from-left-desktop {
+  0% { transform: translateX(-300%) rotate(0deg) scale(10); }
+  50% { transform: translate(-150px, 150px) rotate(270deg) scale(5); }
+  100% { transform: translateX(0) rotate(540deg) scale(1); }
+}
+
+@keyframes swirl-in-from-right-desktop {
+  0% { transform: translateX(300%) rotate(0deg) scale(10); }
+  50% { transform: translate(400px, -50px) rotate(180deg) scale(5); }
+  100% { transform: translateX(0) rotate(360deg) scale(1); }
+}
+
+@keyframes swirl-in-from-top-desktop {
+  0% { transform: translateY(-300%) rotate(0deg) scale(10); }
+  50% { transform: translate(-50px, -50px) rotate(180deg) scale(5); }
+  100% { transform: translateY(0) rotate(360deg) scale(1); }
+}
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -91,13 +118,27 @@
   }
 }
 .atom {
-  animation: swirl-in-from-left 1.5s linear forwards, continuous-rotation 5s linear infinite;
+  animation: swirl-in-from-left-desktop 1.5s linear forwards, continuous-rotation 5s linear infinite;
   animation-delay: 0s, 1.5s;
-  transform-origin: 67.5% 61%;
+  /* transform-origin: 67.5% 61%; */
+  transform-origin: center;
 }
 .soccer {
-  animation: swirl-in-from-right 1.5s linear forwards;
+  animation: swirl-in-from-right-desktop 1.5s linear forwards;
 }
 .skateboard {
-  animation: swirl-in-from-top 1.5s linear forwards;
+  animation: swirl-in-from-top-desktop 1.5s linear forwards;
+}
+@media(max-width: 768px) {
+  .atom {
+    animation: swirl-in-from-left 1.5s linear forwards, continuous-rotation 5s linear infinite;
+    animation-delay: 0s, 1.5s;
+    transform-origin: center;
+  }
+  .soccer {
+    animation: swirl-in-from-right 1.5s linear forwards;
+  }
+  .skateboard {
+    animation: swirl-in-from-top 1.5s linear forwards;
+  }
 }
