@@ -390,8 +390,8 @@
     position: absolute;
   }
   .feedWrapper {
-    position: relative;
-    top: 0px;
+    position: fixed;
+    top: 80px;
     /* width: 100%; */
     width: 100vw;
     max-width: none;
@@ -414,8 +414,10 @@
     min-width: 300px !important;
     max-width: none;
     overflow: hidden;
-    /* animation: none; */
-    border-radius: 15px;
+    height: fit-content !important;
+    min-height: none;
+    animation: none;
+    border-radius: 25px;
     padding: 1rem;
     /* border: solid red 4px; */
   }
