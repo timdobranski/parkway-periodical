@@ -3,8 +3,8 @@
   50% { transform: translateX(-50%); }
 }
 @keyframes scrollMedium {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-50%); }
+  0%, 100% { transform: translateX(0); /* Start and end with the 200px offset */ }
+  50% { transform: translateX(calc(-50%)); /* Move left by 50% of the container width plus the 200px offset */ }
 }
 @keyframes scrollFast {
   0%, 100% { transform: translateX(0); }
@@ -136,18 +136,14 @@
   z-index: 0;
   filter: grayscale(100%);
 }
-/* filter brightness of colored overlay */
-.dimmedBackground .redOverlayFaded,
-.dimmedBackground .blueOverlayFaded {
 
-}
+
 
 .imageRow:nth-child(1) {
   animation: scrollSlow 80s linear infinite;
 }
 .imageRow:nth-child(2) {
   animation: scrollMedium 120s linear infinite;
-  flex-direction: row-reverse !important;
 }
 .imageRow:nth-child(3) {
   animation: scrollFast 100s linear infinite;
@@ -160,6 +156,7 @@
   /* transform-origin: center; */
 
 }
+
 .hoveredRow {
   z-index: 15;
 }

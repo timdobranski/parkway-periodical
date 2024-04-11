@@ -82,37 +82,37 @@ export default function Intro({ introRunning, setFinishedLoading }) {
         className={`${styles.galleryWrapper} ${introRunning ? '' : styles.dimmedBackground} ${allImagesLoaded ? styles.fadeIn : ''}`}
         style={allImagesLoaded ? { backgroundImage: "url('/images/gradient3small2.webp')"} : {}}
       >
-        {rows.map((rowImages, rowIndex) => (
-          <div
-            key={rowIndex}
-            className={`${styles.imageRow} ${hoveredRowIndex === rowIndex ? styles.hoveredRow : ''}`}
-          >
-            {rowImages.map((src, index) => (
-              <div
-                className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage}  ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
-                key={`${rowIndex}-${index}`}
-              >
-                <div
-                  className={
-                    index % 2 === 0
-                      ? introRunning ? styles.redOverlay : styles.redOverlayFaded
-                      : introRunning ? styles.blueOverlay : styles.blueOverlayFaded
-                  }>
-                </div>
-                <img
-                  src={src}
-                  alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
-                  className={`
-                  ${styles.image}
-                  ${allImagesLoaded ? "" : styles.hiddenImage}
-                  ${!introRunning ? styles.blurredImage : ''}
-                `}
-                  onLoad={handleImageLoad}
-                />
-              </div>
-            ))}
-          </div>
-        ))}
+{rows.map((rowImages, rowIndex) => (
+  <div
+    key={rowIndex}
+    className={`${styles.imageRow} ${hoveredRowIndex === rowIndex ? styles.hoveredRow : ''}`}
+  >
+    {rowImages.map((src, index) => (
+      <div
+        className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage}  ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
+        key={`${rowIndex}-${index}`}
+      >
+        <div
+          className={
+            index % 2 === (rowIndex % 2 === 0 ? 0 : 1)
+              ? introRunning ? styles.redOverlay : styles.redOverlayFaded
+              : introRunning ? styles.blueOverlay : styles.blueOverlayFaded
+          }>
+        </div>
+        <img
+          src={src}
+          alt={`Image in row ${rowIndex + 1}, number ${index + 1}`}
+          className={`
+          ${styles.image}
+          ${allImagesLoaded ? "" : styles.hiddenImage}
+          ${!introRunning ? styles.blurredImage : ''}
+        `}
+          onLoad={handleImageLoad}
+        />
+      </div>
+    ))}
+  </div>
+))}
       </div>
     </>
   );
