@@ -28,6 +28,18 @@
     transform: translateY(-5px);
   }
 }
+@keyframes slideFromLeft {
+  to {
+    left: 0;
+  }
+}
+
+/* Animation for sliding in from the right */
+@keyframes slideFromRight {
+  to {
+    right: 0;
+  }
+}
 .headerContainer {
   box-sizing: border-box;
   position: absolute;
@@ -306,7 +318,7 @@
 
   .mobileLeftNavbarWrapper, .mobileRightNavbarWrapper{
     display: inline-block;
-    position: absolute;;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
@@ -315,9 +327,14 @@
     z-index: 9999;
     overflow-y:hidden;
     border: solid red 40px;
+    animation: slideFromRight 2s ease-out;
+    animation-fill-mode: forwards;
   }
   .mobileLeftNavbarWrapper {
     overflow: hidden;
+    animation: slideFromRight 2s ease-out;
+    left: -100vw;
+
   }
   .socialWrapper {
     position: fixed !important;

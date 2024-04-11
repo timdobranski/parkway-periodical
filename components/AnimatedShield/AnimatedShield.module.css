@@ -65,6 +65,7 @@
   z-index: 2;
   height: 30%;
   width: 30%;
+  color: white;
 
   /* filter: blur(.25px); */
 }
@@ -72,7 +73,7 @@
 .skateboard { background-image: url('/images/animatedShield/skateboard.png'); }
 
 @keyframes swirl-in-from-left {
-  0% { transform: translateX(-100%) rotate(0deg) scale(3); }
+  0% { transform: translateX(-200%) rotate(0deg) scale(3); }
   50% { transform: translate(-50px, 50px) rotate(270deg) scale(2); }
   100% { transform: translateX(0) rotate(540deg) scale(1); }
 }
