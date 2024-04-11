@@ -22,6 +22,7 @@
   animation: fadeIn 2s ease forwards;
   overflow: visible;
   opacity: 0;
+  margin: 0;
   /* overflow: hidden; */
 }
 .finalShield {
@@ -55,6 +56,7 @@
 .atom {
   background-image: url('/images/animatedShield/atom.png');
   z-index: 2;
+  /* filter: blur(.25px); */
 }
 .soccer { background-image: url('/images/animatedShield/soccer.png'); }
 .skateboard { background-image: url('/images/animatedShield/skateboard.png'); }

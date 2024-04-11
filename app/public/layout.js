@@ -25,24 +25,31 @@ export default function Home({ children }) {
     }
   }, [skipIntro])
 
-  useEffect(() => {
-    console.log('INTRO RUNNING: ', introRunning)
-  }, [introRunning])
+
 
   const welcomeModal = (
     <div className={`${styles.introContainer} ${finishedLoading ? styles.fadeInFromWhite : styles.whiteBackground}`} onClick={() => setIntroRunning(false)}>
-      {/* <img
-        src={'/images/logos/parkway.png'}
-        alt='Intro Image'
-        className={styles.mobileLogo}
-      /> */}
-      {finishedLoading ? <AnimatedShield finishedLoading={finishedLoading}/> : <div className={styles.animationPlaceholder}>LOADING...</div>}
-      <img
-        src={'/images/logos/titledLogoThumb.png'}
-        alt='Intro Image'
-        className={styles.logo}
-      />
-      <h1 className={styles.enterButton}>{finishedLoading ? 'WELCOME!' : '' }</h1>
+      {/* mobile logo */}
+      <div className={styles.mobileLogo}>
+        {/* {finishedLoading ? */}
+          <AnimatedShield finishedLoading={finishedLoading}/>
+          {/* : */}
+          {/* <div className={styles.animationPlaceholder}
+          >
+          LOADING...
+          </div> */}
+        {/* } */}
+      </div>
+      {/* desktop logo */}
+      <div className={styles.desktopLogoContainer}>
+        <AnimatedShield finishedLoading={finishedLoading}/>
+        <img
+          src={'/images/logos/titledLogoNoShield.png'}
+          alt='Intro Image'
+          className={styles.logo}
+        />
+      </div>
+      <h1 className={styles.enterButton}>{finishedLoading ? 'WELCOME!' : 'LOADING...' }</h1>
       {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
     </div>
   )
