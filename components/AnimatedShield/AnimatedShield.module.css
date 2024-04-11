@@ -38,7 +38,7 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0; /* Start fully transparent */
-  animation: fadeIn 0.2s ease forwards;
+  animation: fadeIn 0.2s ease forwards, pop .5s linear forwards; /* Fade in and pop */
   animation-delay: 1.5s;
   z-index: 2;
   max-height: 150px;
@@ -118,10 +118,22 @@
     transform: rotate(360deg);
   }
 }
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+
+}
 .atom {
-  animation: swirl-in-from-left-desktop 1.5s linear forwards, continuous-rotation 5s linear infinite;
-  animation-delay: 0s, 1.5s;
-  /* transform-origin: 67.5% 61%; */
+  animation: swirl-in-from-left-desktop 1.5s linear forwards,
+             pop 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
+             continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
   transform-origin: center;
 }
 .soccer {
@@ -132,9 +144,10 @@
 }
 @media(max-width: 768px) {
   .atom {
-    animation: swirl-in-from-left 1.5s linear forwards, continuous-rotation 5s linear infinite;
-    animation-delay: 0s, 1.5s;
-    transform-origin: center;
+    animation: swirl-in-from-left 1.5s linear forwards,
+    pop 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
+    continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
+transform-origin: center;
   }
   .soccer {
     animation: swirl-in-from-right 1.5s linear forwards;
