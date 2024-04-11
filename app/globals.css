@@ -419,6 +419,7 @@
     animation: none;
     border-radius: 25px;
     padding: 1rem;
+    margin-top: .5rem;
     /* border: solid red 4px; */
   }
   .blockWrapper {
