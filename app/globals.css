@@ -111,7 +111,9 @@
   padding-left: calc(2rem + 8px); /* to account for scrollbar on right side */
   padding-right: 2rem;
   padding-bottom: 4rem;
+
 }
+
 
 .welcomeHeader {
   width: 100%;

@@ -85,7 +85,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
         {rows.map((rowImages, rowIndex) => (
           <div
             key={rowIndex}
-            className={`${styles.imageRow} ${hoveredRowIndex === rowIndex ? styles.hoveredRow : ''}`}
+            className={`${styles.imageRow} ${styles['row' + (rowIndex + 1)]}`}
           >
             {rowImages.map((src, index) => (
               <div
