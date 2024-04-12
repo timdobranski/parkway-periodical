@@ -76,13 +76,11 @@
   50% { transform: translate(-50px, 50px) rotate(270deg) scale(2); }
   100% { transform: translateX(0) rotate(540deg) scale(1); }
 }
-
 @keyframes swirl-in-from-right {
   0% { transform: translateX(100%) rotate(0deg) scale(3); }
   50% { transform: translate(50px, -50px) rotate(180deg) scale(2); }
   100% { transform: translateX(0) rotate(360deg) scale(1); }
 }
-
 @keyframes swirl-in-from-top {
   0% { transform: translateY(-100%) rotate(0deg) scale(3); }
   50% { transform: translate(-50px, -50px) rotate(180deg) scale(2); }
@@ -93,13 +91,11 @@
   50% { transform: translate(-500%, 150px) rotate(270deg) scale(5); }
   100% { transform: translateX(0) rotate(540deg) scale(1); }
 }
-
 @keyframes swirl-in-from-right-desktop {
   0% { transform: translateX(1000%) rotate(0deg) scale(10); }
   50% { transform: translate(500%, 50%) rotate(180deg) scale(5); }
   100% { transform: translateX(0) rotate(360deg) scale(1); }
 }
-
 @keyframes swirl-in-from-top-desktop {
   0% { transform: translate(-100%, -20%) rotate(0deg) scale(10); }
   50% { transform: translate(500%, 200%) rotate(180deg) scale(5); }
