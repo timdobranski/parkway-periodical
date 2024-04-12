@@ -10,11 +10,10 @@
   overflow: visible;
   opacity: 0;
 }
-
 .wrapper {
   position: relative;
-  width: 150px; /* Set to your image size */
-  height: 150px; /* Set to your image size */
+  width: 150px;
+  height: 150px;
   background-image: url('/images/animatedShield/shield2.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -33,12 +32,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/images/animatedShield/shieldNoAtom.png'); /* New background image */
+  background-image: url('/images/animatedShield/shieldNoAtom.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0; /* Start fully transparent */
-  animation: fadeIn 0.2s ease forwards, pop .5s linear forwards; /* Fade in and pop */
+  animation: fadeIn 0.2s ease forwards, pop .5s linear forwards;
   animation-delay: 1.5s;
   z-index: 2;
   max-height: 150px;
@@ -59,7 +58,7 @@
 
 /* Individual item backgrounds */
 .atom {
-  background-image: url('/images/animatedShield/atomCropped.png');
+  background-image: url('/images/animatedShield/atomIcon.png');
   top: 45%;
   left: 54%;
   z-index: 2;
@@ -112,10 +111,10 @@
 }
 @keyframes continuous-rotation {
   from {
-    transform: rotate(0deg);
+    transform: rotate(36deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(396deg);
   }
 }
 @keyframes pop {
@@ -123,16 +122,27 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.2);
+    transform: scale(1.1);
   }
   100% {
     transform: scale(1);
   }
-
 }
+@keyframes pop-and-rotate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(18deg); /* Adjust the rotation degrees as needed */
+  }
+  100% {
+    transform: scale(1) rotate(36deg);
+  }
+}
+
 .atom {
   animation: swirl-in-from-left-desktop 1.5s linear forwards,
-             pop 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
+             pop-and-rotate 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
              continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
   transform-origin: center;
 }
@@ -146,7 +156,7 @@
   .atom {
     animation: swirl-in-from-left 1.5s linear forwards,
     pop 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
-    continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
+    continuous-rotation 5s linear 1.99s infinite; /* Adding a delay equal to the duration of the first two animations */
 transform-origin: center;
   }
   .soccer {
