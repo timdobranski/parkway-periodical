@@ -132,7 +132,9 @@
 }
 .imageContainer:hover {
   outline: solid rgb(255, 255, 255) 6px;
-  z-index: 9999;
+  z-index: 2000;
+  /* box-shadow: inset 0 0 0 6px rgb(255, 255, 255); */
+
 }
 .image {
   display: inline-block;
@@ -140,7 +142,7 @@
   height: 100%; /* Maintains full height */
   width: auto; /* Adjusts width to maintain aspect ratio */
   object-fit: contain; /* Ensures full image is visible, maintaining aspect ratio */
-  transition: transform 0.5s ease;
+  transition: transform 2s ease;
   transform-origin: center;
   position: relative;
   margin: 0;
@@ -227,7 +229,7 @@
     transform: skew(-10deg) translate(-55%, -50%);
     border: none;
   }
-  .dimmedBackground {
+  .wrapperAfterIntro {
     display: none; /* Hides the whole component on mobile */
   }
   .galleryWrapper {

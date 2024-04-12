@@ -390,7 +390,7 @@
     position: absolute;
   }
   .feedWrapper {
-    position: fixed;
+    position: absolute;
     top: 80px;
     /* width: 100%; */
     width: 100vw;
@@ -403,7 +403,6 @@
     height: fit-content;
     background-color: rgba(0, 172, 240, 0.7);
     background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
-    /* animation: none; */
     border: none;
   }
   .welcomePostWrapper {
