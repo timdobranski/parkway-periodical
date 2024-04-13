@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Intro.module.css';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Intro({ introRunning, setFinishedLoading }) {
   const [rows, setRows] = useState([[], [], []]);
@@ -113,6 +114,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
             ))}
           </div>
         ))}
+        <div className={styles.credit}>Designed & Built By <Link href='https://timdobranski.com' className={styles.creditLink}>Tim Dobranski</Link></div>
       </div>
     </>
   );
