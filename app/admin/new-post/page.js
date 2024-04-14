@@ -186,7 +186,7 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length);
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 325, y: 0 } };
+    const newBlock = { type: 'video', content: '', style: { width: '100%', height: 'auto' , x: 325, y: 0 } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };

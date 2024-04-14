@@ -85,20 +85,21 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
   const video = (
     <>
       <div className={styles.videoOverlay}></div>
-      <iframe
-        src={src.content}
-        frameBorder="0"
-        allowFullScreen
-        title="Embedded video"
-        className={isEditable ? styles.editableYoutubeVideoWrapper : styles.youtubeVideoWrapper}
-      />
+      <div className={isEditable ? styles.editableVideoContainer : styles.videoContainer}>
+        <iframe
+          src={src.content}
+          frameBorder="0"
+          allowFullScreen
+          title="Embedded video"
+        />
+      </div>
     </>
   );
   const invalidVideoLinkMessage = (
     <p>Invalid video link. Links must be YouTube or Google Drive.</p>
   )
   const emptyVideoLinkInputMessage = (
-    <div className={styles.emptyVideoInputMessage}>
+    <div className={`${styles.emptyVideoInputMessage} ${isEditable ? '' : 'outlined'}`}>
       <FontAwesomeIcon icon={faYoutube} className={styles.iconYoutube}/>
       <p style={{margin: '0'}}>Paste a URL from Youtube or a Google Drive file to preview the video.</p>
 
@@ -108,7 +109,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     // console.log('link check result: ', (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url)))
     return (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url))
   }
-  const blockControls = (
+  const videoOptions = (
     <div className={styles.blockControls}>
       <input
         type="text"
@@ -122,46 +123,47 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       {url !== '' && <FontAwesomeIcon icon={faTrashCan} className={styles.icon} onClick={() => setUrl('')}/>}
     </div>
   )
-  const handleMouseUp = (e) => {
-    if (resizableRef.current) {
-      const { width, height } = resizableRef.current.getBoundingClientRect();
-      // Assuming src.style.x and src.style.y hold the current x and y positions
-      const x = src.style.x; // Use src.style.x or calculate new x based on your logic
-      const y = src.style.y; // Use src.style.y or calculate new y based on your logic
+  // const handleMouseUp = (e) => {
+  //   if (resizableRef.current) {
+  //     const { width, height } = resizableRef.current.getBoundingClientRect();
+  //     // Assuming src.style.x and src.style.y hold the current x and y positions
+  //     const x = src.style.x; // Use src.style.x or calculate new x based on your logic
+  //     const y = src.style.y; // Use src.style.y or calculate new y based on your logic
 
-      // Call updateBlockStyle with the new dimensions and current or updated x and y positions
-      updateBlockStyle({
-        width: `${width}px`,
-        height: `${height}px`,
-        x: x,
-        y: y,
-        maxWidth: '100%',
-      });
+  //     // Call updateBlockStyle with the new dimensions and current or updated x and y positions
+  //     updateBlockStyle({
+  //       width: `${width}px`,
+  //       height: `${height}px`,
+  //       x: x,
+  //       y: y,
+  //       maxWidth: '100%',
+  //     });
 
-      console.log(`Updated size and position - Width: ${width}px, Height: ${height}px, X: ${x}, Y: ${y}`);
-    }
-  };
+  //     console.log(`Updated size and position - Width: ${width}px, Height: ${height}px, X: ${x}, Y: ${y}`);
+  //   }
+  // };
 
   if (!src) { return <p>Loading</p> }
 
   return (
-    <div
-      ref={wrapperRef}
-      style={{
-        width: src.style.width,
-        height: src.style.height,
-        left: 0,
-        top: 0,
-        position: 'relative',
-      }}
-      onClick={() => { !isEditable && setActiveBlock(blockIndex)}}
-      className={styles.videoBlockWrapper}
-
-    >
-      {isEditable && blockControls}
-      {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}></div>}
+    // <div
+    //   ref={wrapperRef}
+    //   style={{
+    //     width: src.style.width,
+    //     height: src.style.height,
+    //     left: 0,
+    //     top: 0,
+    //     position: 'relative',
+    //   }}
+    //   onClick={() => { !isEditable && setActiveBlock(blockIndex)}}
+    //   className={styles.videoBlockWrapper}
+    // >
+    <>
+      {isEditable && videoOptions}
+      {/* {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}></div>} */}
       {(url !== '' || src.content !== '') ? video : emptyVideoLinkInputMessage}
-    </div>
+    </>
+    // </div>
   )
 }
 
