@@ -59,14 +59,17 @@
 }
 .emptyVideoInputMessage{
   width: 100%;
-  height: 150px;
+  height: 100%;
   border: dashed black 2px;
   text-align: center;
-  padding-top: 45px;
+  padding-top: 30px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.emptyVideoInputMessage p {
+  margin: o;
 }
 .videoOverlay {
   position: absolute;

@@ -204,10 +204,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 90%;
+  width: 100%;
   height: fit-content;
   padding: 0;
-  margin: 2rem 0rem 2rem 0rem;
+  /* margin: 2rem 0rem 2rem 0rem; */
+  margin: 0;
 }
 .editableBlockWrapper {
   position: relative;
@@ -218,7 +219,8 @@
   width: 90%;
   height: fit-content;
   padding: 0;
-  margin: 2rem 0rem 2rem 0rem;
+  /* margin: 2rem 0rem 2rem 0rem; */
+  margin: 0;
   outline: dashed rgb(0, 0, 0) 2px;
 }
 

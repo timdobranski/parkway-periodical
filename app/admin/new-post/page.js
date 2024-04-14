@@ -303,7 +303,7 @@ export default function NewPostPage() {
       <PostNavbarLeft/>
       {/* <div className={styles.adminFeedWrapper}> */}
       <div className='feedWrapper'>
-        <div className='post' style={{height: `${bottomEdge + 200}px`}}>
+        <div className='post' style={{height: `${bottomEdge + 250}px`}}>
           {contentBlocks.map((block, index) => (
             <>
               {/* if the block is the title, render the title component & save icon */}

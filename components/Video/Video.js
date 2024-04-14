@@ -3,33 +3,27 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './video.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashCan, faFloppyDisk, faUpDown, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
-import BlockEditMenu from '../BlockEditMenu/BlockEditMenu';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
 export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
   const [url, setUrl] = useState('');
+  const wrapperRef = useRef(null);
   // const [blockHeight, setBlockHeight] = useState(parseInt(src.style.height, 10) + src.style.y);
   // const [blockContentHeight, setBlockContentHeight] = useState(parseInt(src.style.height, 10) );
   // const [blockPosition, setBlockPosition] = useState({x: src.style.x, y: src.style.y});
   // const [height, setHeight] = useState(parseInt(src.style.height, 10));
-  const wrapperRef = useRef(null);
-
-
   useEffect(() => {
     updateVideoUrl && updateVideoUrl(url);
     console.log('url changed: ', url)
   }, [url]);
-
   // useEffect(() => {
   //   setBlockHeight(parseInt(blockContentHeight, 10) + blockPosition.y);
   // }, [blockContentHeight, blockPosition]);
-
   useEffect(() => {
     console.log('src changed: ', src)
   }, [src]);
-
   const startResize = (e) => {
     e.stopPropagation(); // Prevent the onClick of the parent from firing
     const startX = e.clientX;
@@ -106,7 +100,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
   const emptyVideoLinkInputMessage = (
     <div className={styles.emptyVideoInputMessage}>
       <FontAwesomeIcon icon={faYoutube} className={styles.iconYoutube}/>
-      <p>Paste a URL from Youtube or a Google Drive file to preview the video.</p>
+      <p style={{margin: '0'}}>Paste a URL from Youtube or a Google Drive file to preview the video.</p>
 
     </div>
   )
@@ -114,31 +108,20 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     // console.log('link check result: ', (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url)))
     return (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url))
   }
-  // const blockControls = (
-  //   <div className={styles.blockControls}>
-  //     <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
-  //     <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-  //     {/* <FontAwesomeIcon icon={faUpDown} className={styles.iconMove}/> */}
-  //     <input
-  //       type="text"
-  //       value={url}
-  //       onChange={handleInputChange}
-  //       placeholder="Enter video URL"
-  //       className={styles.videoInput}
-  //       onMouseDown={(e) => e.stopPropagation()}
-  //       onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
-  //     />
-  //   </div>
-  // )
   const blockControls = (
-    <BlockEditMenu
-      blockIndex={blockIndex}
-      removeBlock={removeBlock}
-      toggleEditable={toggleEditable}
-      blockType='video'
-    />
-  );
-
+    <div className={styles.blockControls}>
+      <input
+        type="text"
+        value={url}
+        onChange={handleInputChange}
+        placeholder="Enter video URL"
+        className={styles.videoInput}
+        onMouseDown={(e) => e.stopPropagation()}
+        onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
+      />
+      {url !== '' && <FontAwesomeIcon icon={faTrashCan} className={styles.icon} onClick={() => setUrl('')}/>}
+    </div>
+  )
   const handleMouseUp = (e) => {
     if (resizableRef.current) {
       const { width, height } = resizableRef.current.getBoundingClientRect();
@@ -174,7 +157,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       className={styles.videoBlockWrapper}
 
     >
-      {/* {isEditable && blockControls} */}
+      {isEditable && blockControls}
       {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}></div>}
       {(url !== '' || src.content !== '') ? video : emptyVideoLinkInputMessage}
     </div>
