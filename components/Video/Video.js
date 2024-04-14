@@ -5,15 +5,15 @@ import styles from './video.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk, faUpDown, faVideo } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
-
+import BlockEditMenu from '../BlockEditMenu/BlockEditMenu';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
 export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable, setActiveBlock, blockIndex, removeBlock, toggleEditable }) {
   const [url, setUrl] = useState('');
-  const [blockHeight, setBlockHeight] = useState(parseInt(src.style.height, 10) + src.style.y);
-  const [blockContentHeight, setBlockContentHeight] = useState(parseInt(src.style.height, 10) );
-  const [blockPosition, setBlockPosition] = useState({x: src.style.x, y: src.style.y});
-  const [height, setHeight] = useState(parseInt(src.style.height, 10)); // for use with refactor not using rnd
+  // const [blockHeight, setBlockHeight] = useState(parseInt(src.style.height, 10) + src.style.y);
+  // const [blockContentHeight, setBlockContentHeight] = useState(parseInt(src.style.height, 10) );
+  // const [blockPosition, setBlockPosition] = useState({x: src.style.x, y: src.style.y});
+  // const [height, setHeight] = useState(parseInt(src.style.height, 10));
   const wrapperRef = useRef(null);
 
 
@@ -22,9 +22,9 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     console.log('url changed: ', url)
   }, [url]);
 
-  useEffect(() => {
-    setBlockHeight(parseInt(blockContentHeight, 10) + blockPosition.y);
-  }, [blockContentHeight, blockPosition]);
+  // useEffect(() => {
+  //   setBlockHeight(parseInt(blockContentHeight, 10) + blockPosition.y);
+  // }, [blockContentHeight, blockPosition]);
 
   useEffect(() => {
     console.log('src changed: ', src)
@@ -90,7 +90,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
   };
   const video = (
     <>
-      {isEditable && <div className={styles.videoOverlay}></div>}
+      <div className={styles.videoOverlay}></div>
       <iframe
         src={src.content}
         frameBorder="0"
@@ -114,22 +114,31 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
     // console.log('link check result: ', (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url)))
     return (getYoutubeEmbedUrl(url) || getGoogleDriveEmbedUrl(url))
   }
+  // const blockControls = (
+  //   <div className={styles.blockControls}>
+  //     <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
+  //     <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
+  //     {/* <FontAwesomeIcon icon={faUpDown} className={styles.iconMove}/> */}
+  //     <input
+  //       type="text"
+  //       value={url}
+  //       onChange={handleInputChange}
+  //       placeholder="Enter video URL"
+  //       className={styles.videoInput}
+  //       onMouseDown={(e) => e.stopPropagation()}
+  //       onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
+  //     />
+  //   </div>
+  // )
   const blockControls = (
-    <div className={styles.blockControls}>
-      <FontAwesomeIcon icon={isEditable ? faFloppyDisk : faPencil} onClick={() => toggleEditable(blockIndex)} className={styles.iconStatus}/>
-      <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(blockIndex)} className={styles.iconTrash}/>
-      {/* <FontAwesomeIcon icon={faUpDown} className={styles.iconMove}/> */}
-      <input
-        type="text"
-        value={url}
-        onChange={handleInputChange}
-        placeholder="Enter video URL"
-        className={styles.videoInput}
-        onMouseDown={(e) => e.stopPropagation()}
-        onKeyDown={(e) => {if (e.key === 'Enter') {handleInputChange(e)} }}
-      />
-    </div>
-  )
+    <BlockEditMenu
+      blockIndex={blockIndex}
+      removeBlock={removeBlock}
+      toggleEditable={toggleEditable}
+      blockType='video'
+    />
+  );
+
   const handleMouseUp = (e) => {
     if (resizableRef.current) {
       const { width, height } = resizableRef.current.getBoundingClientRect();
@@ -165,8 +174,8 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       className={styles.videoBlockWrapper}
 
     >
-      {isEditable && blockControls}
-      {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}><div></div></div>}
+      {/* {isEditable && blockControls} */}
+      {isEditable && url !== ''  && <div className='resizeHandle' onMouseDown={startResize}></div>}
       {(url !== '' || src.content !== '') ? video : emptyVideoLinkInputMessage}
     </div>
   )

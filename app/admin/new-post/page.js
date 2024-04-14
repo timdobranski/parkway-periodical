@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
 import PostNavbar from '../../../components/PostNavbar/PostNavbar';
+import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import BlockEditMenu from '../../../components/BlockEditMenu/BlockEditMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import Intro from '../../../components/Intro/Intro';
@@ -68,12 +70,12 @@ export default function NewPostPage() {
     // find the biggest number, add 50, and set the bottomEdge state to the result
     const largestNumber = Math.max(...bottomEdges);
     const result = largestNumber + 50; // add 50 pixels for padding
-    console.log('RESULT: ', result)
+    // console.log('BOTTOM EDGE RESULT: ', result)
     setBottomEdge(result);
   }, [contentBlocks])
   // NOT WORKING -- scroll to the bottom when a new content block is added
   useEffect(() => {
-    console.log('bottomEdge: ', bottomEdge)
+    console.log('BOTTOM EDGE CHANGED TO: ', bottomEdge)
     window.scrollTo({
       left: 0,
       top: bottomEdge,
@@ -168,7 +170,7 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = (format) => {
-    const newBlock = { type: 'photo', content: null, format: format || 'grid'};
+    const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: '400px' , x: 325, y: bottomEdge }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
     window.scrollTo({
@@ -298,9 +300,10 @@ export default function NewPostPage() {
         setActiveBlock={setActiveBlock}
         handleSubmit={handleSubmit}
       />
+      <PostNavbarLeft/>
       {/* <div className={styles.adminFeedWrapper}> */}
       <div className='feedWrapper'>
-        <div className='post' style={{height: `${bottomEdge + 500}px`}}>
+        <div className='post' style={{height: `${bottomEdge + 200}px`}}>
           {contentBlocks.map((block, index) => (
             <>
               {/* if the block is the title, render the title component & save icon */}
@@ -316,22 +319,26 @@ export default function NewPostPage() {
                     key={index}
                     user={user.supabase_user}
                   />
-                  <div className={styles.blockControlsRight}>
-                    <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
-                    {/* <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/> */}
-                  </div>
+                  {contentBlocks.length === 1 && <div className={styles.noBlocksMessage}>Add some content from the menu on the right to get started</div>}
+
                 </>
               ) : (
-                // otherwise, render the appropriate block component
-                <div key={index} className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`} style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}>
-                  {/* if the content block isn't the title, add up/down nav arrows */}
 
-                  {/* <div className={styles.blockControlsLeft}>
-                    {index !== 0 && <FontAwesomeIcon icon={faCaretUp} onClick={() => moveBlockUp(index)} className={styles.iconUp}/>}
-                    <FontAwesomeIcon icon={faCaretDown} onClick={() => moveBlockDown(index)} className={styles.iconDown}/>
-                  </div> */}
+                <div
+                  key={index}
+                  className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`}
+                  style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}
+                  onClick={() => {if (index !== activeBlock) {setActiveBlock(index)}}}
+                >
+                  {activeBlock === index && block.type !== 'title' &&
+                    <BlockEditMenu
+                      setStatus={() => { toggleEditable(index)}}
+                      {...(block.type !== 'title' ? { removeBlock: () => removeBlock(index) } : {})}
+                      {...(index !== 1 ? { moveBlockUp: () => moveBlockUp(index) } : {})}
+                      {...(contentBlocks[index + 1] ? { moveBlockDown: () => moveBlockDown(index) } : {})}
 
-                  {contentBlocks.length === 1 && contentBlocks[0].type === 'title' && <div className={styles.noBlocksMessage}>Add some content above to get started!</div>}
+                    />}
+
 
                   {block.type === 'text' && (
                     <PrimeText
@@ -358,16 +365,18 @@ export default function NewPostPage() {
                 />
                   }
                   {block.type === 'video' &&
-                <Video
-                  updateVideoUrl={(url) => updateVideoUrl(index, url)}
-                  updateBlockStyle={(style) => updateBlockStyle(index, style)}
-                  setActiveBlock={setActiveBlock}
-                  isEditable={index === activeBlock}
-                  toggleEditable={toggleEditable}
-                  src={block}
-                  blockIndex={index}
-                  removeBlock={() => removeBlock(index)}
-                />
+                  <>
+                    <Video
+                      updateVideoUrl={(url) => updateVideoUrl(index, url)}
+                      updateBlockStyle={(style) => updateBlockStyle(index, style)}
+                      setActiveBlock={setActiveBlock}
+                      isEditable={index === activeBlock}
+                      toggleEditable={toggleEditable}
+                      src={block}
+                      blockIndex={index}
+                      removeBlock={() => removeBlock(index)}
+                    />
+                  </>
                   }
 
                   {/* <div className={styles.blockControlsRight}>

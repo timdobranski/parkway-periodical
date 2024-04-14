@@ -169,7 +169,7 @@
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(10px);
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding-top: 2rem;
   padding-bottom: 2rem;
   font-size: 1.5rem;
@@ -195,6 +195,7 @@
   margin-bottom: 20rem;
   padding: 2rem;
   overflow: visible;
+  min-height: none;
 }
 .blockWrapper {
   position: relative;
