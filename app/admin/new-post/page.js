@@ -70,19 +70,18 @@ export default function NewPostPage() {
     })
     console.log('BOTTOM EDGES: ', bottomEdges)
     // find the biggest number, add 50, and set the bottomEdge state to the result
-    const largestNumber = Math.max(...bottomEdges);
-    const result = largestNumber + 50; // add 50 pixels for padding
-    // console.log('BOTTOM EDGE RESULT: ', result)
+    const result = bottomEdges.reduce((sum, value) => sum + value, 0) + 50;
+
     setBottomEdge(result);
   }, [contentBlocks])
   // NOT WORKING -- scroll to the bottom when a new content block is added
   useEffect(() => {
     console.log('BOTTOM EDGE CHANGED TO: ', bottomEdge)
-    window.scrollTo({
-      left: 0,
-      top: bottomEdge,
-      behavior: 'smooth'
-    });
+    // window.scrollTo({
+    //   left: 0,
+    //   top: bottomEdge,
+    //   behavior: 'smooth'
+    // });
   }, [bottomEdge])
   // useEffect(() => {
   //   // Function to handle global clicks
@@ -323,9 +322,11 @@ export default function NewPostPage() {
         handleSubmit={handleSubmit}
       />
       <PostNavbarLeft/>
-      {/* <div className={styles.adminFeedWrapper}> */}
+
       <div className='feedWrapper'>
-        <div className='post' style={{height: `${bottomEdge + 250}px`}}>
+        <div className='post'
+        // style={{ height: `calc(${bottomEdge}px + 6rem + 250px)` }}
+        >
           {contentBlocks.map((block, index) => (
             <React.Fragment key={index}>
               {/* if the block is the title, render the title component & save icon */}
@@ -348,9 +349,13 @@ export default function NewPostPage() {
 
                 <div
                   key={index}
+                  ref={el => blocksRef.current[index] = el}
                   className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`}
                   style={{height: parseInt(block.style.height, 10) + block.style.y}}
-                  onClick={() => {if (index !== activeBlock) {setActiveBlock(index)}}}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (index !== activeBlock) {setActiveBlock(index)}
+                  }}
                 >
                   {activeBlock === index && block.type !== 'title' &&
                     <BlockEditMenu
@@ -400,11 +405,6 @@ export default function NewPostPage() {
                     />
                   </>
                   }
-
-                  {/* <div className={styles.blockControlsRight}>
-                    <FontAwesomeIcon icon={index === activeBlock ? faFloppyDisk : faPencil} onClick={() => toggleEditable(index)} className={styles.iconStatus}/>
-                    <FontAwesomeIcon icon={faTrashCan} onClick={() => removeBlock(index)} className={styles.iconTrash}/>
-                  </div> */}
                 </div>
               )}
             </React.Fragment>
@@ -412,7 +412,6 @@ export default function NewPostPage() {
           ))}
         </div>
       </div>
-      {/* </div> */}
     </>
   );
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import styles from './layout.module.css';
 import Intro from '../../components/Intro/Intro';
 import AnimatedShield from '../../components/AnimatedShield/AnimatedShield';
@@ -57,6 +57,7 @@ export default function Home({ children }) {
 
 
   return (
+    <Suspense>
     <div>
       <Intro
         introRunning={introRunning}
@@ -68,5 +69,6 @@ export default function Home({ children }) {
         children
       }
     </div>
+    </Suspense>
   );
 }
