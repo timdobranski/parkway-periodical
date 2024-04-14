@@ -134,7 +134,8 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
         width: `${width}px`,
         height: `${height}px`,
         x: x,
-        y: y
+        y: y,
+        maxWidth: '100%',
       });
 
       console.log(`Updated size and position - Width: ${width}px, Height: ${height}px, X: ${x}, Y: ${y}`);

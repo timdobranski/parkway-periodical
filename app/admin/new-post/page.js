@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
@@ -20,7 +20,9 @@ export default function NewPostPage() {
   const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
   const [bottomEdge, setBottomEdge] = useState(0);
-  const [activeBlock, setActiveBlock] = useState(0);
+  const [activeBlock, setActiveBlock] = useState(null);
+  const blocksRef = useRef({});
+
 
   useEffect(() => {
     console.log('user: ', user)
@@ -82,20 +84,40 @@ export default function NewPostPage() {
       behavior: 'smooth'
     });
   }, [bottomEdge])
+  // useEffect(() => {
+  //   // Function to handle global clicks
+  //   const handleGlobalClick = (event) => {
+  //     let isClickInsideAnyBlock = false;
 
+  //     // Check if the click is inside any block by iterating over the refs
+  //     Object.entries(blocksRef.current).forEach(([key, ref]) => {
+  //       if (ref.current && ref.current.contains(event.target)) {
+  //         isClickInsideAnyBlock = true;
+  //         if (contentBlocks[key].type === 'title') {
+  //           // Special handling for title block, e.g., check if click is outside an input element
+  //           if (!event.target.matches('input, textarea')) {
+  //             setActiveBlock(null);
+  //           }
+  //         }
+  //       }
+  //     });
 
-  // on new block: add new gridlines for left, right, top, bottom and center vert/center horizontal
-  // during drag or resize: check for gridlines & force snap
-  // if within 5px of gridline, force snap
-  // if exactly on gridline, allow movement away from gridline, but toward will snap again
-  // on snap, update gridlines in contentblocks state
+  //     if (!isClickInsideAnyBlock) {
+  //       setActiveBlock(null);
+  //     }
+  //   };
 
-  // on drag or resize stop: update gridlines using addGridlines function
-  // separate function for replace vs add gridlines?
-  const enableGridSnap = () => {}
-  const addGridlines = () => {}
-  const removeGridlines = () => {}
+  //   // Attach the global click listener
+  //   document.addEventListener('click', handleGlobalClick);
 
+  //   return () => {
+  //     // Clean up the listener
+  //     document.removeEventListener('click', handleGlobalClick);
+  //   };
+  // }, [contentBlocks]);
+  useEffect(() => {
+    console.log('ACTIVE BLOCK: ', activeBlock)
+  }, [activeBlock])
   // Helper function to upload image to Supabase Storage
   async function uploadImageToSupabase(base64String, fileName) {
     const fetchResponse = await fetch(base64String);
@@ -165,7 +187,7 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length);
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 325, y: bottomEdge } };
+    const newBlock = { type: 'video', content: '', style: { width: '500px', height: '281.25px' , x: 325, y: 0 } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
@@ -305,7 +327,7 @@ export default function NewPostPage() {
       <div className='feedWrapper'>
         <div className='post' style={{height: `${bottomEdge + 250}px`}}>
           {contentBlocks.map((block, index) => (
-            <>
+            <React.Fragment key={index}>
               {/* if the block is the title, render the title component & save icon */}
               {block.type === 'title' ? (
                 <>
@@ -327,7 +349,7 @@ export default function NewPostPage() {
                 <div
                   key={index}
                   className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`}
-                  style={{height: parseInt(block.style.height, 10) + block.style.y + 50}}
+                  style={{height: parseInt(block.style.height, 10) + block.style.y}}
                   onClick={() => {if (index !== activeBlock) {setActiveBlock(index)}}}
                 >
                   {activeBlock === index && block.type !== 'title' &&
@@ -385,7 +407,7 @@ export default function NewPostPage() {
                   </div> */}
                 </div>
               )}
-            </>
+            </React.Fragment>
 
           ))}
         </div>

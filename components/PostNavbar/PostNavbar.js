@@ -113,10 +113,10 @@ export default function PostNavbar({
           <FontAwesomeIcon icon={faImage} className={styles.icon} />
           <h3>Single Photo</h3>
         </div>
-        <div onClick={() => onAddPhoto('grid')} className={styles.navbarSectionItem}>
+        {/* <div onClick={() => onAddPhoto('grid')} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faTableCells} className={styles.icon} />
           <h3>Photo Gallery</h3>
-        </div>
+        </div> */}
         <div onClick={() => onAddPhoto('carousel')} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faTv} className={styles.icon} />
           <h3>Photo Carousel</h3>
@@ -126,10 +126,10 @@ export default function PostNavbar({
       {/* <div className={styles.divider}></div> */}
 
       <div className={styles.navbarSection}>
-        <h3 className={styles.navbarSectionTitle}>Add Video</h3>
+        <h3 className={styles.navbarSectionTitle}>Videos</h3>
         <div onClick={onAddVideo} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faVideo} className={styles.icon} />
-          <h3>Video</h3>
+          <h3>Single Video</h3>
         </div>
       </div>
     </div>

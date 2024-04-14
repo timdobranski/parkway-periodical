@@ -1,6 +1,7 @@
 .videoBlockWrapper {
   position: relative;
-  /* box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5); */
+  /* border: solid red 2px; */
+  max-width: 100%;
 }
 .youtubeVideoWrapper {
   position: relative; /* Added position relative */

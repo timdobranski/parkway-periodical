@@ -48,6 +48,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
     <div className={styles.postTitleWrapper}>
       {isEditable ? (
         <input
+          autoFocus
           type="text"
           value={src?.content}
           onChange={(e) => updateTitle(e.target.value)}
@@ -57,7 +58,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
         />
       ) : (
 
-        <h1 className={styles.postTitle} onClick={() => setActiveBlock(index)}>
+        <h1 className={styles.postTitle} onClick={() => { console.log('clicked!'); setActiveBlock(index)}}>
           {src.content ? src.content : 'Enter title'}
         </h1>
 

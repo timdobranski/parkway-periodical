@@ -207,8 +207,8 @@
   width: 100%;
   height: fit-content;
   padding: 0;
-  /* margin: 2rem 0rem 2rem 0rem; */
-  margin: 0;
+  margin: 2rem 0rem 2rem 0rem;
+
 }
 .editableBlockWrapper {
   position: relative;
