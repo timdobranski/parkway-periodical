@@ -186,7 +186,7 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length);
   }
   const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', style: { width: '100%', height: 'auto' , x: 325, y: 0 } };
+    const newBlock = { type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' } };
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
   };
@@ -297,6 +297,11 @@ export default function NewPostPage() {
     newContentBlocks[index] = { ...newContentBlocks[index], content: url };
     setContentBlocks(newContentBlocks);
   }
+  const updateVideoOrientation = (index, orientation) => {
+    const newContentBlocks = [...contentBlocks];
+    newContentBlocks[index] = { ...newContentBlocks[index], orientation: orientation };
+    setContentBlocks(newContentBlocks);
+  }
   // style should be an object with height, width, top, and left values set to numbers
   const updateBlockStyle = (index, style) => {
     const newContentBlocks = [...contentBlocks];
@@ -402,6 +407,7 @@ export default function NewPostPage() {
                       src={block}
                       blockIndex={index}
                       removeBlock={() => removeBlock(index)}
+                      updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
                     />
                   </>
                   }
