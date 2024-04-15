@@ -72,6 +72,9 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
       <Carousel
         renderArrowPrev={customPrevArrow}
         renderArrowNext={customNextArrow}
+        preventMovementUntilSwipeScrollTolerance={true}
+        swipeScrollTolerance={50}
+        emulateTouch={true}
         dynamicHeight={false}
         autoPlay={false}
         showThumbs={false}
