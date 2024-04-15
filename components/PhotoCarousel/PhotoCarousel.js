@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import styles from './photoCarousel.module.css';
@@ -11,7 +11,8 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedCaption, setEditedCaption] = useState("");
-
+  const pRef = useRef(null);
+  const prevHeightRef = useRef('0px');
   // Reset edited fields when the current photo changes
   useEffect(() => {
     if (photos && photos.length > 0) {
@@ -19,51 +20,55 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
       setEditedCaption(photos[currentPhotoIndex].caption || "");
     }
   }, [currentPhotoIndex, photos]);
-
   useEffect(() => {
     handleTitleChange(currentPhotoIndex, editedTitle)
   }, [editedTitle])
-
   useEffect(() => {
     handleCaptionChange(currentPhotoIndex, editedCaption)
   }, [editedCaption])
+  useEffect(() => {
+    const p = pRef.current;
+    if (p) {
+      // Measure the natural height of the content
+      p.style.height = 'auto';
+      const contentIsEmpty = !p.innerText.trim();
+      const fullHeight = contentIsEmpty ? '0px' : p.scrollHeight + 'px';
+
+      // Start from the previous height
+      p.style.height = prevHeightRef.current;
+      setTimeout(() => {
+        p.style.height = fullHeight;
+      }, 10); // Short delay to allow the browser to transition from the previous height
+
+      // Update the previous height after the transition
+      prevHeightRef.current = fullHeight;
+
+      // Collapse on unmount or when content needs to be hidden
+      return () => {
+        p.style.height = '0';
+        prevHeightRef.current = '0px'; // Reset to '0px' when the component or content is not visible
+      };
+    }
+  }, [currentPhotoIndex, photos]);
 
   const handleCarouselChange = (index) => {
     setCurrentPhotoIndex(index);
   };
+  const customPrevArrow = (clickHandler, hasPrev) => {
+    return (
+      <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null} className={hasPrev ? styles.arrowLeft : styles.arrowLeftDisabled}/>
+    );
+  }
+  const customNextArrow = (clickHandler, hasNext) => {
+    return (
+      <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
+    );
+  }
 
-  const customPrevArrow = (clickHandler, hasPrev) =>
-    <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null}  className={hasPrev ? styles.arrowLeft : styles.arrowLeftDisabled}/>
-
-
-  // Custom next arrow
-  const customNextArrow = (clickHandler, hasNext) =>
-    <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null}  className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
-
-  if (!photos || photos.length === 0) { return <p>No photos uploaded yet</p> }
+  if (!photos || photos.length === 0) { return <p>Click the button above to select photos for the carousel</p> }
 
   return (
-    <div className={styles.carouselWrapper}>
-
-      {photos[currentPhotoIndex] && (
-
-        isEditable ? (
-          <input
-            type="text"
-            className={styles.titleInput}
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            placeholder='Enter title (optional)'
-          />
-        ) :
-          <>
-            {photos[currentPhotoIndex].title && (
-              <p className={styles.titleP}>{editedTitle}</p>
-            )}
-          </>
-      )}
-
-
+    <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
       <Carousel
         renderArrowPrev={customPrevArrow}
         renderArrowNext={customNextArrow}
@@ -91,14 +96,13 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
             placeholder='Enter caption (optional)'
           />
 
-        ) :
-          <>
-            {photos[currentPhotoIndex].caption && (
-              <p className={styles.captionP}>
-                {photos[currentPhotoIndex].caption}
-              </p>
-            )}
-          </>
+        ) : photos[currentPhotoIndex].caption && (
+          <div className={styles.captionWrapper}>
+            <p ref={pRef} className={styles.captionP}>
+              {photos[currentPhotoIndex].caption}
+            </p>
+          </div>
+        )
       )}
     </div>
   );

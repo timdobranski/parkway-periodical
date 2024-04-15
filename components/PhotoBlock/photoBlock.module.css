@@ -6,7 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height:100vh;
+  /* min-height:100vh; */
   border-radius: 10px;
   height: auto;
   /* padding-bottom: 4rem; */
@@ -22,8 +22,6 @@
   outline: dashed black 2px;
   border-radius: 10px;
   height: fit-content;
-  /* min-height:100vh; */
-  /* padding-bottom: 4rem; */
 }
 
 .photoWrapper {

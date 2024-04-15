@@ -170,30 +170,30 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
 
   return (
-    // <Rnd
-    //   default={{
-    //     x: 0,
-    //     y: 0,
-    //     width: 320,
-    //     height: 200,
-    //   }}
-    //   onDragStart={(event) => {event.preventDefault()}}
-    //   resizeHandleStyles={handleStyles}
+  // <Rnd
+  //   default={{
+  //     x: 0,
+  //     y: 0,
+  //     width: 320,
+  //     height: 200,
+  //   }}
+  //   onDragStart={(event) => {event.preventDefault()}}
+  //   resizeHandleStyles={handleStyles}
 
     // >
-      <div className={isEditable ? styles.editablePhotoBlockWrapper : styles.photoBlockWrapper}>
-        {isEditable ?
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            {...(!src.format.includes('single') && { multiple: true })}
-            className={styles.photoInput}
-          />
-          : null
-        }
-        {renderPreview()}
-      </div>
+    <div className={styles.photoBlockWrapper}>
+      {isEditable ?
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          {...(!src.format.includes('single') && { multiple: true })}
+          className={styles.photoInput}
+        />
+        : null
+      }
+      {renderPreview()}
+    </div>
     // </Rnd>
 
   )

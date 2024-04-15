@@ -1,3 +1,14 @@
+@keyframes expandCaption {
+  from {
+    max-height: 0px;
+    /* opacity: 0; */
+  }
+  to {
+    max-height: 500px; /* Large enough to accommodate typical content */
+    /* opacity: 1; */
+  }
+}
+
 .carouselWrapper {
   display: flex;
   flex-direction: column;
@@ -5,11 +16,13 @@
   justify-content: center;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0);
-  border-radius: 10px;
   width: 100%;
-  /* padding: 1rem; */
-  padding: 0;
-  padding-top: 4rem;
+  padding: .25rem;
+  margin: 0;
+  transition: expand 20s ease-in-out;
+  /* border: solid rgb(117, 117, 117) 6px; */
+  /* background-color: rgb(233, 233, 233) */
+  /* padding-top: 3rem; */
 }
 .icon {
   padding: .5rem;
@@ -26,6 +39,11 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border: solid rgb(193, 193, 193) 2px;
+  /* background-color: rgb(255, 255, 255); */
+}
+.carouselSlide img {
+  /* box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0; */
 }
 .slideImg {
   max-height: 40vh;
@@ -34,48 +52,34 @@
 }
 
 /* TITLE AND CAPTIONS */
-.titleInput, .captionInput {
-  font-size: 1rem;
-  margin: .5rem;
-  padding: .5rem;
-  border-radius: 5px;
-  border: none;
-}
-.titleInput, .titleP {
-  position: absolute;
-  top: .5rem;
-  margin: 0;
-  left: 50%;
-  transform: translate(-50%);
-  font-size: 2rem;
-  font-weight: bold;
-  color: rgb(0, 88, 136);
-  font-family: Louis George Cafe;
-}
-.titleInput {
-  padding: 0;
-  font-family: Louis George Cafe;
-  outline: dashed black 1px;
-  /* background-color: rgba(0, 0, 0, 0.1); */
-  text-align: center;
-}
-.titleP {
-
-}
 .captionInput, .captionP {
+  width: calc(100% - 4rem);
+  font-size: 1.25rem;
+  margin: 0;
   text-align: center;
+  padding: .25rem;
 }
 .captionInput {
-  width: calc(100% - 4rem);
-  margin: 2rem;
   outline: dashed black 1px;
+  border: none;
+  resize: none;
+  z-index: 20;
+}
+.captionWrapper {
+  /* border: solid rgb(0, 101, 138) 4px;
+  background-color: rgb(232, 242, 255); */
+  width: 90%;
+  margin: -1rem 0 2px 0;
+
 }
 .captionP {
-  text-align: center;
-  margin: 0 2rem 2rem 2rem;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease-in-out;
+  padding: 0;
+  width: 100%;
+  padding: .5rem;
 }
-
-
 /* NAV ARROWS */
 .arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {
   height: 30px;
@@ -89,22 +93,24 @@
   z-index: 10;
 }
 .arrowLeft, .arrowRight {
-  background-color: rgba(53, 205, 255, 0.607)
+  background-color: rgba(0, 90, 120, 0.7);
+  backdrop-filter: blur(5px);
+  color: rgb(255, 255, 255);
 }
 .arrowLeft:hover, .arrowRight:hover {
-  background-color: rgb(0, 121, 161);
+  background-color: rgb(255, 84, 84);
+  box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0;
+  border: solid rgb(255, 255, 255) 2px;
   cursor: pointer;
   transform: translate(0, -50%) scale(1.2);
 }
 .arrowLeft, .arrowLeftDisabled {
-  left: 2rem;
+  left: 19px;
 }
 .arrowRight, .arrowRightDisabled {
-  right: 2rem;
+  right: 19px;
 }
-.arrowLeftDisabled {
-  background-color: rgba(0, 0, 0, 0.3)
-}
-.arrowRightDisabled {
-  background-color: rgba(0, 0, 0, 0.3)
+.arrowLeftDisabled, .arrowRightDisabled {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: rgb(136, 136, 136);
 }

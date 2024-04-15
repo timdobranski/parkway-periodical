@@ -191,7 +191,7 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = (format) => {
-    const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: '400px' , x: 325, y: bottomEdge }};
+    const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: bottomEdge }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
     window.scrollTo({
