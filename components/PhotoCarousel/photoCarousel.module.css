@@ -41,6 +41,8 @@
   /* overflow: hidden; */
   /* border: solid rgb(80, 80, 80) 1px; */
   background-color: rgb(227, 227, 227);
+  background-color: rgb(255, 255, 255);
+
   z-index: 9999;
 }
 .carouselSlide img {
@@ -60,6 +62,7 @@
   margin: 0;
   text-align: center;
   padding: .25rem;
+  margin: .25rem;
 }
 .captionInput {
   outline: dashed black 1px;
@@ -71,7 +74,6 @@
   /* border: solid rgb(0, 101, 138) 4px;
   background-color: rgb(232, 242, 255); */
   width: 90%;
-  margin: -1rem 0 2px 0;
 
 }
 .captionP {

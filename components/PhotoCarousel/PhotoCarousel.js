@@ -74,7 +74,7 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
         renderArrowNext={customNextArrow}
         dynamicHeight={false}
         autoPlay={false}
-        showThumbs={true}
+        showThumbs={false}
         showStatus={false}
         selectedItem={currentPhotoIndex}
         onChange={handleCarouselChange}

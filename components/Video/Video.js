@@ -82,7 +82,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       {isEditable && videoOptions}
       {(url !== '' || src.content !== '') ? (
         <div className={videoContainerClass}>
-          <div className={styles.videoOverlay}></div>
+          {isEditable && <div className={styles.videoOverlay}></div>}
           <iframe src={src.content} frameBorder="0" allowFullScreen></iframe>
         </div>
       ) : emptyVideoLinkInputMessage}
