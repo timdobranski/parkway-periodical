@@ -395,8 +395,9 @@
     position: absolute;
   }
   .feedWrapper {
-    position: absolute;
-    top: 80px;
+    position: relative;
+    top: 0;
+    /* top: 80px; */
     /* width: 100%; */
     width: 100vw;
     max-width: none;

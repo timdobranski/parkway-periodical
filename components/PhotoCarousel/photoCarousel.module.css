@@ -120,5 +120,8 @@
   .arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {
     display: none;
   }
-
+  .carouselSlide {
+    max-height: 60vh;
+    background-color: white;
+  }
 }
