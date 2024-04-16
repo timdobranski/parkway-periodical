@@ -110,7 +110,7 @@ export default function PhotoGrid ({
                   alt={`Photo ${index}`}
                   className='gridPhoto'
                   onClick={() => setActiveBlock(blockIndex)}
-                  style={photo.style}
+                  // style={photo.style}
                 />
               )}
             </div>
@@ -140,7 +140,7 @@ export default function PhotoGrid ({
               </div>
             ) : (
               <>
-                {photo.title && <p className={styles.photoTitle}>{photo.title}</p>}
+                {photo.title && <div className={styles.photoTitleWrapper}><p className={styles.photoTitle}>{photo.title}</p></div>}
                 {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
               </>
             )}

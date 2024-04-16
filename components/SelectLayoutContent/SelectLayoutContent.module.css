@@ -1,0 +1,35 @@
+.selectHandle {
+  width: 40px;
+  height: 40px;
+  border: solid black 2px;
+}
+.selectChoicesWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  /* border: solid red 2px; */
+  width: 100%;
+}
+.icon, .addIcon {
+  width: 30px;
+  height: 30px;
+  padding: .5rem;
+}
+.addIcon {
+  background-color: white;
+  color: black;
+  border: solid black 1px;
+
+}
+.icon {
+ background-color: rgb(255, 255, 255);
+ color: rgb(92, 92, 92);
+ border: solid rgb(221, 221, 221) 1.5px;
+ width: 25px;
+ height: 25px;
+}
+.icon:hover {
+  cursor: pointer;
+  background-color: rgb(185, 185, 185);
+}

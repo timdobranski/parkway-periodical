@@ -96,7 +96,7 @@
 .gridPhoto {
   width: 100%;
   height: auto;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   box-sizing: border-box;
 
 }

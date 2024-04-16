@@ -1,14 +1,15 @@
 'use client'
 
-import styles from './PostNavbar.module.css';
+import styles from './PostNavbarRight.module.css';
 import { useState, useEffect } from 'react';
 import  { RichUtils,  } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faVideo, faFont, faBars, faTv, faTableCells } from '@fortawesome/free-solid-svg-icons';
 
-export default function PostNavbar({
+export default function PostNavbarRight({
   onAddText, onAddPhoto, onAddVideo,
-  editorState, handleSubmit,
+  onAddLayout,
+  editorState, handleSubmit, addBlock,
   activeBlock, activeBlockType, updateEditorState,
 }) {
 
@@ -19,7 +20,44 @@ export default function PostNavbar({
       <h3 className={styles.publishButton} onClick={handleSubmit} >PUBLISH</h3>
 
       <div className={styles.navbarSection}>
-        <h3 className={styles.navbarSectionTitle}>Layouts</h3>
+        <h3 className={styles.navbarSectionTitle}>Flexible Layouts</h3>
+        <div className={styles.navbarSectionItem} onClick={() => onAddLayout(2)}>
+          <div className={styles.iconWrapper}>
+            <div className={styles.layoutTopRowWrapper}>
+              <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
+              <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
+            </div>
+
+            <div className={styles.layoutBottomRowWrapper}>
+              <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
+              <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
+            </div>
+          </div>
+          <h3>2 Column</h3>
+        </div>
+
+        <div className={styles.navbarSectionItem} onClick={() => onAddLayout(3)}>
+          <div className={styles.iconWrapper}>
+            <div className={styles.layoutTopRowWrapper}>
+              <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
+              <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
+              <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
+            </div>
+
+            <div className={styles.layoutBottomRowWrapper}>
+              <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
+              <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
+              <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
+            </div>
+          </div>
+          <h3>3 Column</h3>
+
+        </div>
+
+      </div>
+
+      <div className={styles.navbarSection}>
+        <h3 className={styles.navbarSectionTitle}>Specific Layouts</h3>
         {/* <div className={styles.navbarSectionRow}> */}
 
         <div className={styles.navbarSectionItem} onClick={() => onAddPhoto('single-photo-caption-right')}>
@@ -51,7 +89,7 @@ export default function PostNavbar({
               <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
             </div>
           </div>
-          <h3>Photo Above Text</h3>
+          <h3>Photo Above</h3>
 
         </div>
 
@@ -67,7 +105,7 @@ export default function PostNavbar({
               <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
             </div>
           </div>
-          <h3>2 Column</h3>
+          <h3>2 Column Photo</h3>
         </div>
 
         <div className={styles.navbarSectionItem} onClick={() => onAddPhoto('3xColumn')}>
@@ -84,7 +122,7 @@ export default function PostNavbar({
               <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
             </div>
           </div>
-          <h3>3 Column</h3>
+          <h3>3 Column Photo</h3>
 
         </div>
 

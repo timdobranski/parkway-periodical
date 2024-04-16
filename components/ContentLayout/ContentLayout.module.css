@@ -1,0 +1,29 @@
+.layoutGrid {
+  display: flex;
+  flex-direction: row;
+  /* border: solid red 2px; */
+  min-height: 10px;
+  width: 100%;
+}
+.layoutColumn {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  /* background: rgb(255, 255, 255); */
+  flex: 1 1 0px; /* shorthand for flex-grow, flex-shrink, and flex-basis */
+  align-items: center; /*layout items are centered by default*/
+  justify-content: center;
+}
+.selectHandle {
+  width: 40px;
+  height: 40px;
+  border: solid black 2px;
+}
+.addContentIcon {
+ width: 100%;
+ height: 100%;
+}
+.selectChoicesWrapper {
+  display: flex;
+  flex-direction: row;
+}

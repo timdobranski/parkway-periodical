@@ -4,12 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
-import PostNavbar from '../../../components/PostNavbar/PostNavbar';
 import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
+import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import Video from '../../../components/Video/Video';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import ContentLayout from '../../../components/ContentLayout/ContentLayout';
 import BlockEditMenu from '../../../components/BlockEditMenu/BlockEditMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
@@ -19,7 +20,6 @@ export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
-  const [bottomEdge, setBottomEdge] = useState(0);
   const [activeBlock, setActiveBlock] = useState(null);
   const blocksRef = useRef({});
 
@@ -57,63 +57,6 @@ export default function NewPostPage() {
   useEffect(() => {
     console.log('ROOT PAGE contentblocks changed: ', contentBlocks)
   }, [contentBlocks])
-  // calculate the bottom edge of the post
-  useEffect(() => {
-    // create a bottomEdges array to store the bottom edge of each content block
-    const bottomEdges = [];
-    // for each content block
-    contentBlocks.forEach((block) => {
-      console.log('block: ', block)
-      // calculate its bottom edge by adding its height to its y position
-      var bottomEdge = block.style.y + parseInt(block.style.height, 10);
-      bottomEdges.push(bottomEdge);
-    })
-    console.log('BOTTOM EDGES: ', bottomEdges)
-    // find the biggest number, add 50, and set the bottomEdge state to the result
-    const result = bottomEdges.reduce((sum, value) => sum + value, 0) + 50;
-
-    setBottomEdge(result);
-  }, [contentBlocks])
-  // NOT WORKING -- scroll to the bottom when a new content block is added
-  useEffect(() => {
-    console.log('BOTTOM EDGE CHANGED TO: ', bottomEdge)
-    // window.scrollTo({
-    //   left: 0,
-    //   top: bottomEdge,
-    //   behavior: 'smooth'
-    // });
-  }, [bottomEdge])
-  // useEffect(() => {
-  //   // Function to handle global clicks
-  //   const handleGlobalClick = (event) => {
-  //     let isClickInsideAnyBlock = false;
-
-  //     // Check if the click is inside any block by iterating over the refs
-  //     Object.entries(blocksRef.current).forEach(([key, ref]) => {
-  //       if (ref.current && ref.current.contains(event.target)) {
-  //         isClickInsideAnyBlock = true;
-  //         if (contentBlocks[key].type === 'title') {
-  //           // Special handling for title block, e.g., check if click is outside an input element
-  //           if (!event.target.matches('input, textarea')) {
-  //             setActiveBlock(null);
-  //           }
-  //         }
-  //       }
-  //     });
-
-  //     if (!isClickInsideAnyBlock) {
-  //       setActiveBlock(null);
-  //     }
-  //   };
-
-  //   // Attach the global click listener
-  //   document.addEventListener('click', handleGlobalClick);
-
-  //   return () => {
-  //     // Clean up the listener
-  //     document.removeEventListener('click', handleGlobalClick);
-  //   };
-  // }, [contentBlocks]);
   useEffect(() => {
     console.log('ACTIVE BLOCK: ', activeBlock)
   }, [activeBlock])
@@ -179,9 +122,9 @@ export default function NewPostPage() {
       console.error('Error in handleSubmit: ', error);
     }
   }
-  // content blocks helpers
+  // content blocks helpers - being phased out for universal addBlock helper
   const addPrimeTextBlock = () => {
-    const newBlock = { type: 'text', content: '', style: { width:'1000px', height:'200px' , x:0, y: bottomEdge }};
+    const newBlock = { type: 'text', content: '', style: { width:'1000px', height:'200px' , x:0, y: 0 }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length);
   }
@@ -191,7 +134,7 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length); // New block's index
   };
   const addPhotoBlock = (format) => {
-    const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: bottomEdge }};
+    const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: 0 }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
     window.scrollTo({
@@ -199,6 +142,66 @@ export default function NewPostPage() {
       top: document.documentElement.scrollHeight,
       behavior: 'smooth'
     });
+  };
+  // UNIVERSAL BLOCK HELPERS ----- ADD AND UPDATE
+  const addBlock = (newBlock, options = {}) => {
+    if (newBlock.type === 'flexibleLayout' && options.columns) {
+      // If it's a flexibleLayout block and columns are specified, prepare the contentBlocks array
+      newBlock.contentBlocks = Array.from({ length: options.columns }, () => ({
+        type: null, // Initial placeholder block, no type
+        content: null, // No content initially
+        style: {} // Empty style, customizable based on the nested block's type
+      }));
+    }
+
+    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
+    setActiveBlock(contentBlocks.length); // New block's index
+
+    window.scrollTo({
+      left: 0,
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth'
+    });
+
+  };
+  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
+  const updateBlock = (index, updatedProperties, nestedIndex = null) => {
+    const updatedBlocks = contentBlocks.map((block, idx) => {
+      if (idx === index) {
+        if (nestedIndex !== null && block.type === 'flexibleLayout') {
+          // Handle the nested blocks within a flexibleLayout block
+          const updatedNestedBlocks = block.content.map((nestedBlock, nestedIdx) => {
+            if (nestedIdx === nestedIndex) {
+              return { ...nestedBlock, ...updatedProperties };
+            }
+            return nestedBlock;
+          });
+          return { ...block, content: updatedNestedBlocks };
+        }
+        // Update the block if there is no nested index or not a flexibleLayout
+        return { ...block, ...updatedProperties };
+      }
+      return block;
+    });
+
+    setContentBlocks(updatedBlocks);
+  };
+  const addFlexibleLayout = (columns) => {
+    // Create an array with 'columns' number of empty objects
+    const placeholders = Array.from({ length: columns }, () => ({
+      type: null, // No type initially
+      content: null, // No content initially
+      style: {}    // Empty style object, can be populated later based on type
+    }));
+
+    const newBlock = {
+      type: 'flexibleLayout',
+      contentBlocks: placeholders,
+      columns: columns
+    };
+
+    setContentBlocks([...contentBlocks, newBlock]); // Append new block to the existing blocks
+    setActiveBlock(contentBlocks.length); // Set active block to the newly added block
   };
   const removeBlock = (index) => {
     // Remove the selected block
@@ -249,21 +252,17 @@ export default function NewPostPage() {
       setActiveBlock(index); // Set to the clicked block
     }
   };
-  const handleFocus = (index) => {
-    // Set the isEditable to true for the focused block
-    const updatedBlocks = contentBlocks.map((block, i) => ({
-      ...block,
-      isEditable: i === index
-    }));
-    setContentBlocks(updatedBlocks);
-  };
-  const handleBlur = (index) => {
-    console.log('inside handle blur')
-    // Set the isEditable to false for the blurred block
-    const updatedBlocks = contentBlocks.map((block, i) => ({
-      ...block,
-      isEditable: i !== index ? block.isEditable : false
-    }));
+  const updateBlockContent = (index, newContent) => {
+    // Create a new array with the updated block's content
+    const updatedBlocks = contentBlocks.map((block, i) => {
+      if (i === index) {
+        // Only update the content of the block at the specified index
+        return { ...block, content: newContent };
+      }
+      return block;
+    });
+
+    // Update the state to the new array of blocks
     setContentBlocks(updatedBlocks);
   };
   // title block helper
@@ -318,13 +317,15 @@ export default function NewPostPage() {
   }
   return (
     <>
-      <PostNavbar
+      <PostNavbarRight
         onAddText={addPrimeTextBlock}
         onAddPhoto={addPhotoBlock}
         onAddVideo={addVideoBlock}
+        onAddLayout={addFlexibleLayout}
         activeBlock={activeBlock}
         setActiveBlock={setActiveBlock}
         handleSubmit={handleSubmit}
+        addBlock={addBlock}
       />
       <PostNavbarLeft/>
 
@@ -356,7 +357,7 @@ export default function NewPostPage() {
                   key={index}
                   ref={el => blocksRef.current[index] = el}
                   className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`}
-                  style={{height: parseInt(block.style.height, 10) + block.style.y}}
+                  // style={{height: parseInt(block.style.height, 10) + block.style.y}}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (index !== activeBlock) {setActiveBlock(index)}
@@ -370,7 +371,23 @@ export default function NewPostPage() {
                       {...(contentBlocks[index + 1] ? { moveBlockDown: () => moveBlockDown(index) } : {})}
 
                     />}
-
+                  {block.type === 'flexibleLayout' && (
+                    <ContentLayout
+                      blockIndex={index}
+                      isEditable={index === activeBlock}
+                      toggleEditable={toggleEditable}
+                      src={block.contentBlocks}
+                      setActiveBlock={setActiveBlock}
+                      onClick={() => setActiveBlock(index)}
+                      // updateBlockStyle={(style) => updateBlockStyle(index, style)}
+                      updateBlockContent={(newContent) => {updateBlockContent(index, newContent)}}
+                      addText={addPrimeTextBlock}
+                      addVideo={addVideoBlock}
+                      addPhoto={addPhotoBlock}
+                      removeBlock={() => removeBlock(index)}
+                      columns={block.columns}
+                    />
+                  )}
 
                   {block.type === 'text' && (
                     <PrimeText

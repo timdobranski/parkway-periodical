@@ -305,20 +305,16 @@ export default function EditablePhoto({
           <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
         </ReactCrop>
       ) : (
-        <Rnd
-          bounds='.postPreview'
-          lockAspectRatio={true}
-          default={fileObj.style}
-          // style={{ 'max-height': '50vh', }}
-          onDragStart={(event) => {event.preventDefault()}}
-          onDragStop={onDragStop}
-          onResizeStop={onResizeStop}
-          resizeHandleStyles={handleStyles}
-          // minHeight={200}
-          // minWidth={200}
-          // maxHeight={500}
-          // maxWidth={800}
-        >
+        // <Rnd
+        //   bounds='.postPreview'
+        //   lockAspectRatio={true}
+        //   default={fileObj.style}
+        //   // style={{ 'max-height': '50vh', }}
+        //   onDragStart={(event) => {event.preventDefault()}}
+        //   onDragStop={onDragStop}
+        //   onResizeStop={onResizeStop}
+        //   resizeHandleStyles={handleStyles}
+        // >
           <div className={styles.photoWrapper}>
             {!cropActive &&
               <div className={styles.photoEditMenu}>
@@ -338,10 +334,10 @@ export default function EditablePhoto({
               onDrop={(e) => onDrop(e, index)}
               className='gridPhoto'
               alt={`Preview ${index}`}
-              style={fileObj.style}
+              // style={fileObj.style}
             />
           </div>
-        </Rnd>
+        // </Rnd>
       )
       }
 
