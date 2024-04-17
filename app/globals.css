@@ -310,6 +310,19 @@
   box-sizing: border-box !important;
   flex-grow: 1 !important;
 }
+.ql-picker-options {
+  padding: .5rem !important;
+  box-shadow: 0 0 10px 5px rgba(0,0,0,.3) !important;
+  width: 280px !important;
+}
+.ql-picker-item {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 10px 10px !important;
+  display: inline-block !important;
+  outline: solid rgb(187, 187, 187) .5px !important;
+  border-radius: 50%;
+}
 /* .ql-editor p {
   font-size: 20px;
 }
