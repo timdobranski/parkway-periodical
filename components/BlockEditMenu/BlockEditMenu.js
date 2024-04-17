@@ -7,8 +7,8 @@ export default function BlockEditMenu({ addTitle, addCaption, removeBlock, moveB
   return (
     <div className={styles.blockEditMenu}>
       {setStatus && <button onClick={setStatus}><FontAwesomeIcon icon={faFloppyDisk} className={`${styles.icon} ${styles.iconSave}`}/></button>}
-      {moveBlockUp && <button onClick={moveBlockUp}><FontAwesomeIcon icon={faChevronUp} className={`${styles.icon} ${styles.iconUp}`}/></button>}
-      {moveBlockDown && <button onClick={moveBlockDown}><FontAwesomeIcon icon={faChevronDown} className={`${styles.icon} ${styles.iconDown}`}/></button>}
+       <button onClick={moveBlockUp ? moveBlockUp : null}><FontAwesomeIcon icon={faChevronUp} className={`${styles.icon} ${moveBlockUp ? styles.iconUp : styles.iconDisabled}`}/></button>
+       <button onClick={moveBlockDown ? moveBlockDown : null}><FontAwesomeIcon icon={faChevronDown} className={`${styles.icon} ${moveBlockDown ? styles.iconDown : styles.iconDisabled}`}/></button>
       {addTitle && <button onClick={() => {}}><FontAwesomeIcon icon={fa} className={`${styles.icon} ${styles.iconAddTitle}`}/></button>}
       {addCaption && <button onClick={() => {}}><FontAwesomeIcon icon={faTrash} className={`${styles.icon} ${styles.iconAddCaption}`}/></button>}
       {removeBlock && <button onClick={removeBlock}><FontAwesomeIcon icon={faTrash} className={`${styles.icon} ${styles.delete}`}/></button>}

@@ -1,10 +1,11 @@
 /* Landscape (16:9) */
-.videoContainer, .editableVideoContainer {
+.videoContainer{
   position: relative;
   width: 100%;
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
   margin: 0 auto;
   overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 1)
 }
 .videoContainer iframe, .editableVideoContainer iframe {
   position: absolute;
@@ -44,13 +45,13 @@
 /* for a separate button if necessary */
 .videoInput {
   position: relative;
-  width: 400px;
+  width: 100%;
   margin: 0 auto;
   font-size: 1rem;
   margin: 0 1rem 0 1rem;
   padding: .25rem;
-  border-radius: 4px;
-  border: solid rgb(67, 67, 67) 2px;
+  border-radius: 0;
+  border: solid rgb(179, 179, 179) 1px;
   background: rgba(255, 255, 255, .9)
 }
 .emptyVideoInputMessage{
@@ -79,19 +80,22 @@
 
 .blockControls {
   position: absolute;
-  color: white;
-  height: 45px;
+  top: -48px;
   width: 100%;
-  top: 0;
-  left: 0;
+  left: 0px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  background-color: rgba(0, 0, 0, .5);
+  justify-content: space-between;
+  background-color: rgb(243, 243, 243);
   margin: 0;
-  padding: 0 1rem 0 1rem;
-  z-index: 15;
+  padding: .25rem;
+  z-index: 0;
+  outline: solid rgb(177, 177, 177) 2px;
+}
+.trashIcon {
+  color: rgb(251, 104, 104);
+  margin: 0 1rem;
 }
 .blockControls .fa {
   cursor: pointer;

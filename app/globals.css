@@ -285,10 +285,12 @@
   /* border: solid red 2px; */
 }
 .p-editor-toolbar {
-  top: -44px;
+  top: -48px;
   /* outline: solid rgb(95, 95, 95) 1px !important; */
-  border-bottom: solid rgb(178, 178, 178) 4px !important;
-  background-color: rgba(255, 255, 255, 1) !important;
+  border-bottom: solid rgb(220, 220, 220) 2px !important;
+  border: none !important;
+  outline: solid rgb(178, 178, 178) 2px;
+  background-color: rgb(243, 243, 243) !important;
   border-radius: 0 !important;
   width: 100%;;
   position: absolute !important;

@@ -13,7 +13,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
 
 
   useEffect(() => {
-    updateVideoUrl(url);
+    updateVideoUrl && updateVideoUrl(url);
     console.log('url changed: ', url)
   }, [url]);
 
@@ -66,8 +66,8 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       />
       {url !== '' && (
         <>
-          <FontAwesomeIcon icon={faTrashCan} className={styles.icon} onClick={() => setUrl('')}/>
-          <FontAwesomeIcon icon={src.orientation === 'landscape' ? faRotateRight : faRotateLeft} className={styles.icon} onClick={toggleOrientation}/>
+          {/* <FontAwesomeIcon icon={src.orientation === 'landscape' ? faRotateRight : faRotateLeft} className={styles.icon} onClick={toggleOrientation}/> */}
+          <FontAwesomeIcon icon={faTrashCan} className={`${styles.icon} ${styles.trashIcon}`} onClick={() => setUrl('')}/>
         </>
       )}
     </div>
