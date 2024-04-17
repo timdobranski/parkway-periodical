@@ -16,15 +16,16 @@ export default function PostNavbarLeft() {
       <p>Tag your post with relevant topics for users to find below:</p>
       <p>{`You can add a new tag too, but be cautious that you aren't creating a tag that already exists, as this will confuse users`}</p>
       <form
-        // onSubmit={handleAddOption}
+      className={styles.addNewOptionWrapper}
       >
         <input
           type="text"
           placeholder="Add new option"
           value={newOption}
-          // onChange={(e) => setNewOption(e.target.value)}
+          className={styles.addNewOptionInput}
+          onChange={(e) => setNewOption(e.target.value)}
         />
-        <button type="submit">Add Option</button>
+        <button type="submit" className={styles.addNewOptionButton}>Add Option</button>
       </form>
       <ul className={styles.optionsList}>
         {options.map(option => (
@@ -34,6 +35,7 @@ export default function PostNavbarLeft() {
                 type="checkbox"
                 checked={option.checked}
                 onChange={() => handleCheckOption(option)}
+                className={styles.checkbox}
               />
               {option}
             </label>

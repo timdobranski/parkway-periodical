@@ -144,27 +144,31 @@ export default function NewPostPage() {
     });
   };
   // UNIVERSAL BLOCK HELPERS ----- ADD AND UPDATE
-  const addBlock = (newBlock, options = {}) => {
-    if (newBlock.type === 'flexibleLayout' && options.columns) {
-      // If it's a flexibleLayout block and columns are specified, prepare the contentBlocks array
-      newBlock.contentBlocks = Array.from({ length: options.columns }, () => ({
-        type: null, // Initial placeholder block, no type
-        content: null, // No content initially
-        style: {} // Empty style, customizable based on the nested block's type
-      }));
+
+  // add a new block. takes new block obj, outer index, then inner index
+  const addBlock = (newBlock, parentIndex = null, nestedIndex = null) => {
+    if (parentIndex !== null && nestedIndex !== null) {
+      // Adding a block inside a nested flexibleLayout
+      const updatedBlocks = contentBlocks.map((block, idx) => {
+        if (idx === parentIndex && block.type === 'flexibleLayout') {
+          const updatedNestedBlocks = block.contentBlocks.map((nestedBlock, nestedIdx) => {
+            if (nestedIdx === nestedIndex) {
+              return { ...nestedBlock, ...newBlock };
+            }
+            return nestedBlock;
+          });
+          return { ...block, contentBlocks: updatedNestedBlocks };
+        }
+        return block;
+      });
+      setContentBlocks(updatedBlocks);
+    } else {
+      // Adding a block at the top level
+      setContentBlocks([...contentBlocks, newBlock]);
     }
-
-    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    setActiveBlock(contentBlocks.length); // New block's index
-
-    window.scrollTo({
-      left: 0,
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
-    });
-
+    setActiveBlock(contentBlocks.length);
   };
-  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
+  // sets new properties on the block. works on layouts if passed the nestedIndex  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
   const updateBlock = (index, updatedProperties, nestedIndex = null) => {
     const updatedBlocks = contentBlocks.map((block, idx) => {
       if (idx === index) {
@@ -425,6 +429,7 @@ export default function NewPostPage() {
                       blockIndex={index}
                       removeBlock={() => removeBlock(index)}
                       updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
+                      viewContext={'edit'}
                     />
                   </>
                   }

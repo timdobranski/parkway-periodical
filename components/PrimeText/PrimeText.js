@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './PrimeText.module.css';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -14,62 +14,28 @@ import { Editor } from 'primereact/editor';
 export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   updateBlockStyle, setTextState, setActiveBlock, onClick, removeBlock
 }) {
+  const editorRef = useRef(null);
 
 
   // deprecated DOMNodeInserted event listener
-  useEffect(() => {
-    if (!isEditable) return;
-    // Select the elements inside the Rnd component that you want to make non-draggable
-    const nonDraggableElements = document.querySelectorAll('.p-editor-content');
-    // Function to prevent dragging
-    const preventDrag = (e) => e.stopPropagation();
-
-    // Add event listeners to make these elements non-draggable
-    nonDraggableElements.forEach(element => {
-      element.addEventListener('mousedown', preventDrag);
-    });
-
-    // Cleanup function to remove the event listeners
-    return () => {
-      nonDraggableElements.forEach(element => {
-        element.removeEventListener('mousedown', preventDrag);
-      });
-    };
-  }, [isEditable]);
-
-  useEffect(() => {
-    console.log('src changed: ', src)
-  }, [src]);
-
-  // If not editable, return just the text
-
-  if (src && !src.content && !isEditable) return (
-    <div className={styles.PrimeTextContainer} onClick={() => {setActiveBlock(blockIndex)}}>
-      <p className={styles.emptyTextBlockMessage}>No text added yet. Click to add.</p>
-    </div>
-  );
-
-  // return (
-  //   <div className={styles.PrimeTextContainer} >
-  //     <p
-  //       className={styles.textView}
-  //       onClick={() => {setActiveBlock(blockIndex)}}
-  //       dangerouslySetInnerHTML={{ __html: src?.content }}>
-  //     </p>
-  //   </div>
-  // )
-
+  // useEffect(() => {
+  //   if (isEditable && editorRef.current) {
+  //     editorRef.current.focus();
+  //   }
+  // }, [isEditable, editorRef]);
 
 
   return (
-    // <div className={styles.PrimeTextContainer}>
-
-      <Editor
-        value={src.content}
-        onTextChange={(e) => setTextState(e.htmlValue)}
-        {...(!isEditable && { readOnly: true })}
-        />
-
-    // </div>
+    <Editor
+      key={isEditable ? 'editable' : 'readonly'}
+      ref={editorRef}
+      value={src.content}
+      onTextChange={(e) => setTextState(e.htmlValue)}
+      placeholder='No text added yet. Click to add some text'
+      {...(!isEditable && { readOnly: true })}
+      {...(!isEditable && { showHeader: false })}
+      showHeader={isEditable}
+      focus='true'
+    />
   )
 }

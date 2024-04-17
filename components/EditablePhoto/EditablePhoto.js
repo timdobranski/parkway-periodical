@@ -171,16 +171,6 @@ export default function EditablePhoto({
     // Convert the canvas to a base64 data URL in WebP format
     return canvas.toDataURL('image/webp');
   };
-  const handleWidthChange = (e) => {
-    const value = e.target.value;
-    const newWidth = unit === 'percent' ? value : percentToPixels(value, 'width');
-    setCropSize({ ...cropSize, width: newWidth });
-  };
-  const handleHeightChange = (e) => {
-    const value = e.target.value;
-    const newHeight = unit === 'percent' ? value : percentToPixels(value, 'height');
-    setCropSize({ ...cropSize, height: newHeight });
-  };
   const pixelsToPercent = (value, dimension) => {
     if (!imageRef) return 0;
     const imageSize = dimension === 'width' ? imageRef.naturalWidth : imageRef.naturalHeight;
@@ -193,29 +183,6 @@ export default function EditablePhoto({
   };
   const cropControls = (
     <div className={styles.cropControlsWrapper}>
-      <div className={styles.cropManualDimensions}>
-        <p>Width</p>
-        <input
-          type="number"
-          value={cropSize.width}
-          onChange={(e) => setCropSize({ ...cropSize, width: e.target.value })}
-          placeholder="Width"
-          className={styles.cropManualDimensionsInput}
-        />
-        <p>Height</p>
-        <input
-          type="number"
-          value={cropSize.height}
-          onChange={(e) => setCropSize({ ...cropSize, height: e.target.value })}
-          placeholder="Height"
-          className={styles.cropManualDimensionsInput}
-        />
-
-        <select value={unit} onChange={(e) => setUnit(e.target.value)}>
-          <option value="percent">Percent</option>
-          <option value="pixels">Pixels</option>
-        </select>
-      </div>
       <span className={styles.lockWrapper}>
         <p>Aspect Ratio Lock:</p>
         <FontAwesomeIcon icon={lockAspectRatio ? faLock : faLockOpen} onClick={() => setLockAspectRatio(!lockAspectRatio)} className={styles.lockIcon} />
@@ -223,73 +190,7 @@ export default function EditablePhoto({
       <button onClick={finalizeCrop}>Confirm Crop</button>
     </div>
   )
-  // RESIZE HANDLERS
-  const handleResize = () => {
-    setResizeActive(true);
 
-    // Update the fileObj with the new style information
-    updateFileObjWithStyle(newWidth, newHeight);
-  };
-  // for react-rnd
-  const onDragStop = (e, d) => {
-    setPosition({ x: d.x, y: d.y });
-  };
-
-  const onResizeStop = (e, direction, ref, delta, position) => {
-    setSize({ width: ref.style.width, height: ref.style.height });
-    setPosition({ x: position.x, y: position.y });
-  };
-  // Function to update the fileObj with new style
-  const updateFileObjWithStyle = (newWidth, newHeight) => {
-    console.log('updateFileObjWithStyle ran')
-    setSelectedPhotos(prevPhotos => {
-      const updatedPhotos = [...prevPhotos];
-      const updatedFileObj = {
-        ...updatedPhotos[index],
-        style: { width: newWidth, height: newHeight } // Assuming you want to store dimensions in a 'style' key
-      };
-      updatedPhotos[index] = updatedFileObj;
-      return updatedPhotos;
-    });
-  };
-  const handleStyles = {
-    topRight: {
-      top: '-10px',
-      right: '-10px',
-      width: '20px',
-      height: '20px',
-      background: 'rgba(0, 0, 0, .5)',
-      border: 'solid 4px black',
-      cursor: 'nesw-resize',
-    },
-    bottomRight: {
-      bottom: '-10px',
-      right: '-10px',
-      width: '20px',
-      height: '20px',
-      background: 'rgba(0, 0, 0, .5)',
-      border: 'solid 4px black',
-      cursor: 'nwse-resize',
-    },
-    bottomLeft: {
-      bottom: '-10px',
-      right: '10px',
-      width: '20px',
-      height: '20px',
-      background: 'rgba(0, 0, 0, .5)',
-      border: 'solid 4px black',
-      cursor: 'nesw-resize',
-    },
-    topLeft: {
-      top: '-10px',
-      right: '-10px',
-      width: '20px',
-      height: '20px',
-      background: 'rgba(0, 0, 0, .5)',
-      border: 'solid 4px black',
-      cursor: 'nwse-resize',
-    },
-  }
   if (!fileObj) { return null }
 
   return (
@@ -305,16 +206,6 @@ export default function EditablePhoto({
           <img src={fileObj.src} className='gridPhoto' alt={`Preview ${index}`} ref={imageRef} style={fileObj.style}/>
         </ReactCrop>
       ) : (
-        // <Rnd
-        //   bounds='.postPreview'
-        //   lockAspectRatio={true}
-        //   default={fileObj.style}
-        //   // style={{ 'max-height': '50vh', }}
-        //   onDragStart={(event) => {event.preventDefault()}}
-        //   onDragStop={onDragStop}
-        //   onResizeStop={onResizeStop}
-        //   resizeHandleStyles={handleStyles}
-        // >
           <div className={styles.photoWrapper}>
             {!cropActive &&
               <div className={styles.photoEditMenu}>

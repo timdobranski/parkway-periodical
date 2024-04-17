@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import  { RichUtils,  } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faVideo, faFont, faBars, faTv, faTableCells } from '@fortawesome/free-solid-svg-icons';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 export default function PostNavbarRight({
   onAddText, onAddPhoto, onAddVideo,
@@ -166,8 +167,8 @@ export default function PostNavbarRight({
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Videos</h3>
         <div onClick={onAddVideo} className={styles.navbarSectionItem}>
-          <FontAwesomeIcon icon={faVideo} className={styles.icon} />
-          <h3>Single Video</h3>
+          <FontAwesomeIcon icon={faYoutube} className={`${styles.icon} ${styles.youtubeIcon}`} />
+          <h3>Youtube</h3>
         </div>
       </div>
     </div>

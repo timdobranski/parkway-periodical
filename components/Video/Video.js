@@ -8,12 +8,12 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
 export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable,
-  setActiveBlock, blockIndex, removeBlock, toggleEditable, updateVideoOrientation }) {
-  const [url, setUrl] = useState('');
+  setActiveBlock, blockIndex, removeBlock, toggleEditable, updateVideoOrientation, viewContext }) {
+  const [url, setUrl] = useState(src.content);
 
 
   useEffect(() => {
-    updateVideoUrl && updateVideoUrl(url);
+    updateVideoUrl(url);
     console.log('url changed: ', url)
   }, [url]);
 
@@ -82,7 +82,7 @@ export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditabl
       {isEditable && videoOptions}
       {(url !== '' || src.content !== '') ? (
         <div className={videoContainerClass}>
-          {isEditable && <div className={styles.videoOverlay}></div>}
+          {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}
           <iframe src={src.content} frameBorder="0" allowFullScreen></iframe>
         </div>
       ) : emptyVideoLinkInputMessage}

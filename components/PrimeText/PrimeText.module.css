@@ -8,7 +8,7 @@
   padding: 0;
   max-width: 1250px;
   max-height: 1000px;
-  border: solid red 2px;
+  border: dashed black 1px;
 }
 .emptyTextBlockMessage {
   text-align:center;

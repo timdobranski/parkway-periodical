@@ -100,11 +100,14 @@
   font-weight: normal;
 }
 .icon {
-  height: 15px;
-  width: 15px;
+  height: 25px;
+  width: 25px;
   margin: .5rem;
   color: rgb(0, 150, 214);
   /* border: solid blue 2px; */
+}
+.youtubeIcon {
+  color: red;
 }
 
 .iconWrapper{
