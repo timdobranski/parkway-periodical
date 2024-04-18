@@ -75,10 +75,10 @@
   /* box-shadow: 0 0 20px rgba(119, 255, 132, 0.747); */
 }
 .yearLong {
- background-color: rgb(79, 176, 255);
+ background-color: rgb(75, 192, 255);
 }
 .trimester {
-  background-color: rgb(255, 213, 0);
+  background-color: rgb(255, 112, 112);
 }
 .electiveWrapper:hover {
   cursor: pointer;
