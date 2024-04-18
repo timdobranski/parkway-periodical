@@ -9,9 +9,8 @@ import "primeicons/primeicons.css";
 import { Editor } from 'primereact/editor';
 
 export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
-  updateBlockStyle, setTextState, setActiveBlock, onClick, removeBlock, toolbar
+  updateBlockStyle, setTextState, setActiveBlock, onClick, removeBlock, toolbar, viewContext
 }) {
-  const editorRef = useRef(null);
 
   // useEffect(() => {
   //   if (isEditable && editorRef.current) {
@@ -19,17 +18,16 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   //   }
   // }, [isEditable, editorRef]);
 
-
   return (
     <Editor
       key={isEditable ? 'editable' : 'readonly'}
-      ref={editorRef}
+
       value={src.content}
       onTextChange={(e) => setTextState(e.htmlValue)}
       placeholder='No text added yet. Click to add some text'
       {...(!isEditable && { readOnly: true })}
       {...(!isEditable && { showHeader: false })}
-      showHeader={isEditable}
+      showHeader={isEditable || false}
       headerTemplate={toolbar}
     />
   )

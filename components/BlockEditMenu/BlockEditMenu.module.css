@@ -1,22 +1,23 @@
 .blockEditMenu {
   position: absolute;
   color: black;
-  height: auto;
-  width: 50px;
-  top: 50%;
-  left: -60px;
+  height: 50px;
+  width: 100%;
+  bottom: -83px;
+  left: 0px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   background-color: rgb(243, 243, 243);
+  background-color: white;
   margin: 0;
   padding: 0;
   z-index: 0;
   outline: solid rgb(177, 177, 177) 2px;
   transform: translateY(-50%);
   /* border-radius: 5px; */
-  /* box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.5); */
+  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
 }
 .blockEditMenu button {
   background-color: rgba(0, 0, 0, 0);
@@ -41,10 +42,14 @@
   cursor: pointer;
 }
 .delete {
-  /* position: relative;
-  right: 0; */
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin: 0 .5rem;
+
+  transform: translateY(-50%);
   color: rgb(255, 94, 94);
-  margin-top: 2rem;
+  /* margin-left: 2rem; */
   /* margin-left: 2rem; */
 }
 .delete:hover {

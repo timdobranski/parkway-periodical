@@ -117,7 +117,8 @@ export default function Home({ introRunning, setIntroRunning }) {
               <div className='blockWrapper'>
                 {/* <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div> */}
                 <PrimeText
-                  textState={block.content}
+                  src={block}
+                  viewContext='view'
                 />
               </div>
             )}
