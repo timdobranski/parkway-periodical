@@ -40,17 +40,19 @@ export default function Electives() {
 
   return (
     <div className='feedWrapper'>
-      <h1 className={styles.pageTitle}>Check out our amazing student elective courses this year!</h1>
-      {electivesData.map((elective, index) => {
-        return (
-          <ElectiveBlock
-            key={index}
-            electiveData={elective}
-            color={index % 2 === 0 ? 'blue' : 'red'}
-          />
-        )
-      })}
+      {/* <div className='post'> */}
+        <h1 className={styles.pageTitle}>Check out our amazing student elective courses this year!</h1>
+        {electivesData.map((elective, index) => {
+          return (
+            <ElectiveBlock
+              key={index}
+              electiveData={elective}
+              color={index % 2 === 0 ? 'blue' : 'red'}
+            />
+          )
+        })}
 
+      {/* </div> */}
     </div>
   )
 }

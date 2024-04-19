@@ -89,8 +89,8 @@ export default function Header({ skipAnimation }) {
         <Link href='/public/archive'>
           <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </Link>
-        <Link href='/public/electives'>
-          <h2 className={isActive('/public/electives') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
+        <Link href='/public/about'>
+          <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
         </Link>
         {/* <Link href='/public/about'>
           <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2>

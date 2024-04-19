@@ -50,6 +50,9 @@
   outline: dashed rgb(129, 129, 129) 1.5px;
   border: none;
 }
+.noMargin {
+ margin: 0;
+}
 .background {
   position: absolute;
   top: 0;
@@ -155,11 +158,56 @@
   -webkit-text-stroke: 1px rgb(255, 255, 255);
   color: rgba(0, 89, 124, 0.7);
   margin: 0rem;
-  border-bottom: solid rgb(255, 54, 54) 3px;
+  text-decoration: underline;
+  text-decoration-color: red;
+  text-underline-offset: 2px;
+}
+.pageTitle {
+  text-decoration-thickness: 3px;
 }
 .smallerTitle {
   font-size: 1.5rem;
   -webkit-text-stroke: 0;
+  text-decoration-thickness: 2px;
+}
+.postTitle, .smallerPostTitle, .postTitleButton {
+  display: block;
+  color: #0068a8;
+  width: 100%;
+  height: fit-content;
+  text-align: left;
+  font-family: Louis George Cafe;
+  font-weight: normal;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: red;
+  text-underline-offset: .4rem;
+  text-decoration-thickness: 2px;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+.smallerPostTitle {
+  font-size: 1.75rem;
+  text-underline-offset: .2rem;
+  margin-bottom: 0;
+  padding-bottom:0;
+}
+.postTitle {
+  font-size: 2.5rem;
+}
+.postTitleButton {
+  font-size: 1.75rem;
+  text-underline-offset: .2rem;
+  background-color: var(--primary-blue);
+  padding: .5rem 1rem;
+  color: white;
+  display: inline-block;
+  width: auto;
+  border-radius: 5px;
+  text-decoration-color: rgb(252, 73, 73);
+
 }
 .post, .postPreview {
   position: relative;
