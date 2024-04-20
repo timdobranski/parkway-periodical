@@ -13,7 +13,7 @@
   position: absolute;;
   top: 0;
   height: 100%;
-  width: 25%;
+  width: 30%;
   background-color: rgba(0, 0, 0, .6);
   background-color: white;
   transition: background-color .75s ease-in-out;
@@ -43,7 +43,7 @@
   width: 25px;
   margin: 0;
   background-color: rgb(255, 84, 84);
-  box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0;
+  /* box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0; */
   border: solid rgb(255, 255, 255) 2px;
   border-radius: 50%;
   padding: .5rem;
@@ -65,7 +65,7 @@
   box-sizing: border-box;
   position: absolute;
   height: 100%;
-  width: 75%;
+  width: 70%;
   top: 0;
   z-index: 2;
   transition: transform 0.75s ease-in-out;
@@ -86,7 +86,7 @@
   align-items: flex-start;
   top: 0;
   height: 100%;
-  width: 75%;
+  width: 70%;
   padding: 0 1.25rem;
   z-index: 0;
   font-size: 1.25rem;
