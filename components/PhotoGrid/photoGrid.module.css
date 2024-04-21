@@ -110,7 +110,8 @@
   border: 1px solid black;
 }
 .captionInput {
-  width: 80%;
+  width: 50%;
+  /* max-width: 100%; */
 }
 .captionTitleContainer {
   display: flex;

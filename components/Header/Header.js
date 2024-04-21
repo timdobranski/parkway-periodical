@@ -86,11 +86,11 @@ export default function Header({ skipAnimation }) {
         <Link href='/public/home'>
           <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
         </Link>
-        <Link href='/public/archive'>
-          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
-        </Link>
         <Link href='/public/info'>
           <h2 className={isActive('/public/info') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
+        </Link>
+        <Link href='/public/archive'>
+          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </Link>
         {/* <Link href='/public/about'>
           <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2>
@@ -107,11 +107,12 @@ export default function Header({ skipAnimation }) {
           <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
         </div>
         <div
+          onClick={() => {  setRightNavbarOpen(false); router.push('/public/info')}}>
+          <h2 className={isActive('/public/info') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
+        </div>
+        <div
           onClick={() => {  setRightNavbarOpen(false); router.push('/public/archive')}}>
           <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2></div>
-        <div
-          onClick={() => {  setRightNavbarOpen(false); router.push('/public/info')}}>
-          <h2 className={isActive('/public/info') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2></div>
       </div>
     </div>
   )

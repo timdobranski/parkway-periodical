@@ -14,14 +14,7 @@ export default function PhotoGrid ({
   const [photoClassName, setPhotoClassName] = useState('');
   const [containerClassName, setContainerClassName] = useState('');
 
-  // should handle cases where photos.format ===
-  // 1. single-photo-caption-right
-  // 2. single-photo-caption-left
-  // 3. 2xColumn
-  // 4. 3xColumn
-  // 5. grid
-  // 6. single-photo-no-caption
-  // 7. single-photo-caption-below
+
 
   // determine the format and set the grid class accordingly
   useEffect(() => {
@@ -32,7 +25,6 @@ export default function PhotoGrid ({
     let gridClass = '';
     let photoClass = '';
     let containerClass = '';
-
 
     switch (format) {
       case 'single-photo-caption-right':
@@ -84,7 +76,7 @@ export default function PhotoGrid ({
     <div className={`${styles.photoGridContainer} ${styles[containerClassName]}`}>
       <div className={`${styles.photosGrid} ${styles[gridClassName]}`}>
         {photos.map((photo, index) => {
-          console.log('photo: ', photo)
+          // console.log('photo: ', photo)
           return (
             <div key={index} className={`${styles.gridPhotoContainer} ${styles[photoClassName]}`}>
               {isEditable ? (
@@ -123,12 +115,12 @@ export default function PhotoGrid ({
           <div key={index} className={`${styles.photoInfoContainer}`}>
             {isEditable ? (
               <div className={styles.captionTitleContainer}>
-                <input
+                {/* <input
                   value={photo.title}
                   onChange={(e) => handleTitleChange(index, e.target.value)}
                   placeholder="Enter title"
                   className={styles.titleInput}
-                />
+                /> */}
                 <textarea
                   value={photo.caption}
                   onChange={(e) => handleCaptionChange(index, e.target.value)}
@@ -140,7 +132,7 @@ export default function PhotoGrid ({
               </div>
             ) : (
               <>
-                {photo.title && <div className={styles.photoTitleWrapper}><p className={styles.photoTitle}>{photo.title}</p></div>}
+                {/* {photo.title && <div className={styles.photoTitleWrapper}><p className={styles.photoTitle}>{photo.title}</p></div>} */}
                 {photo.caption && <p className={styles.photoCaption}>{photo.caption}</p>}
               </>
             )}

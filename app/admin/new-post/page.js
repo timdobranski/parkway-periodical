@@ -5,16 +5,8 @@ import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
 import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
-import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight';
-import PrimeText from '../../../components/PrimeText/PrimeText';
-import Video from '../../../components/Video/Video';
-import PostTitle from '../../../components/PostTitle/PostTitle';
-import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
-import ContentLayout from '../../../components/ContentLayout/ContentLayout';
-import BlockEditMenu from '../../../components/BlockEditMenu/BlockEditMenu';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import Intro from '../../../components/Intro/Intro';
+import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight'
+import Feed from '../../../components/Feed/Feed';
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -207,55 +199,6 @@ export default function NewPostPage() {
     setContentBlocks([...contentBlocks, newBlock]); // Append new block to the existing blocks
     setActiveBlock(contentBlocks.length); // Set active block to the newly added block
   };
-  const removeBlock = (index) => {
-    // Remove the selected block
-    const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
-    setContentBlocks(updatedBlocks);
-
-    // Adjust activeBlock if necessary
-    if (index === activeBlock) {
-      setActiveBlock(null);
-    }
-  };
-  const moveBlockUp = (index) => {
-    if (index === 0) return; // Can't move the first element up
-
-    const newContentBlocks = [...contentBlocks];
-    [newContentBlocks[index], newContentBlocks[index - 1]] = [newContentBlocks[index - 1], newContentBlocks[index]];
-
-    // Update activeBlock index if it's one of the moved blocks
-    if (activeBlock === index) {
-      setActiveBlock(index - 1);
-    } else if (activeBlock === index - 1) {
-      setActiveBlock(index);
-    }
-
-    setContentBlocks(newContentBlocks);
-  };
-  const moveBlockDown = (index) => {
-    if (index === contentBlocks.length - 1) return; // Can't move the last element down
-
-    const newContentBlocks = [...contentBlocks];
-    [newContentBlocks[index], newContentBlocks[index + 1]] = [newContentBlocks[index + 1], newContentBlocks[index]];
-
-    // Update activeBlock index if it's one of the moved blocks
-    if (activeBlock === index) {
-      setActiveBlock(index + 1);
-    } else if (activeBlock === index + 1) {
-      setActiveBlock(index);
-    }
-
-    setContentBlocks(newContentBlocks);
-  };
-  const toggleEditable = (index) => {
-    if (index === activeBlock) {
-      // If the block is already active
-      setActiveBlock(null); // Set to null
-    } else {
-      // If the block is not active
-      setActiveBlock(index); // Set to the clicked block
-    }
-  };
   const updateBlockContent = (index, newContent) => {
     // Create a new array with the updated block's content
     const updatedBlocks = contentBlocks.map((block, i) => {
@@ -397,7 +340,7 @@ export default function NewPostPage() {
       </span>
     )
   }
-  const updateActiveTextEditorState = (newText) => {
+  const updateTextEditorState = (newText) => {
     setContentBlocks(contentBlocks.map((block, index) => {
       if (index === activeBlock) {
         return { ...block, content: newText };
@@ -439,6 +382,35 @@ export default function NewPostPage() {
   }
   return (
     <>
+      <PostNavbarLeft/>
+
+      <Feed
+        viewContext='edit'
+        orientation='vertical'
+        contentBlocks={contentBlocks}
+        setContentBlocks={setContentBlocks}
+        activeBlock={activeBlock}
+        setActiveBlock={setActiveBlock}
+
+        updateBlockContent={updateBlockContent}
+        updateBlock={updateBlock}
+        addBlock={addBlock}
+        updateBlockStyle={updateBlockStyle}
+        safeEditorState={safeEditorState}
+        updateTextEditorState={updateTextEditorState}
+        updatePhotoContent={updatePhotoContent}
+        updateVideoUrl={updateVideoUrl}
+        updateVideoOrientation={updateVideoOrientation}
+        renderCustomToolbar={renderCustomToolbar}
+        addPrimeTextBlock={addPrimeTextBlock}
+        addVideoBlock={addVideoBlock}
+        addPhotoBlock={addPhotoBlock}
+        addFlexibleLayout={addFlexibleLayout}
+        user={user}
+        blocksRef={blocksRef}
+      />
+
+
       <PostNavbarRight
         onAddText={addPrimeTextBlock}
         onAddPhoto={addPhotoBlock}
@@ -449,116 +421,6 @@ export default function NewPostPage() {
         handleSubmit={handleSubmit}
         addBlock={addBlock}
       />
-      <PostNavbarLeft/>
-
-      <div className='feedWrapper'>
-        <div className='post'
-        // style={{ height: `calc(${bottomEdge}px + 6rem + 250px)` }}
-        >
-          {contentBlocks.map((block, index) => (
-            <React.Fragment key={index}>
-              {/* if the block is the title, render the title component & save icon */}
-              {block.type === 'title' ? (
-                <>
-                  <PostTitle
-                    isEditable={index === activeBlock}
-                    src={block}
-                    updateTitle={updateTitle}
-                    index={index}
-                    activeBlock={activeBlock}
-                    setActiveBlock={setActiveBlock}
-                    key={index}
-                    user={user.supabase_user}
-                  />
-                  {contentBlocks.length === 1 && <div className={styles.noBlocksMessage}>Add some content from the menu on the right to get started</div>}
-
-                </>
-              ) : (
-
-                <div
-                  key={index}
-                  ref={el => blocksRef.current[index] = el}
-                  className={`blockWrapper ${index === activeBlock ? 'outlined' : ''}`}
-                  // style={{height: parseInt(block.style.height, 10) + block.style.y}}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (index !== activeBlock) {setActiveBlock(index)}
-                  }}
-                >
-                  {activeBlock === index && block.type !== 'title' &&
-                    <BlockEditMenu
-                      setStatus={() => { toggleEditable(index)}}
-                      {...(block.type !== 'title' ? { removeBlock: () => removeBlock(index) } : {})}
-                      {...(index !== 1 ? { moveBlockUp: () => moveBlockUp(index) } : {})}
-                      {...(contentBlocks[index + 1] ? { moveBlockDown: () => moveBlockDown(index) } : {})}
-
-                    />}
-                  {block.type === 'flexibleLayout' && (
-                    <ContentLayout
-                      blockIndex={index}
-                      isEditable={index === activeBlock}
-                      toggleEditable={toggleEditable}
-                      src={block.contentBlocks}
-                      setActiveBlock={setActiveBlock}
-                      onClick={() => setActiveBlock(index)}
-                      // updateBlockStyle={(style) => updateBlockStyle(index, style)}
-                      updateBlockContent={(newContent) => {updateBlockContent(index, newContent)}}
-                      addText={addPrimeTextBlock}
-                      addVideo={addVideoBlock}
-                      addPhoto={addPhotoBlock}
-                      removeBlock={() => removeBlock(index)}
-                      columns={block.columns}
-                    />
-                  )}
-
-                  {block.type === 'text' && (
-                    <PrimeText
-                      blockIndex={index}
-                      isEditable={index === activeBlock}
-                      toggleEditable={toggleEditable}
-                      src={block}
-                      setActiveBlock={setActiveBlock}
-                      setTextState={updateActiveTextEditorState}
-                      onClick={() => setActiveBlock(index)}
-                      updateBlockStyle={(style) => updateBlockStyle(index, style)}
-                      removeBlock={() => removeBlock(index)}
-                      toolbar={renderCustomToolbar()}
-                    />
-                  )}
-                  {block.type === 'photo' &&
-                <PhotoBlock
-                  key={index}
-                  blockIndex={index}
-                  updatePhotoContent={(files) => updatePhotoContent(index, files)}
-                  isEditable={index === activeBlock}
-                  src={block}
-                  setActiveBlock={setActiveBlock}
-                  removeBlock={() => removeBlock(index)}
-                />
-                  }
-                  {block.type === 'video' &&
-                  <>
-                    <Video
-                      updateVideoUrl={(url) => updateVideoUrl(index, url)}
-                      updateBlockStyle={(style) => updateBlockStyle(index, style)}
-                      setActiveBlock={setActiveBlock}
-                      isEditable={index === activeBlock}
-                      toggleEditable={toggleEditable}
-                      src={block}
-                      blockIndex={index}
-                      removeBlock={() => removeBlock(index)}
-                      updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
-                      viewContext={'edit'}
-                    />
-                  </>
-                  }
-                </div>
-              )}
-            </React.Fragment>
-
-          ))}
-        </div>
-      </div>
     </>
   );
 }

@@ -86,7 +86,7 @@
   z-index: 2000;
   background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(8px);
-  animation: slideUp 1s ease-out forwards;
+  animation: slideUp .5s ease-out forwards;
   margin-bottom: 2rem;
   margin-top: 2rem;
   text-align: center;
@@ -101,7 +101,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: space-between;
-  animation: slideUp 1s ease-out forwards;
+  animation: slideUp .5s ease-out forwards;
   /* border: solid red 2px; */
 }
 .searchBar, .filterSelect {

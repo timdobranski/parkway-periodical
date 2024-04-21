@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen, faAdd, faFont } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -212,7 +212,9 @@ export default function EditablePhoto({
                 <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
                   <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
                 </div>
-
+                <div className={styles.photoEditMenuIconWrapper}>
+                  <p className={fileObj.caption ? styles.caption : styles.noCaption}>Caption</p>
+                </div>
                 <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
                   <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
                 </div>
