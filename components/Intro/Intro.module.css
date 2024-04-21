@@ -92,7 +92,7 @@
 .row3 .imageContainer:hover {
   outline: solid white 6px;
 }
-/* .imageContainer:hover::before {
+.imageContainer:hover::before {
   content: '';
   position: absolute;
   top: 0;
@@ -102,7 +102,7 @@
   box-sizing: border-box;
   pointer-events: none;
   z-index:9999;
-} */
+}
 .redOverlay, .blueOverlay, .redOverlayFaded, .blueOverlayFaded {
   position: absolute;
   top: 0;

@@ -1,8 +1,15 @@
+'use client'
+
 import styles from './electives.module.css'
 import ElectiveBlock from '../../../components/ElectiveBlock/ElectiveBlock'
+import { useState, useEffect } from 'react';
+import supabase from '../../../utils/supabase';
 
 export default function Electives() {
-  const electivesData = [
+  const [electivesData, setElectivesData] = useState([]);
+  const [selectedPathway, setSelectedPathway] = useState('All');
+  const [pathways, setPathways] = useState(['Business Technology & Design Pathway', 'Engineering & Design Pathway', 'Medical Pathway', 'Traditional Electives']);
+  const oldElectivesData = [
     {
       title: 'Engineering & Skateboarding Design',
       description: `The design and construction of skateboard decks, ramps, and skateparks includes a lot of
@@ -21,7 +28,7 @@ export default function Electives() {
       (Possible Field Trip: High School Dance Program)`,
       cte: false,
       type: 'Year Long',
-      image: '/images/electives/marineBio.webp'
+      image: '/images/electives/marineBio2.webp'
     },
     {
       title: 'Hip Hop Dance',
@@ -34,23 +41,59 @@ export default function Electives() {
       type: 'Year Long',
       image: '/images/electives/hipHopDance.webp'
     },
-
   ];
+  useEffect(() => {
+    const getElectives = async () => {
+      const { data, error } = await supabase
+        .from('electives')
+        .select('*');
 
+      if (error) {
+        console.error('Error fetching electives:', error);
+      }
+
+      if (data) {
+        console.log('electives data:', data)
+        setElectivesData(data);
+      }
+    }
+    getElectives();
+  }, [])
+
+  if (!electivesData.length) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className='feedWrapper'>
       {/* <div className='post'> */}
-        <h1 className={styles.pageTitle}>Check out our amazing student elective courses this year!</h1>
-        {electivesData.map((elective, index) => {
+      <h1 className={styles.pageTitle}>Check out our amazing student elective courses this year!</h1>
+
+      <div className={styles.pathwaysWrapper}>
+        {pathways.map((pathway, index) => {
           return (
-            <ElectiveBlock
+            <div
               key={index}
-              electiveData={elective}
-              color={index % 2 === 0 ? 'blue' : 'red'}
-            />
+              className={styles.pathway}
+              onClick={() => setSelectedPathway(pathway)}
+            >
+              <p className={selectedPathway === pathway ? styles.selectedPathwayTitle : styles.pathwayTitle}>
+                {pathway}
+              </p>
+            </div>
           )
         })}
+
+      </div>
+      {electivesData.map((elective, index) => {
+        return (
+          <ElectiveBlock
+            key={index}
+            electiveData={elective}
+            color={index % 2 === 0 ? 'blue' : 'red'}
+          />
+        )
+      })}
 
       {/* </div> */}
     </div>

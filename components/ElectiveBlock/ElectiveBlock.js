@@ -16,15 +16,15 @@ export default function ElectiveBlock({ electiveData, color }) {
         {/* <div className={styles.infoWrapper}> */}
         <div className={`${color === 'red' ? styles.titleWrapperRed : styles.titleWrapperBlue}`} onClick={() => setExpanded(!expanded)}>
           <h2 className={color === 'red' ? styles.classTitleRight : styles.classTitle}>{electiveData.title}</h2>
+          {electiveData.cte && <p className={styles.cte}>CTE Bridge Course</p>}
           {/* <FontAwesomeIcon icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)} className={styles.navIcon}/> */}
         </div>
         <div className={`${color === 'red' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
-          onClick={() => setExpanded(!expanded)}
+          // onClick={() => setExpanded(!expanded)}
         >
           <p className={styles.classText}>{electiveData.description}</p>
           {/* <p className={styles.classText}>Taught By: Mr. Martin</p> */}
-          {electiveData.cte && <p className={styles.cte}>CTE Bridge Course</p>}
-          <p className={`${electiveData.type === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.type}</p>
+          <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
         </div>
         {/* </div> */}
 

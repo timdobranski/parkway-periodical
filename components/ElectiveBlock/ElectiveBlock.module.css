@@ -1,9 +1,9 @@
 .electiveWrapper {
   position: relative;
   border: solid white 2px;
-  height: 300px;
+  height: 250px;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin:3rem 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 1);
   /* background-color: black; */
@@ -68,7 +68,7 @@
   width: 70%;
   top: 0;
   z-index: 2;
-  transition: transform 0.75s ease-in-out;
+  transition: width 0.75s ease-in-out;
   /* overflow: hidden; */
   background-color: #f0f0f0;
 }
@@ -85,12 +85,14 @@
   flex-direction: column;
   align-items: flex-start;
   top: 0;
-  height: 100%;
+  height: 250px;
   width: 70%;
   padding: 0 1.25rem;
   z-index: 0;
   font-size: 1.25rem;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+  /* border: solid red 2px; */
   /* background: linear-gradient(to right, rgba(0, 0, 0, .8), rgba(0, 0, 0, .4)); */
 }
 .descriptionWrapperLeft {
@@ -99,10 +101,9 @@
 }
 .descriptionWrapperRight {
   right: 0;
-  /* align-items: flex-end; */
 }
 .description {
-  border: solid red 2px;
+  /* border: solid red 2px; */
 }
 .cte, .yearLong, .trimester {
   display: inline;
@@ -111,8 +112,11 @@
   margin: .5rem;
 }
 .cte {
-  background-color: rgb(102, 255, 102);
-  /* box-shadow: 0 0 20px rgba(119, 255, 132, 0.747); */
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background-color: rgb(149, 255, 149);
+  box-shadow: 0 0 10px rgba(141, 141, 141, 0.747);
 }
 .yearLong {
  background-color: rgb(16, 179, 255);
@@ -123,9 +127,6 @@
 }
 .electiveWrapper:hover {
   cursor: pointer;
-}
-.classTitle, .classText {
-  color: white;
 }
 .classText {
   color: white;
@@ -167,12 +168,13 @@
   background-color: rgb(0, 143, 215);
 }
 .slideOutLeft {
-  transform: translateX(-96%);
-  outline: solid white 2px;
+  width: 0;
+  /* outline: solid white 2px; */
 }
 .slideOutRight {
-  transform: translateX(96%); /* Slide to the right on hover */
-  outline: solid white 2px;
+  /* transform: translateX(96%);  */
+  width: 0%;
+  /* outline: solid white 2px; */
 }
 
 .electiveWrapper:hover .titleWrapper {

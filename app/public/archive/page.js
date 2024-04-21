@@ -10,7 +10,7 @@ export default function Archive() {
       </div>
       {/* <h1>Archive</h1> */}
       <p>{`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!
-      In the future, this page will contain links to the archived school years.`}</p>
+      In the future, this page will contain links to the archived school years' content.`}</p>
     </div>
     </div>
 

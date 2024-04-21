@@ -91,8 +91,8 @@ export default function Header() {
           <Link href='/public/archive'>
             <h2>ARCHIVE</h2>
           </Link>
-          <Link href='/public/about'>
-            <h2>ABOUT</h2>
+          <Link href='/public/info'>
+            <h2>INFO</h2>
           </Link>
         </div>
       </div>
@@ -108,7 +108,22 @@ export default function Header() {
             <h2>NEW POST</h2>
           </Link>
           <Link href='/admin/view-posts'>
-            <h2>VIEW/EDIT POSTS</h2>
+            <h2>OLD EDIT POSTS</h2>
+          </Link>
+          <Link href='/admin/list?type=posts'>
+            <h2>POSTS</h2>
+          </Link>
+          <Link href='/admin/list?type=electives'>
+            <h2>ELECTIVES</h2>
+          </Link>
+          <Link href='/admin/list?type=clubs'>
+            <h2>CLUBS</h2>
+          </Link>
+          <Link href='/admin/list?type=staff'>
+            <h2>STAFF</h2>
+          </Link>
+          <Link href='/admin/list?type=links'>
+            <h2>LINKS</h2>
           </Link>
           <Link href='/admin/settings'>
             <h2>SETTINGS</h2>

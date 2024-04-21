@@ -51,7 +51,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  background-color: rgba(0, 89, 124, .9);
+  background-color: rgba(0, 89, 124, 1);
   /* backdrop-filter: blur(8px) grayscale(1); */
   text-align: center;
   z-index: 2000;
@@ -114,6 +114,7 @@
 }
 .desktopLeftNavbarWrapper {
   /* border: solid red 2px; */
+  box-sizing: border-box;
   position: absolute;
   left:0;
 

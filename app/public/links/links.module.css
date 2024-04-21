@@ -1,0 +1,11 @@
+.linkWrapper {
+  margin: 1rem;
+}
+.link {
+  text-decoration-color: red;
+  color: var(--primary-blue);
+
+}
+.description {
+  margin:.5rem;
+}
