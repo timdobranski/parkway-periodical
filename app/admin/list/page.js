@@ -4,7 +4,7 @@ import styles from './list.module.css';
 import supabase from '../../../utils/supabase';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
@@ -15,8 +15,12 @@ export default function List() {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
   const router = useRouter();
+  const [expanded, setExpanded] = useState('')
   // types: electives, clubs, posts, staff, links
 
+  useEffect(() => {
+  console.log('expanded: ', expanded)
+  }, [expanded])
   const getList = async () => {
     const { data, error } = await supabase
       .from(type)
@@ -72,10 +76,19 @@ export default function List() {
         }}/>        {list && list.map((item, index) => {
           return (
             <div className={styles.listWrapper} key={index}>
-              <h3 className={styles.title}>{item.title || item.name}</h3>
-              <div className={styles.editControlsWrapper}>
-                <button className={styles.editButton}  onClick={() => router.push(`/admin/new-link?id=${item.id}`)}>Edit</button>
-                <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>Delete</button>
+              <div className={styles.collapsedContentWrapper}>
+                <div className={styles.titleWrapper}>
+                  <FontAwesomeIcon icon={faChevronDown} className={styles.dropdownIcon} onClick={() => {expanded === null ? setExpanded(index) : setExpanded(null)}}/>
+                  <h3 className={styles.title}>{item.title || item.name}</h3>
+                </div>
+                <div className={styles.editControlsWrapper}>
+                  <button className={styles.editButton}  onClick={() => router.push(`/admin/new-link?id=${item.id}`)}>Edit</button>
+                  <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>Delete</button>
+                </div>
+              </div>
+              <div className={expanded === index ? styles.expandedInfo : styles.expandedInfoHidden}>
+                <p>{item.description || item.bio}</p>
+                <p>{item.url}</p>
               </div>
             </div>
           )
