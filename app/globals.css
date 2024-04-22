@@ -93,7 +93,6 @@
   background-position: top; */
   /* border: solid red 4px; */
 }
-
 .feedWrapper{
   position: fixed;
   top: 90px;
@@ -220,26 +219,18 @@
   text-decoration-color: rgb(252, 73, 73);
 
 }
-.post, .postPreview {
-  position: relative;
-  width: 1000px;
-  max-width: 80vw;
-  min-width: 50vw;
+.post {
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 1);
-  backdrop-filter: blur(10px);
   /* min-height: 100vh; */
-  padding-top: 2rem;
-  padding-bottom: 2rem;
   font-size: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  margin: 2rem 0rem;
-  z-index: 10;
+
 }
-.post {
+.post, .flexibleLayoutWrapper {
   position: relative;
   text-align: center;
   height: auto;
@@ -248,15 +239,18 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
-  background-color: rgba(255, 255, 255, 1);
   backdrop-filter: blur(8px);
   animation: slideUp .5s ease-out forwards;
-  margin-bottom: 2rem;
+  margin: 2rem 0rem;
   padding: 2rem;
   overflow: visible;
   min-height: none;
 }
-.blockWrapper {
+.flexibleLayoutWrapper {
+  display: flex;
+  flex-direction: row;
+}
+.blockWrapper, .columnBlockWrapper {
   position: relative;
   overflow-x: visible;
   box-sizing: border-box;
@@ -267,6 +261,9 @@
   height: fit-content;
   padding: 0;
   margin: 2rem 0rem 2rem 0rem;
+}
+.columnBlockWrapper {
+  flex: 1;
 
 }
 .editableBlockWrapper {

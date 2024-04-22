@@ -7,19 +7,19 @@ import { faTrashCan, faRotateRight, faRotateLeft } from '@fortawesome/free-solid
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 // update video style takes in an object with width, height, top, and left values set to numbers
-export default function Video({ updateVideoUrl, updateBlockStyle, src, isEditable,
+export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEditable,
   setActiveBlock, blockIndex, removeBlock, toggleEditable, updateVideoOrientation, viewContext }) {
   const [url, setUrl] = useState(src.content);
 
-
+    // console.log('isEditable inside video block: ', isEditable)
   useEffect(() => {
     updateVideoUrl && updateVideoUrl(url);
     console.log('url changed: ', url)
   }, [url]);
 
-  useEffect(() => {
-    console.log('src changed: ', src)
-  }, [src]);
+  // useEffect(() => {
+  //   console.log('src changed: ', src)
+  // }, [src]);
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;

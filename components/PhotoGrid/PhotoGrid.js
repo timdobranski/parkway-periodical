@@ -68,7 +68,7 @@ export default function PhotoGrid ({
 
 
   if (!photos || photos.length === 0 ) {
-    return <div>No photos to display</div>;
+    return <p className={styles.noPhotosMessage}>No photos to display</p>;
   }
 
 

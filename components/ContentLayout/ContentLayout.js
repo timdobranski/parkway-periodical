@@ -8,50 +8,32 @@ import PrimeText from '../PrimeText/PrimeText';
 import Video from '../Video/Video';
 import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
 
-
-export default function Layout({ columns, src, isEditable, updateBlockContent }) {
+export default function Layout({ columns, src, isEditable, updateBlockContent, updateBlock, addBlock, parentIndex }) {
   const [isEmpty, setIsEmpty] = useState(true)
-
+  console.log('SRC: ', src)
   useEffect(() => {
-    // Check if any element in the src array has a truthy content value
     const hasTruthyContent = src.some(element => element.content);
-
-    // Set isEmpty based on the presence of truthy content
     setIsEmpty(!hasTruthyContent);
   }, [src]);
 
-  // src is an array of content blocks
-  // should i recursively render a new feed, but inside the flex row container?
-
-
-
   return (
     <div className={`${styles.layoutGrid} ${isEmpty || isEditable ? 'outlined' : ''}`}>
-      { src.map((contentBlock, index) => {
-        // if no content in the block, render a select component
-        if (!contentBlock.content) {
-          return (
-            <div
-              key={index}
-              className={`${styles.layoutColumn} ${isEditable ? 'outlined' : '' }`}
-            >
-              <SelectLayoutContent isEditable={isEditable}/>
-            </div>
-          )
-        }
-
-
-        return (
-          <div
-            className={`${styles.layoutColumn}`}
-            key={index}
-          >
-            {contentBlock.content}
-            {/* <h1> hi</h1> */}
+      {src.map((contentBlock, index) => (
+        contentBlock.type === 'undecided' ? (
+          <div key={index} className={`${styles.layoutColumn} ${isEditable ? 'outlined' : ''}`}>
+            <SelectLayoutContent
+              isEditable={isEditable}
+              addBlock={(newBlock) => addBlock(newBlock, parentIndex, index)}
+            />
           </div>
-        )
-      })}
-
+        ) : contentBlock.type === 'video' ? (
+          <div key={index} className={`${styles.layoutColumn} ${isEditable ? 'outlined' : ''}`}>
+            <Video src={contentBlock}
+              isEditable={true}
+            />
+          </div>
+        ) : null
+      ))}
     </div>
   )
 }
