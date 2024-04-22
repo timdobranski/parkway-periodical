@@ -4,14 +4,16 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-link.module.css';
+import { useRouter } from 'next/navigation';
 
 export default function NewLinkPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     title: '',
     url: '',
     description: '',
-    expiration: '',
-    action: 'remind'
+    expires: '',
+    deleteOnExpire: false
   });
   const searchParams = useSearchParams();
   const linkId = searchParams.get('id');
@@ -30,8 +32,8 @@ export default function NewLinkPage() {
             title: data.title || '',
             url: data.url || '',
             description: data.description || '',
-            expiration: data.expiration || '',
-            action: data.action || 'remind'
+            expires: data.expires || '',
+            deleteOnExpire: data.deleteOnExpire
           });
         }
 
@@ -55,26 +57,31 @@ export default function NewLinkPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url, description, expiration, action } = formData;
+    const { title, url, description, expires, deleteOnExpire } = formData;
 
-    // Update the database with either an insert or update based on the presence of linkId
+    // Convert empty string in 'expires' to null if necessary
+    const effectiveExpires = expires === '' ? null : expires;
+
+    // Prepare the payload dynamically based on whether linkId is available
+    const payload = linkId ?
+      { id: linkId, title, url, description, expires: effectiveExpires, deleteOnExpire } : // Include id for update
+      { title, url, description, expires: effectiveExpires, deleteOnExpire };              // Exclude id for create
+
+    // Determine the operation based on linkId's presence
+    const operation = linkId ? 'update' : 'insert';
+
     const { data, error } = await supabase
       .from('links')
-      .upsert({
-        id: linkId,
-        title,
-        url,
-        description,
-        expiration,
-        action
-      });
+      .upsert(payload);
 
     if (error) {
-      console.error('Error updating database:', error);
+      console.error(`Error ${operation} database:`, error);
     } else {
-      console.log('Successfully updated database:', data);
+      console.log(`Successfully ${operation} database:`, data);
+      router.push('/admin/list?type=links');  // Assuming 'router' is correctly defined and imported
     }
   };
+
 
   return (
     <div className='feedWrapper'>
@@ -97,8 +104,8 @@ export default function NewLinkPage() {
           </div>
           <div className={styles.formSection}>
             <label className={styles.label}>Set Expiration Date (optional)</label>
-            {!formData.expiration && <p className='noMargin'>No expiration currently set</p>}
-            <input type='date' id='expiration' name='expiration' className={styles.input} value={formData.expiration} onChange={handleChange} />
+            {!formData.expires && <p className={styles.noExpiration}>No expiration currently set</p>}
+            <input type='date' id='expiration' name='expires' className={styles.input} value={formData.expires} onChange={handleChange} />
           </div>
           <div className={styles.formSection}>
             <label htmlFor='reminder' className={styles.label}>On Expire</label>

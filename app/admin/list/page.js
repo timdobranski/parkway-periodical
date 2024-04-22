@@ -17,32 +17,50 @@ export default function List() {
   const router = useRouter();
   // types: electives, clubs, posts, staff, links
 
-  useEffect(() => {
-    const getList = async () => {
-      const { data, error } = await supabase
-        .from(type)
-        .select('*');
+  const getList = async () => {
+    const { data, error } = await supabase
+      .from(type)
+      .select('*');
 
-      if (data) {
-        if (data.length === 0) {
-          setList([]);
-        } else {
-          setList(data);
-        }
-      }
-
-      if (error) {
-        console.error('Error fetching ' + type + ':', error);
+    if (data) {
+      if (data.length === 0) {
         setList([]);
+      } else {
+        setList(data);
       }
-    };
+    }
 
+    if (error) {
+      console.error('Error fetching ' + type + ':', error);
+      setList([]);
+    }
+  };
+  // get list
+  useEffect(() => {
     getList();
   }, [type]);
 
   useEffect(() => {
     console.log('TYPE: ', type)
   }, [type])
+
+  // delete item then refetch the list
+  const deleteItem = async (id) => {
+    const { error } = await supabase
+      .from(type)
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.log('Error deleting item:', error);
+    } else {
+      try {
+        await getList(); // Assuming getList is async and you want to wait for it to finish
+      } catch (getListError) {
+        console.error('Error fetching list:', getListError);
+      }
+    }
+  }
 
   return (
     <div className='feedWrapper'>
@@ -56,23 +74,12 @@ export default function List() {
             <div className={styles.listWrapper} key={index}>
               <h3 className={styles.title}>{item.title || item.name}</h3>
               <div className={styles.editControlsWrapper}>
-                <button className={styles.editButton}>Edit</button>
-                <button className={styles.deleteButton}>Delete</button>
+                <button className={styles.editButton}  onClick={() => router.push(`/admin/new-link?id=${item.id}`)}>Edit</button>
+                <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>Delete</button>
               </div>
             </div>
           )
         })}
-        {/* <div className='sectionWrapper'>
-
-          <h5 className='smallerPostTitle'>ADD ELECTIVE</h5>
-          <p>Click here to add a new elective to the list</p>
-
-          <h5 className='smallerPostTitle'>REMOVE ELECTIVE</h5>
-          <p>Click here to remove an elective from the list</p>
-
-          <h5 className='smallerPostTitle'>EDIT ELECTIVE</h5>
-          <p>Click here to edit an existing elective</p>
-        </div> */}
       </div>
     </div>
   )
