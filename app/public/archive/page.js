@@ -4,14 +4,11 @@ export default function Archive() {
 
   return (
     <div className='feedWrapper'>
-      <div className='post'>
       <div className='pageTitleWrapper'>
-        <h1 className='pageTitle'>ARCHIVE</h1>
+        <h1 className='whiteTitle'>ARCHIVE</h1>
       </div>
-      {/* <h1>Archive</h1> */}
-      <p>{`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!
+      <p className='centeredWhiteText'>{`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!
       In the future, this page will contain links to the archived school years' content.`}</p>
-    </div>
     </div>
 
   )

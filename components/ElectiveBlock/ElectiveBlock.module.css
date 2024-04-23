@@ -208,3 +208,59 @@
 .electiveWrapper:hover .redPhotoWrapper::after {
   left: -100;
 }
+@media(max-width: 768px) {
+  .electiveWrapper {
+    /* height: auto; */
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+
+  }
+  .titleWrapperRed, .titleWrapperBlue {
+    position: relative;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .classTitleRight {
+    text-align: left;
+  }
+  .navIcon {
+    left: -23px;
+
+  }
+  .navIconRight {
+    right: -23px;
+  }
+  .bluePhotoWrapper, .redPhotoWrapper {
+    position: relative;
+    top: 0;
+    height: 80%;
+    /* left: 0; */
+    width: 100%;
+  }
+  .slideOutLeft {
+    width: 0;
+
+  }
+  .slideOutRight {
+    width: 0%;
+  }
+  .descriptionWrapperRight, .descriptionWrapperLeft {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    /* border: solid 4px red; */
+    display: flex;
+    justify-content: flex-end;
+    /* position: relative; */
+  }
+  .cte {
+    position: relative;
+    margin: .75rem 0;
+    left: 0;
+    /* border: solid red 2px; */
+  }
+}

@@ -114,7 +114,7 @@
   margin: 0 auto;
   z-index: 0;
   background-color: rgba(0, 89, 124, 0.7);
-  backdrop-filter: blur(5px) grayscale(1);
+  backdrop-filter: blur(10px) grayscale(1);
   /* animation: slideUp 1s ease-out forwards; */
   overflow-y: auto;
   overflow-x: visible !important;
@@ -126,18 +126,6 @@
   padding-right: 2rem;
   padding-bottom: 4rem;
   /* border-top: 0; */
-
-}
-.topFeedShadow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, .4), rgba(0, 0, 0, 0));
-  /* border: solid red 2px; */
-  /* box-shadow: 0 0 15px rgb(0, 0, 0); */
-  z-index: 1;
 }
 
 .welcomeHeader {
@@ -195,13 +183,20 @@
 .whiteTitle, .whiteSubTitle {
   text-align: center;
   color: white;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: normal;
   text-decoration: underline;
   text-decoration-color: rgb(255, 0, 0);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 3px;
+  margin: 1.5rem;
 }
 .whiteSubTitle {
   font-size: 1.5rem;
+  margin: .25rem;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  /* border: solid red 2px; */
 }
 .postTitle, .smallerPostTitle, .postTitleButton {
   display: block;
@@ -343,6 +338,7 @@
   color: white;
   font-size: 1.25rem;
   margin: .25rem;
+  /* border: solid red 2px; */
 }
 .resizeHandle {
   z-index: 20;
