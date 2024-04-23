@@ -36,22 +36,22 @@ export default function ElectiveBlock({ electiveData, color }) {
   return (
     <>
       <div className={styles.electiveWrapper}>
-        {/* <div className={styles.infoWrapper}> */}
+
         <div className={`${color === 'red' ? styles.titleWrapperRed : styles.titleWrapperBlue}`} onClick={() => setExpanded(!expanded)}>
           <h2 className={color === 'red' ? styles.classTitleRight : styles.classTitle}>{electiveData.title}</h2>
           {electiveData.cte && <p className={styles.cte}>CTE Bridge Course</p>}
-          {/* <FontAwesomeIcon icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)} className={styles.navIcon}/> */}
         </div>
-        <div className={`${color === 'red' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
-          onClick={() => setExpanded(!expanded)}
-        >
-          <p className={styles.classText}>{electiveData.description}</p>
-          {/* <p className={styles.classText}>Taught By: Mr. Martin</p> */}
-          <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
+        <div className={styles.photoAndDescriptionWrapper}>
+
+          <div className={`${color === 'red' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <p className={styles.classText}>{electiveData.description}</p>
+            <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
+          </div>
+
+          {overImage}
         </div>
-        {/* </div> */}
-        {overImage}
-        {/* {underImage} */}
 
       </div>
     </>

@@ -518,7 +518,7 @@
     background: #29c6ff;
   }
   .feedWrapper h1, .feedWrapper h2, .feedWrapper h3, .feedWrapper h4, .feedWrapper h5, .feedWrapper h6 {
-    font-size: 1.75rem !important;
+    /* font-size: 1.75rem !important; */
   }
   ::-webkit-scrollbar-thumb {
     background: rgb(255, 255, 255, 0);
@@ -567,5 +567,9 @@
   .blockWrapper iframe {
     width: 100%;
     margin: 0;
+  }
+  .whiteTitle {
+    margin: .25rem;
+    font-size: 2.5rem;
   }
 }

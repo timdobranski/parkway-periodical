@@ -211,7 +211,7 @@
 @media(max-width: 768px) {
   .electiveWrapper {
     /* height: auto; */
-    height: 400px;
+    height: auto;
     display: flex;
     flex-direction: column;
 
@@ -227,9 +227,13 @@
   .classTitleRight {
     text-align: left;
   }
+  .photoAndDescriptionWrapper {
+    position: relative;
+    height: 200px;
+  }
   .navIcon {
-    left: -23px;
-
+    right: -23px;
+    left:unset;
   }
   .navIconRight {
     right: -23px;
@@ -237,24 +241,27 @@
   .bluePhotoWrapper, .redPhotoWrapper {
     position: relative;
     top: 0;
-    height: 80%;
-    /* left: 0; */
+    height: 100%;
     width: 100%;
   }
-  .slideOutLeft {
+  .bluePhotoWrapper {
+    right: 0;
+  }
+  .redPhotoWrapper {
+    left: 0;
+  }
+  .slideOutLeft, .slideOutRight {
     width: 0;
+  }
 
-  }
-  .slideOutRight {
-    width: 0%;
-  }
   .descriptionWrapperRight, .descriptionWrapperLeft {
     position: absolute;
     width: 100%;
-    bottom: 0;
+    top: 0;
     /* border: solid 4px red; */
     display: flex;
-    justify-content: flex-end;
+    height: 100%;
+    overflow-y: auto;
     /* position: relative; */
   }
   .cte {
