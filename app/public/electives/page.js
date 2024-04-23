@@ -59,6 +59,9 @@ export default function Electives() {
     }
     getElectives();
   }, [])
+  const handleChange = (event) => {
+    setSelectedPathway(event.target.value);
+  };
 
   if (!electivesData.length) {
     return <div>Loading...</div>
@@ -67,24 +70,18 @@ export default function Electives() {
   return (
     <div className='feedWrapper'>
       {/* <div className='post'> */}
-      <h1 className={styles.pageTitle}>Check out our amazing student elective courses this year!</h1>
+      <h1 className='whiteTitle'>ELECTIVES</h1>
+      <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
 
-      <div className={styles.pathwaysWrapper}>
-        {pathways.map((pathway, index) => {
-          return (
-            <div
-              key={index}
-              className={styles.pathway}
-              onClick={() => setSelectedPathway(pathway)}
-            >
-              <p className={selectedPathway === pathway ? styles.selectedPathwayTitle : styles.pathwayTitle}>
-                {pathway}
-              </p>
-            </div>
-          )
-        })}
-
+      <div className={styles.selectPathwayWrapper}>
+        <select value={selectedPathway} onChange={handleChange} className={styles.selectPathway}>
+          <option value="All">All</option>
+          {pathways.map((pathway, index) => (
+            <option key={index} value={pathway}>{pathway}</option>
+          ))}
+        </select>
       </div>
+
       {electivesData.map((elective, index) => {
         return (
           <ElectiveBlock

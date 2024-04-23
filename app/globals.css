@@ -180,6 +180,14 @@
   -webkit-text-stroke: 0;
   text-decoration-thickness: 2px;
 }
+.whiteTitle {
+  text-align: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: normal;
+  text-decoration: underline;
+  text-decoration-color: red;
+}
 .postTitle, .smallerPostTitle, .postTitleButton {
   display: block;
   color: #0068a8;

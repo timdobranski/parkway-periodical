@@ -20,7 +20,7 @@ export default function ElectiveBlock({ electiveData, color }) {
           {/* <FontAwesomeIcon icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)} className={styles.navIcon}/> */}
         </div>
         <div className={`${color === 'red' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
-          // onClick={() => setExpanded(!expanded)}
+          onClick={() => setExpanded(!expanded)}
         >
           <p className={styles.classText}>{electiveData.description}</p>
           {/* <p className={styles.classText}>Taught By: Mr. Martin</p> */}
