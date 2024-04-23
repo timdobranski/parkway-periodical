@@ -4,7 +4,7 @@ import styles from './list.module.css';
 import supabase from '../../../utils/supabase';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
@@ -76,9 +76,9 @@ export default function List() {
         }}/>        {list && list.map((item, index) => {
           return (
             <div className={styles.listWrapper} key={index}>
-              <div className={styles.collapsedContentWrapper}>
+              <div className={styles.collapsedContentWrapper} onClick={() => {expanded === null ? setExpanded(index) : setExpanded(null)}}>
                 <div className={styles.titleWrapper}>
-                  <FontAwesomeIcon icon={faChevronDown} className={styles.dropdownIcon} onClick={() => {expanded === null ? setExpanded(index) : setExpanded(null)}}/>
+                  <FontAwesomeIcon icon={expanded === index ? faChevronUp : faChevronDown} className={styles.dropdownIcon} />
                   <h3 className={styles.title}>{item.title || item.name}</h3>
                 </div>
                 <div className={styles.editControlsWrapper}>
