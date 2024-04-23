@@ -8,10 +8,33 @@ import { useState } from 'react';
 export default function ElectiveBlock({ electiveData, color }) {
   const [expanded, setExpanded] = useState(false)
 
+
+  const overImage = (
+    <div className={` ${color === 'red' ? styles.redPhotoWrapper : styles.bluePhotoWrapper} ${expanded ? (color === 'red' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
+      onClick={() => setExpanded(!expanded)}
+    >
+      <img src={electiveData.image}className={styles.photo}/>
+      <FontAwesomeIcon
+        icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
+        className={color === 'red' ? styles.navIconRight : styles.navIcon}/>
+    </div>
+  )
+  const underImage = (
+    <div className={`
+    ${color === 'red' ? styles.redPhotoWrapper : styles.bluePhotoWrapper}
+    ${expanded ? (color === 'red' ? styles.slideInFromLeft : styles.slideInFromRight) : null}
+    ${styles.underPhotoWrapper}`}
+
+    onClick={() => setExpanded(!expanded)}>
+      <img src={electiveData.image}className={styles.underPhoto}></img>
+      <div className={`${color === 'red' ? styles.redOverlay : styles.blueOverlay}`}></div>
+    </div>
+  )
+
+
+
   return (
     <>
-      {/* <h2 className={styles.classTitle}>{electiveData.title}</h2> */}
-
       <div className={styles.electiveWrapper}>
         {/* <div className={styles.infoWrapper}> */}
         <div className={`${color === 'red' ? styles.titleWrapperRed : styles.titleWrapperBlue}`} onClick={() => setExpanded(!expanded)}>
@@ -27,19 +50,8 @@ export default function ElectiveBlock({ electiveData, color }) {
           <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
         </div>
         {/* </div> */}
-
-
-
-        <div
-          className={` ${color === 'red' ? styles.redPhotoWrapper : styles.bluePhotoWrapper} ${expanded ? (color === 'red' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
-          onClick={() => setExpanded(!expanded)}
-        >
-          <img src={electiveData.image}className={styles.photo}></img>
-          <div className={`${color === 'red' ? styles.redOverlay : styles.blueOverlay}`}></div>
-          <FontAwesomeIcon
-            icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
-            className={color === 'red' ? styles.navIconRight : styles.navIcon}/>
-        </div>
+        {overImage}
+        {/* {underImage} */}
 
       </div>
     </>

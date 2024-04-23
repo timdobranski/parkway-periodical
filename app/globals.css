@@ -20,6 +20,14 @@
     transform: translateX(-50%) translateY(0);
   }
 }
+@keyframes slideUpNoCenter {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 :root {
   --primary-blue-transparent: rgba(0, 89, 124, 0.7);
   --primary-blue: rgba(0, 89, 124, 1);
@@ -52,6 +60,10 @@
 }
 .noMargin {
  margin: 0;
+}
+.slideUp {
+  animation: slideUpNoCenter .5s ease-out forwards;
+
 }
 .background {
   position: absolute;
@@ -180,13 +192,16 @@
   -webkit-text-stroke: 0;
   text-decoration-thickness: 2px;
 }
-.whiteTitle {
+.whiteTitle, .whiteSubTitle {
   text-align: center;
   color: white;
   font-size: 2.5rem;
   font-weight: normal;
   text-decoration: underline;
-  text-decoration-color: red;
+  text-decoration-color: rgb(255, 0, 0);
+}
+.whiteSubTitle {
+  font-size: 1.5rem;
 }
 .postTitle, .smallerPostTitle, .postTitleButton {
   display: block;
@@ -321,6 +336,13 @@
 }
 .postDate {
   margin: 1rem;
+}
+
+.centeredWhiteText {
+  text-align: center;
+  color: white;
+  font-size: 1.25rem;
+  margin: .25rem;
 }
 .resizeHandle {
   z-index: 20;

@@ -69,7 +69,7 @@ export default function Electives() {
 
   return (
     <div className='feedWrapper'>
-      {/* <div className='post'> */}
+      <div className='slideUp'>
       <h1 className='whiteTitle'>ELECTIVES</h1>
       <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
 
@@ -92,7 +92,7 @@ export default function Electives() {
         )
       })}
 
-      {/* </div> */}
+      </div>
     </div>
   )
 }

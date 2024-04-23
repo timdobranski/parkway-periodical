@@ -9,40 +9,38 @@ export default function About() {
 
   return (
     <div className='feedWrapper'>
-
-
-      <div className='post'>
+      {/* <div className='post'> */}
         {/* <div className={styles.aboutWrapper}> */}
         <div className='pageTitleWrapper'>
-          <h1 className='pageTitle'>INFO</h1>
-          <p >{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
+          <h1 className='whiteTitle'>INFO</h1>
+          <p className='centeredWhiteText'>{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
             Parkway Health & Sciences Academy. We're glad you're here! Browse the resources below to learn more about our
             elective classes, clubs, staff and more.`}</p>
 
           <div className={styles.sectionWrapper}>
             <Link href='/public/electives' className={styles.link}>
-              <h3 className='smallerPostTitle'>ELECTIVES</h3>
+              <h3 className='whiteSubTitle'>ELECTIVES</h3>
             </Link>
-            <p className='noMargin'>Check out our amazing student elective courses</p>
+            <p className='centeredWhiteText'>Check out our amazing student elective courses</p>
           </div>
           <div className={styles.sectionWrapper}>
             <Link href='/public/clubs' className={styles.link}>
-              <h3 className='smallerPostTitle'>CLUBS</h3>
+              <h3 className='whiteSubTitle'>CLUBS</h3>
             </Link>
-            <p className='noMargin'>See the before & after school clubs we offer</p>
+            <p className='centeredWhiteText'>See the before & after school clubs we offer</p>
           </div>
           <div className={styles.sectionWrapper}>
             <Link href='/public/links' className={styles.link}>
-              <h3 className='smallerPostTitle'>LINKS</h3>
+              <h3 className='whiteSubTitle'>LINKS</h3>
             </Link>
-            <p className='noMargin'>Find important resources here</p>
+            <p className='centeredWhiteText'>Find important resources here</p>
           </div>
           <div className={styles.sectionWrapper}>
             <Link href='/public/staff' className={styles.link}>
-              <h3 className='smallerPostTitle'>STAFF</h3>
+              <h3 className='whiteSubTitle'>STAFF</h3>
             </Link>
-            <p className='noMargin'>Meet our wonderful staff!</p>
-          </div>
+            <p className='centeredWhiteText'>Meet our wonderful staff!</p>
+          {/* </div> */}
         </div>
 
           {/* <p >{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for Parkway Health & Sciences Academy. We're glad you're here!`}</p>
