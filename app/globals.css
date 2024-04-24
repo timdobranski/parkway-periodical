@@ -110,19 +110,20 @@
   z-index: 0;
   background-color: rgba(0, 89, 124, 0.7);
   backdrop-filter: blur(10px) grayscale(1);
-  /* animation: slideUp 1s ease-out forwards; */
+  animation: slideUp 1s ease-out forwards;
   overflow-y: auto;
   overflow-x: visible !important;
-  height: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 90px);
+  /* height: 100vh; */
   border: solid white 6px;
   border-bottom: 0;
-  padding-left: calc(2rem + 8px); /* to account for scrollbar on right side */
+  padding-left: calc(2rem + 8px);
   padding-right: 2rem;
   padding-bottom: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
   /* border-top: 0; */
 }
 
@@ -261,11 +262,9 @@
   height: auto;
   width: 100%;
   min-width: 500px;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 2000;
   backdrop-filter: blur(8px);
-  animation: slideUp .5s ease-out forwards;
+  animation: slideUpNoCenter .5s ease-out forwards;
   margin: 2rem 0rem;
   padding: 2rem;
   overflow: visible;
@@ -538,35 +537,37 @@
   .feedWrapper {
     position: relative;
     top: 0;
+    box-sizing:border-box;
+    animation: none;
+    width: 100vw;
+    max-width: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0 1rem;
+    height: fit-content;
+    min-height: 100vh;
+    background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
+    border: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
-    max-width: none;
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
-    padding-left: 0;
-    height: fit-content;
-    background-color: rgba(0, 172, 240, 0.7);
-    background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
-    border: none;
   }
   .welcomePostWrapper {
     border: none;
   }
   .post {
-    width: 96vw;
+    box-sizing: border-box;
+    width: 100%;
     min-width: 300px !important;
     max-width: none;
     overflow: hidden;
     height: fit-content !important;
     min-height: none;
     animation: none;
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 1rem;
     margin-top: .5rem;
+    animation: slideUpNoCenter 1s ease
     /* border: solid red 4px; */
   }
   .blockWrapper {

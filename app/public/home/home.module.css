@@ -294,6 +294,7 @@
     padding: .5rem 0 .5rem 1rem;
     animation: none;
     left: 0;
+    animation: slideUpNoCenter 2s ease
     /* border: solid red */
   }
   .searchBarExpanded {
