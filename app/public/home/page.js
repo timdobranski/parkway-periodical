@@ -97,7 +97,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   )
   const renderedPosts =
     <div className='feedWrapper'>
-      <div className='topFeedShadow'></div>
+      {/* <div className='topFeedShadow'></div> */}
       {welcomePost}
       {filterAndSearchPosts}
 

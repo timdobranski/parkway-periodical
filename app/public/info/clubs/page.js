@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './clubs.module.css'
-import ClubBlock from '../../../../components/ClubBlock/ClubBlock'
+import ElectiveBlock from '../../../../components/ElectiveBlock/ElectiveBlock'
 import { useState, useEffect } from 'react';
 import supabase from '../../../../utils/supabase';
 
@@ -33,21 +33,17 @@ export default function ClubsPage() {
 
   return (
     <div className='feedWrapper'>
-      <div className='post'>
-        <h1 className='pageTitle'>BEFORE & AFTER SCHOOL CLUBS</h1>
+      <h1 className='whiteTitle'>BEFORE & AFTER SCHOOL CLUBS</h1>
 
-
-        {clubsData.map((club, index) => {
-          return (
-            <ClubBlock
-              key={index}
-              club={club}
-              // color={index % 2 === 0 ? 'blue' : 'red'}
-            />
-          )
-        })}
-
-      </div>
+      {clubsData.map((club, index) => {
+        return (
+          <ElectiveBlock
+            key={index}
+            electiveData={club}
+            color={index % 2 === 0 ? 'blue' : 'red'}
+          />
+        )
+      })}
     </div>
   )
 }

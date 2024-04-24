@@ -23,8 +23,8 @@ export default function ElectiveBlock({ electiveData, color }) {
       onClick={() => setExpanded(!expanded)}
     >
       <img src={electiveData.image}className={styles.photo}/>
-    {responsiveArrowButton}
-    {mobileArrowButton}
+      {responsiveArrowButton}
+      {mobileArrowButton}
 
     </div>
   )
@@ -55,8 +55,13 @@ export default function ElectiveBlock({ electiveData, color }) {
           <div className={`${color === 'red' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
             onClick={() => setExpanded(!expanded)}
           >
+            {electiveData.when && (
+              <p className={styles.when}>
+                <span className={styles.meetsLabel}>MEETS:</span> {electiveData.when}
+              </p>
+            )}
             <p className={styles.classText}>{electiveData.description}</p>
-            <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
+            {electiveData.duration && <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>}
           </div>
 
           {overImage}

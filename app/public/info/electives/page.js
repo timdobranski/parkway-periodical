@@ -69,30 +69,30 @@ export default function Electives() {
 
   return (
     <div className='feedWrapper'>
-      <div className={`slideUp ${styles.electivesContentWrapper}`}>
-        <h1 className='whiteTitle'>ELECTIVES</h1>
-        <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
+      {/* <div className={`slideUp`}> */}
+      <h1 className='whiteTitle'>ELECTIVES</h1>
+      {/* <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
 
-        <div className={styles.selectPathwayWrapper}>
-          <select value={selectedPathway} onChange={handleChange} className={styles.selectPathway}>
-            <option value="All">All</option>
-            {pathways.map((pathway, index) => (
-              <option key={index} value={pathway}>{pathway}</option>
-            ))}
-          </select>
-        </div>
+      <div className={styles.selectPathwayWrapper}>
+        <select value={selectedPathway} onChange={handleChange} className={styles.selectPathway}>
+          <option value="All">All</option>
+          {pathways.map((pathway, index) => (
+            <option key={index} value={pathway}>{pathway}</option>
+          ))}
+        </select>
+      </div> */}
 
-        {electivesData.map((elective, index) => {
-          return (
-            <ElectiveBlock
-              key={index}
-              electiveData={elective}
-              color={index % 2 === 0 ? 'blue' : 'red'}
-            />
-          )
-        })}
+      {electivesData.map((elective, index) => {
+        return (
+          <ElectiveBlock
+            key={index}
+            electiveData={elective}
+            color={index % 2 === 0 ? 'blue' : 'red'}
+          />
+        )
+      })}
 
-      </div>
+      {/* </div> */}
     </div>
   )
 }

@@ -34,7 +34,7 @@ export default function LinksPage() {
 
   return (
     <div className='feedWrapper'>
-      <h1 className='whiteTitle'>LINKS</h1>
+      <h1 className='whiteTitle'>RESOURCES</h1>
       <p className='centeredWhiteText marginBelow'>{`Below you'll find links to helpful resources for Parkway families:`}</p>
       {linksData.map((link, index) => {
         return (

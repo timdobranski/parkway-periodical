@@ -2,9 +2,9 @@
   position: relative;
   border: solid white 2px;
   height: 250px;
+  min-height: 250px;
   width: 100%;
-  /* overflow: hidden; */
-  margin:3rem 0;
+  margin:2rem 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 1);
   /* background-color: black; */
 }
@@ -119,7 +119,7 @@
 .photo, .underPhoto {
   /* filter: grayscale(1); */
   object-fit: cover;
-  object-position: left center;
+  object-position: center;
   height: 100%;
 }
 .underPhoto {
@@ -156,6 +156,18 @@
 .descriptionWrapperRight {
   right: 0;
 }
+.meetsLabel {
+  font-weight: bold;
+  color: var(--primary-blue);
+  text-decoration: underline;
+  text-decoration-color: red;
+}
+.when {
+  text-align: center;
+  background: white;
+  width: calc(100% - 2rem);
+  padding: .5rem 1rem;
+}
 .cte, .yearLong, .trimester {
   display: inline;
   width: auto;
@@ -181,6 +193,8 @@
 }
 .classText {
   color: white;
+  text-align: center;
+  /* text-align: justify; */
 }
 .classTitle, .classTitleRight {
   position: relative;
