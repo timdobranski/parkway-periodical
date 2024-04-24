@@ -2,7 +2,7 @@
   position: relative;
   width: 150px; /* Set to your image size */
   height: 150px; /* Set to your image size */
-  background-image: url('/images/animatedShield/shield2.png');
+  background-image: url('/images/animatedShield/shield2.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -14,7 +14,7 @@
   position: relative;
   width: 150px;
   height: 150px;
-  background-image: url('/images/animatedShield/shield2.png');
+  background-image: url('/images/animatedShield/shield2.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -32,7 +32,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/images/animatedShield/shieldNoAtom.png');
+  background-image: url('/images/animatedShield/shieldNoAtom.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -69,7 +69,7 @@
   /* filter: blur(.25px); */
 }
 .soccer { background-image: url('/images/animatedShield/soccer.png'); }
-.skateboard { background-image: url('/images/animatedShield/skateboard2.webp'); }
+.skateboard { background-image: url('/images/animatedShield/skateboard3.webp'); }
 
 @keyframes swirl-in-from-left {
   0% { transform: translateX(-200%) rotate(0deg) scale(3); }

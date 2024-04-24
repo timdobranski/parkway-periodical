@@ -32,7 +32,7 @@ export default function Home({ children }) {
       <div className={styles.desktopLogoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
         <img
-          src={'/images/logos/titledLogoNoShield.png'}
+          src={'/images/logos/titledLogoNoShield.webp'}
           alt='Intro Image'
           className={styles.logo}
         />

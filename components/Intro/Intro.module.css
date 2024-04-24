@@ -77,20 +77,20 @@
   transition: transform 1s ease;
 }
 .row1 .imageContainer:hover::before {
-  border-top: solid white 6px;
+  border-top: solid white 8px;
 }
 .row2 .imageContainer:hover {
-  outline: solid white 6px;
+  outline: solid white 8px;
 }
 .row3 .imageContainer:hover::before {
-  border-bottom: solid white 6px;
+  border-bottom: solid white 8px;
 }
 .row1 .imageContainer:hover {
-  outline: solid white 6px;
+  outline: solid white 8px;
 
 }
 .row3 .imageContainer:hover {
-  outline: solid white 6px;
+  outline: solid white 8px;
 }
 .imageContainer:hover::before {
   content: '';

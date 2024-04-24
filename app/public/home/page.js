@@ -63,15 +63,15 @@ export default function Home({ introRunning, setIntroRunning }) {
   })
 
   const welcomePost = (
-    // <div className={styles.welcomePostWrapper}>
-    //   <img src='/overheadSmall.webp' alt='Parkway Logo' className='welcomeHeader' />
-    // </div>
-    <>
-      <h1 className='whiteTitle'>WELCOME!</h1>
-      <p class='centeredWhiteText'>{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
-    Parkway Health & Sciences Academy. We're glad you're here! Browse school news posts below or select the Info
-    button above to learn more about our elective classes, clubs, staff and more.`}</p>
-    </>
+    <div className={styles.welcomePostWrapper}>
+      <img src='/overheadSmall.webp' alt='Parkway Logo' className='welcomeHeader' />
+    </div>
+    // <>
+    //   <h1 className='whiteTitle'>WELCOME!</h1>
+    //   <p class='centeredWhiteText'>{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
+    // Parkway Health & Sciences Academy. We're glad you're here! Browse school news posts below or select the Info
+    // button above to learn more about our elective classes, clubs, staff and more.`}</p>
+    // </>
   )
   const filterAndSearchPosts = (
     <div className={styles.filterWrapper}>
