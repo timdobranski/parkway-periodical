@@ -14,7 +14,6 @@
   top: 0;
   height: 100%;
   width: 30%;
-  background-color: rgba(0, 0, 0, .6);
   background-color: white;
   transition: background-color .75s ease-in-out;
   backdrop-filter: blur(8px);
@@ -231,21 +230,22 @@
 @media(max-width: 768px) {
   .electiveWrapper {
     /* height: auto; */
+    width: 96%;
     height: auto;
     display: flex;
     flex-direction: column;
-
+    /* border: none; */
   }
   .titleWrapperRed, .titleWrapperBlue {
     position: relative;
     width: 100%;
     height: auto;
     max-height: none;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
   }
-  .classTitleRight {
-    text-align: left;
+  .classTitleRight, .classTitle {
+    text-align: center;
   }
   .photoAndDescriptionWrapper {
     position: relative;
@@ -290,7 +290,14 @@
     display: flex;
     height: 100%;
     overflow-y: auto;
-    /* position: relative; */
+    padding: 1rem;
+  }
+  .when {
+    margin: 0 auto;
+  }
+  .meetsLabel {
+    display: block;
+    margin-bottom: .25rem;
   }
   .cte {
     position: relative;
