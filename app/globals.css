@@ -61,9 +61,11 @@
 .noMargin {
  margin: 0;
 }
+.centeredText {
+  text-align: center;
+}
 .slideUp {
   animation: slideUpNoCenter .5s ease-out forwards;
-
 }
 .background {
   position: absolute;
@@ -97,13 +99,6 @@
   height: calc(100vh - 40px);
   border: none;
   background-color: rgb(237, 237, 237);
-  /* background: linear-gradient(to right, rgb(61, 197, 255), rgb(0, 75, 142)) */
-  /* background-image: url('/images/quad.png'); */
-  /* background-image: url('/images/overhead2.webp');
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  background-position: top; */
-  /* border: solid red 4px; */
 }
 .feedWrapper{
   position: fixed;
@@ -153,14 +148,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* border: solid rgb(0, 0, 0) 6px; */
-  /* text-shadow: 1px 1px 1px #0086bf; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* margin-top: 2rem; */
-  /* background-color: rgba(0, 0, 0, 1); */
 }
 .pageTitle, .smallerTitle {
   font-size: 2.5rem;
@@ -235,18 +226,31 @@
   width: auto;
   border-radius: 5px;
   text-decoration-color: rgb(252, 73, 73);
-
+}
+.whiteButton {
+  text-align: center;
+  color: var(--primary-blue);
+  font-weight: normal;
+  text-decoration: underline;
+  text-decoration-color: rgb(255, 0, 0);
+  font-size: 1.5rem;
+  margin: .25rem;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  background-color: white;
+  display: inline-block;
+  width: fit-content;
+  padding: .5rem 1rem .75rem 1rem;
+  border-radius: 5px;
 }
 .post {
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 1);
-  /* min-height: 100vh; */
   font-size: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-
 }
 .post, .flexibleLayoutWrapper {
   position: relative;
@@ -338,7 +342,9 @@
   color: white;
   font-size: 1.25rem;
   margin: .25rem;
-  /* border: solid red 2px; */
+}
+.marginBelow {
+  margin-bottom: 3rem;
 }
 .resizeHandle {
   z-index: 20;
@@ -529,8 +535,9 @@
   .feedWrapper {
     position: relative;
     top: 0;
-    /* top: 80px; */
-    /* width: 100%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100vw;
     max-width: none;
     border: none;

@@ -1,0 +1,32 @@
+.linkWrapper {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.link {
+  text-decoration-color: red;
+  color: var(--primary-blue);
+
+}
+.description {
+  margin:.5rem;
+}
+
+.button {
+  text-align: center;
+  color: var(--primary-blue);
+  font-weight: normal;
+  text-decoration: underline;
+  text-decoration-color: rgb(255, 0, 0);
+  font-size: 1.5rem;
+  margin: .25rem;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  background-color: white;
+  display: inline-block;
+  width: fit-content;
+  padding: .5rem 1rem .75rem 1rem;
+  border-radius: 5px;
+}

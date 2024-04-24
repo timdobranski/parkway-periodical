@@ -3,22 +3,23 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  background-color: rgb(242, 242, 242);
-  /* background: transparent; */
-  margin: 1rem 0;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  margin: 2rem 0;
   overflow-y: auto;
-  border: solid 1px rgb(211, 211, 211);
-  /* box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7); */
+  border: solid 2px rgb(255, 255, 255);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
 }
 
 .staffImage {
-  max-height: 450px;
-  max-width: 250px;
+  max-height: 150px;
+  max-width: 150px;
   width: 35%;
   height: auto;
-  /* margin: 1rem; */
+  margin: 1rem;
   /* border-radius: 15px; */
-  /* border: solid rgb(81, 194, 255) 6px; */
+  /* border: solid rgb(0, 83, 118) 2px; */
+  border-radius: 50%;
 }
 .staffInfoWrapper {
   display: flex;
@@ -27,10 +28,11 @@
   justify-content: flex-start;
   width: 75%;
   margin: 1rem;
+  /* border: solid red 2px; */
 }
-.staffInfoWrapper * {
-  margin: .5rem;
-}
+/* .staffInfoWrapper * {
+  margin: .5rem 0;
+} */
 .staffName {
   font-size: 1.75rem;
   /* -webkit-text-stroke: 1px rgb(255, 255, 255); */
@@ -40,4 +42,36 @@
   text-decoration-color: red;
   text-underline-offset: 2px;
   /* border: solid red 2px; */
+}
+.staffPosition {
+  font-weight: bold;
+  margin-top: .25rem;
+}
+.staffContactWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  /* border: solid red 2px; */
+  /* background-color: rgb(0, 113, 162); */
+  color: white;
+  padding: .25rem .5rem;
+  font-size: 1.25rem;
+  margin: .5rem;
+}
+.staffEmail, .staffPhone {
+  margin: .25rem 0;
+  text-decoration: underline;
+  text-decoration-color: red;
+  text-decoration-thickness: 1.5px;
+  color: var(--primary-blue);
+}
+.staffBio {
+  font-size: 1.25rem;
+}
+.staffEmail {
+
+}
+.staffPhone {
+
 }

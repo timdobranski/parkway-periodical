@@ -1,9 +1,9 @@
 'use client'
 
 import styles from './electives.module.css'
-import ElectiveBlock from '../../../components/ElectiveBlock/ElectiveBlock'
+import ElectiveBlock from '../../../../components/ElectiveBlock/ElectiveBlock'
 import { useState, useEffect } from 'react';
-import supabase from '../../../utils/supabase';
+import supabase from '../../../../utils/supabase';
 
 export default function Electives() {
   const [electivesData, setElectivesData] = useState([]);

@@ -7,16 +7,25 @@ import { useState } from 'react';
 
 export default function ElectiveBlock({ electiveData, color }) {
   const [expanded, setExpanded] = useState(false)
-
+  const responsiveArrowButton = (
+    <FontAwesomeIcon
+      icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
+      className={color === 'red' ? styles.navIconRight : styles.navIcon}/>
+  )
+  const mobileArrowButton = (
+    <FontAwesomeIcon
+      icon={(expanded ? faChevronLeft : faChevronRight)}
+      className={color === 'red' ? styles.navIconRightMobile : styles.navIconMobile}/>
+  )
 
   const overImage = (
     <div className={` ${color === 'red' ? styles.redPhotoWrapper : styles.bluePhotoWrapper} ${expanded ? (color === 'red' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
       onClick={() => setExpanded(!expanded)}
     >
       <img src={electiveData.image}className={styles.photo}/>
-      <FontAwesomeIcon
-        icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
-        className={color === 'red' ? styles.navIconRight : styles.navIcon}/>
+    {responsiveArrowButton}
+    {mobileArrowButton}
+
     </div>
   )
   const underImage = (

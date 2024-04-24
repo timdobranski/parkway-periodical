@@ -35,7 +35,7 @@
   border-right: solid 6px white;
   align-items: flex-start;
 }
-.navIcon, .navIconRight {
+.navIcon, .navIconRight, .navIconMobile, .navIconRightMobile {
   position: absolute;
   top: calc(50% - 23px);
   color: rgb(0, 92, 138);
@@ -51,12 +51,18 @@
   z-index: 5000;
   transition: transform .5s ease-in-out
 }
+.navIconMobile, .navIconRightMobile {
+  display: none;
+}
 .navIcon {
   left: -23px;
 
 }
 .navIconRight {
   right: -23px;
+}
+.navIconMobile {
+  display: none;
 }
 .navIcon:hover, .navIconRight:hover {
   transform: scale(1.2);
@@ -231,12 +237,20 @@
     position: relative;
     height: 200px;
   }
-  .navIcon {
+  .navIcon, .navIconMobile {
     right: -23px;
     left:unset;
   }
+  .navIcon {
+    display: none;
+  }
   .navIconRight {
+    display: none;
     right: -23px;
+  }
+  .navIconMobile {
+    display: inline-block;
+    /* border: solid red 20px; */
   }
   .bluePhotoWrapper, .redPhotoWrapper {
     position: relative;

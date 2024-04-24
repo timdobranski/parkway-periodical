@@ -18,25 +18,25 @@ export default function About() {
             elective classes, clubs, staff and more.`}</p>
 
         <div className={styles.sectionWrapper}>
-          <Link href='/public/electives' className={styles.link}>
+          <Link href='/public/info/electives' className={styles.link}>
             <h3 className='whiteSubTitle'>ELECTIVES</h3>
           </Link>
           <p className='centeredWhiteText'>Check out our amazing student elective courses</p>
         </div>
         <div className={styles.sectionWrapper}>
-          <Link href='/public/clubs' className={styles.link}>
+          <Link href='/public/info/clubs' className={styles.link}>
             <h3 className='whiteSubTitle'>CLUBS</h3>
           </Link>
           <p className='centeredWhiteText'>Learn about the before & after school clubs we offer</p>
         </div>
         <div className={styles.sectionWrapper}>
-          <Link href='/public/links' className={styles.link}>
+          <Link href='/public/info/links' className={styles.link}>
             <h3 className='whiteSubTitle'>LINKS</h3>
           </Link>
           <p className='centeredWhiteText'>Find important resources here</p>
         </div>
         <div className={styles.sectionWrapper}>
-          <Link href='/public/staff' className={styles.link}>
+          <Link href='/public/info/staff' className={styles.link}>
             <h3 className='whiteSubTitle'>STAFF</h3>
           </Link>
           <p className='centeredWhiteText'>Meet our wonderful staff!</p>

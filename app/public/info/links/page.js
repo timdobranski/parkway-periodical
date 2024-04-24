@@ -2,7 +2,7 @@
 
 import styles from './links.module.css'
 import { useState, useEffect } from 'react';
-import supabase from '../../../utils/supabase';
+import supabase from '../../../../utils/supabase';
 import Link from 'next/link';
 
 
@@ -34,17 +34,16 @@ export default function LinksPage() {
 
   return (
     <div className='feedWrapper'>
-      <div className='post'>
-        <h1 className='pageTitle'>LINKS</h1>
-        {linksData.map((link, index) => {
-          return (
-            <div className={styles.linkWrapper} key={index}>
-              <Link href={link.url} className={styles.link}>{link.title}</Link>
-              {link.description && <p className={styles.description}>{link.description}</p>}
-            </div>
-          )
-        })}
-      </div>
+      <h1 className='whiteTitle'>LINKS</h1>
+      <p className='centeredWhiteText marginBelow'>{`Below you'll find links to helpful resources for Parkway families:`}</p>
+      {linksData.map((link, index) => {
+        return (
+          <div className={styles.linkWrapper} key={index}>
+            <Link href={link.url} className='whiteSubTitle centeredText'>{link.title}</Link>
+            {link.description && <p className='centeredWhiteText'>{link.description}</p>}
+          </div>
+        )
+      })}
     </div>
   )
 
