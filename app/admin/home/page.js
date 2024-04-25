@@ -1,9 +1,53 @@
+'use client'
+
 import styles from './home.module.css';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faAdd } from '@fortawesome/free-solid-svg-icons';
+import supabase from '../../../utils/supabase';
+
 
 export default function AdminHomePage() {
+  const types = ['posts', 'electives', 'clubs', 'staff', 'links'];
+  const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {
+    acc[type] = 0; // initialize all counts to zero
+    return acc;
+  }, {}));
+
+  async function getEntryCount(type) {
+    try {
+      const { data, error, count } = await supabase
+        .from(type)
+        .select('id', { count: 'exact', head: true });
+
+      if (error) {
+        console.error('Error fetching data:', error);
+        return 0; // or handle the error as needed
+      }
+
+      return count;
+    } catch (error) {
+      console.error('Error in getEntryCount:', error);
+      return 0; // or handle the error as needed
+    }
+  }
+  useEffect(() => {
+    async function fetchCounts() {
+      const counts = await Promise.all(types.map(async (type) => {
+        const count = await getEntryCount(type);
+        return { type, count };
+      }));
+
+      const newTypeCounts = {...typeCounts};
+      counts.forEach(({ type, count }) => {
+        newTypeCounts[type] = count;
+      });
+      setTypeCounts(newTypeCounts);
+    }
+
+    fetchCounts();
+  }, []);
   return (
     <>
       <h1 className='pageTitle'>ADMIN HOME</h1>
@@ -18,7 +62,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>POSTS</h2>
             </Link>
           </div>
-          <p>Number of posts</p>
+          <p>{`Posts: ${typeCounts.posts}`}</p>
           <p>Number of EXPIRED posts</p>
 
         </div>
@@ -32,6 +76,8 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>ELECTIVES</h2>
             </Link>
           </div>
+          <p>{`Electives: ${typeCounts.electives}`}</p>
+
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -43,6 +89,8 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>CLUBS</h2>
             </Link>
           </div>
+          <p>{`Clubs: ${typeCounts.clubs}`}</p>
+
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -54,6 +102,8 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>STAFF</h2>
             </Link>
           </div>
+          <p>{`Staff: ${typeCounts.staff}`}</p>
+
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -65,6 +115,8 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>LINKS</h2>
             </Link>
           </div>
+          <p>{`Links: ${typeCounts.links}`}</p>
+
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -73,7 +125,7 @@ export default function AdminHomePage() {
           </Link>
         </div>
       </div>
-      <h3 className='pageTitle'>Update Social Media Links</h3>
+      {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}
     </>
   );
 }

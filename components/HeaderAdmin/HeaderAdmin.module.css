@@ -119,7 +119,8 @@
   outline: none;
 }
 .navContainerLeft h2, .navContainerRight h2 {
-  margin: .5rem 0 .5rem 0;
+  /* margin: .5rem 0 .5rem 0; */
+  margin: 0;
   font-family: Louis George Cafe;
   color: var(--primary-blue);
   text-decoration: underline;
