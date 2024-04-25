@@ -16,6 +16,7 @@
   background: rgba(0, 0, 0, 0);
   animation: none;
   transition: height 1s ease, margin-top 1s ease; /* Add transition for resize when intro stops running */
+
 }
 .galleryWrapper::before {
   content: '';
@@ -24,17 +25,20 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/images/gradient3small2.webp');
+  /* background-image: url('/images/gradient3small2.webp'); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  filter: brightness(0.5);
+  background-color: rgb(55, 55, 55);
+  filter: brightness(0.5) grayscale(1);
   opacity: 0;
   transition: opacity 1s ease; /* Smooth transition for the fade-in effect */
   pointer-events: none; /* Allows clicks to pass through to elements below */
+
 }
 .wrapperAfterIntro {
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 1);
+  backdrop-filter: grayscale(1);
   /* border: solid black 20px; */
   height: calc(100vh - 90px);
   margin-top: 90px;
@@ -77,20 +81,20 @@
   transition: transform 1s ease;
 }
 .row1 .imageContainer:hover::before {
-  border-top: solid white 8px;
+  border-top: var(--photo-border);
 }
 .row2 .imageContainer:hover {
-  outline: solid white 8px;
+  outline: var(--photo-border);
 }
 .row3 .imageContainer:hover::before {
-  border-bottom: solid white 8px;
+  border-bottom: var(--photo-border);
 }
 .row1 .imageContainer:hover {
-  outline: solid white 8px;
+  outline: var(--photo-border);
 
 }
 .row3 .imageContainer:hover {
-  outline: solid white 8px;
+  outline: var(--photo-border);
 }
 .imageContainer:hover::before {
   content: '';

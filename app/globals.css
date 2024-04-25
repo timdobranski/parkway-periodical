@@ -32,6 +32,8 @@
   --primary-blue-transparent: rgba(0, 89, 124, 0.7);
   --primary-blue: rgba(0, 89, 124, 1);
   --primary-red: rgb(250, 88, 88);
+  --photo-border: 6px solid white;
+  /* --gallery-photo-margin: 1rem; */
 }
 /* The entire scrollbar */
 ::-webkit-scrollbar {
@@ -64,6 +66,7 @@
 .centeredText {
   text-align: center;
 }
+
 .slideUp {
   animation: slideUpNoCenter .5s ease-out forwards;
 }
@@ -102,7 +105,7 @@
 }
 .feedWrapper{
   position: fixed;
-  top: 90px;
+  top: 100px;
   left: 50%;
   width: 900px;
   transform: translateX(-50%);
@@ -113,13 +116,14 @@
   animation: slideUp 1s ease-out forwards;
   overflow-y: auto;
   overflow-x: visible !important;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 100px);
   /* height: 100vh; */
   border: solid white 6px;
   border-bottom: 0;
-  padding-left: calc(2rem + 8px);
+  /* padding-left: calc(2rem + 8px);
   padding-right: 2rem;
-  padding-bottom: 4rem;
+  padding-bottom: 4rem; */
+  padding: 2rem 2rem 4rem calc(2rem + 8px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -130,6 +134,7 @@
 .welcomeHeader {
   width: 100%;
   display: block;
+  background: transparent;
   /* border: solid red 2px; */
 }
 .welcomeTitle {
@@ -255,6 +260,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 1);
 }
 .post, .flexibleLayoutWrapper {
   position: relative;

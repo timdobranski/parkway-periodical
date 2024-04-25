@@ -71,7 +71,7 @@ export default function Electives() {
     <div className='feedWrapper'>
       {/* <div className={`slideUp`}> */}
       <h1 className='whiteTitle'>ELECTIVES</h1>
-      {/* <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
+      <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
 
       <div className={styles.selectPathwayWrapper}>
         <select value={selectedPathway} onChange={handleChange} className={styles.selectPathway}>
@@ -80,7 +80,7 @@ export default function Electives() {
             <option key={index} value={pathway}>{pathway}</option>
           ))}
         </select>
-      </div> */}
+      </div>
 
       {electivesData.map((elective, index) => {
         return (

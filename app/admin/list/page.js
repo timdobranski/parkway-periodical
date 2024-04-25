@@ -72,23 +72,25 @@ export default function List() {
         <h1 className='pageTitle'>{`${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
-          router.push(`/admin/new-${newType}`);
+          router.push(`/admin/new-content?type=${type}`);
         }}/>        {list && list.map((item, index) => {
           return (
             <div className={styles.listWrapper} key={index}>
-              <div className={styles.collapsedContentWrapper} onClick={() => {expanded === null ? setExpanded(index) : setExpanded(null)}}>
+              <div className={styles.collapsedContentWrapper} onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}>
                 <div className={styles.titleWrapper}>
                   <FontAwesomeIcon icon={expanded === index ? faChevronUp : faChevronDown} className={styles.dropdownIcon} />
-                  <h3 className={styles.title}>{item.title || item.name}</h3>
+                  <h3 className='smallerPostTitle'>{item.title || item.name}</h3>
                 </div>
                 <div className={styles.editControlsWrapper}>
-                  <button className={styles.editButton}  onClick={() => router.push(`/admin/new-link?id=${item.id}`)}>Edit</button>
+                  <button className={styles.editButton}  onClick={() => router.push(`/admin/new-content?id=${item.id}&type=${type}`)}>Edit</button>
                   <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>Delete</button>
                 </div>
               </div>
               <div className={expanded === index ? styles.expandedInfo : styles.expandedInfoHidden}>
+                {item.when && <p>{`Meets: ${item.when}`}</p>}
                 <p>{item.description || item.bio}</p>
                 <p>{item.url}</p>
+                <p>{item.position}</p>
               </div>
             </div>
           )

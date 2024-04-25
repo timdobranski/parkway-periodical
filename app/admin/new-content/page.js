@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import supabase from '../../../utils/supabase';
-import styles from './new-link.module.css';
+import styles from './new-content.module.css';
 import { useRouter } from 'next/navigation';
 
-export default function NewLinkPage() {
+export default function NewContentPage() {
   const router = useRouter()
   const linkFormData = {
     title: '',
@@ -39,6 +39,7 @@ export default function NewLinkPage() {
     email: '',
     phone: '',
     bio: '',
+    department: '',
     expires: '',
     deleteOnExpire: false
   };
@@ -184,7 +185,7 @@ export default function NewLinkPage() {
       {formData.description !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='description' className={styles.label}>Description</label>
-        <textarea id='description' name='description' className={styles.input} value={formData.description} onChange={handleChange} />
+        <textarea name='description' className={`${styles.input} ${styles.textArea}`} value={formData.description} onChange={handleChange} />
       </div>
       }
       {formData.bio !==undefined &&
@@ -196,13 +197,13 @@ export default function NewLinkPage() {
       {formData.when !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>When We Meet</label>
-          <textarea id='description' name='when' className={styles.input} value={formData.when} onChange={handleChange} />
+          <textarea name='when' className={styles.input} value={formData.when} onChange={handleChange} />
         </div>
       }
       {formData.duration !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>Duration</label>
-        <select id="action-select" name='duration' className={styles.onExpire} value={formData.duration} onChange={handleChange}>
+        <select  name='duration' className={styles.onExpire} value={formData.duration} onChange={handleChange}>
           <option value="Year Long">Year Long</option>
           <option value="Trimester">Trimester</option>
         </select>
@@ -211,7 +212,7 @@ export default function NewLinkPage() {
       {formData.cte !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>CTE Class?</label>
-        <select id="action-select" name='action' className={styles.onExpire} value={formData.deleteOnExpire} onChange={handleChange}>
+        <select  name='action' className={styles.onExpire} value={formData.deleteOnExpire} onChange={handleChange}>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
         </select>
@@ -231,8 +232,8 @@ export default function NewLinkPage() {
       {formData.expires !== undefined &&
       <div className={styles.formSection}>
         <label className={styles.label}>Set Expiration Date (optional)</label>
-        {!formData.expires && <p className={styles.noExpiration}>No expiration currently set</p>}
         <input type='date' id='expiration' name='expires' className={styles.input} value={formData.expires} onChange={handleChange} />
+        {!formData.expires && <p className={styles.noExpiration}>No expiration currently set</p>}
       </div>
       }
 
@@ -252,7 +253,7 @@ export default function NewLinkPage() {
   return (
     <div className='feedWrapper'>
       <div className='post'>
-        <h1 className='pageTitle'>{id ? `Editing ${singularType}`: `ADD NEW ${singularType.toUpperCase()}`}</h1>
+        <h1 className='pageTitle'>{id ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
         <p>{introText[type]}</p>
         {formData && form}
 

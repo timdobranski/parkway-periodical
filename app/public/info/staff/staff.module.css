@@ -2,3 +2,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
+.selectDepartmentWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.selectDepartment {
+  font-size: 1.25rem;
+  padding: .25rem .5rem;
+}

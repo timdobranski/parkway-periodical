@@ -79,19 +79,32 @@
 .welcomePostWrapper {
   position: relative;
   width: 100%;
+  height: 350px;
   background-size: 100% auto;
+  background: rgb(0, 0, 0, 0);
   padding: 0;
-  /* left: 50%; */
-  /* transform: translateX(-50%); */
   z-index: 2000;
-  background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   backdrop-filter: blur(8px);
   animation: slideUpNoPosition .75s ease-out forwards;
+  background-image: url('/images/quad.png');
+  background-size: cover;
   margin-bottom: 2rem;
-  margin-top: 2rem;
+
   text-align: center;
   font-family: Louis George Cafe;
-  border: solid white 8px;
+  border: solid white 6px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+}
+.welcomeHeader {
+  height: 80%;
+  width: auto;
+  display: block;
+  background: transparent;
+  -webkit-filter: drop-shadow(0 0 3px rgba(0,0,0,1)); /* horizontal, vertical offset, blur radius, color */
+  filter: drop-shadow(0 0 3px rgba(0,0,0,1)); /* standard syntax */
 }
 .filterWrapper {
   position: absolute;

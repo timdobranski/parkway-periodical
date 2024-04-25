@@ -6,6 +6,7 @@
     width: 100%
 }
 .formSection {
+  position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,6 +35,15 @@
 .input {
   font-size: 1.25rem;
   min-width: 400px;
+  border-radius: 5px;
+  border: solid black 1px;
+  padding: .5rem;
+}
+.textArea {
+  min-height: 75px;
+  min-width: 500px;
+  padding: .5rem;
+  /* border: solid black 2px; */
 }
 .existingImagePreview {
   width: 250px;
@@ -50,6 +60,8 @@
   padding: .5rem;
 }
 .noExpiration {
+  position: absolute;
+  bottom: -35px;
   background-color: rgb(255, 150, 150);
   font-size: 1rem;
   margin: .25rem .5rem;

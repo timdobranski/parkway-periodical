@@ -64,7 +64,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const welcomePost = (
     <div className={styles.welcomePostWrapper}>
-      <img src='/images/overheadBlueText.webp' alt='Parkway Logo' className='welcomeHeader' />
+      <img src='/images/parkwayNewLogo2.webp' alt='Parkway Logo' className={styles.welcomeHeader} />
     </div>
     // <>
     //   <h1 className='whiteTitle'>WELCOME!</h1>

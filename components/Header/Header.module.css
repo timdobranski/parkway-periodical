@@ -52,10 +52,11 @@
   justify-content: center;
   align-items: flex-start;
   background-color: rgba(0, 89, 124, 1);
+  /* background: linear-gradient(to top, rgb(0, 111, 155) 0%, rgb(0, 91, 127) 100%); */
   /* backdrop-filter: blur(8px) grayscale(1); */
   text-align: center;
   z-index: 2000;
-  animation: slideDown 1s ease-out forwards;
+  animation: slideDown .75s ease-out forwards;
   color: white;
   border-bottom: solid rgb(0, 65, 95) 2px;
 }
@@ -207,7 +208,7 @@
   transition: transform .3s ease-in-out;
   border: none !important;
   height: fit-content;
-  /* text-shadow: 0 0 5px rgba(0, 0, 0, .5); */
+  text-shadow: 0 0 15px rgba(0, 0, 0, .8);
 }
 .navLink h2 {
   font-family: Louis George Cafe;
