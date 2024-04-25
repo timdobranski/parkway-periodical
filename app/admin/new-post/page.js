@@ -7,18 +7,44 @@ import styles from './new-post.module.css';
 import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
 import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight'
 import Feed from '../../../components/Feed/Feed';
+import { useSearchParams } from 'next/navigation';
 
 export default function NewPostPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [contentBlocks, setContentBlocks] = useState([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
+  const [contentBlocks, setContentBlocks] = useState([]);
   const [activeBlock, setActiveBlock] = useState(null);
   const blocksRef = useRef({});
+  const searchParams = useSearchParams();
+  const postId = searchParams.get('id');
+
+  // if a post id is provided, fetch the post data
+  useEffect(() => {
+    if (postId) {
+      const fetchPost = async () => {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*')
+          .eq('id', postId)
+          .single();
+
+        if (error) {
+          console.error('Error fetching post data:', error);
+          return;
+        }
+
+        if (data) {
+          const parsedData = JSON.parse(data.content);
+          setContentBlocks(parsedData);
+        }
+      };
+      fetchPost();
+    } else {
+      setContentBlocks([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
+    }
+  }, [postId])
 
 
-  // useEffect(() => {
-  //   console.log('user: ', user)
-  // }, [user])
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
@@ -47,11 +73,18 @@ export default function NewPostPage() {
     getAndSetUser();
   }, [router]);
   useEffect(() => {
+    // Cleanup function to reset when component unmounts
+    return () => {
+      setContentBlocks([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
+    };
+  }, []);
+
+  useEffect(() => {
     console.log('ROOT PAGE CONTENT BLOCK ARRAY CHANGED TO: ', contentBlocks)
   }, [contentBlocks])
-  useEffect(() => {
-    console.log('ACTIVE MAIN BLOCK CHANGED TO: ', activeBlock)
-  }, [activeBlock])
+  // useEffect(() => {
+  //   console.log('ACTIVE MAIN BLOCK CHANGED TO: ', activeBlock)
+  // }, [activeBlock])
 
   // Helper function to upload image to Supabase Storage
   async function uploadImageToSupabase(base64String, fileName) {
@@ -78,9 +111,7 @@ export default function NewPostPage() {
     try {
       const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
       // Check if block type is 'title' and content is falsy
-        if (block.type === 'title' && !block.content) {
-          block.content = `Weekly Update`;
-        } else if (block.type === 'photo') {
+        if (block.type === 'photo') {
           const photoPromises = block.content.map(async (photo) => {
             if (typeof photo.src === 'string' && photo.src.startsWith('data:')) {
               return uploadImageToSupabase(photo.src, photo.title).then(uploadedImageUrl => ({ ...photo, src: uploadedImageUrl }));

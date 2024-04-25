@@ -74,6 +74,9 @@ export default function List() {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
           router.push(`/admin/new-content?type=${type}`);
         }}/>        {list && list.map((item, index) => {
+
+          const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
+
           return (
             <div className={styles.listWrapper} key={index}>
               <div className={styles.collapsedContentWrapper} onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}>
@@ -82,15 +85,15 @@ export default function List() {
                   <h3 className='smallerPostTitle'>{item.title || item.name}</h3>
                 </div>
                 <div className={styles.editControlsWrapper}>
-                  <button className={styles.editButton}  onClick={() => router.push(`/admin/new-content?id=${item.id}&type=${type}`)}>Edit</button>
+                  <button className={styles.editButton}  onClick={() => router.push(editUrl)}>Edit</button>
                   <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>Delete</button>
                 </div>
               </div>
               <div className={expanded === index ? styles.expandedInfo : styles.expandedInfoHidden}>
                 {item.when && <p>{`Meets: ${item.when}`}</p>}
+                <p>{item.position}</p>
                 <p>{item.description || item.bio}</p>
                 <p>{item.url}</p>
-                <p>{item.position}</p>
               </div>
             </div>
           )

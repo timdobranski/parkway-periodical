@@ -40,8 +40,7 @@
   position: absolute;
   top: 50%;
   height: 50px;
-
-  padding: 30px;
+  padding: 10px;
   transform: translateY(-50%);
   display: flex;
   flex-direction: row;
@@ -58,7 +57,7 @@
 .rightNavHandle {
   right: 50px;
   width: 50px;
-  border-radius: 50%;
+  border-radius: 5pxå
 
 }
 .leftNavHandle:hover, .rightNavHandle:hover {
@@ -91,10 +90,11 @@
   justify-content: center;
   align-items: center;
   overflow: visible;
-  padding: 1rem 2rem;
+  padding: 1rem 0;
   white-space: nowrap;
-  border: solid black 1px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+  /* border: solid rgb(195, 195, 195) 2px; */
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
 }
 .navContainerLeft {
   left: 0;
@@ -110,8 +110,10 @@
 .navContainerHidden {
   display: none;
 }
+
 .navContainerLeft a, .navContainerRight a {
   text-decoration: none;
+  width: 100%;
 }
 .navContainerLeft a:focus, .navContainerRight a:focus {
   outline: none;
@@ -119,21 +121,23 @@
 .navContainerLeft h2, .navContainerRight h2 {
   margin: .5rem 0 .5rem 0;
   font-family: Louis George Cafe;
-  color: rgb(0, 174, 255);
-  color: rgb(0, 0, 0);
-  font-size: 1.25rem;
-  font-weight:normal;
-  text-decoration: none;
-  transform: scale(1);
-  transition: transform .3s ease-in-out;
-  border: none !important;
-
-}
-.navContainerLeft h2:hover, .navContainerRight h2:hover{
-  transform: scale(1.2);
-  cursor: pointer;
+  color: var(--primary-blue);
   text-decoration: underline;
   text-decoration-color: red;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  font-size: 1.25rem;
+  font-weight:normal;
+  transition: transform .3s ease-in-out;
+  width: 100%;
+  padding: .5rem 1.5rem;
+  box-sizing: border-box;
+}
+.navContainerLeft h2:hover, .navContainerRight h2:hover{
+  /* transform: scale(1.2); */
+  cursor: pointer;
+  background-color: rgb(238, 238, 238);
+  width: 100%;
 }
 
 .navContainer h2:focus {

@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './HeaderAdmin.module.css';
-import logo from '../../public/images/logos/parkway.png';
+import logo from '../../public/images/logos/parkway.webp';
 import Image from 'next/image';
 import Link from 'next/link';
 import supabase from '../../utils/supabase';
@@ -77,13 +77,13 @@ export default function Header() {
         onMouseEnter={() => toggleNavOpen('left')}
         onMouseLeave={() => setLeftNavOpen(false)}
 
->
+      >
         <FontAwesomeIcon icon={faCaretDown} className={styles.downIcon}/>
         <p className={styles.viewPages}>PAGES</p>
         <div
           onMouseLeave={() => setLeftNavOpen(false)}
 
-        className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
+          className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
 
           <Link href='/'>
             <h2>HOME</h2>
@@ -103,12 +103,11 @@ export default function Header() {
         <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
         {/* <p className={styles.viewPages}>SETTINGS</p> */}
         <div className={rightNavOpen ? styles.navContainerRight : styles.navContainerHidden}>
-
+          <Link href='/admin/home' className={styles.link}>
+            <h2>HOME</h2>
+          </Link>
           <Link href='/admin/new-post'>
             <h2>NEW POST</h2>
-          </Link>
-          <Link href='/admin/view-posts'>
-            <h2>OLD EDIT POSTS</h2>
           </Link>
           <Link href='/admin/list?type=posts'>
             <h2>POSTS</h2>
