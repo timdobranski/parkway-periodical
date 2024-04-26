@@ -26,29 +26,42 @@ export default function WelcomeSlideshow() {
       </ul>
     </div>
   )
+  const familyResourceCenter = (
+    <div className={styles.familyResourceCenter}>
+      <div className={styles.frcTitleWrapper}>
+        <p className='centeredWhiteText'>{`Visit Parkway's`}</p>
+        <p className={`whiteSubTitle ${styles.frcTitle}`}>
+          <a href="https://sites.google.com/lmsvsd.net/familyresourcecenter/home?authuser=0" target="_blank" rel="noopener noreferrer">
+            {`Parkway's Family Resource Center`}
+          </a>
+        </p>
+      </div>
+    </div>
+  )
+
 
   const storeLink = (
     <div className={styles.storeSlide}>
       <div className={styles.shirtContainer}>
-            <img src="/images/store/blueShirt.webp" alt="Blue Shirt" className={styles.shirtImage} />
-            <img src="/images/store/redShirt.webp" alt="Red Shirt"  className={styles.shirtImage} />
-            <img src="/images/store/yellowShirt.webp" alt="Yellow Shirt"className={styles.shirtImage} />
-            <img src="/images/store/greenShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
-            <img src="/images/store/purpleShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
+        <img src="/images/store/blueShirt.webp" alt="Blue Shirt" className={styles.shirtImage} />
+        <img src="/images/store/redShirt.webp" alt="Red Shirt"  className={styles.shirtImage} />
+        <img src="/images/store/yellowShirt.webp" alt="Yellow Shirt"className={styles.shirtImage} />
+        <img src="/images/store/greenShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
+        <img src="/images/store/purpleShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
       </div>
       <div className={styles.storeText}>
         <p className={styles.schoolStoreText}>Show your school spirit with our Parkway gear! </p>
         <a href='https://teamlocker.squadlocker.com/#/lockers/parkway-sports-and-health-science-academy' className={styles.shopNow}>Visit Our School Store</a>
-        </div>
+      </div>
     </div>
   )
   const newContentSlide = (
     <div className={styles.featuredContentSlide}>
-    <p>Parkway Spotlight:</p>
-    <p>Hip Hop Dance Elective</p>
-  </div>
+      <p>Parkway Spotlight:</p>
+      <p>Hip Hop Dance Elective</p>
+    </div>
   )
-  const [slides, setSlides] = useState([welcomeImage, storeLink,  newContentSlide, upcomingEvents]);
+  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, storeLink,  newContentSlide, upcomingEvents]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   // 5 different content slides:
   // welcome image

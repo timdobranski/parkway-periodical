@@ -16,21 +16,47 @@
   border: solid white 2px;
   box-shadow: 0 0 25px rgba(0, 0, 0, .7);
 }
-.welcomeSlide, .storeSlide, .upcomingEventsSlide, .featuredContentSlide {
+.welcomeSlide, .storeSlide, .upcomingEventsSlide, .featuredContentSlide, .familyResourceCenter {
   position: relative;
   width: 100%;
   height: 246px !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }
 .upcomingEventsHeader {
   /* font-size: 2rem;
   margin: 0;
   padding: 1rem; */
-
+}
+.familyResourceCenter {
+  /* border: solid red 2px; */
+  justify-content: flex-start;
+  background-image: url('/images/frcTransparent.webp');
+  background-size: cover;
+  background-position: center;
+}
+.frcTitleWrapper {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 2rem;
+  width: 200px;
+  /* border: solid green 2px; */
+}
+.frcTitle {
+  font-size: 2rem;
+  margin: 0;
+  padding: 1rem;
+  text-decoration-color: rgb(0, 141, 184);;
+}
+.whiteSubTitle a, .frcTitle a {  /* Assuming styles.frcTitle compiles to .frcTitle */
+  color: inherit;  /* Inherits the text color from the paragraph */
+  text-decoration: inherit;  /* Removes underline from links */
 }
 .welcomeSlide {
   background-image: url('/images/quad.png');
@@ -57,7 +83,7 @@
 }
 .shirtContainer {
   position: absolute;
-  left: 50px;
+  left: 30px;
   top: 0;
   width: 280px; /* Adjust based on your image size */
   height: 250px; /* Adjust based on your image size */
@@ -134,7 +160,7 @@
   height: 30px;
   width: 30px;
   position: absolute;
-  top: calc(50% - 15px);
+  top: calc(50% - 24px);
   /* transform: translate(0, -50%); */
   /* transition: transform 0.5s ease; */
   border-radius: 50%;
