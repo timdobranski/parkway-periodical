@@ -44,25 +44,23 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-left: 2rem;
+  margin-left: 3rem;
   width: 350px;
   height: 100%;
+  padding-top: 1rem;
   /* border: solid green 2px; */
 }
 .frcSubtitle, .frcSubtitle2 {
   font-size: 1.25rem;
   margin: 0;
-  padding: 1rem 0 0 1rem;
-  margin-top: .5rem;
+  padding: 1rem 0 0 0;
+  margin: 1 0;
   margin-bottom: 0;
   /* text-decoration-color: rgb(0, 141, 184); */
 
 }
 .frcSubtitle2 {
   font-size: 1rem;
-  margin: 0;
-  padding: .5rem 0 0 1rem;
-  margin-top: 0
   /* text-decoration-color: rgb(0, 141, 184); */
 
 }
@@ -70,7 +68,7 @@
   font-size: 2rem;
   /* border: solid red 2px; */
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 0 0 0;
   text-decoration-color: rgb(0, 141, 184);;
 }
 .whiteSubTitle a, .frcTitle a {  /* Assuming styles.frcTitle compiles to .frcTitle */
