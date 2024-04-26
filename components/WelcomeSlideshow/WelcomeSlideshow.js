@@ -29,12 +29,15 @@ export default function WelcomeSlideshow() {
   const familyResourceCenter = (
     <div className={styles.familyResourceCenter}>
       <div className={styles.frcTitleWrapper}>
-        <p className='centeredWhiteText'>{`Visit Parkway's`}</p>
+        <p className={styles.frcSubtitle}>{`Visit Parkway's`}</p>
         <p className={`whiteSubTitle ${styles.frcTitle}`}>
           <a href="https://sites.google.com/lmsvsd.net/familyresourcecenter/home?authuser=0" target="_blank" rel="noopener noreferrer">
-            {`Parkway's Family Resource Center`}
+            {`Family Resource Center`}
           </a>
         </p>
+        <p className={styles.frcSubtitle2}>{`for helpful content designed to keep families connected to the
+        social-emotional content we are learning as a school, community resources, attendance information,
+        and parent training opportunities.`}</p>
       </div>
     </div>
   )
