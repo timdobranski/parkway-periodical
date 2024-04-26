@@ -7,12 +7,13 @@ import Link from 'next/link';
 import supabase from '../../utils/supabase';
 import  { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faBars, faMessage } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
   const [storageUsage, setStorageUsage] = useState(null);
   const [leftNavOpen, setLeftNavOpen] = useState(false);
   const [rightNavOpen, setRightNavOpen] = useState(false);
+  const [expiredContent, setExpiredContent] = useState([]);
 
   async function checkStorageUsage() {
     try {
@@ -96,9 +97,17 @@ export default function Header() {
           </Link>
         </div>
       </div>
+
+
       <div className={styles.storageStatusWrapper}>
         <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
       </div>
+      <FontAwesomeIcon icon={faMessage} className={styles.messageIcon}/>
+      <div >
+        <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
+      </div>
+
+
       <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
         <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
         {/* <p className={styles.viewPages}>SETTINGS</p> */}

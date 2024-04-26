@@ -6,6 +6,7 @@ import styles from './home.module.css';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
 import PrimeText from '../../../components/PrimeText/PrimeText';
+import WelcomeSlideshow from '../../../components/WelcomeSlideshow/WelcomeSlideshow';
 import Intro from '../../../components/Intro/Intro';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import { format } from 'date-fns';
@@ -62,17 +63,6 @@ export default function Home({ introRunning, setIntroRunning }) {
     console.log('INTRO RUNNING: ', introRunning)
   })
 
-  const welcomePost = (
-    <div className={styles.welcomePostWrapper}>
-      <img src='/images/parkwayNewLogo2.webp' alt='Parkway Logo' className={styles.welcomeHeader} />
-    </div>
-    // <>
-    //   <h1 className='whiteTitle'>WELCOME!</h1>
-    //   <p class='centeredWhiteText'>{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
-    // Parkway Health & Sciences Academy. We're glad you're here! Browse school news posts below or select the Info
-    // button above to learn more about our elective classes, clubs, staff and more.`}</p>
-    // </>
-  )
   const filterAndSearchPosts = (
     <div className={styles.filterWrapper}>
       <div className={styles.searchWrapper}>
@@ -104,7 +94,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const renderedPosts =
     <div className='feedWrapper'>
       {/* <div className='topFeedShadow'></div> */}
-      {welcomePost}
+      <WelcomeSlideshow />
       {filterAndSearchPosts}
 
 

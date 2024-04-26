@@ -62,7 +62,7 @@
 }
 .underline {
   text-decoration: underline !important;
-  text-decoration-color: var(--primary-red) !important;
+  text-decoration-color: red !important;
   border: solid red 2px;
 }
 .slideIn {
@@ -224,7 +224,7 @@
   transform: scale(1.2);
   cursor: pointer;
   text-decoration: underline;
-  text-decoration-color:rgb(255, 83, 83);
+  text-decoration-color:red;
 }
 
 .navLink:focus {
