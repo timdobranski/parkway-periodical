@@ -104,7 +104,7 @@ export default function Header() {
       </div>
       <FontAwesomeIcon icon={faMessage} className={styles.messageIcon}/>
       <div >
-        <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
+        <p className={styles.storageUsed}>Expired Content Alert: {`5 items are currently expired`}</p>
       </div>
 
 

@@ -46,9 +46,10 @@ margin-top: 1rem;
 }
 .familyResourceCenter {
   justify-content: flex-start;
-  background-image: url('/images/frc.webp');
-  background-size: fill;
-  background-position: 100% 50%;
+  background-image: url('/images/frcTransparent2.webp');
+  /* background-size: cover; */
+  background-position: right center;
+  background-size: auto 100%;
   background-repeat: no-repeat;
   height: 246px !important;
 }
