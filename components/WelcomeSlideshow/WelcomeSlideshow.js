@@ -35,8 +35,8 @@ export default function WelcomeSlideshow() {
             {`Family Resource Center`}
           </a>
         </p>
-        <p className={styles.frcSubtitle2}>{`for helpful content designed to keep families connected to the
-        social-emotional content we are learning as a school, community resources, attendance information,
+        <p className={styles.frcSubtitle2}>{`The Family Resource Center is an online hub for helpful content designed to keep families connected to the
+        social-emotional content we are learning as a school, as well as community resources, attendance information,
         and parent training opportunities.`}</p>
       </div>
     </div>

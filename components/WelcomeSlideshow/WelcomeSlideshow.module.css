@@ -40,36 +40,27 @@
   height: 246px !important;
 }
 .frcTitleWrapper {
+  box-sizing: border-box;
   text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: flex-start;
   margin-left: 3rem;
   width: 350px;
   height: 100%;
-  padding-top: 1rem;
+  padding: 1.5rem 0 2rem 0;
   /* border: solid green 2px; */
 }
 .frcSubtitle, .frcSubtitle2 {
   font-size: 1.25rem;
   margin: 0;
-  padding: 1rem 0 0 0;
-  margin: 1 0;
-  margin-bottom: 0;
-  /* text-decoration-color: rgb(0, 141, 184); */
-
 }
 .frcSubtitle2 {
   font-size: 1rem;
-  /* text-decoration-color: rgb(0, 141, 184); */
-
 }
 .frcTitle {
   font-size: 2rem;
-  /* border: solid red 2px; */
-  margin: 0;
-  padding: 1rem 0 0 0;
   text-decoration-color: rgb(0, 141, 184);;
 }
 .whiteSubTitle a, .frcTitle a {  /* Assuming styles.frcTitle compiles to .frcTitle */
@@ -168,6 +159,7 @@
   padding: .5rem 1rem;
   text-decoration: none;
   font-size: 1.5rem;
+  border: solid rgb(80, 197, 255) 1px;
 }
 .upcomingEventsSlide {
   background: rgba(0, 0, 0, .5);
