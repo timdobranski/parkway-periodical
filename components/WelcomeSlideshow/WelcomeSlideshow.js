@@ -18,11 +18,11 @@ export default function WelcomeSlideshow() {
   const upcomingEvents = (
     <div className={styles.upcomingEventsSlide}>
       <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-      <ul>
-        <li>School Dance</li>
-        <li>Promotion Practice</li>
-        <li>Bowling Party</li>
-        <li>8th Grade Promotion</li>
+      <ul className={styles.eventsList}>
+        <li className={styles.eventsItem}>Date: School Dance</li>
+        <li className={styles.eventsItem}>Date: Promotion Practice</li>
+        <li className={styles.eventsItem}>Date: Bowling Party</li>
+        <li className={styles.eventsItem}>Date: 8th Grade Promotion</li>
       </ul>
     </div>
   )
@@ -61,11 +61,11 @@ export default function WelcomeSlideshow() {
   )
   const newContentSlide = (
     <div className={styles.featuredContentSlide}>
-      <p>Parkway Spotlight:</p>
-      <p>Hip Hop Dance Elective</p>
+      <p>{`Spotlight: `}</p>
+      <p>Randomly Chosen Elective or Club Featured Here</p>
     </div>
   )
-  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, storeLink,  newContentSlide, upcomingEvents]);
+  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, upcomingEvents, storeLink,  newContentSlide]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   // 5 different content slides:
   // welcome image

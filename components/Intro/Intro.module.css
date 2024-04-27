@@ -79,6 +79,7 @@
   align-items: center;
   transform-origin: center;
   transition: transform 1s ease;
+
 }
 .row1 .imageContainer:hover::before {
   border-top: var(--photo-border);

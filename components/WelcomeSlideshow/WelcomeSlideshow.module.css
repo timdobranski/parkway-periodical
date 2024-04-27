@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   max-width: 850px;
-  height: 250px !important;
+  height: 250px !important; /* to override default react carousel component styling */
   padding: 0;
   z-index: 1;
   display: flex;
@@ -41,9 +41,8 @@
 
 }
 .upcomingEventsHeader {
-  /* font-size: 2rem;
-  margin: 0;
-  padding: 1rem; */
+font-size: 1.75rem;
+margin-top: 1rem;
 }
 .familyResourceCenter {
   justify-content: flex-start;
@@ -143,9 +142,7 @@
   transform: translate(-140px, -40px);
   z-index: 0;
 }
-.upcomingEventsSlide {
-  background-color: rgb(57, 57, 57)
-}
+
 .storeTextWrapper {
   box-sizing: border-box;
   display: flex;
@@ -176,7 +173,29 @@
 .upcomingEventsSlide {
   background: rgba(0, 0, 0, .5);
   color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 0 2rem 2rem 2.5rem;
 }
+.eventsList {
+  list-style-type: none; /* Removes bullets */
+  margin: 0;             /* Removes margin */
+  padding: 0;            /* Removes padding */
+  text-align: left;
+}
+
+.eventsItem {
+  margin: 0;
+  padding: 0;
+  font-size: 1.25rem;
+  margin: .5rem;
+}
+
+
+
+
 /* NAV ARROWS */
 .arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {
   height: 30px;
