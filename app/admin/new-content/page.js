@@ -133,15 +133,15 @@ export default function NewContentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url, description, expires, deleteOnExpire } = formData;
+    const { title, url, description, bio, when, expires, deleteOnExpire, duration, cte } = formData;
 
     // Convert empty string in 'expires' to null if necessary
     const effectiveExpires = expires === '' ? null : expires;
 
     // Prepare the payload dynamically based on whether linkId is available
-    const payload = linkId ?
-      { id: id, title, url, description, expires: effectiveExpires, deleteOnExpire } : // Include id for update
-      { title, url, description, expires: effectiveExpires, deleteOnExpire };              // Exclude id for create
+    const payload = id ?
+      { id: id, title, url, description, expires, deleteOnExpire, when, bio, duration, cte } :
+      { title, url, description, expires, deleteOnExpire, duration, cte, bio, when };
 
     // Determine the operation based on linkId's presence
     const operation = id ? 'update' : 'insert';
@@ -212,7 +212,7 @@ export default function NewContentPage() {
       {formData.cte !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>CTE Class?</label>
-        <select  name='action' className={styles.onExpire} value={formData.deleteOnExpire} onChange={handleChange}>
+        <select  name='cte' className={styles.onExpire} value={formData.deleteOnExpire} onChange={handleChange}>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
         </select>
@@ -225,7 +225,7 @@ export default function NewContentPage() {
         {formData.image &&
           <img src={formData.image}className={styles.existingImagePreview}/>
         }
-        <input type='file' id='expiration' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
+        <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
       </div>
       }
 

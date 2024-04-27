@@ -107,7 +107,8 @@
   position: fixed;
   top: 100px;
   left: 50%;
-  width: 900px;
+  width: 1000px;
+  max-width: 1000px;
   transform: translateX(-50%);
   margin: 0 auto;
   z-index: 0;

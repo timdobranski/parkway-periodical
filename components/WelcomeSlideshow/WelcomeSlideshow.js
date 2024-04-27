@@ -29,12 +29,12 @@ export default function WelcomeSlideshow() {
   const familyResourceCenter = (
     <div className={styles.familyResourceCenter}>
       <div className={styles.frcTitleWrapper}>
-        <p className={styles.frcSubtitle}>{`Visit Parkway's`}</p>
-        <p className={`whiteSubTitle ${styles.frcTitle}`}>
+        <p className={styles.frcSubtitle}>{` Visit Parkway's`}</p>
+        <h3 className={`whiteSubTitle ${styles.frcTitle}`}>
           <a href="https://sites.google.com/lmsvsd.net/familyresourcecenter/home?authuser=0" target="_blank" rel="noopener noreferrer">
             {`Family Resource Center`}
           </a>
-        </p>
+        </h3>
         <p className={styles.frcSubtitle2}>{`The Family Resource Center is an online hub for helpful content designed to keep families connected to the
         social-emotional content we are learning as a school, as well as community resources, attendance information,
         and parent training opportunities.`}</p>
@@ -52,8 +52,9 @@ export default function WelcomeSlideshow() {
         <img src="/images/store/greenShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
         <img src="/images/store/purpleShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
       </div>
-      <div className={styles.storeText}>
-        <p className={styles.schoolStoreText}>Show your school spirit with our Parkway gear! </p>
+      <div className={styles.storeTextWrapper}>
+        <p className={styles.schoolStoreText}>Looking for some new Parkway Academy spirit wear?
+        Check out our spirit wear webstore for great shirts, hoodies and more!</p>
         <a href='https://teamlocker.squadlocker.com/#/lockers/parkway-sports-and-health-science-academy' className={styles.shopNow}>Visit Our School Store</a>
       </div>
     </div>
