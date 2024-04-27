@@ -22,10 +22,6 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
-  useEffect(() => {
-    // Your existing useEffect for fetching posts
-    getPosts();
-  }, [postId]);
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
@@ -54,10 +50,10 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching posts:', error);
     }
   };
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   getPosts();
-  // }, [postId]);
+    getPosts();
+  }, [postId]);
 
   useEffect(() => {
     console.log('INTRO RUNNING: ', introRunning)
@@ -107,6 +103,7 @@ export default function Home({ introRunning, setIntroRunning }) {
               <PostTitle
                 src={block}
                 author={JSON.parse(post.author)}
+                id={post.id}
               />
             )
             }

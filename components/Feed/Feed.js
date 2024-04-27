@@ -223,7 +223,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
   if (!user) { return <h1>Loading...</h1>}
 
   const feed = (
-    <div className={orientation === 'vertical' ? 'post' : 'flexibleLayoutWrapper'}
+    <div className={`post ${styles.adminPost}`}
     >
       {contentBlocks.map((block, index) => (
         <React.Fragment key={index}>
@@ -340,7 +340,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
   if (orientation === 'horizontal') { return (feed)}
 
   return (
-    <div className='feedWrapper'>
+    <div className={`feedWrapper ${styles.adminFeedWrapper}`}>
       {feed}
     </div>
   )

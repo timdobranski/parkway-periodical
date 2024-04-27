@@ -1,3 +1,12 @@
 .noBlocksMessage {
   margin:4rem;
 }
+.adminFeedWrapper {
+  top: 40px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.adminPost {
+  box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+}

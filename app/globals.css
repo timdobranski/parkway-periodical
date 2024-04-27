@@ -118,13 +118,9 @@
   overflow-y: auto;
   overflow-x: visible !important;
   height: calc(100vh - 100px);
-  /* height: 100vh; */
   border: solid white 6px;
   border-bottom: 0;
-  /* padding-left: calc(2rem + 8px);
-  padding-right: 2rem;
-  padding-bottom: 4rem; */
-  padding: 2rem 2rem 4rem calc(2rem + 8px);
+  padding: 2rem 1.5rem 4rem calc(1.5rem + 8px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -273,9 +269,10 @@
   backdrop-filter: blur(8px);
   animation: slideUpNoCenter .5s ease-out forwards;
   margin: 2rem 0rem;
-  padding: 2rem;
+  padding: 1rem 2rem 4rem 2rem;
   overflow: visible;
   min-height: none;
+  border-radius: 10px;
 }
 .flexibleLayoutWrapper {
   display: flex;
@@ -582,9 +579,6 @@
     margin-top: .5rem;
     animation: slideUpNoCenter 1s ease
     /* border: solid red 4px; */
-  }
-  .postTitle {
-    border: solid green 3px;
   }
   .blockWrapper {
     width: 100%;
