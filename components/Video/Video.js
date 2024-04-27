@@ -49,7 +49,7 @@ export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEd
   const emptyVideoLinkInputMessage = (
     <div className={`${styles.emptyVideoInputMessage} ${isEditable ? '' : 'outlined'}`}>
       <FontAwesomeIcon icon={faYoutube} className={styles.iconYoutube}/>
-      <p style={{margin: '0'}}>Paste a URL from Youtube or a Google Drive file to preview the video.</p>
+      <p>Paste a URL from Youtube to preview the video.</p>
 
     </div>
   )

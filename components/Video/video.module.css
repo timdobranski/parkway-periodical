@@ -59,15 +59,14 @@
   height: 100%;
   /* border: dashed black 2px; */
   text-align: center;
-  padding-top: 30px;
+  /* padding-top: 30px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 2rem;
 }
-.emptyVideoInputMessage p {
-  margin: o;
-}
+
 .videoOverlay {
   position: absolute;
   top: 0;
