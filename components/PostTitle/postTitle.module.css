@@ -87,6 +87,7 @@
     padding: -.25rem 0 .5rem 0;
     text-decoration: underline;
     text-decoration-color: red;
+    text-decoration-thickness: 1px;
     border-bottom: none;
     text-underline-offset: .25rem;
     /* line-height: 1.9; */

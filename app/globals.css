@@ -583,6 +583,9 @@
     animation: slideUpNoCenter 1s ease
     /* border: solid red 4px; */
   }
+  .postTitle {
+    border: solid green 3px;
+  }
   .blockWrapper {
     width: 100%;
 
