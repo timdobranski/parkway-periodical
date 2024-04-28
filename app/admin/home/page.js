@@ -9,7 +9,7 @@ import supabase from '../../../utils/supabase';
 
 
 export default function AdminHomePage() {
-  const types = ['posts', 'electives', 'clubs', 'staff', 'links'];
+  const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events'];
   const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {
     acc[type] = 0; // initialize all counts to zero
     return acc;
@@ -63,8 +63,19 @@ export default function AdminHomePage() {
             </Link>
           </div>
           <p>{`Posts: ${typeCounts.posts}`}</p>
-          <p>Number of EXPIRED posts</p>
+          {/* <p>Number of EXPIRED posts</p> */}
+        </div>
 
+        <div className={styles.sectionWrapper}>
+          <div className={styles.titleWrapper}>
+            <Link href='/admin/new-content?type=events'>
+              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+            </Link>
+            <Link href='/admin/list?type=events'>
+              <h2 className={styles.link}>EVENTS</h2>
+            </Link>
+          </div>
+          <p>{`Events: ${typeCounts.events}`}</p>
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -77,7 +88,6 @@ export default function AdminHomePage() {
             </Link>
           </div>
           <p>{`Electives: ${typeCounts.electives}`}</p>
-
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -90,20 +100,6 @@ export default function AdminHomePage() {
             </Link>
           </div>
           <p>{`Clubs: ${typeCounts.clubs}`}</p>
-
-        </div>
-
-        <div className={styles.sectionWrapper}>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/new-content?type=staff'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
-            <Link href='/admin/list?type=staff'>
-              <h2 className={styles.link}>STAFF</h2>
-            </Link>
-          </div>
-          <p>{`Staff: ${typeCounts.staff}`}</p>
-
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -116,7 +112,18 @@ export default function AdminHomePage() {
             </Link>
           </div>
           <p>{`Links: ${typeCounts.links}`}</p>
+        </div>
 
+        <div className={styles.sectionWrapper}>
+          <div className={styles.titleWrapper}>
+            <Link href='/admin/new-content?type=staff'>
+              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+            </Link>
+            <Link href='/admin/list?type=staff'>
+              <h2 className={styles.link}>STAFF</h2>
+            </Link>
+          </div>
+          <p>{`Staff: ${typeCounts.staff}`}</p>
         </div>
 
         <div className={styles.sectionWrapper}>

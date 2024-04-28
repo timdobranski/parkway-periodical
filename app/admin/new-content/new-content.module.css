@@ -13,6 +13,12 @@
     margin: 1.5rem;;
     width: 100%;
 }
+.groupedFormSections{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
 .submitButton {
     background-color: rgb(0, 195, 255);
     color: white;
@@ -44,6 +50,10 @@
   min-width: 500px;
   padding: .5rem;
   /* border: solid black 2px; */
+}
+.dateAndTimeInputs {
+  width: auto;
+  min-width: 0;
 }
 .existingImagePreview {
   width: 250px;

@@ -108,25 +108,39 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   const renderCustomToolbar = () => {
     return (
       <span className='ql-formats'>
-        {/* <select className="ql-size">
-          <option value="small">small</option>
-          <option value="med">med</option>
-          <option value="large">Subheader</option>
-          <option value="huge">huge</option>
-        </select> */}
-        <button className='ql-bold' aria-label='Bold'></button>
-        <button className='ql-italic' aria-label='Italic'></button>
-        <button className='ql-underline' aria-label='Underline'></button>
-        <button className='ql-link' aria-label='Link'></button>
-        <select className="ql-color">
-          {colorPickerOptions}
+        <select className="ql-size">
+          <option value="small">Small</option>
+          <option selected ></option>
+          <option value="large">Large</option>
+          <option value="huge">Huge</option>
         </select>
-        <select className="ql-background">
-          {colorPickerOptions}
-        </select>
-        <button className="ql-align" value=""></button>
-        <button className="ql-align" value="center"></button>
-        <button className="ql-align" value="right"></button>
+        <span className='ql-formats'>
+          <button className='ql-bold' aria-label='Bold'></button>
+          <button className='ql-italic' aria-label='Italic'></button>
+          <button className='ql-underline' aria-label='Underline'></button>
+        </span>
+        <span className='ql-formats'>
+          <button className='ql-link' aria-label='Link'></button>
+        </span>
+        <span className='ql-formats'>
+          <select className="ql-color">
+            {colorPickerOptions}
+          </select>
+          <select className="ql-background">
+            {colorPickerOptions}
+          </select>
+        </span>
+        <span className='ql-formats'>
+          <button className="ql-align" value=""></button>
+          <button className="ql-align" value="center"></button>
+          <button className="ql-align" value="right"></button>
+        </span>
+        <span className='ql-formats'>
+
+          <button class="ql-list" value="ordered"><i class="your-icon-class">OL</i></button>
+          <button class="ql-list" value="bullet"><i class="your-icon-class">UL</i></button>
+        </span>
+
         {/* <button className="ql-align" value="justify"></button> */}
       </span>
     )

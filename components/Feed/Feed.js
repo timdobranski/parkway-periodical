@@ -96,9 +96,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       return newContentBlocks;
     });
   };
-
-
-
   const addFlexibleLayout = (columns) => {
     // Create an array with 'columns' number of empty objects
     const placeholders = Array.from({ length: columns }, () => ({
@@ -223,7 +220,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
   if (!user) { return <h1>Loading...</h1>}
 
   const feed = (
-    <div className={`post ${styles.adminPost}`}
+    <div className={`editablePost ${styles.adminPost}`}
     >
       {contentBlocks.map((block, index) => (
         <React.Fragment key={index}>
@@ -238,6 +235,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
                 activeBlock={activeBlock}
                 setActiveBlock={setActiveBlock}
                 user={user.supabase_user}
+                viewContext={viewContext}
               />
               {contentBlocks.length === 1 && <div className={styles.noBlocksMessage}>Add some content from the menu on the right to get started</div>}
 
@@ -340,7 +338,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
   if (orientation === 'horizontal') { return (feed)}
 
   return (
-    <div className={`feedWrapper ${styles.adminFeedWrapper}`}>
+    <div className={`adminFeedWrapper`}>
       {feed}
     </div>
   )

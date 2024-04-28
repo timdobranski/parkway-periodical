@@ -17,7 +17,9 @@
 .imageRow {
   display: flex;
 }
-
+.feedWrapperContainer {
+  position: absolute;
+}
 .image {
   flex: 1;
   object-fit: cover;

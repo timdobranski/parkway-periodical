@@ -1,13 +1,11 @@
 .navbarWrapper {
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
-  top: 0;
+  top: 50px;
   right: 0;
   width: 250px;
   height: calc(100vh - 80px);
   background-color: rgb(255, 255, 255);
-  /* background-color: var(--primary-blue-transparent); */
-  /* background-color: rgba(0, 0, 0, .5); */
   backdrop-filter: blur(5px);
   margin: 0;
   display: flex;

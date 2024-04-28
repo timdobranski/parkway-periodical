@@ -36,6 +36,12 @@ export default function About() {
           <p className='centeredWhiteText'>Find links to helpful online resources here</p>
         </div>
         <div className={styles.sectionWrapper}>
+          <Link href='/public/info/events' className={styles.link}>
+            <h3 className='whiteSubTitle'>EVENTS</h3>
+          </Link>
+          <p className='centeredWhiteText'>Keep up with all our upcoming events</p>
+        </div>
+        <div className={styles.sectionWrapper}>
           <Link href='/public/info/staff' className={styles.link}>
             <h3 className='whiteSubTitle'>OUR TEAM</h3>
           </Link>

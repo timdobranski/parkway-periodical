@@ -14,6 +14,44 @@ export default function Intro({ introRunning, setFinishedLoading }) {
   const [loadedImages, setLoadedImages] = useState(0);
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const totalImages = imagesPerRow * rowsDirectories.length;
+  const imageCaptions = {
+    row1: {
+      1: 'test',
+      2: 'Touring KPBS Studios',
+      3: 'test2',
+      4: 'Image caption here',
+      5: 'Image caption here',
+      6: 'Image caption here',
+      7: 'Image caption here',
+      8: 'Image caption here',
+      9: 'Image caption here',
+      10: 'Image caption here',
+    },
+    row2: {
+      1: 'Image caption here',
+      2: 'Image caption here',
+      3: 'Image caption here',
+      4: 'Image caption here',
+      5: 'Image caption here',
+      6: 'Image caption here',
+      7: 'Image caption here',
+      8: 'Image caption here',
+      9: 'Image caption here',
+      10: 'Image caption here',
+    },
+    row3: {
+      1: 'Image caption here',
+      2: 'Image caption here',
+      3: 'Image caption here',
+      4: 'Image caption here',
+      5: 'Image caption here',
+      6: 'Image caption here',
+      7: 'Image caption here',
+      8: 'Image caption here',
+      9: 'Image caption here',
+      10: 'Image caption here',
+    }
+  }
 
   const preloadImages = () => {
     rowsDirectories.forEach(rowDir => {
@@ -72,7 +110,9 @@ export default function Intro({ introRunning, setFinishedLoading }) {
                 className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage} ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
                 key={`${rowIndex}-${index}`}
               >
-                <div
+                <p className={styles.imageCaption}>
+                  {imageCaptions['row' + (rowIndex + 1)][((index % rowImages.length) + 1).toString()]}
+                </p>                <div
                   className={
                     index % 2 === (rowIndex % 2 === 0 ? 0 : 1)
                       ? introRunning ? styles.redOverlay : styles.redOverlayFaded

@@ -194,6 +194,26 @@ export default function NewContentPage() {
         <textarea name='bio' className={styles.input} value={formData.bio} onChange={handleChange} />
       </div>
       }
+      {formData.date !== undefined &&
+      <div className={styles.formSection}>
+        <label htmlFor='description' className={styles.label}>Event Date</label>
+        <input type='date' name='date' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
+      </div>
+      }
+      <div className={styles.groupedFormSections}>
+      {formData.startTime !== undefined &&
+      <div className={styles.formSection}>
+        <label htmlFor='description' className={styles.label}>Start Time</label>
+        <input type='time' name='startTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
+      </div>
+      }
+      {formData.endTime !== undefined &&
+        <div className={styles.formSection}>
+          <label htmlFor='description' className={styles.label}>End Time</label>
+          <input type='time' name='endTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
+        </div>
+      }
+      </div>
       {formData.when !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>When We Meet</label>
@@ -251,7 +271,7 @@ export default function NewContentPage() {
   )
 
   return (
-    <div className='feedWrapper'>
+    <div className='adminFeedWrapper'>
       <div className='post'>
         <h1 className='pageTitle'>{id ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
         <p>{introText[type]}</p>

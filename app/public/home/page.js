@@ -88,8 +88,9 @@ export default function Home({ introRunning, setIntroRunning }) {
     </div>
   )
   const renderedPosts =
+    <div className={styles.feedWrapperContainer}>
+    {/* <div className='topFeedShadow'></div> */}
     <div className='feedWrapper'>
-      {/* <div className='topFeedShadow'></div> */}
       <WelcomeSlideshow />
       {filterAndSearchPosts}
 
@@ -140,6 +141,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         ))}
       </div>
     ))}
+    </div>
     </div>
 
 

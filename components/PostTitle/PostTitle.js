@@ -4,7 +4,7 @@ import { faUser, faShare } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import supabase from '../../utils/supabase';
 
-export default function PostTitle({ isEditable, src, updateTitle, index, activeBlock, setActiveBlock, date, user, author, id }) {
+export default function PostTitle({ isEditable, src, updateTitle, index, activeBlock, setActiveBlock, date, user, author, id, viewContext }) {
   const [authorPhoto, setAuthorPhoto] = useState(null)
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -74,14 +74,14 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
         />
       ) : (
 
-        <h1 className={styles.postTitle} onClick={() => { console.log('clicked!'); setActiveBlock(index)}}>
+        <h1 className={styles.postTitle} onClick={viewContext === 'edit' ? () => { console.log('clicked!'); setActiveBlock(index)} : null}>
           {src.content ? src.content : 'Enter title'}
         </h1>
 
       )}
       <>
         <p className={styles.date}>{date ? date :new Date().toLocaleDateString()}</p>
-        <FontAwesomeIcon icon={faShare} className={styles.shareIcon} onClick={id ? () => {handleShareClick(generateUrl())} : null}/>
+        {viewContext !== 'edit' && <FontAwesomeIcon icon={faShare} className={styles.shareIcon} onClick={id ? () => {handleShareClick(generateUrl())} : null}/>}
         {showConfirm && <p className={styles.shareConfirm}>Link Copied to Clipboard</p>}
         <div className={styles.userWrapper}>
           {authorPhoto ? <div className={styles.userImage} style={{backgroundImage: `url(${authorPhoto})`}}></div> : userIcon}
