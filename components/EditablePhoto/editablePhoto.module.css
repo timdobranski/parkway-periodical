@@ -60,6 +60,9 @@
 .photoEditMenuIconWrapper:hover {
   cursor: pointer;
 }
+.singlePhotoGrid {
+
+}
 .photoEditMenuIconLabel{
   font-weight: normal;
   color: white;
@@ -105,7 +108,7 @@
 }
 .ReactCrop {
   width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  height: auto;
   z-index: 50;
 }
 .ReactCrop .ReactCrop__crop-mask,

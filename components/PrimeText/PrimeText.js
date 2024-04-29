@@ -108,12 +108,15 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   const renderCustomToolbar = () => {
     return (
       <span className='ql-formats'>
-        <select className="ql-size">
-          <option value="small">Small</option>
-          <option selected ></option>
-          <option value="large">Large</option>
-          <option value="huge">Huge</option>
-        </select>
+        <span className='ql-formats'>
+
+          <select className="ql-size">
+            <option value="small">Small</option>
+            <option selected ></option>
+            <option value="large">Large</option>
+            <option value="huge">Huge</option>
+          </select>
+        </span>
         <span className='ql-formats'>
           <button className='ql-bold' aria-label='Bold'></button>
           <button className='ql-italic' aria-label='Italic'></button>
