@@ -7,19 +7,21 @@ import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { Rnd } from 'react-rnd';
+import PrimeText from '../PrimeText/PrimeText';
 
 export default function EditablePhoto({
-  fileObj, isEditable, updatePhotoContent, handleRemovePhoto, containerClassName,
-  index, setSelectedPhotos }) {
-  const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0,
-    // aspect: 16 / 9
-  });
+  photo, isEditable, updatePhotoContent, handleRemovePhoto, containerClassName,
+  index, setSelectedPhotos, handleTitleChange, handleCaptionChange}) {
+  const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0});
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
   const imageRef = useRef(null);
   const [cropActive, setCropActive] = useState(false);
 
   // useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
+    // useEffect(() => {
+    //   console.log('photo in editable photo: ', photo)
+    // }, [])
 
   useEffect(() => {
     if (lockAspectRatio && imageRef) {
@@ -30,13 +32,11 @@ export default function EditablePhoto({
     }
   }, [lockAspectRatio, imageRef]);
 
-
   useEffect(() => {
     if (!isEditable) {
       setCropActive(false);
     }
   }, [isEditable])
-
   // CROP HANDLERS
   // const enforceCropConstraints = () => {
   //   const maxWidth = unit === 'percent' ? 100 : imageRef.naturalWidth;
@@ -48,15 +48,12 @@ export default function EditablePhoto({
   // };
   const onImageLoaded = (image) => {
     imageRef.current = image;
-    setCrop({unit: '%', width: 100, height: 100, x: 0, y: 0,})
     // aspect: 16 / 9
+    if (lockAspectRatio) {
+      const aspectRatio = image.naturalWidth / image.naturalHeight;
+      setCrop({ ...crop, aspect: aspectRatio });
+    }
   }
-    // if (lockAspectRatio) {
-    //   const aspectRatio = image.naturalWidth / image.naturalHeight;
-    //   setCrop({ ...crop, aspect: aspectRatio });
-    // }
-  // };
-
   const onCropChange = (crop, percentCrop) => {
     setCrop(crop);
   };
@@ -133,10 +130,32 @@ export default function EditablePhoto({
       <button onClick={finalizeCrop}>Confirm Crop</button>
     </div>
   )
-
-  if (!fileObj) { return null }
-
-
+  const editMenu = (
+    <div className={styles.photoEditMenu}>
+      <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
+        <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
+      </div>
+      <div className={styles.photoEditMenuIconWrapper}>
+        <p className={photo.caption ? styles.caption : styles.noCaption}>Add Title</p>
+      </div>
+      <div className={styles.photoEditMenuIconWrapper}>
+        <p className={photo.caption ? styles.caption : styles.noCaption}
+        >Add Caption</p>
+      </div>
+      <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
+        <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
+      </div>
+    </div>
+  )
+  const image = (
+    <img src={photo.src}
+      className='gridPhoto'
+      alt={`Preview ${index}`}
+      ref={imageRef}
+    // style={fileObj.style}
+    />
+  )
+  if (!photo || !photo.src) { return <p>No photo added yet</p> }
 
   return (
     <div className={styles.photoWrapper}>
@@ -149,44 +168,17 @@ export default function EditablePhoto({
             onComplete={setCompletedCrop}
             overlayColor="rgba(0, 0, 0, 0.6)"
           >
-            <img src={fileObj.src}
-              className='gridPhoto'
-              alt={`Preview ${index}`}
-              ref={imageRef}
-              // style={fileObj.style}
-            />
+            {image}
           </ReactCrop>
           {cropControls}
         </>
       ) : (
-        <div className={styles.photoWrapper}>
-          { isEditable &&
-              <div className={styles.photoEditMenu}>
-                <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
-                  <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-                </div>
-                <div className={styles.photoEditMenuIconWrapper}>
-                  <p className={fileObj.caption ? styles.caption : styles.noCaption}>Add Title</p>
-                </div>
-                <div className={styles.photoEditMenuIconWrapper}>
-                  <p className={fileObj.caption ? styles.caption : styles.noCaption}>Add Caption</p>
-                </div>
-                <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
-                  <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
-                </div>
-              </div>
-          }
-          <img src={fileObj.src}
-            className='gridPhoto'
-            alt={`Preview ${index}`}
-            // style={fileObj.style}
-          />
-        </div>
-        // </Rnd>
+        <>
+          {isEditable && editMenu}
+          {image}
+          {/* {photo.title && <PrimeText src={{content: photo.title}} isEditable={isEditable} setTextState={handleTitleChange}/>} */}
+        </>
       )}
-
-      {/* {cropActive && cropControls} */}
-
     </div>
   )
 }

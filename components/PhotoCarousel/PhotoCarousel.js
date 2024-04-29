@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from './photoCarousel.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -67,46 +67,56 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
 
   if (!photos || photos.length === 0) { return <p>Click the button above to select photos for the carousel</p> }
 
+
   return (
-    <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
-      <Carousel
-        renderArrowPrev={customPrevArrow}
-        renderArrowNext={customNextArrow}
-        preventMovementUntilSwipeScrollTolerance={true}
-        swipeScrollTolerance={50}
-        emulateTouch={true}
-        dynamicHeight={false}
-        autoPlay={false}
-        showThumbs={false}
-        showStatus={false}
-        selectedItem={currentPhotoIndex}
-        onChange={handleCarouselChange}
-      >
-        {photos.map((photoObj, index) => (
-          <div key={index} className={styles.carouselSlide}>
-            <img src={photoObj.src} alt={`Photo ${index}`} className={styles.slideImg}/>
-          </div>
-        ))}
-      </Carousel>
-      {photos[currentPhotoIndex] && (
+    <>
+      {isEditable &&
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className={styles.photoInput}
+        />}
+      <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
+        <Carousel
+          renderArrowPrev={customPrevArrow}
+          renderArrowNext={customNextArrow}
+          preventMovementUntilSwipeScrollTolerance={true}
+          swipeScrollTolerance={50}
+          emulateTouch={true}
+          dynamicHeight={false}
+          autoPlay={false}
+          showThumbs={false}
+          showStatus={false}
+          selectedItem={currentPhotoIndex}
+          onChange={handleCarouselChange}
+        >
+          {photos.map((photo, index) => (
+            <div key={index} className={styles.carouselSlide}>
+              <img src={photo.src} alt={`Photo ${index}`} className={styles.slideImg}/>
+            </div>
+          ))}
+        </Carousel>
+        {photos[currentPhotoIndex] && (
 
-        isEditable ? (
+          isEditable ? (
 
-          <textarea
-            className={styles.captionInput}
-            value={editedCaption}
-            onChange={(e) => setEditedCaption(e.target.value)}
-            placeholder='Enter caption (optional)'
-          />
+            <textarea
+              className={styles.captionInput}
+              value={editedCaption}
+              onChange={(e) => setEditedCaption(e.target.value)}
+              placeholder='Enter caption (optional)'
+            />
 
-        ) : photos[currentPhotoIndex].caption && (
-          <div className={styles.captionWrapper}>
-            <p ref={pRef} className={styles.captionP}>
-              {photos[currentPhotoIndex].caption}
-            </p>
-          </div>
-        )
-      )}
-    </div>
+          ) : photos[currentPhotoIndex].caption && (
+            <div className={styles.captionWrapper}>
+              <p ref={pRef} className={styles.captionP}>
+                {photos[currentPhotoIndex].caption}
+              </p>
+            </div>
+          )
+        )}
+      </div>
+    </>
   );
 }

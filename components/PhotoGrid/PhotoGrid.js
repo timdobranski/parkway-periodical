@@ -26,13 +26,15 @@ export default function PhotoGrid ({
       {photos.map((photo, index) => (
         <EditablePhoto
           key={index}
-          fileObj={photo}
+          photo={photo}
           isEditable={isEditable}
           updatePhotoContent={updatePhotoContent}
           handleRemovePhoto={handleRemovePhoto}
           containerClassName={styles.photoContainer}
           index={index}
           setSelectedPhotos={setSelectedPhotos}
+          handleTitleChange={handleTitleChange}
+          handleCaptionChange={handleCaptionChange}
         />
       ))}
     </div>

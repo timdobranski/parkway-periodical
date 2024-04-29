@@ -3,91 +3,50 @@
 import { useState, useEffect } from 'react';
 import styles from './photoBlock.module.css';
 import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
+import EditablePhoto from '../EditablePhoto/EditablePhoto';
+import supabase from '../../utils/supabase';
 import PhotoGrid from '../PhotoGrid/PhotoGrid';
 import { Rnd } from 'react-rnd';
 
 // src is photo block parent state; selectedPhotos is photo block child state before saving
 export default function PhotoBlock({ updatePhotoContent, src, isEditable, setActiveBlock, blockIndex }) {
-  const [selectedPhotos, setSelectedPhotos] = useState([]);
-  const [draggedPhotoIndex, setDraggedPhotoIndex] = useState(null);
 
-  // when the editable status changes, if there are photos uploaded, save them
-  useEffect(() => {    if (!isEditable && selectedPhotos.length > 0) {
-    let urls = [];
-    let readersToComplete = selectedPhotos.reduce((count, fileObj) =>
-      count + (fileObj.file instanceof File ? 1 : 0), 0);
-
-    if (readersToComplete === 0) {
-      updatePhotoContent(selectedPhotos.map(({ src, caption, title, style }) => ({ src, caption, title, style })));
-      return;
-    }
-    selectedPhotos.forEach(fileObj => {
-      if (fileObj.file instanceof File) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          urls.push({ src: reader.result, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
-          if (--readersToComplete === 0) {
-            // console.log('urls to be set as content in photo block: ', urls)
-            updatePhotoContent(urls);
-          }
-        };
-        reader.readAsDataURL(fileObj.file);
-      } else {
-        urls.push({ src: fileObj.src, caption: fileObj.caption, title: fileObj.title, style: fileObj.style });
-      }
-    });
-  }
-  }, [isEditable]);
-
-  // if there are existing photos, add them to selectedPhotos
   useEffect(() => {
-    console.log('photos passed to PhotoBlock(src): ', src)
-    if (src && src.content && src.content.length > 0) {
-      const fileObjects = src.content.map(photo => ({
-        file: null, // No file object available for existing photos
-        caption: photo.caption || '',
-        src: photo.src, // Keep the existing URL
-        title: photo.title,
-        style: photo.style
-      }));
-      setSelectedPhotos(fileObjects);
-    } else {
-      setSelectedPhotos([]);
+    console.log('src in PhotoBlock: ', src)
+  }, [src])
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      // Upload the image to your Supabase bucket
+      // Replace 'your-bucket-name' with the name of your bucket
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random()}.${fileExt}`;  // Generating a random file name
+      const { data, error } = await supabase
+        .storage
+        .from('posts/photos')
+        .upload(fileName, file);
+
+      if (error) throw error;
+
+      // Get the URL of the uploaded file
+      const { data: publicURL, error: urlError } = supabase
+        .storage
+        .from('posts/photos')
+        .getPublicUrl(fileName);
+
+      if (urlError) throw urlError;
+      console.log('publicUrl: ', publicURL);
+      updatePhotoContent({src: publicURL.publicUrl, caption: '', title: ''});
+    } catch (error) {
+      console.error('Error uploading image: ', error.message);
     }
-  }, [src]);
-  // console log selected photos when they change
-  useEffect(() => {
-    console.log('selectedPhotos state changed: ', selectedPhotos);
-  }, [selectedPhotos])
-
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    let readersToComplete = files.length;
-
-    const newFileObjects = files.map(file => ({
-      file,
-      src: '', // Temporarily set src to an empty string
-      caption: '',
-      title: '',
-      style: {}
-    }));
-
-    files.forEach((file, index) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        newFileObjects[index].src = reader.result; // Set the src to the data:image URL
-        if (--readersToComplete === 0) {
-          // Once all files are processed, update the state
-          setSelectedPhotos(existingFiles => [...existingFiles, ...newFileObjects]);
-        }
-      };
-      reader.readAsDataURL(file);
-    });
   };
-  const handleRemovePhoto = (index) => {
-    setSelectedPhotos(files => files.filter((_, idx) => idx !== index));
-    document.querySelector('input[type="file"]').value = '';
 
+  const handleRemovePhoto = () => {
+    updatePhotoContent({src: '', caption: '', title: ''});
   };
   const handleTitleChange = (index, newTitle) => {
     console.log('new title: ', newTitle);
@@ -101,9 +60,10 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     );
   };
   const renderPreview = () => {
-    // if (!src || src.length === 0) {
-    //   return <p className={styles.noPhotoMessage}>No photo provided</p>;
-    // }
+
+    if (!src.content || src.length === 0) {
+      return <p className={styles.noPhotoMessage}>No photo provided</p>;
+    }
 
     // Determine what to render based on src.format
     let content;
@@ -117,20 +77,16 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       case '2xColumn':
       case 'grid':
         content = (
-          <PhotoGrid
-            format={src.format}
+          <EditablePhoto
+            photo={src.content}
             isEditable={isEditable}
-            photos={selectedPhotos}
-            setActiveBlock={setActiveBlock}
-            blockIndex={blockIndex}
-            onClick={() => setActiveBlock(blockIndex)}
             updatePhotoContent={updatePhotoContent}
-            handleTitleChange={handleTitleChange}
-            handleCaptionChange={handleCaptionChange}
             handleRemovePhoto={handleRemovePhoto}
-            selectedPhotos={selectedPhotos}
-            setSelectedPhotos={setSelectedPhotos}
+            containerClassName={styles.photoContainer}
+            handleTitleChange={(title) => handleTitleChange(index, title)}
+            handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
           />
+          // <p>Photo uploaded</p>
         );
         break;
       case 'carousel':
@@ -151,31 +107,16 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
 
   return (
-  // <Rnd
-  //   default={{
-  //     x: 0,
-  //     y: 0,
-  //     width: 320,
-  //     height: 200,
-  //   }}
-  //   onDragStart={(event) => {event.preventDefault()}}
-  //   resizeHandleStyles={handleStyles}
-
-    // >
     <div className={styles.photoBlockWrapper}>
-      {isEditable ?
+      {isEditable &&
         <input
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          {...(!src.format.includes('single') && { multiple: true })}
           className={styles.photoInput}
-        />
-        : null
-      }
+        />}
+
       {renderPreview()}
     </div>
-    // </Rnd>
-
   )
 }
