@@ -84,22 +84,6 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
       reader.readAsDataURL(file);
     });
   };
-  const onDragStart = (e, index) => {
-    e.stopPropagation();
-    setDraggedPhotoIndex(index);
-  };
-  const onDragOver = (e) => {
-    e.preventDefault(); // Necessary for onDrop to fire
-  };
-  const onDrop = (e, dropIndex) => {
-    if (draggedPhotoIndex !== null) {
-      const newPhotos = [...selectedPhotos];
-      // Swap the photos
-      [newPhotos[draggedPhotoIndex], newPhotos[dropIndex]] = [newPhotos[dropIndex], newPhotos[draggedPhotoIndex]];
-      setSelectedPhotos(newPhotos);
-      setDraggedPhotoIndex(null);
-    }
-  };
   const handleRemovePhoto = (index) => {
     setSelectedPhotos(files => files.filter((_, idx) => idx !== index));
     document.querySelector('input[type="file"]').value = '';
@@ -146,9 +130,6 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
             handleRemovePhoto={handleRemovePhoto}
             selectedPhotos={selectedPhotos}
             setSelectedPhotos={setSelectedPhotos}
-            onDragStart={onDragStart}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
           />
         );
         break;
