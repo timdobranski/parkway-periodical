@@ -10,7 +10,7 @@ import { Rnd } from 'react-rnd';
 import PrimeText from '../PrimeText/PrimeText';
 
 export default function EditablePhoto({
-  photo, isEditable, updatePhotoContent, handleRemovePhoto, containerClassName,
+  photo, isEditable, updatePhotoContent, deletePhoto, containerClassName,
   index, setSelectedPhotos, handleTitleChange, handleCaptionChange}) {
   const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0});
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
@@ -19,9 +19,9 @@ export default function EditablePhoto({
   const [cropActive, setCropActive] = useState(false);
 
   // useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
-    // useEffect(() => {
-    //   console.log('photo in editable photo: ', photo)
-    // }, [])
+    useEffect(() => {
+      console.log('photo in editable photo: ', photo)
+    }, [])
 
   useEffect(() => {
     if (lockAspectRatio && imageRef) {
@@ -142,7 +142,7 @@ export default function EditablePhoto({
         <p className={photo.caption ? styles.caption : styles.noCaption}
         >Add Caption</p>
       </div>
-      <div className={styles.photoEditMenuIconWrapper} onClick={() => handleRemovePhoto(index)}>
+      <div className={styles.photoEditMenuIconWrapper} onClick={() => deletePhoto(photo.fileName)}>
         <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
       </div>
     </div>

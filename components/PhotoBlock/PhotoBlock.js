@@ -15,8 +15,9 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
     console.log('src in PhotoBlock: ', src)
   }, [src])
 
-  const handleFileChange = async (event) => {
+  const addPhoto = async (event) => {
     const file = event.target.files[0];
+    const fileInput = event.target;
     if (!file) return;
 
     try {
@@ -39,14 +40,21 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
 
       if (urlError) throw urlError;
       console.log('publicUrl: ', publicURL);
-      updatePhotoContent({src: publicURL.publicUrl, caption: '', title: ''});
+      updatePhotoContent({src: publicURL.publicUrl, caption: '', title: '', fileName: fileName});
     } catch (error) {
       console.error('Error uploading image: ', error.message);
     }
+    fileInput.value = null;
   };
 
-  const handleRemovePhoto = () => {
-    updatePhotoContent({src: '', caption: '', title: ''});
+  const deletePhoto = async (filename) => {
+    // console.log('filename being deleted: ', filename)
+    const { data, error } = await supabase
+      .storage
+      .from('posts')
+      .remove([`photos/${filename}`])
+
+    if (error) { throw error; } else { updatePhotoContent({src: '', caption: '', title: ''}); }
   };
   const handleTitleChange = (index, newTitle) => {
     console.log('new title: ', newTitle);
@@ -80,13 +88,12 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
           <EditablePhoto
             photo={src.content}
             isEditable={isEditable}
-            updatePhotoContent={updatePhotoContent}
-            handleRemovePhoto={handleRemovePhoto}
+            updatePhotoContent={addPhoto}
+            deletePhoto={deletePhoto}
             containerClassName={styles.photoContainer}
             handleTitleChange={(title) => handleTitleChange(index, title)}
             handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
           />
-          // <p>Photo uploaded</p>
         );
         break;
       case 'carousel':
@@ -112,7 +119,7 @@ export default function PhotoBlock({ updatePhotoContent, src, isEditable, setAct
         <input
           type="file"
           accept="image/*"
-          onChange={handleFileChange}
+          onChange={addPhoto}
           className={styles.photoInput}
         />}
 
