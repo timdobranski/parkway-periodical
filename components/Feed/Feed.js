@@ -8,6 +8,7 @@ import PrimeText from '../../components/PrimeText/PrimeText';
 import Video from '../../components/Video/Video';
 import PostTitle from '../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../components/PhotoBlock/PhotoBlock';
+import PhotoCarousel from '../../components/PhotoCarousel/PhotoCarousel';
 import ContentLayout from '../../components/ContentLayout/ContentLayout';
 import SelectLayoutContent from '../../components/SelectLayoutContent/SelectLayoutContent';
 import BlockEditMenu from '../../components/BlockEditMenu/BlockEditMenu';
@@ -17,8 +18,9 @@ import Intro from '../../components/Intro/Intro';
 
 
 export default function Feed({ contentBlocks, setContentBlocks, user,
-  activeBlock, setActiveBlock, viewContext, orientation, parentIndex, parentActiveBlock, parentContentBlocks, addBlock }) {
+  activeBlock, setActiveBlock, viewContext, orientation, addBlock }) {
 
+  const [loading, setLoading] = useState(false);
   const blocksRef = useRef({});
 
   // content blocks helpers - being phased out for universal addBlock helper
@@ -36,6 +38,109 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
     const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: 0 }};
     setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
     setActiveBlock(contentBlocks.length); // New block's index
+  };
+  const addPhoto = async (event) => {
+    setLoading(true);
+    const files = event.target.files;
+    console.log('FILES: ', files)
+    const fileInput = event.target;
+    let newPhotosArr = [];
+
+    // Process each file and store promises
+    const uploadPromises = Array.from(files).map(file => processFile(file));
+    // Wait for all files to be processed
+    newPhotosArr = await Promise.all(uploadPromises);
+
+    // Update content once all photos are processed
+    updatePhotoContent(activeBlock, newPhotosArr);
+    fileInput.value = ''; // Clear the input after processing all files
+    setLoading(false);
+  };
+
+  const processFile = (file) => new Promise((resolve, reject) => {
+    if (!file) reject("No file provided");
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      // All processing here, then resolve with new photo object
+      const newPhoto = await createAndUploadImage(e.target.result);
+      resolve(newPhoto);
+    };
+    reader.readAsDataURL(file);
+  });
+  const createAndUploadImage = async (dataURL) => {
+    return new Promise((resolve, reject) => {
+      // Create an image element
+      const img = new Image();
+      img.onload = async () => {
+        // Create canvas
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Calculate resizing
+        const maxSize = 1000; // Max size for width or height
+        const ratio = Math.min(maxSize / img.width, maxSize / img.height);
+        const width = img.width * ratio;
+        const height = img.height * ratio;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw the resized image
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convert canvas to blob
+        canvas.toBlob(async (blob) => {
+          try {
+            const fileName = `${Math.random().toString(36).substring(2)}.webp`; // Generate a random file name
+            // Upload the image blob to your server or storage service
+            const { data, error } = await supabase
+              .storage
+              .from('posts/photos')
+              .upload(fileName, blob, {
+                contentType: 'image/webp'
+              });
+
+            if (error) throw new Error(error.message);
+
+            // Get the URL of the uploaded file
+            const { data: publicURL, error: urlError } = supabase
+              .storage
+              .from('posts/photos')
+              .getPublicUrl(fileName);
+
+            if (urlError) throw new Error(urlError.message);
+
+            resolve({src: publicURL.publicUrl, caption: '', title: '', fileName: fileName}); // Resolve the photo object with the new data
+          } catch (uploadError) {
+            reject(uploadError);
+          }
+        }, 'image/webp', 0.90); // Adjust the quality of the image
+      };
+      img.onerror = () => {
+        reject(new Error('Failed to load image'));
+      };
+      img.src = dataURL;
+    });
+  };
+
+  const deletePhoto = async (blockIndex, filename) => {
+    console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename)
+    // Attempt to remove the photo from storage
+    const { data, error } = await supabase
+      .storage
+      .from('posts')
+      .remove([`photos/${filename}`]);
+
+    // Handle any errors during the deletion
+    if (error) {
+      console.error('Error deleting photo:', error.message);
+      throw error;
+    } else {
+      // Successfully deleted, now update the content blocks
+      // Find the photo block using blockIndex and update its content
+      const newPhotos = contentBlocks[blockIndex].content.filter(photo => photo.fileName !== filename);
+      updatePhotoContent(blockIndex, newPhotos);
+    }
   };
   // sets new properties on the block. works on layouts if passed the nestedIndex  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
   const updateBlock = (index, updatedProperties, nestedIndex = null) => {
@@ -193,11 +298,24 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
     }));
   };
   // photo block helpers
-  const updatePhotoContent = (index, photos) => {
-    // console.log('photos passed to updatePhotoContent: ', photos);
-    const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: photos };
-    setContentBlocks(newContentBlocks);
+  const updatePhotoContent = (index, newPhotos) => {
+    // Update state with a function to ensure access to the most current state
+    setContentBlocks(prevContentBlocks => {
+      // Copy the array to avoid direct mutation
+      const updatedContentBlocks = [...prevContentBlocks];
+
+      // Safely read the existing content from the specific block
+      const existingPhotos = updatedContentBlocks[index].content;
+
+      // Combine the existing photos with the new photos array
+      updatedContentBlocks[index] = {
+        ...updatedContentBlocks[index],
+        content: [...existingPhotos, ...newPhotos]
+      };
+
+      // Return the newly formed array which triggers the update
+      return updatedContentBlocks;
+    });
   };
   // video block helpers
   const updateVideoUrl = (index, url) => {
@@ -262,7 +380,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
                   />}
               {block.type === 'flexibleLayout' && (
                 <ContentLayout
-
                   parentContentBlocks={contentBlocks}
                   src={block.nestedBlocks}
                   setActiveBlock={setActiveBlock}
@@ -296,15 +413,28 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
                 />
               )}
               {block.type === 'photo' &&
-              <PhotoBlock
-                key={index}
-                blockIndex={index}
-                updatePhotoContent={(files) => updatePhotoContent(index, files)}
-                isEditable={index === activeBlock}
-                src={block}
-                setActiveBlock={setActiveBlock}
-                removeBlock={() => removeBlock(index)}
-              />
+                <PhotoBlock
+                  key={index}
+                  addPhoto={addPhoto}
+                  deletePhoto={(fileName) => deletePhoto(index, fileName)}
+                  blockIndex={index}
+                  isEditable={index === activeBlock}
+                  photo={block.content?.length ? block.content[0] : null}
+                  setActiveBlock={setActiveBlock}
+                  removeBlock={() => removeBlock(index)}
+                />
+              }
+              {block.type === 'carousel' &&
+                <PhotoCarousel
+                  key={index}
+                  addPhoto={addPhoto}
+                  deletePhoto={deletePhoto}
+                  blockIndex={index}
+                  isEditable={index === activeBlock}
+                  photos={block.content}
+                  setActiveBlock={setActiveBlock}
+                  removeBlock={() => removeBlock(index)}
+                />
               }
               {block.type === 'video' &&
                 <>
@@ -335,7 +465,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
     </div>
   )
 
-  if (orientation === 'horizontal') { return (feed)}
+  // if (orientation === 'horizontal') { return (feed)}
 
   return (
     <div className={`adminFeedWrapper`}>

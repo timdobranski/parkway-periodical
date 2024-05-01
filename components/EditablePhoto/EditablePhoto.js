@@ -155,7 +155,6 @@ export default function EditablePhoto({
     // style={fileObj.style}
     />
   )
-  if (!photo || !photo.src) { return <p>No photo added yet</p> }
 
   return (
     <div className={styles.photoWrapper}>

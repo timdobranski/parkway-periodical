@@ -13,9 +13,9 @@ export default function PostNavbarRight({ handleSubmit, addBlock
   const singlePhotoCaptionRight = { type: 'photo', content: null, format: 'single-photo-caption-right' };
   const singlePhotoCaptionLeft = { type: 'photo', content: null, format: 'single-photo-caption-left' };
   const singlePhotoCaptionAbove = { type: 'photo', content: null, format: 'single-photo-caption-above' };
-  const singlePhotoCaptionBelow = { type: 'photo', content: null, format: 'single-photo-caption-below' };
-  const singlePhotoNoCaption = { type: 'photo', content: null, format: 'single-photo-no-caption' };
-  const photoCarousel = { type: 'photo', content: null, format: 'carousel' };
+  const singlePhotoCaptionBelow = { type: 'photo', content: [], format: 'single-photo-caption-below' };
+  const singlePhotoNoCaption = { type: 'photo', content: [], format: 'single-photo-no-caption' };
+  const photoCarousel = { type: 'carousel', content: [], format: 'carousel' };
 
 
   return (
@@ -143,7 +143,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Photos</h3>
-        <div onClick={() => addBlock({ type: 'photo', content: null, format: 'single-photo-no-caption'})} className={styles.navbarSectionItem}>
+        <div onClick={() => addBlock(singlePhotoNoCaption)} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faImage} className={styles.icon} />
           <h3>Single Photo</h3>
         </div>

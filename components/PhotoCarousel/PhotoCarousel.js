@@ -7,7 +7,7 @@ import styles from './photoCarousel.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function PhotoCarousel({ photos, isEditable, handleTitleChange, handleCaptionChange }) {
+export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedCaption, setEditedCaption] = useState("");
@@ -20,12 +20,12 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
       setEditedCaption(photos[currentPhotoIndex].caption || "");
     }
   }, [currentPhotoIndex, photos]);
-  useEffect(() => {
-    handleTitleChange(currentPhotoIndex, editedTitle)
-  }, [editedTitle])
-  useEffect(() => {
-    handleCaptionChange(currentPhotoIndex, editedCaption)
-  }, [editedCaption])
+  // useEffect(() => {
+  //   handleTitleChange(currentPhotoIndex, editedTitle)
+  // }, [editedTitle])
+  // useEffect(() => {
+  //   handleCaptionChange(currentPhotoIndex, editedCaption)
+  // }, [editedCaption])
   useEffect(() => {
     const p = pRef.current;
     if (p) {
@@ -65,8 +65,14 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
     );
   }
 
-  if (!photos || photos.length === 0) { return <p>Click the button above to select photos for the carousel</p> }
+  const handleTitleChange = (index, title) => {
 
+  }
+  const noPhotosMessage = (
+    <p>Click the button above to select photos for the carousel</p>
+  )
+
+  // if (!photos) { return <>No photos array provided</>}
 
   return (
     <>
@@ -74,49 +80,35 @@ export default function PhotoCarousel({ photos, isEditable, handleTitleChange, h
         <input
           type="file"
           accept="image/*"
-          onChange={handleFileChange}
+          multiple
+          onChange={addPhoto}
           className={styles.photoInput}
         />}
-      <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
-        <Carousel
-          renderArrowPrev={customPrevArrow}
-          renderArrowNext={customNextArrow}
-          preventMovementUntilSwipeScrollTolerance={true}
-          swipeScrollTolerance={50}
-          emulateTouch={true}
-          dynamicHeight={false}
-          autoPlay={false}
-          showThumbs={false}
-          showStatus={false}
-          selectedItem={currentPhotoIndex}
-          onChange={handleCarouselChange}
-        >
-          {photos.map((photo, index) => (
-            <div key={index} className={styles.carouselSlide}>
-              <img src={photo.src} alt={`Photo ${index}`} className={styles.slideImg}/>
-            </div>
-          ))}
-        </Carousel>
-        {photos[currentPhotoIndex] && (
+      {photos.length === 0 ? noPhotosMessage :
+        <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
+          <Carousel
+            renderArrowPrev={customPrevArrow}
+            renderArrowNext={customNextArrow}
+            preventMovementUntilSwipeScrollTolerance={true}
+            swipeScrollTolerance={50}
+            emulateTouch={true}
+            dynamicHeight={false}
+            autoPlay={false}
+            showThumbs={false}
+            showStatus={false}
+            selectedItem={currentPhotoIndex}
+            onChange={handleCarouselChange}
+          >
+            {photos?.map((photo, index) => (
+              <div key={index} className={styles.carouselSlide}>
+                <img src={photo.src} alt={`Photo ${index}`}
+                  className={styles.slideImg}/>
+              </div>
+            ))}
+          </Carousel>
 
-          isEditable ? (
-
-            <textarea
-              className={styles.captionInput}
-              value={editedCaption}
-              onChange={(e) => setEditedCaption(e.target.value)}
-              placeholder='Enter caption (optional)'
-            />
-
-          ) : photos[currentPhotoIndex].caption && (
-            <div className={styles.captionWrapper}>
-              <p ref={pRef} className={styles.captionP}>
-                {photos[currentPhotoIndex].caption}
-              </p>
-            </div>
-          )
-        )}
-      </div>
+        </div>
+      }
     </>
   );
 }
