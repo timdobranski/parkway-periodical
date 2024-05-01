@@ -8,6 +8,7 @@ import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
 export default function AdminLayout({ children }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     // Check if the user is authenticated
@@ -32,7 +33,7 @@ export default function AdminLayout({ children }) {
   return (
     // <div className='background'>
     <>
-      <HeaderAdmin />
+      <HeaderAdmin saving={saving}/>
       <div className='adminPageWrapper'>
         {children}
       </div>

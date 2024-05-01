@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
@@ -8,6 +8,8 @@ import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
 import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight'
 import Feed from '../../../components/Feed/Feed';
 import { useSearchParams } from 'next/navigation';
+import { debounce } from '../../../utils/debounce';  // Adjust the path as necessary
+
 
 export default function NewPostPage() {
   const router = useRouter();
@@ -17,6 +19,7 @@ export default function NewPostPage() {
   const blocksRef = useRef({});
   const searchParams = useSearchParams();
   const postId = searchParams.get('id');
+  const [saving, setSaving] = useState(false);
 
   // if a post id is provided, fetch the post data
   useEffect(() => {
@@ -44,6 +47,46 @@ export default function NewPostPage() {
     }
   }, [postId])
 
+  // debounce helper for submitting/saving posts
+
+  // UPDATE DRAFT---------------------------------------------
+  async function updateDraft(post, isNew = false) {
+    try {
+      let result;
+      if (isNew) {
+        // If it's a new draft, insert it
+        result = await supabase
+          .from('drafts')
+          .insert([post]);
+      } else {
+        // If it's an existing draft, upsert it (update or insert)
+        result = await supabase
+          .from('drafts')
+          .upsert([post], { onConflict: 'id' });
+      }
+
+      const { data, error } = result;
+      if (error) throw error;
+      console.log('Draft saved:', data);
+    } catch (error) {
+      console.error('Error updating draft:', error);
+    }
+  }
+  const debouncedUpdateDraft = useCallback(debounce(updateDraft, 3000), []);
+
+  useEffect(() => {
+    if (contentBlocks && user) {
+      const post = {
+        // Assuming you manage a state or prop for postID and type
+
+        content: JSON.stringify(contentBlocks),
+        'post-type': 'weekly-update',  // Example type
+        author: user.supabase_user.id
+      };
+      const postID = !postId;
+      debouncedUpdateDraft(post, !postID);  // isNew based on if postID is undefined
+    }
+  }, [contentBlocks, user, debouncedUpdateDraft]);
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -86,66 +129,90 @@ export default function NewPostPage() {
   //   console.log('ACTIVE MAIN BLOCK CHANGED TO: ', activeBlock)
   // }, [activeBlock])
 
-  // Helper function to upload image to Supabase Storage
-  async function uploadImageToSupabase(base64String, fileName) {
-    const fetchResponse = await fetch(base64String);
-    const blob = await fetchResponse.blob();
 
-    // Use a combination of timestamp and a random string to ensure filename uniqueness
-    const uniqueSuffix = `${new Date().getTime()}_${Math.random().toString(36).substring(2, 15)}`;
-    const uniqueFileName = fileName ? `${fileName}_${uniqueSuffix}` : `image_${uniqueSuffix}`;
+    // PUBLISH POST---------------------------------------------
 
-    const filePath = `${uniqueFileName}.webp`; // Assuming the image is in webp format
-    let { error, data } = await supabase.storage.from('posts/photos').upload(filePath, blob);
-
-    if (error) {
-      console.error('Detailed error uploading image:', error);
-      throw new Error('Error uploading image');
-    }
-
-    return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/photos/${filePath}`;
-  }
-  // publish post to supabase
-  async function handleSubmit() {
-    // console.log('inside handle submit');
+  async function publishPost(post, isUpdate = false) {
     try {
-      const processedBlocks = await Promise.all(contentBlocks.map(async (block) => {
-      // Check if block type is 'title' and content is falsy
-        if (block.type === 'photo') {
-          const photoPromises = block.content.map(async (photo) => {
-            if (typeof photo.src === 'string' && photo.src.startsWith('data:')) {
-              return uploadImageToSupabase(photo.src, photo.title).then(uploadedImageUrl => ({ ...photo, src: uploadedImageUrl }));
-            }
-            return Promise.resolve(photo); // Resolve immediately if not a data URL
-          });
+      if (isUpdate) {
+        // Update existing post
+        const { data, error } = await supabase
+          .from('posts')
+          .update(post)
+          .match({ id: post.id }); // Assuming 'id' is the primary key
 
-          // Use Promise.all to ensure the order of photos is preserved
-          const processedPhotos = await Promise.all(photoPromises);
+        if (error) throw error;
+        console.log('Post updated:', data);
+      } else {
+        // Insert new post
+        const { data, error } = await supabase
+          .from('posts')
+          .insert([post]);
 
-          return {
-            type: block.type,
-            content: processedPhotos,
-            format: block.format,
-            author: user.supabase_user
-          };
-        }
-        return block;
-      }));
+        if (error) throw error;
+        console.log('Post published:', data);
+      }
 
-      const post = {
-        content: JSON.stringify(processedBlocks),
-        'post-type': 'weekly-update',
-        author: JSON.stringify(user.supabase_user)
-      };
+      // Optionally, delete the draft
+      const { error: draftError } = await supabase
+        .from('drafts')
+        .delete()
+        .match({ id: post.id });
 
-      const { error } = await supabase.from('posts').insert([post]);
-      if (error) throw new Error('Error submitting content blocks: ', error.message);
+      if (draftError) throw draftError;
 
-      router.push('/');
+      router.push('/public/home');
     } catch (error) {
-      console.error('Error in handleSubmit: ', error);
+      console.error('Error publishing post:', error);
     }
   }
+
+  // HANDLE SUBMIT---------------------------------------------
+  // async function handleSubmit(type) {
+  //   setSaving(true);
+  //   // console.log('inside handle submit');
+  //   try {
+  //     const post = {
+  //       content: JSON.stringify(contentBlocks),
+  //       'post-type': type || 'weekly-update',
+  //       author: JSON.stringify(user.supabase_user.id)
+  //     };
+
+  //     const { error } = await supabase
+  //       .from('posts')
+  //       .insert([post]);
+
+  //     setSaving(false);
+  //     if (error) throw new Error('Error submitting content blocks: ', error.message);
+
+  //     router.push('/public/home');
+  //   } catch (error) {
+  //     console.error('Error in handleSubmit: ', error);
+  //   }
+  // }
+
+  async function handleSubmit(type, isPublish = false) {
+    setSaving(true);
+    const post = {
+      id: postID, // Make sure to handle the ID correctly for updates
+      content: JSON.stringify(contentBlocks),
+      'post-type': type || 'weekly-update',
+      author: JSON.stringify(user.supabase_user.id)
+    };
+
+    try {
+      if (isPublish) {
+        await publishPost(post, !!postID);
+      } else {
+        debouncedUpdateDraft(post, !postID);
+      }
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+    } finally {
+      setSaving(false);
+    }
+  }
+
   const addBlock = (newBlock, parentIndex = null, nestedIndex = null) => {
     // console.log('INSIDE ADDBLOCK: ', 'newBlock: ', newBlock, 'parentIndex: ', parentIndex, 'nested index: ', nestedIndex);
     if (parentIndex !== null && nestedIndex !== null) {
@@ -170,12 +237,9 @@ export default function NewPostPage() {
     }
     setActiveBlock(contentBlocks.length);
   };
-
-
-
-  // if (!user) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!user) {
+    return null;
+  }
   return (
     <>
       <PostNavbarLeft/>
@@ -194,10 +258,6 @@ export default function NewPostPage() {
 
 
       <PostNavbarRight
-        // onAddText={addPrimeTextBlock}
-        // onAddPhoto={addPhotoBlock}
-        // onAddVideo={addVideoBlock}
-        // onAddLayout={addFlexibleLayout}
         activeBlock={activeBlock}
         setActiveBlock={setActiveBlock}
         handleSubmit={handleSubmit}

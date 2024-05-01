@@ -160,7 +160,8 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
 
   return (
     <>
-      {isEditable && input}
+      {isEditable && input /*render the input if editable regardless of the number of photos*/}
+
       {isEditable ?
         photos.length ? sortPhotos : noPhotosMessage // if editable, show the sort view or no photos message
         :
