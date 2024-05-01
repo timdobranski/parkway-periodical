@@ -4,10 +4,12 @@ import { useState, useEffect, useRef } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from './photoCarousel.module.css';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import EditablePhoto from '../EditablePhoto/EditablePhoto';
 
-export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto }) {
+export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto, reorderPhotos }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedCaption, setEditedCaption] = useState("");
@@ -64,50 +66,104 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
       <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
     );
   }
-
   const handleTitleChange = (index, title) => {
-
   }
   const noPhotosMessage = (
     <p>Click the button above to select photos for the carousel</p>
   )
+  const sortPhotos = (
+    <DragDropContext
+      onDragEnd={(result) => {
+        if (!result.destination) return;
+        reorderPhotos(result.source.index, result.destination.index);
+      }}
+    >
+      <Droppable droppableId="photos" >
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}       style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            padding: '20px'
+          }}>
+            {photos.map((photo, index) => (
+              <Draggable key={photo.fileName} draggableId={photo.fileName} index={index}>
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={{
+                      ...provided.draggableProps.style,
+                      marginBottom: '8px',
+                      padding: '8px',
+                      maxWidth: '50%',
+                      left: 'auto !important',
+                      // top: 'auto !important'
+                    }}
+                  >
+                    <EditablePhoto
+                      photo={photo}
+                      isEditable={isEditable}
+                      updatePhotoContent={addPhoto}
+                      deletePhoto={deletePhoto}
+                      containerClassName={styles.photoContainer}
+                      handleTitleChange={(title) => handleTitleChange(index, title)}
+                      handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
+                      photoIndex={index}
+                    />
+                  </div>
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  )
+  const input = (
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      onChange={addPhoto}
+      className={styles.photoInput}
+    />
+  )
+  const carousel = (
+    <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
+      <Carousel
+        renderArrowPrev={customPrevArrow}
+        renderArrowNext={customNextArrow}
+        preventMovementUntilSwipeScrollTolerance={true}
+        swipeScrollTolerance={50}
+        emulateTouch={true}
+        dynamicHeight={false}
+        autoPlay={false}
+        showThumbs={false}
+        showStatus={false}
+        selectedItem={currentPhotoIndex}
+        onChange={handleCarouselChange}
+      >
+        {photos?.map((photo, index) => (
+          <div key={index} className={styles.carouselSlide}>
+            <img src={photo.src} alt={`Photo ${index}`}
+              className={styles.slideImg}/>
+          </div>
+        ))}
+      </Carousel>
 
-  // if (!photos) { return <>No photos array provided</>}
+    </div>
+  )
 
   return (
     <>
-      {isEditable &&
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={addPhoto}
-          className={styles.photoInput}
-        />}
-      {photos.length === 0 ? noPhotosMessage :
-        <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
-          <Carousel
-            renderArrowPrev={customPrevArrow}
-            renderArrowNext={customNextArrow}
-            preventMovementUntilSwipeScrollTolerance={true}
-            swipeScrollTolerance={50}
-            emulateTouch={true}
-            dynamicHeight={false}
-            autoPlay={false}
-            showThumbs={false}
-            showStatus={false}
-            selectedItem={currentPhotoIndex}
-            onChange={handleCarouselChange}
-          >
-            {photos?.map((photo, index) => (
-              <div key={index} className={styles.carouselSlide}>
-                <img src={photo.src} alt={`Photo ${index}`}
-                  className={styles.slideImg}/>
-              </div>
-            ))}
-          </Carousel>
-
-        </div>
+      {isEditable && input}
+      {isEditable ?
+        photos.length ? sortPhotos : noPhotosMessage // if editable, show the sort view or no photos message
+        : carousel // if NOT editable, show the carousel
       }
     </>
   );

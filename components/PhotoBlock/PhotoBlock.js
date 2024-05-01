@@ -50,6 +50,7 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable })
     />
   )
 
+  if (!photo) return noPhotosMessage;
 
   return (
     <div className={styles.photoBlockWrapper}>

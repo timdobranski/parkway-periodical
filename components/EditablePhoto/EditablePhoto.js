@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen, faAdd, faFont } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen, faPen } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -11,7 +11,7 @@ import PrimeText from '../PrimeText/PrimeText';
 
 export default function EditablePhoto({
   photo, isEditable, updatePhotoContent, deletePhoto, containerClassName,
-  index, setSelectedPhotos, handleTitleChange, handleCaptionChange}) {
+  index, setSelectedPhotos, handleTitleChange, handleCaptionChange, photoIndex}) {
   const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0});
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [completedCrop, setCompletedCrop] = useState(null);
@@ -136,12 +136,12 @@ export default function EditablePhoto({
         <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
       </div>
       <div className={styles.photoEditMenuIconWrapper}>
-        <p className={photo.caption ? styles.caption : styles.noCaption}>Add Title</p>
+        <FontAwesomeIcon icon={faPen} className={styles.captionIcon} />
       </div>
-      <div className={styles.photoEditMenuIconWrapper}>
+      {/* <div className={styles.photoEditMenuIconWrapper}>
         <p className={photo.caption ? styles.caption : styles.noCaption}
         >Add Caption</p>
-      </div>
+      </div> */}
       <div className={styles.photoEditMenuIconWrapper} onClick={() => deletePhoto(photo.fileName)}>
         <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
       </div>
@@ -175,6 +175,7 @@ export default function EditablePhoto({
         <>
           {isEditable && editMenu}
           {image}
+          {<h3 className={styles.photoNumber}>#{photoIndex + 1}</h3>}
           {/* {photo.title && <PrimeText src={{content: photo.title}} isEditable={isEditable} setTextState={handleTitleChange}/>} */}
         </>
       )}

@@ -317,6 +317,29 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       return updatedContentBlocks;
     });
   };
+  const reorderPhotos = (startIndex, endIndex) => {
+    // First, we need to operate on the correct block within contentBlocks
+    setContentBlocks(prevBlocks => {
+        // Create a copy of the current state to avoid direct mutations
+        const updatedBlocks = [...prevBlocks];
+
+        // Extract the current photos from the active block
+        const currentPhotos = Array.from(updatedBlocks[activeBlock].content);
+
+        // Perform the reordering on the extracted photos
+        const [removed] = currentPhotos.splice(startIndex, 1);
+        currentPhotos.splice(endIndex, 0, removed);
+
+        // Update the active block's content with the new photo order
+        updatedBlocks[activeBlock] = {
+            ...updatedBlocks[activeBlock],
+            content: currentPhotos
+        };
+
+        // Return the newly formed array of content blocks
+        return updatedBlocks;
+    });
+};
   // video block helpers
   const updateVideoUrl = (index, url) => {
     const newContentBlocks = [...contentBlocks];
@@ -434,6 +457,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
                   photos={block.content}
                   setActiveBlock={setActiveBlock}
                   removeBlock={() => removeBlock(index)}
+                  reorderPhotos={reorderPhotos}
                 />
               }
               {block.type === 'video' &&
