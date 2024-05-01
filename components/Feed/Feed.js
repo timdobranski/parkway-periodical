@@ -124,7 +124,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
   };
 
   const deletePhoto = async (blockIndex, filename) => {
-    console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename)
+    console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename);
     // Attempt to remove the photo from storage
     const { data, error } = await supabase
       .storage
@@ -136,12 +136,12 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       console.error('Error deleting photo:', error.message);
       throw error;
     } else {
-      // Successfully deleted, now update the content blocks
-      // Find the photo block using blockIndex and update its content
-      const newPhotos = contentBlocks[blockIndex].content.filter(photo => photo.fileName !== filename);
-      updatePhotoContent(blockIndex, newPhotos);
+      console.log('Photo deleted successfully from storage, now updating UI');
+      // Successfully deleted, now update the content blocks by removing the photo
+      removePhotoFromBlock(blockIndex, filename);
     }
   };
+
   // sets new properties on the block. works on layouts if passed the nestedIndex  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
   const updateBlock = (index, updatedProperties, nestedIndex = null) => {
     // console.log('INSIDE UPDATE BLOCK FUNCTION: ', index, updatedProperties, nestedIndex)
@@ -297,7 +297,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       return block;
     }));
   };
-  // photo block helpers
+  // adds new photos to the photo block or carousel block
   const updatePhotoContent = (index, newPhotos) => {
     // Update state with a function to ensure access to the most current state
     setContentBlocks(prevContentBlocks => {
@@ -317,29 +317,50 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       return updatedContentBlocks;
     });
   };
+  // updates the order of the photos in the carousel block
   const reorderPhotos = (startIndex, endIndex) => {
     // First, we need to operate on the correct block within contentBlocks
     setContentBlocks(prevBlocks => {
-        // Create a copy of the current state to avoid direct mutations
-        const updatedBlocks = [...prevBlocks];
+      // Create a copy of the current state to avoid direct mutations
+      const updatedBlocks = [...prevBlocks];
 
-        // Extract the current photos from the active block
-        const currentPhotos = Array.from(updatedBlocks[activeBlock].content);
+      // Extract the current photos from the active block
+      const currentPhotos = Array.from(updatedBlocks[activeBlock].content);
 
-        // Perform the reordering on the extracted photos
-        const [removed] = currentPhotos.splice(startIndex, 1);
-        currentPhotos.splice(endIndex, 0, removed);
+      // Perform the reordering on the extracted photos
+      const [removed] = currentPhotos.splice(startIndex, 1);
+      currentPhotos.splice(endIndex, 0, removed);
 
-        // Update the active block's content with the new photo order
-        updatedBlocks[activeBlock] = {
-            ...updatedBlocks[activeBlock],
-            content: currentPhotos
-        };
+      // Update the active block's content with the new photo order
+      updatedBlocks[activeBlock] = {
+        ...updatedBlocks[activeBlock],
+        content: currentPhotos
+      };
 
-        // Return the newly formed array of content blocks
-        return updatedBlocks;
+      // Return the newly formed array of content blocks
+      return updatedBlocks;
     });
-};
+  };
+  // removes the specified photo from the photo block
+  const removePhotoFromBlock = (blockIndex, filename) => {
+  // Update the contentBlocks state to remove the specified photo
+    setContentBlocks(prevContentBlocks => {
+    // Copy the array to avoid direct mutation
+      const updatedContentBlocks = [...prevContentBlocks];
+
+      // Filter out the photo with the specified filename from the specific block
+      const filteredPhotos = updatedContentBlocks[blockIndex].content.filter(photo => photo.fileName !== filename);
+
+      // Update the block with the new array of photos
+      updatedContentBlocks[blockIndex] = {
+        ...updatedContentBlocks[blockIndex],
+        content: filteredPhotos
+      };
+
+      // Return the newly formed array which triggers the update
+      return updatedContentBlocks;
+    });
+  };
   // video block helpers
   const updateVideoUrl = (index, url) => {
     const newContentBlocks = [...contentBlocks];
@@ -451,7 +472,7 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
                 <PhotoCarousel
                   key={index}
                   addPhoto={addPhoto}
-                  deletePhoto={deletePhoto}
+                  deletePhoto={(fileName) => deletePhoto(index, fileName)}
                   blockIndex={index}
                   isEditable={index === activeBlock}
                   photos={block.content}

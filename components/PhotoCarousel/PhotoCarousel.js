@@ -163,7 +163,8 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
       {isEditable && input}
       {isEditable ?
         photos.length ? sortPhotos : noPhotosMessage // if editable, show the sort view or no photos message
-        : carousel // if NOT editable, show the carousel
+        :
+        photos.length ? carousel : noPhotosMessage // if NOT editable, show the carousel or no photos message
       }
     </>
   );

@@ -175,7 +175,7 @@ export default function EditablePhoto({
         <>
           {isEditable && editMenu}
           {image}
-          {<h3 className={styles.photoNumber}>#{photoIndex + 1}</h3>}
+          {typeof photoIndex === 'number' && <h3 className={styles.photoNumber}>#{photoIndex + 1}</h3>}
           {/* {photo.title && <PrimeText src={{content: photo.title}} isEditable={isEditable} setTextState={handleTitleChange}/>} */}
         </>
       )}
