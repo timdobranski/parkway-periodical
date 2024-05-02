@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen, faPen, faAlignJustify,
+  faAlignLeft, faAlignCenter, faAlignRight, faUpDown, faGripLines, faChevronUp, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -17,6 +18,7 @@ export default function EditablePhoto({
   const [completedCrop, setCompletedCrop] = useState(null);
   const imageRef = useRef(null);
   const [cropActive, setCropActive] = useState(false);
+  const [menuExpanded, setMenuExpanded] = useState(false);
 
   // useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
     useEffect(() => {
@@ -133,17 +135,40 @@ export default function EditablePhoto({
   const editMenu = (
     <div className={styles.photoEditMenu}>
       <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
+        <FontAwesomeIcon icon={faImage} className={styles.cropIcon} />
+      </div>
+      <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
         <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
       </div>
       <div className={styles.photoEditMenuIconWrapper}>
         <FontAwesomeIcon icon={faPen} className={styles.captionIcon} />
       </div>
-      {/* <div className={styles.photoEditMenuIconWrapper}>
-        <p className={photo.caption ? styles.caption : styles.noCaption}
-        >Add Caption</p>
-      </div> */}
+      <div className={styles.photoEditMenuIconWrapper}>
+        <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.captionIcon} />
+      </div>
+      <div className={styles.photoEditMenuIconWrapper}>
+        <FontAwesomeIcon icon={faAlignJustify}
+          className={styles.captionIcon}
+          onClick={() => menuExpanded !== 'horizontalAlignment' ? setMenuExpanded('horizontalAlignment') : setMenuExpanded(false)} />
+        <div className={`${styles.expandedMenu} ${menuExpanded === 'horizontalAlignment' ? '' : 'hidden'}`}>
+          <FontAwesomeIcon icon={faAlignLeft} className={styles.expandedIcon} />
+          <FontAwesomeIcon icon={faAlignCenter} className={styles.expandedIcon} />
+          <FontAwesomeIcon icon={faAlignRight} className={styles.expandedIcon} />
+        </div>
+      </div>
+      <div className={styles.photoEditMenuIconWrapper}>
+        <FontAwesomeIcon icon={faUpDown}
+          className={styles.captionIcon}
+          onClick={() => menuExpanded !== 'verticalAlignment' ? setMenuExpanded('verticalAlignment') : setMenuExpanded(false)} />
+        <div className={`${styles.expandedMenu} ${menuExpanded === 'verticalAlignment' ? '' : 'hidden'}`}>
+          <FontAwesomeIcon icon={faChevronUp} className={styles.expandedIcon} />
+          <FontAwesomeIcon icon={faGripLines} className={styles.expandedIcon} />
+          <FontAwesomeIcon icon={faChevronDown} className={styles.expandedIcon} />
+        </div>
+      </div>
+
       <div className={styles.photoEditMenuIconWrapper} onClick={() => deletePhoto(photo.fileName)}>
-        <FontAwesomeIcon icon={faTrashCan} className={styles.removePhotoIcon}  />
+        <FontAwesomeIcon icon={faTrash} className={styles.removePhotoIcon}  />
       </div>
     </div>
   )

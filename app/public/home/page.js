@@ -5,6 +5,7 @@ import supabase from '../../../utils/supabase';
 import styles from './home.module.css';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import PhotoCarousel from '../../../components/PhotoCarousel/PhotoCarousel';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import WelcomeSlideshow from '../../../components/WelcomeSlideshow/WelcomeSlideshow';
 import Intro from '../../../components/Intro/Intro';
@@ -103,14 +104,14 @@ export default function Home({ introRunning, setIntroRunning }) {
             {block.type === 'title' && (
               <PostTitle
                 src={block}
-                author={JSON.parse(post.author)}
+                authorId={post.author}
                 id={post.id}
+                viewContext='view'
               />
             )
             }
             {block.type === 'text' && (
               <div className='blockWrapper'>
-                {/* <div className={styles.postBody} dangerouslySetInnerHTML={{ __html: block.content }}></div> */}
                 <PrimeText
                   src={block}
                   viewContext='view'
@@ -128,8 +129,14 @@ export default function Home({ introRunning, setIntroRunning }) {
                 // setActiveBlock={setActiveBlock}
                 />
               </div>
-            )
-            }
+            )}
+            {block.type === 'carousel' && (
+              <div className='blockWrapper'>
+                <PhotoCarousel
+                  photos={block.content}
+                />
+              </div>
+            )}
             {block.type === 'video' && (
               <div className='blockWrapper'>
                 <Video

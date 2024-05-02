@@ -20,126 +20,119 @@ export default function NewPostPage() {
   const searchParams = useSearchParams();
   const postId = searchParams.get('id');
   const [saving, setSaving] = useState(false);
+  const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
+  const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
 
-  // if a post id is provided, fetch the post data
   useEffect(() => {
-    if (postId) {
-      const fetchPost = async () => {
-        const { data, error } = await supabase
-          .from('posts')
-          .select('*')
-          .eq('id', postId)
-          .single();
-
-        if (error) {
-          console.error('Error fetching post data:', error);
-          return;
-        }
-
-        if (data) {
-          const parsedData = JSON.parse(data.content);
-          setContentBlocks(parsedData);
-        }
-      };
-      fetchPost();
-    } else {
-      setContentBlocks([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
-    }
-  }, [postId])
-
-  // debounce helper for submitting/saving posts
-
-  // UPDATE DRAFT---------------------------------------------
-  async function updateDraft(post, isNew = false) {
-    try {
-      let result;
-      if (isNew) {
-        // If it's a new draft, insert it
-        result = await supabase
-          .from('drafts')
-          .insert([post]);
+    fetchUser().then(user => {
+      if (!user) {
+        router.push('/auth');
       } else {
-        // If it's an existing draft, upsert it (update or insert)
-        result = await supabase
-          .from('drafts')
-          .upsert([post], { onConflict: 'id' });
+        setUser(user);
+        initContent(user);
+      }
+    });
+  }, [router]);
+
+  async function fetchUser() {
+    const response = await supabase.auth.getSession();
+    if (response.data.session) {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('auth_id', response.data.session.user.id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching user data:', error);
+        return null;
       }
 
-      const { data, error } = result;
+      return { ...response.data.session.user, supabase_user: data };
+    }
+    return null;
+  }
+
+  async function initContent(user) {
+    if (postId) {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', postId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching post data:', error);
+        return;
+      }
+
+      if (data) {
+        setContentBlocks(JSON.parse(data.content));
+      }
+    } else {
+      const { data: draft, error } = await supabase
+        .from('drafts')
+        .select('*')
+        .eq('author', user.supabase_user.id)
+        .single();
+
+      if (draft) {
+        setContentBlocks(JSON.parse(draft.content));
+      } else {
+        const emptyPost = [{ type: 'title', content: '', style: { width: '0px', height: '0px', x: 0, y: 0 } }];
+        setContentBlocks(emptyPost);
+        updateDraft({ author: user.supabase_user.id, content: emptyPost });
+      }
+    }
+  }
+
+  async function updateDraft(post) {
+    try {
+      const { data, error } = await supabase
+        .from('drafts')
+        .upsert([post], { onConflict: 'author' });
+
       if (error) throw error;
       console.log('Draft saved:', data);
     } catch (error) {
       console.error('Error updating draft:', error);
     }
   }
-  const debouncedUpdateDraft = useCallback(debounce(updateDraft, 3000), []);
 
   useEffect(() => {
-    if (contentBlocks && user) {
+    if (contentBlocks.length && user) {
       const post = {
-        // Assuming you manage a state or prop for postID and type
-
         content: JSON.stringify(contentBlocks),
-        'post-type': 'weekly-update',  // Example type
+        'post-type': 'weekly-update', // Example type
         author: user.supabase_user.id
       };
-      const postID = !postId;
-      debouncedUpdateDraft(post, !postID);  // isNew based on if postID is undefined
+      debouncedUpdateDraftRef.current(post);
     }
-  }, [contentBlocks, user, debouncedUpdateDraft]);
-
+  }, [contentBlocks, user]);
   useEffect(() => {
-    const getAndSetUser = async () => {
-      const response = await supabase.auth.getSession();
-
-      if (response.data.session) {
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('auth_id', response.data.session.user.id)
-          .single();
-
-        if (error) {
-          console.error('Error fetching user data:', error);
-          return;
-        }
-
-        if (data) {
-          // Append the user ID from your users table to the user object
-          const updatedUser = { ...response.data.session.user, supabase_user: data };
-          setUser(updatedUser);
-        }
-      } else {
-        router.push('/auth');
-      }
-    };
-    getAndSetUser();
-  }, [router]);
-  useEffect(() => {
-    // Cleanup function to reset when component unmounts
-    return () => {
-      setContentBlocks([{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]);
-    };
-  }, []);
-
-  useEffect(() => {
-    console.log('ROOT PAGE CONTENT BLOCK ARRAY CHANGED TO: ', contentBlocks)
+    console.log('CONTENT BLOCKS CHANGED: ', contentBlocks)
   }, [contentBlocks])
   // useEffect(() => {
   //   console.log('ACTIVE MAIN BLOCK CHANGED TO: ', activeBlock)
   // }, [activeBlock])
 
 
-    // PUBLISH POST---------------------------------------------
+  // PUBLISH POST---------------------------------------------
 
-  async function publishPost(post, isUpdate = false) {
+  async function publishPost(contentBlocks, postId) {
+    console.log('user id: ', user.supabase_user.id)
+    const post = {
+      content: JSON.stringify(contentBlocks),
+      author: JSON.stringify(user.supabase_user.id),
+      title: contentBlocks[0].content
+    };
     try {
-      if (isUpdate) {
+      if (postId) {
         // Update existing post
         const { data, error } = await supabase
           .from('posts')
           .update(post)
-          .match({ id: post.id }); // Assuming 'id' is the primary key
+          .match({ id: postId}); // Assuming 'id' is the primary key
 
         if (error) throw error;
         console.log('Post updated:', data);
@@ -157,7 +150,7 @@ export default function NewPostPage() {
       const { error: draftError } = await supabase
         .from('drafts')
         .delete()
-        .match({ id: post.id });
+        .match({ author: user.supabase_user.id });
 
       if (draftError) throw draftError;
 
@@ -191,27 +184,7 @@ export default function NewPostPage() {
   //   }
   // }
 
-  async function handleSubmit(type, isPublish = false) {
-    setSaving(true);
-    const post = {
-      id: postID, // Make sure to handle the ID correctly for updates
-      content: JSON.stringify(contentBlocks),
-      'post-type': type || 'weekly-update',
-      author: JSON.stringify(user.supabase_user.id)
-    };
 
-    try {
-      if (isPublish) {
-        await publishPost(post, !!postID);
-      } else {
-        debouncedUpdateDraft(post, !postID);
-      }
-    } catch (error) {
-      console.error('Error in handleSubmit:', error);
-    } finally {
-      setSaving(false);
-    }
-  }
 
   const addBlock = (newBlock, parentIndex = null, nestedIndex = null) => {
     // console.log('INSIDE ADDBLOCK: ', 'newBlock: ', newBlock, 'parentIndex: ', parentIndex, 'nested index: ', nestedIndex);
@@ -237,7 +210,7 @@ export default function NewPostPage() {
     }
     setActiveBlock(contentBlocks.length);
   };
-  if (!user) {
+  if (!user || !contentBlocks) {
     return null;
   }
   return (
@@ -260,7 +233,7 @@ export default function NewPostPage() {
       <PostNavbarRight
         activeBlock={activeBlock}
         setActiveBlock={setActiveBlock}
-        handleSubmit={handleSubmit}
+        handleSubmit={() => publishPost(contentBlocks, postId)}
         addBlock={addBlock}
       />
     </>

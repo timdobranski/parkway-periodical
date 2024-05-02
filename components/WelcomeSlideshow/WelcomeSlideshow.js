@@ -108,7 +108,11 @@ export default function WelcomeSlideshow() {
           {slides.map((slide, index) => {
             console.log('slide: ', slide)
             return (
-              slide
+              <div
+                key={index}
+              >
+                {slide}
+              </div>
 
             )
           })}

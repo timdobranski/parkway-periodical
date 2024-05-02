@@ -66,7 +66,9 @@
 .centeredText {
   text-align: center;
 }
-
+.hidden {
+  display: none !important;
+}
 .slideUp {
   animation: slideUpNoCenter .5s ease-out forwards;
 }

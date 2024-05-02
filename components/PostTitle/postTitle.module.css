@@ -6,7 +6,8 @@
   justify-content: center;
   /* border: solid red 2px; */
 }
-.postTitle {
+.postTitle, .postTitleEditable {
+  resize: none;
   font-size: 2rem;
   display: block;
   color: #0068a8;
@@ -27,13 +28,48 @@
   overflow-wrap: break-word;
 }
 
+.postTitleEditable {
+  width: 90%;
+}
+.rightInfoWrapper {
+  position: absolute;
+  right: 1rem;
+  top: .5rem;
+  /* border: solid red 2px; */
+}
 .date {
   padding: 0;
   position: relative;
   top: 0;
   right: 0;
   margin: .5rem 0rem;
-  font-size: 1rem
+  font-size: 1.25rem
+}
+.shareIcon {
+  height: 30px;
+  width: 30px;
+  color: rgb(0, 66, 105);
+}
+.shareIcon:hover {
+  cursor: pointer;
+  color: var(--primary-red);
+  /* transform: scale(1.2); */
+}
+.shareConfirm {
+  position: absolute;
+  top:.5rem;
+  right: 1rem;
+  transform: translateX(-50%);
+  /* width: 25px; */
+  padding: .5rem;
+  font-size: 1rem;
+  background-color: rgb(0, 93, 121);
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 1); */
+  /* border: solid rgb(95, 95, 95) 1px; */
+  z-index: 5;
+  animation: fadeInOut 2s forwards;
 }
 .userWrapper {
   /* border: solid black 2px; */
@@ -81,44 +117,7 @@
 .userPosition {
 
 }
-.shareIcon {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  height: 20px;
-  width: 20px;
-  padding: .5rem;
-  background-color: rgb(56, 182, 255);
-  background-color: rgb(254, 89, 89);
-  border: solid white 2px;
-  border-radius: 50%;
-  color: rgb(255, 255, 255);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 1);
-  transition: transform 0.5s ease;
-  z-index: 5;
-}
-.shareIcon:hover {
-  background-color: rgb(255, 84, 84);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-  cursor: pointer;
-  transform: scale(1.1);
-}
-.shareConfirm {
-  position: absolute;
-  bottom: 1.5rem;;
-  left: 50%;
-  transform: translateX(-50%);
-  /* width: 25px; */
-  padding: .5rem;
-  font-size: 1rem;
-  background-color: rgb(0, 195, 255);
-  border-radius: 5px;
-  color: rgb(0, 0, 0);
-  /* box-shadow: 0 0 5px rgba(0, 0, 0, 1); */
-  /* border: solid rgb(95, 95, 95) 1px; */
-  z-index: 5;
-  animation: fadeInOut 2s forwards;
-}
+
 @keyframes fadeInOut {
   0% {
     opacity: 1;

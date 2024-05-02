@@ -66,8 +66,6 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
       <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
     );
   }
-  const handleTitleChange = (index, title) => {
-  }
   const noPhotosMessage = (
     <p>Click the button above to select photos for the carousel</p>
   )
@@ -96,11 +94,11 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
                     {...provided.dragHandleProps}
                     style={{
                       ...provided.draggableProps.style,
-                      marginBottom: '8px',
+                      margin: '35px 0',
                       padding: '8px',
-                      maxWidth: '50%',
+                      maxWidth: '40%',
                       left: 'auto !important',
-                      // top: 'auto !important'
+                      top: 'auto !important'
                     }}
                   >
                     <EditablePhoto
