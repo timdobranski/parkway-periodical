@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faVideo, faFont, faBars, faTv, faTableCells } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
-export default function PostNavbarRight({ handleSubmit, addBlock
+export default function PostNavbarRight({ handleSubmit, addBlock, publishingStatus
 }) {
 
   // const isTextBlockActive = activeBlock !== null && activeBlockType === 'text';
@@ -20,7 +20,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock
 
   return (
     <div className={styles.navbarWrapper}>
-      <h3 className={styles.publishButton} onClick={handleSubmit} >PUBLISH</h3>
+      <h3 className={styles.publishButton} onClick={publishingStatus ? null : handleSubmit} >PUBLISH</h3>
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Flexible Layouts</h3>

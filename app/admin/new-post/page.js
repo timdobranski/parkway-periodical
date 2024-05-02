@@ -20,9 +20,11 @@ export default function NewPostPage() {
   const searchParams = useSearchParams();
   const postId = searchParams.get('id');
   const [saving, setSaving] = useState(false);
+  const [publishingStatus, setPublishingStatus] = useState(false)
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
   const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
 
+  // fetch user
   useEffect(() => {
     fetchUser().then(user => {
       if (!user) {
@@ -52,7 +54,6 @@ export default function NewPostPage() {
     }
     return null;
   }
-
   async function initContent(user) {
     if (postId) {
       const { data, error } = await supabase
@@ -85,7 +86,6 @@ export default function NewPostPage() {
       }
     }
   }
-
   async function updateDraft(post) {
     try {
       const { data, error } = await supabase
@@ -98,7 +98,7 @@ export default function NewPostPage() {
       console.error('Error updating draft:', error);
     }
   }
-
+  // update the draft when content changes (debounced)
   useEffect(() => {
     if (contentBlocks.length && user) {
       const post = {
@@ -112,15 +112,11 @@ export default function NewPostPage() {
   useEffect(() => {
     console.log('CONTENT BLOCKS CHANGED: ', contentBlocks)
   }, [contentBlocks])
-  // useEffect(() => {
-  //   console.log('ACTIVE MAIN BLOCK CHANGED TO: ', activeBlock)
-  // }, [activeBlock])
-
 
   // PUBLISH POST---------------------------------------------
 
   async function publishPost(contentBlocks, postId) {
-    console.log('user id: ', user.supabase_user.id)
+    setPublishingStatus(true);
     const post = {
       content: JSON.stringify(contentBlocks),
       author: JSON.stringify(user.supabase_user.id),
@@ -153,39 +149,12 @@ export default function NewPostPage() {
         .match({ author: user.supabase_user.id });
 
       if (draftError) throw draftError;
-
+      setPublishingStatus(false);
       router.push('/public/home');
     } catch (error) {
       console.error('Error publishing post:', error);
     }
   }
-
-  // HANDLE SUBMIT---------------------------------------------
-  // async function handleSubmit(type) {
-  //   setSaving(true);
-  //   // console.log('inside handle submit');
-  //   try {
-  //     const post = {
-  //       content: JSON.stringify(contentBlocks),
-  //       'post-type': type || 'weekly-update',
-  //       author: JSON.stringify(user.supabase_user.id)
-  //     };
-
-  //     const { error } = await supabase
-  //       .from('posts')
-  //       .insert([post]);
-
-  //     setSaving(false);
-  //     if (error) throw new Error('Error submitting content blocks: ', error.message);
-
-  //     router.push('/public/home');
-  //   } catch (error) {
-  //     console.error('Error in handleSubmit: ', error);
-  //   }
-  // }
-
-
-
   const addBlock = (newBlock, parentIndex = null, nestedIndex = null) => {
     // console.log('INSIDE ADDBLOCK: ', 'newBlock: ', newBlock, 'parentIndex: ', parentIndex, 'nested index: ', nestedIndex);
     if (parentIndex !== null && nestedIndex !== null) {
@@ -210,13 +179,12 @@ export default function NewPostPage() {
     }
     setActiveBlock(contentBlocks.length);
   };
-  if (!user || !contentBlocks) {
-    return null;
-  }
+
+  if (!user || !contentBlocks) { return null; }
+
   return (
     <>
       <PostNavbarLeft/>
-
       <Feed
         viewContext='edit'
         orientation='vertical'
@@ -229,12 +197,12 @@ export default function NewPostPage() {
         addBlock={addBlock}
       />
 
-
       <PostNavbarRight
         activeBlock={activeBlock}
         setActiveBlock={setActiveBlock}
         handleSubmit={() => publishPost(contentBlocks, postId)}
         addBlock={addBlock}
+        publishingStatus={publishingStatus}
       />
     </>
   );
