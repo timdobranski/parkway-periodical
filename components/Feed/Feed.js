@@ -219,6 +219,18 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
     setActiveBlock(contentBlocks.length); // Set active block to the newly added block
   };
   const removeBlock = (index) => {
+    // if the block has images in supabase, delete them
+    if (contentBlocks[index].type === 'photo' || contentBlocks[index].type === 'carousel') {
+
+      const photoPromises = contentBlocks[index].content.map(photo => {
+        return supabase.storage.from('posts').remove([`photos/${photo.fileName}`]);
+      })
+      Promise.all(photoPromises).then(() => {
+        console.log('All photos deleted');
+      }).catch((error) => {
+        console.error('Error deleting photos: ', error);
+      });
+    }
     // Remove the selected block
     const updatedBlocks = contentBlocks.filter((_, i) => i !== index);
     setContentBlocks(updatedBlocks);
