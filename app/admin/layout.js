@@ -1,14 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../utils/supabase'; // Update the path as per your directory structure
 import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
+import { useAdmin } from '../../contexts/AdminContext';
+import { AdminProvider } from '../../contexts/AdminContext';
+
+
 
 export default function AdminLayout({ children }) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+
+
 
   useEffect(() => {
     // Check if the user is authenticated
@@ -25,19 +29,14 @@ export default function AdminLayout({ children }) {
     checkAuth();
   }, [router]);
 
-  // Show a loading state or spinner while checking authentication
-  if (isLoading) {
-    return <div>Loading...</div>; // You can replace this with a loading spinner or similar component
-  }
-
   return (
-    // <div className='background'>
     <>
-      <HeaderAdmin saving={saving}/>
-      <div className='adminPageWrapper'>
-        {children}
-      </div>
+      <AdminProvider>
+        <HeaderAdmin/>
+        <div className='adminPageWrapper'>
+          {children}
+        </div>
+      </AdminProvider>
     </>
-    // </div>
   );
 }

@@ -21,8 +21,11 @@ export default function EditablePhoto({
   const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [imageVersion, setImageVersion] = useState(0);
+  const [loadingMessage, setLoadingMessage] = useState('Loading Image...')
 
-
+  useEffect(() => {
+    setLoadingMessage('Loading...');
+  }, [photo.src, imageVersion]);
   // useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
   // Handle image loaded
   const onImageLoaded = useCallback((img) => {
@@ -138,6 +141,7 @@ export default function EditablePhoto({
       alt={`Preview ${index}`}
       ref={imageRef}
       crossOrigin="anonymous"
+      onLoad={() => setLoadingMessage('')}
     // style={fileObj.style}
     />
   )
@@ -146,8 +150,11 @@ export default function EditablePhoto({
     return null;
   }
 
+
+
   return (
     <div className={styles.photoWrapper}>
+
       { cropActive ? (
         <>
           <ReactCrop

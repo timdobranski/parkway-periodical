@@ -6,14 +6,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import supabase from '../../utils/supabase';
 import  { useState, useEffect } from 'react';
+import { useAdmin } from '../../contexts/AdminContext';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faBars, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faBars, faMessage, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
   const [storageUsage, setStorageUsage] = useState(null);
   const [leftNavOpen, setLeftNavOpen] = useState(false);
   const [rightNavOpen, setRightNavOpen] = useState(false);
   const [expiredContent, setExpiredContent] = useState([]);
+  const { isLoading, setIsLoading, saving, setSaving } = useAdmin();
+
 
   async function checkStorageUsage() {
     try {
@@ -77,15 +81,13 @@ export default function Header() {
       <div className={styles.leftNavHandle}
         onMouseEnter={() => toggleNavOpen('left')}
         onMouseLeave={() => setLeftNavOpen(false)}
-
       >
         <FontAwesomeIcon icon={faCaretDown} className={styles.downIcon}/>
         <p className={styles.viewPages}>PAGES</p>
         <div
           onMouseLeave={() => setLeftNavOpen(false)}
-
-          className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
-
+          className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}
+        >
           <Link href='/'>
             <h2>HOME</h2>
           </Link>
@@ -98,7 +100,6 @@ export default function Header() {
         </div>
       </div>
 
-
       <div className={styles.storageStatusWrapper}>
         <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
       </div>
@@ -106,6 +107,18 @@ export default function Header() {
       <div >
         <p className={styles.storageUsed}>Expired Content Alert: {`5 items are currently expired`}</p>
       </div>
+
+      {saving ? <div className={styles.autosaveStatusWrapper}>
+        <FontAwesomeIcon icon={faCloudArrowUp} className={styles.cloudIcon}/>
+        {/* <FontAwesomeIcon icon={faCloudArrowDown} className={styles.cloudIcon}/> */}
+        <p className={styles.autosaveStatus}>Saving...</p>
+      </div> :
+        <div className={styles.autosaveStatusWrapper}>
+          <div className={styles.cloudCheckIconWrapper}>
+            <FontAwesomeIcon icon={faCloud} className={styles.emptyCloudIcon}/>
+            <FontAwesomeIcon icon={faCheck} className={styles.checkIcon}/>
+          </div>
+        </div>}
 
 
       <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
@@ -138,6 +151,7 @@ export default function Header() {
           </Link>
         </div>
       </div>
+
     </div>
   )
 }

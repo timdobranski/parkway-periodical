@@ -67,7 +67,7 @@ export default function List() {
   }
 
   return (
-    <div className='feedWrapper'>
+    <div className='adminFeedWrapper'>
       <div className='post'>
         <h1 className='pageTitle'>{`${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {

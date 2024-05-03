@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-post.module.css';
@@ -8,7 +8,8 @@ import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
 import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight'
 import Feed from '../../../components/Feed/Feed';
 import { useSearchParams } from 'next/navigation';
-import { debounce } from '../../../utils/debounce';  // Adjust the path as necessary
+import { debounce } from '../../../utils/debounce';
+import { useAdmin } from '../../../contexts/AdminContext';
 
 
 export default function NewPostPage() {
@@ -19,10 +20,12 @@ export default function NewPostPage() {
   const blocksRef = useRef({});
   const searchParams = useSearchParams();
   const postId = searchParams.get('id');
-  const [saving, setSaving] = useState(false);
   const [publishingStatus, setPublishingStatus] = useState(false)
+  const { isLoading, setIsLoading, saving, setSaving } = useAdmin();
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
   const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
+
+
 
   // fetch user
   useEffect(() => {
@@ -94,6 +97,7 @@ export default function NewPostPage() {
 
       if (error) throw error;
       console.log('Draft saved:', data);
+      setSaving(false);
     } catch (error) {
       console.error('Error updating draft:', error);
     }
@@ -106,6 +110,7 @@ export default function NewPostPage() {
         'post-type': 'weekly-update', // Example type
         author: user.supabase_user.id
       };
+      setSaving(true);
       debouncedUpdateDraftRef.current(post);
     }
   }, [contentBlocks, user]);
