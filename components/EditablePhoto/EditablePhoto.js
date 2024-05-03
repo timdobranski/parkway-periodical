@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCropSimple, faUpRightAndDownLeftFromCenter, faLock, faLockOpen, faPen, faAlignJustify,
   faAlignLeft, faAlignCenter, faAlignRight, faUpDown, faGripLines, faChevronUp, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
@@ -14,165 +14,74 @@ import supabase from '../../utils/supabase';
 export default function EditablePhoto({
   photo, isEditable, updatePhotoContent, deletePhoto, containerClassName,
   index, setSelectedPhotos, handleTitleChange, handleCaptionChange, photoIndex}) {
-  const [crop, setCrop] = useState({unit: '%', width: 100, height: 100, x: 0, y: 0});
-  const [lockAspectRatio, setLockAspectRatio] = useState(true);
-  const [completedCrop, setCompletedCrop] = useState(null);
   const imageRef = useRef(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0, width: 100, height: 100, aspect: 16 / 9, unit: '%'});
+  const [completedCrop, setCompletedCrop] = useState(null);
   const [cropActive, setCropActive] = useState(false);
+  const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [menuExpanded, setMenuExpanded] = useState(false);
+  const [imageVersion, setImageVersion] = useState(0);
+
 
   // useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
-  useEffect(() => {
-    console.log('photo in editable photo: ', photo)
-  }, [])
+  // Handle image loaded
+  const onImageLoaded = useCallback((img) => {
+    imageRef.current = img;
+  }, []);
 
-  useEffect(() => {
-    if (lockAspectRatio && imageRef) {
-      const aspectRatio = imageRef.naturalWidth / imageRef.naturalHeight;
-      setCrop({ ...crop, aspect: aspectRatio });
-    } else {
-      setCrop({ ...crop, aspect: undefined });
-    }
-  }, [lockAspectRatio, imageRef]);
-
-  useEffect(() => {
-    if (!isEditable) {
-      setCropActive(false);
-    }
-  }, [isEditable])
-
-  const onImageLoaded = (image) => {
-    imageRef.current = image;
-    // aspect: 16 / 9
-    if (lockAspectRatio) {
-      const aspectRatio = image.naturalWidth / image.naturalHeight;
-      setCrop({ ...crop, aspect: aspectRatio });
-    }
-  }
-  const onCropChange = (crop, percentCrop) => {
-    if (precentCrop) {
-      setCrop(percentCrop);
-    } else {
-      setCrop(crop);
-    }
+  // Update crop
+  const onCropChange = (newCrop) => {
+    setCrop(newCrop);
   };
-  const toggleCrop = () => {
-    setCropActive(!cropActive);
-    // Reset to initial crop when enabling crop mode
-    if (!cropActive && !crop) {
-      setCrop({ unit: '%', width: 50, aspect: 16 / 9 });
-    }
-  };
-  const finalizeCrop = () => {
-    console.log('inside finalizeCrop: completedCrop: ', completedCrop)
-    if (completedCrop && imageRef.current) {
-      makeClientCrop(completedCrop);
-      toggleCrop();
-    }
-    setCrop({unit: '%', width: 100, height: 100, x: 0, y: 0,})
-
-  };
-  const makeClientCrop = async (crop) => {
-    if (imageRef.current && crop.width && crop.height) {
-      const croppedImageBase64 = await getCroppedImg(
-        imageRef.current,
-        crop,
-        `newFile_${index}.webp`  // Assuming 'index' is the identifier for the image
-      );
-
-      // Convert base64 to Blob
-      const fetchRes = await fetch(croppedImageBase64);
-      const blob = await fetchRes.blob();
-
-      // Upload new image to Supabase
-      const newFileName = `newFile_${index}.webp`;  // Consider using a more unique naming scheme
-      const { error: uploadError } = await supabase
-        .storage
-        .from('posts')
-        .update(`photos/${photo.fileName}`, blob, {
-          cacheControl: '3600',  // Cache for 1 hour, adjust as necessary
-          upsert: true  // This ensures it replaces the existing file
-        });
-
-      if (uploadError) {
-        console.log('Error uploading new image: ', uploadError);
-        return;
-      }
-
-      // Optionally, remove the old image from storage if it's different from the new one
-      // const oldFileName = `...`;
-      // const { error: deleteError } = await supabase
-      //   .storage
-      //   .from('photos')
-      //   .remove([`photos/${oldFileName}`]);
-      // if (deleteError) {
-      //   console.log('Error deleting old image: ', deleteError);
-      // }
-
-      // Append a timestamp to the image URL to prevent caching
-      const imageUrl = `${supabase.storage.from('photos').getPublicUrl(`photos/${newFileName}`).publicURL}?time=${new Date().getTime()}`;
-
-      // Use this 'imageUrl' wherever needed to reflect the updated image
-      // Example: setImageSrc(imageUrl);
-    }
-  };
-  const getCroppedImg = async (imageSrc, crop, fileName) => {
-    // Download the image data from storage
+  const updatePhotoInSupabase = async (file) => {
     const { data, error } = await supabase
       .storage
       .from('posts')
-      .download(`photos/${photo.fileName}`);
+      .update(`photos/${photo.fileName}`, file, {
+        cacheControl: '3600',
+        upsert: true
+      })
 
-    if (error) {
-      console.log('Error downloading image: ', error);
-      return;
+    if (error) {throw error}
+
+    if (data) {
+      // Successfully updated the image, increment the image version to force re-render
+      setImageVersion(prev => prev + 1);
+      setCropActive(false);  // Disable crop mode
     }
-
-    // Create a URL from the Blob
-    const imageUrl = URL.createObjectURL(new Blob([data], { type: 'image/webp' }));
-
-    // Create a new image element
-    const img = new Image();
-    img.src = imageUrl;
-
-    // Ensure the image is loaded before drawing to canvas
-    return new Promise((resolve, reject) => {
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const scaleX = img.naturalWidth / img.width;
-        const scaleY = img.naturalHeight / img.height;
-        const pixelCrop = {
-          x: crop.x * scaleX,
-          y: crop.y * scaleY,
-          width: crop.width * scaleX,
-          height: crop.height * scaleY,
-        };
-
-        canvas.width = pixelCrop.width;
-        canvas.height = pixelCrop.height;
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(
-          img,
-          pixelCrop.x,
-          pixelCrop.y,
-          pixelCrop.width,
-          pixelCrop.height,
-          0,
-          0,
-          pixelCrop.width,
-          pixelCrop.height
-        );
-
-        // Convert the canvas to a base64 data URL in WebP format
-        resolve(canvas.toDataURL('image/webp'));
-        URL.revokeObjectURL(imageUrl);  // Clean up
-      };
-
-      img.onerror = reject;
-    });
   };
 
+
+  // Finalize crop
+  const finalizeCrop = () => {
+    if (imageRef.current && completedCrop) {
+      const { width, height, x, y } = completedCrop;
+      const canvas = document.createElement('canvas');
+      const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
+      const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+
+      ctx.drawImage(
+        imageRef.current,
+        x * scaleX,
+        y * scaleY,
+        width * scaleX,
+        height * scaleY,
+        0,
+        0,
+        width,
+        height
+      );
+
+      canvas.toBlob(blob => {
+        updatePhotoInSupabase(blob)
+      });
+    }
+  };
+
+  const toggleCrop = () => setCropActive(!cropActive);
   const cropControls = (
     <div className={styles.cropControlsWrapper}>
       <span className={styles.lockWrapper}>
@@ -222,14 +131,20 @@ export default function EditablePhoto({
       </div>
     </div>
   )
-  const image = (
-    <img src={photo.src}
+  const imageElement = (
+    <img
+      src={`${photo.src}?v=${imageVersion}`}
       className='gridPhoto'
       alt={`Preview ${index}`}
       ref={imageRef}
+      crossOrigin="anonymous"
     // style={fileObj.style}
     />
   )
+
+  if (!photo.src) {
+    return null;
+  }
 
   return (
     <div className={styles.photoWrapper}>
@@ -242,14 +157,14 @@ export default function EditablePhoto({
             onComplete={setCompletedCrop}
             overlayColor="rgba(0, 0, 0, 0.6)"
           >
-            {image}
+            {imageElement}
           </ReactCrop>
           {cropControls}
         </>
       ) : (
         <>
           {isEditable && editMenu}
-          {image}
+          {imageElement}
           {typeof photoIndex === 'number' && <h3 className={styles.photoNumber}>#{photoIndex + 1}</h3>}
           {/* {photo.title && <PrimeText src={{content: photo.title}} isEditable={isEditable} setTextState={handleTitleChange}/>} */}
         </>
