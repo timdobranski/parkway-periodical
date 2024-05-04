@@ -35,6 +35,10 @@
   position: absolute;
   right: 1rem;
   top: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
   /* border: solid red 2px; */
 }
 .date {
@@ -46,8 +50,8 @@
   font-size: 1.25rem
 }
 .shareIcon {
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   color: rgb(0, 66, 105);
 }
 .shareIcon:hover {

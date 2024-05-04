@@ -78,7 +78,7 @@
   display: none;
 
 }
-.welcomePostWrapper {
+/* .welcomePostWrapper {
   position: relative;
   width: 100%;
   height: 250px;
@@ -99,15 +99,15 @@
   font-family: Louis George Cafe;
   border: solid white 2px;
   box-shadow: 0 0 25px rgba(0, 0, 0, .7);
-}
-.welcomeHeader {
+} */
+/* .welcomeHeader {
   height: 80%;
   width: auto;
   display: block;
   background: transparent;
-  -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* horizontal, vertical offset, blur radius, color */
+  -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255));
   filter: drop-shadow(0 0 2px rgba(0,0,0,1));
-}
+} */
 .filterWrapper {
   position: absolute;
   left:50%;
@@ -116,7 +116,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: space-between;
-  animation: slideUp .75s ease-out forwards;
+  animation: slideUp .25s ease-out forwards;
   /* border: solid red 2px; */
 }
 .searchBar, .filterSelect {

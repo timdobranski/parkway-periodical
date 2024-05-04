@@ -11,7 +11,7 @@ import { AdminProvider } from '../../contexts/AdminContext';
 
 export default function AdminLayout({ children }) {
   const router = useRouter();
-
+  const [user, setUser] = useState(null);
 
 
   useEffect(() => {
@@ -22,8 +22,6 @@ export default function AdminLayout({ children }) {
       // If there's no session, redirect to /login
       if (!session) {
         router.push('/login');
-      } else {
-        setIsLoading(false); // Authenticated, stop showing loading state
       }
     };
     checkAuth();
@@ -32,7 +30,7 @@ export default function AdminLayout({ children }) {
   return (
     <>
       <AdminProvider>
-        <HeaderAdmin/>
+        <HeaderAdmin user={user}/>
         <div className='adminPageWrapper'>
           {children}
         </div>

@@ -9,9 +9,10 @@ export function useAdmin() {
 export const AdminProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [alerts, setAlerts] = useState([]);
 
   return (
-    <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving }}>
+    <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving, alerts, setAlerts }}>
       {children}
     </AdminContext.Provider>
   );

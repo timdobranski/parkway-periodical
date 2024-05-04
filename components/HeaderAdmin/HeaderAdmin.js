@@ -5,19 +5,18 @@ import logo from '../../public/images/logos/parkway.webp';
 import Image from 'next/image';
 import Link from 'next/link';
 import supabase from '../../utils/supabase';
-import  { useState, useEffect } from 'react';
+import  React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faBars, faMessage, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faBars, faCircleExclamation, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
   const [storageUsage, setStorageUsage] = useState(null);
   const [leftNavOpen, setLeftNavOpen] = useState(false);
   const [rightNavOpen, setRightNavOpen] = useState(false);
-  const [expiredContent, setExpiredContent] = useState([]);
-  const { isLoading, setIsLoading, saving, setSaving } = useAdmin();
-
+  const [alertsMenuOpen, setAlertsMenuOpen] = useState(false);
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts } = useAdmin();
+  const contentTypes = ['electives', 'clubs', 'links', 'events'];
 
   async function checkStorageUsage() {
     try {
@@ -56,10 +55,42 @@ export default function Header() {
       return null;
     }
   }
+  async function fetchEntriesExpiringSoon(contentTypes) {
+    const oneWeekFromNow = new Date();
+    oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);  // Set the date to one week from today
+
+    const results = await Promise.all(contentTypes.map(async (tableName) => {
+      try {
+        const { data, error } = await supabase
+          .from(tableName)
+          .select('*')  // Select all columns or specify which columns you need
+          .lte('expires', oneWeekFromNow.toISOString());  // 'expires' is less than or equal to one week from now
+
+        if (error) {
+          throw error;
+        }
+        return {
+          tableName,
+          entries: data
+        };
+      } catch (error) {
+        return {
+          tableName,
+          error: error.message
+        };
+      }
+    }));
+    console.log('results:', results)
+    setAlerts(results.filter(result => result.entries.length > 0));
+  }
 
   useEffect(() => {
-    checkStorageUsage()
+    fetchEntriesExpiringSoon(contentTypes);
   }, [])
+
+  useEffect(() => {
+    console.log(alerts);
+  }, [alerts])
 
   useEffect(() => {
     checkStorageUsage().then(setStorageUsage);
@@ -103,10 +134,7 @@ export default function Header() {
       <div className={styles.storageStatusWrapper}>
         <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
       </div>
-      <FontAwesomeIcon icon={faMessage} className={styles.messageIcon}/>
-      <div >
-        <p className={styles.storageUsed}>Expired Content Alert: {`5 items are currently expired`}</p>
-      </div>
+
 
       {saving ? <div className={styles.autosaveStatusWrapper}>
         <FontAwesomeIcon icon={faCloudArrowUp} className={styles.cloudIcon}/>
@@ -121,37 +149,65 @@ export default function Header() {
         </div>}
 
 
-      <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
-        <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
-        {/* <p className={styles.viewPages}>SETTINGS</p> */}
-        <div className={rightNavOpen ? styles.navContainerRight : styles.navContainerHidden}>
-          <Link href='/admin/home' className={styles.link}>
-            <h2>HOME</h2>
-          </Link>
-          <Link href='/admin/new-post'>
-            <h2>NEW POST</h2>
-          </Link>
-          <Link href='/admin/list?type=posts'>
-            <h2>POSTS</h2>
-          </Link>
-          <Link href='/admin/list?type=electives'>
-            <h2>ELECTIVES</h2>
-          </Link>
-          <Link href='/admin/list?type=clubs'>
-            <h2>CLUBS</h2>
-          </Link>
-          <Link href='/admin/list?type=staff'>
-            <h2>STAFF</h2>
-          </Link>
-          <Link href='/admin/list?type=links'>
-            <h2>LINKS</h2>
-          </Link>
-          <Link href='/admin/settings'>
-            <h2>SETTINGS</h2>
-          </Link>
+
+      <div className={styles.rightSideNavbarContent}>
+        <FontAwesomeIcon
+          icon={faCircleExclamation}
+          className={alerts ? styles.messageIcon : styles.messageIconDisabled}
+          onClick={() => setAlertsMenuOpen(!alertsMenuOpen)}
+        />
+        <div className={`${styles.alertsWrapper} ${alertsMenuOpen ? '' : 'hidden'}`}>
+          {alerts.map(alert => (
+            <React.Fragment key={alert.tableName}>
+              {alert.entries.map(entry => (
+                <div className={styles.alertItem} key={entry.id}>
+                  <div className={styles.alertHeader}>
+                    <p className={styles.expiredLabel}>{`Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}: `}</p>
+                    <p className={styles.expiredItem}>{`${entry.title}`}</p>
+                    <p className={styles.expiredDate}>{`Expires on: ${entry.expires}`}</p>
+                  </div>
+                  <div className={styles.alertButtons}>
+                    <button className={styles.renewButton}>Update</button>
+                    <button className={styles.deleteButton}>Delete</button>
+                  </div>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+        <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
+
+
+          <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
+          {/* <p className={styles.viewPages}>SETTINGS</p> */}
+          <div className={rightNavOpen ? styles.navContainerRight : styles.navContainerHidden}>
+            <Link href='/admin/home' className={styles.link}>
+              <h2>HOME</h2>
+            </Link>
+            <Link href='/admin/new-post'>
+              <h2>NEW POST</h2>
+            </Link>
+            <Link href='/admin/list?type=posts'>
+              <h2>POSTS</h2>
+            </Link>
+            <Link href='/admin/list?type=electives'>
+              <h2>ELECTIVES</h2>
+            </Link>
+            <Link href='/admin/list?type=clubs'>
+              <h2>CLUBS</h2>
+            </Link>
+            <Link href='/admin/list?type=staff'>
+              <h2>STAFF</h2>
+            </Link>
+            <Link href='/admin/list?type=links'>
+              <h2>LINKS</h2>
+            </Link>
+            <Link href='/admin/settings'>
+              <h2>SETTINGS</h2>
+            </Link>
+          </div>
         </div>
       </div>
-
     </div>
   )
 }
