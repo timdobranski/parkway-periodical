@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
-  max-width: 90vw;
+  max-width: 1200px;
 }
 .sectionWrapper {
   display: flex;
@@ -12,7 +12,7 @@
   /* background-color: rgb(228, 228, 228); */
   background-color: rgb(255, 255, 255);
 
-  margin: 1rem 2rem;
+  margin: 1rem 1rem;
 
 }
 .sectionWrapper p {

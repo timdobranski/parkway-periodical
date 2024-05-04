@@ -13,16 +13,32 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
 
-
+  useEffect(() => {
+    console.log('USER IN LAYOUT PAGE: ', user)
+  }, [user])
   useEffect(() => {
     // Check if the user is authenticated
     const checkAuth = async () => {
-      const session = supabase.auth.getSession();
+      const { data, error } = await supabase.auth.getSession()
+
 
       // If there's no session, redirect to /login
-      if (!session) {
+      if (!data) {
         router.push('/login');
+        return;
       }
+      console.log('session response data: ', data)
+      const { data: userData, error: userDataError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('auth_id', data.session.user.id)
+        .single();
+
+      if(userDataError) {
+        console.error('Error fetching user data: ', userDataError)
+      }
+      setUser(userData);
+
     };
     checkAuth();
   }, [router]);

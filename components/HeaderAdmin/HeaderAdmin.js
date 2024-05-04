@@ -4,17 +4,19 @@ import styles from './HeaderAdmin.module.css';
 import logo from '../../public/images/logos/parkway.webp';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import supabase from '../../utils/supabase';
 import  React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faBars, faCircleExclamation, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faBars, faFile, faBell, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-export default function Header() {
+export default function Header({ user }) {
   const [storageUsage, setStorageUsage] = useState(null);
   const [leftNavOpen, setLeftNavOpen] = useState(false);
   const [rightNavOpen, setRightNavOpen] = useState(false);
   const [alertsMenuOpen, setAlertsMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts } = useAdmin();
   const contentTypes = ['electives', 'clubs', 'links', 'events'];
 
@@ -83,7 +85,7 @@ export default function Header() {
     console.log('results:', results)
     setAlerts(results.filter(result => result.entries.length > 0));
   }
-
+  const pathname = usePathname();
   useEffect(() => {
     fetchEntriesExpiringSoon(contentTypes);
   }, [])
@@ -93,6 +95,7 @@ export default function Header() {
   }, [alerts])
 
   useEffect(() => {
+    console.log('user: ', user)
     checkStorageUsage().then(setStorageUsage);
   }, []);
 
@@ -103,111 +106,147 @@ export default function Header() {
       setRightNavOpen(prevState => !prevState); // Toggles the state of the right navigation
     }
   };
-
-  return (
-    <div className={styles.headerContainer}>
-      <div className={styles.logoContainer}>
-        <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
-      </div>
-      <div className={styles.leftNavHandle}
-        onMouseEnter={() => toggleNavOpen('left')}
-        onMouseLeave={() => setLeftNavOpen(false)}
-      >
-        <FontAwesomeIcon icon={faCaretDown} className={styles.downIcon}/>
-        <p className={styles.viewPages}>PAGES</p>
-        <div
-          onMouseLeave={() => setLeftNavOpen(false)}
-          className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}
-        >
-          <Link href='/'>
-            <h2>HOME</h2>
-          </Link>
-          <Link href='/public/archive'>
-            <h2>ARCHIVE</h2>
-          </Link>
-          <Link href='/public/info'>
-            <h2>INFO</h2>
-          </Link>
+  const autosaveIndicator = (
+    <div className={styles.autosaveStatusWrapper}>
+      { saving ?
+        <>
+          <FontAwesomeIcon icon={faCloudArrowUp} className={styles.cloudIcon}/>
+          <p className={styles.autosaveStatus}>Saving...</p>
+        </>
+        :
+        <div className={styles.cloudCheckIconWrapper}>
+          <FontAwesomeIcon icon={faCloud} className={styles.emptyCloudIcon}/>
+          <FontAwesomeIcon icon={faCheck} className={styles.checkIcon}/>
         </div>
-      </div>
-
-      <div className={styles.storageStatusWrapper}>
-        <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
-      </div>
-
-
-      {saving ? <div className={styles.autosaveStatusWrapper}>
-        <FontAwesomeIcon icon={faCloudArrowUp} className={styles.cloudIcon}/>
-        {/* <FontAwesomeIcon icon={faCloudArrowDown} className={styles.cloudIcon}/> */}
-        <p className={styles.autosaveStatus}>Saving...</p>
-      </div> :
-        <div className={styles.autosaveStatusWrapper}>
-          <div className={styles.cloudCheckIconWrapper}>
-            <FontAwesomeIcon icon={faCloud} className={styles.emptyCloudIcon}/>
-            <FontAwesomeIcon icon={faCheck} className={styles.checkIcon}/>
-          </div>
-        </div>}
-
-
-
-      <div className={styles.rightSideNavbarContent}>
+      }
+    </div>
+  )
+  const alertsMenu = (
+    <div className={styles.alertsHandle}>
+      <div className={styles.iconWrapper}>
         <FontAwesomeIcon
-          icon={faCircleExclamation}
+          icon={faBell}
           className={alerts ? styles.messageIcon : styles.messageIconDisabled}
           onClick={() => setAlertsMenuOpen(!alertsMenuOpen)}
         />
-        <div className={`${styles.alertsWrapper} ${alertsMenuOpen ? '' : 'hidden'}`}>
-          {alerts.map(alert => (
-            <React.Fragment key={alert.tableName}>
-              {alert.entries.map(entry => (
-                <div className={styles.alertItem} key={entry.id}>
-                  <div className={styles.alertHeader}>
-                    <p className={styles.expiredLabel}>{`Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}: `}</p>
-                    <p className={styles.expiredItem}>{`${entry.title}`}</p>
-                    <p className={styles.expiredDate}>{`Expires on: ${entry.expires}`}</p>
-                  </div>
-                  <div className={styles.alertButtons}>
-                    <button className={styles.renewButton}>Update</button>
-                    <button className={styles.deleteButton}>Delete</button>
-                  </div>
+      </div>
+      <div className={`${styles.alertsWrapper} ${alertsMenuOpen ? '' : 'hidden'}`}>
+        {alerts.map(alert => (
+          <React.Fragment key={alert.tableName}>
+            {alert.entries.map(entry => (
+              <div className={styles.alertItem} key={entry.id}>
+                <div className={styles.alertHeader}>
+                  <p className={styles.expiredLabel}>{`Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}: `}</p>
+                  <p className={styles.expiredItem}>{`${entry.title}`}</p>
+                  <p className={styles.expiredDate}>{`Expires on: ${entry.expires}`}</p>
                 </div>
-              ))}
-            </React.Fragment>
-          ))}
+                <div className={styles.alertButtons}>
+                  <button className={styles.renewButton}>Update</button>
+                  <button className={styles.deleteButton}>Delete</button>
+                </div>
+              </div>
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  )
+  const rightNavbarMenu = (
+    <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
+      <div className={styles.iconWrapper}>
+        <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
+      </div>
+      {/* <p className={styles.viewPages}>SETTINGS</p> */}
+      <div className={rightNavOpen ? styles.navContainerRight : styles.navContainerHidden}>
+        <Link href='/admin/home' className={styles.link}>
+          <h2>HOME</h2>
+        </Link>
+        <Link href='/admin/new-post'>
+          <h2>NEW POST</h2>
+        </Link>
+        <Link href='/admin/list?type=posts'>
+          <h2>POSTS</h2>
+        </Link>
+        <Link href='/admin/list?type=electives'>
+          <h2>ELECTIVES</h2>
+        </Link>
+        <Link href='/admin/list?type=clubs'>
+          <h2>CLUBS</h2>
+        </Link>
+        <Link href='/admin/list?type=staff'>
+          <h2>STAFF</h2>
+        </Link>
+        <Link href='/admin/list?type=links'>
+          <h2>LINKS</h2>
+        </Link>
+        <Link href='/admin/settings'>
+          <h2>SETTINGS</h2>
+        </Link>
+      </div>
+    </div>
+  )
+  const userMenu = (
+    <div className={styles.userHandle}>
+      <img src={user ? user.photo : 'Loading...'} alt="User Avatar" className={styles.userPhoto} onClick={() => setUserMenuOpen(!userMenuOpen)}/>
+      <div className={userMenuOpen ? styles.navContainerRight : styles.navContainerHidden}>
+        <h2>{`${user?.first_name} ${user?.last_name}`}</h2>
+        <h2>{user?.position}</h2>
+        <h2>{user?.email}</h2>
+        <Link href='/admin/settings'>
+          <h2>SETTINGS</h2>
+        </Link>
+      </div>
+    </div>
+  )
+  const storageStatus = (
+    <div className={styles.storageStatusWrapper}>
+      <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
+    </div>
+
+  )
+  const leftSideNavbar = (
+    <div className={styles.leftSideNavbarContent}>
+      <div className={styles.logoContainer}>
+        <Link href='/admin/home'>
+          <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
+        </Link>
+      </div>
+      <div className={styles.leftNavHandle}
+        onClick={() => {toggleNavOpen('left')}}
+      >
+        {/* <FontAwesomeIcon icon={faCaretDown} className={styles.menuIcon}/> */}
+        <div className={styles.iconWrapper}>
+          <FontAwesomeIcon icon={faFile} className={styles.menuIcon}/>
         </div>
-        <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
 
-
-          <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
-          {/* <p className={styles.viewPages}>SETTINGS</p> */}
-          <div className={rightNavOpen ? styles.navContainerRight : styles.navContainerHidden}>
-            <Link href='/admin/home' className={styles.link}>
-              <h2>HOME</h2>
-            </Link>
-            <Link href='/admin/new-post'>
-              <h2>NEW POST</h2>
-            </Link>
-            <Link href='/admin/list?type=posts'>
-              <h2>POSTS</h2>
-            </Link>
-            <Link href='/admin/list?type=electives'>
-              <h2>ELECTIVES</h2>
-            </Link>
-            <Link href='/admin/list?type=clubs'>
-              <h2>CLUBS</h2>
-            </Link>
-            <Link href='/admin/list?type=staff'>
-              <h2>STAFF</h2>
-            </Link>
-            <Link href='/admin/list?type=links'>
-              <h2>LINKS</h2>
-            </Link>
-            <Link href='/admin/settings'>
-              <h2>SETTINGS</h2>
-            </Link>
-          </div>
+        <div className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
+          <Link href='/'><h2>HOME</h2></Link>
+          <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
+          <Link href='/public/info'><h2>INFO</h2></Link>
         </div>
       </div>
+      {storageStatus}
+      { pathname === '/admin/new-post' && autosaveIndicator}
+
+    </div>
+  )
+  const rightSideNavbar = (
+    <div className={styles.rightSideNavbarContent}>
+      {alertsMenu}
+      {rightNavbarMenu}
+      {user && userMenu}
+    </div>
+  )
+
+
+  return (
+    <div className={styles.headerContainer}>
+      {leftSideNavbar}
+
+
+
+
+      {rightSideNavbar}
     </div>
   )
 }

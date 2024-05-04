@@ -7,26 +7,39 @@
   height: 50px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   background-color: rgba(255, 255, 255, 1);
   background-color: rgb(233, 249, 255);
   background-color: white;
   text-align: center;
-  z-index: 20;
+  z-index: 2001;
   padding: .5rem;
   overflow:visible;
   border-bottom: solid 1px rgb(223, 223, 223);
 }
+.userPhoto {
+  object-fit: cover;
+  object-position: center;
+}
+.leftSideNavbarContent, .rightSideNavbarContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.leftSideNavbarContent {
+  padding-left: .5rem;
+}
+.rightSideNavbarContent {
+  padding-right: .5rem;
+}
 .logoContainer {
-  position: absolute;
+  position: relative;
   width: 35px;
   height: 35px;
-  margin: 0 1rem;
-  left: 0;
-}
-.title {
-  font-size: 3rem;
+  margin: 0
 }
 .headerContainer h1 {
   position: relative;
@@ -36,79 +49,85 @@
   font-family: Nadall;
 }
 .leftNavHandle, .rightNavHandle {
+  position: relative;
+  box-sizing: border-box;
   font-family: Louis George Cafe;
-  position: absolute;
-  top: 50%;
-  height: 50px;
+  height: 100%;
   padding: 10px;
-  transform: translateY(-50%);
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0);
-
-  /* width: 150px; */
+  margin: 0 .25rem;
 }
 .leftNavHandle{
-  left: 120px;
-  border-radius: 10px;
-
 }
 .rightNavHandle {
-  right: 50px;
-  width: 50px;
-  border-radius: 5px
-
 }
 .leftNavHandle:hover, .rightNavHandle:hover {
   cursor: pointer;
-  background-color: rgba(101, 209, 255, 0.3);
 }
-.menuIcon, .downIcon {
-  height: 30px;
-  width: 30px;
-  color: rgb(0, 0, 0);
+.menuIcon{
+  height: 25px;
+  width: 25px;
+  color: rgb(88, 88, 88);
 }
-.downIcon {
-  margin: 0 1rem 0 0 ;
+.iconWrapper, .userPhoto {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  margin: 0rem;
+  background-color: rgb(235, 235, 235);
+  box-sizing: border-box;
+  display: block;
+  border-radius: 50%;
 }
-.menuIcon {
+.iconWrapper {
+  padding: .5rem;
+}
+.iconWrapper:hover {
+  background-color: rgb(195, 195, 195);
+}
+.menuIcon, .messageIcon {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-}
 .viewPages {
   color: rgb(0, 0, 0);
   font-size: 1.5rem;
-  /* font-weight: bold; */
 }
 .navContainerLeft, .navContainerRight {
   background-color: rgba(255, 255, 255, 1);
-  min-width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   position: absolute;
   display: flex;
-  top: 60px;
+  top: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: visible;
   padding: 1rem 0;
   white-space: nowrap;
-  /* border: solid rgb(195, 195, 195) 2px; */
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   border-radius: 5px;
+  margin: 0;
+  top: 45px;
 }
 .navContainerLeft {
-  top: 50px;;
-  left: 0;
+
+
 }
 .navContainerRight {
+  left: auto;
   right: 0;
-  /* width: auto; */
+  transform: none;
 }
-.navContainerHidden {
-  display: none;
-}
-
 .navContainerHidden {
   display: none;
 }
@@ -150,10 +169,6 @@
   border: none;
 }
 .messageIcon, .messageIconDisabled {
-  position: relative;
-  height: 30px;
-  width: 30px;
-  margin: 0 3rem;
 }
 .messageIcon {
   color: rgb(249, 91, 91);
@@ -164,14 +179,18 @@
 .messageIcon:hover {
   cursor: pointer;
 }
+.alertsHandle {
+  position: relative;
+  margin: 0;
+}
 .alertsWrapper {
   position: absolute;
   background-color: white;
-  box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+  box-shadow: 0 0 7px rgba(0, 0, 0, .7);
   padding: calc(1rem - 6px) 1rem;
   width: 400px;
-  top: 100%;
-  left: 50%;
+  top: 45px;
+  right: -2rem;
   z-index: 2001;
 }
 .alertItem {
@@ -234,17 +253,17 @@
   color: white;
 }
 .storageStatusWrapper {
+  box-sizing: border-box;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 10px;
+  background-color: rgb(167, 252, 158);
+  /* border: solid red 2px; */
 }
 .storageStatusWrapper p {
-  background-color: rgb(44, 200, 252);
-  background-color: rgb(167, 252, 158);
-  /* outline: solid 2px rgb(0, 255, 34); */
   top: 50;
   padding: 5px .5rem;
   font-family: Louis George Cafe;
