@@ -518,7 +518,7 @@
     max-width: none;
     box-shadow: none;
     margin: 0;
-    padding: 0 1rem;
+    padding: 0 .5rem;
     height: fit-content;
     min-height: 100vh;
     background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
@@ -541,6 +541,7 @@
     animation: none;
     border-radius: 15px;
     padding: 1rem;
+    padding-bottom: 0;
     margin-top: .5rem;
     animation: slideUpNoCenter 1s ease
     /* border: solid red 4px; */

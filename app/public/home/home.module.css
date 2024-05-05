@@ -346,4 +346,15 @@
     width: calc(100% - 30vw);
     margin-right: 1vw;
   }
+  .postFooter {
+    padding: 0;
+  }
+  .shareWrapper {
+    height: 40px;
+
+  }
+  .createdAt, .shareLabel, .shareIcon {
+    font-size: 1rem;
+    margin: .25rem;
+  }
 }
