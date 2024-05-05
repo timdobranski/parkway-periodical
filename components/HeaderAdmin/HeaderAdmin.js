@@ -10,7 +10,8 @@ import  React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { faCaretDown, faBars, faGear, faUser, faFile, faBell, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faBellSlash,
+  faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header({ user }) {
   const [storageUsage, setStorageUsage] = useState(null);
@@ -126,7 +127,7 @@ export default function Header({ user }) {
       <div className={styles.iconWrapper}>
         <FontAwesomeIcon
           icon={faBell}
-          className={alerts ? styles.messageIcon : styles.messageIconDisabled}
+          className={alerts ? menuOpen === 'alerts' ? styles.selectedAlertsIcon : styles.alertsIcon : styles.alertsIconDisabled}
           onClick={() => toggleMenuOpen('alerts')}
         />
       </div>
@@ -154,7 +155,7 @@ export default function Header({ user }) {
   const rightNavbarMenu = (
     <div className={styles.rightNavHandle} onClick={() => toggleMenuOpen('right')}>
       <div className={styles.iconWrapper}>
-        <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
+        <FontAwesomeIcon icon={menuOpen === 'right' ? faCircleChevronUp : faCircleChevronDown} className={`${menuOpen === 'right' ? styles.selectedMenuIcon : styles.menuIcon}`}/>
       </div>
       {/* <p className={styles.viewPages}>SETTINGS</p> */}
       <div className={menuOpen === 'right' ? styles.navContainerRight : styles.navContainerHidden}>

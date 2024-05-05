@@ -17,6 +17,7 @@
   padding: .5rem;
   overflow:visible;
   border-bottom: solid 1px rgb(223, 223, 223);
+  box-shadow: 0 7px 8px -10px rgba(0, 0, 0, 0.8);
 }
 .leftSideNavbarContent, .rightSideNavbarContent {
   display: flex;
@@ -55,7 +56,7 @@
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0);
-  margin: 0 .25rem;
+  margin: 0 1rem;
 }
 .leftNavHandle{
 }
@@ -66,8 +67,8 @@
 }
 .iconWrapper, .userPhoto {
   position: relative;
-  width: 38px;
-  height: 38px;
+  width: 45px;
+  height: 45px;
   margin: 0rem;
   background-color: rgb(235, 235, 235);
   box-sizing: border-box;
@@ -76,24 +77,48 @@
 }
 .iconWrapper {
   padding: .5rem;
+  background: transparent;
 }
 .iconWrapper:hover {
-  background-color: rgb(195, 195, 195);
+  background-color: rgb(180, 180, 180);
 }
-.menuIcon, .messageIcon {
+
+.menuIcon, .alertsIcon, .selectedMenuIcon {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
 }
-.menuIcon{
+.selectedMenuIcon, .iconWrapper:hover .menuIcon {
+  color: rgb(85, 201, 255);
+  background-color: rgb(0, 0, 0);
+  border-radius: 50%;
+}
+.selectedAlertsIcon {
+  color: rgb(85, 201, 255);
+  /* background-color: rgb(0, 0, 0); */
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+.menuIcon {
   color: rgb(88, 88, 88);
+}
+.alertsIcon {
+  color: rgb(249, 91, 91);
+}
+.alertsIconDisabled {
+  color: rgb(132, 132, 132);
+}
+.alertsIcon:hover {
+  cursor: pointer;
 }
 .viewPages {
   color: rgb(0, 0, 0);
   font-size: 1.5rem;
 }
+
 /* ------------------------------------------------------
 LEFT AND RIGHT NAV CONTAINERS-------------------------
 ------------------------------------------------------ */
@@ -161,17 +186,6 @@ LEFT AND RIGHT NAV CONTAINERS-------------------------
   outline: none;
   border: none;
 }
-.messageIcon, .messageIconDisabled {
-}
-.messageIcon {
-  color: rgb(249, 91, 91);
-}
-.messageIconDisabled {
-  color: rgb(132, 132, 132);
-}
-.messageIcon:hover {
-  cursor: pointer;
-}
 .archiveButton {
   background-color: rgb(255, 126, 126);
   color: black;
@@ -200,7 +214,7 @@ ALERTS MENU-------------------------------------------
   width: 450px;
   right: 0;
   z-index: 2001;
-  top: 47px;
+  top: 52px;
 }
 .alertItem {
   box-sizing: border-box;
