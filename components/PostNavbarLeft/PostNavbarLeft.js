@@ -14,7 +14,7 @@ export default function PostNavbarLeft() {
   return (
     <div className={styles.navbarWrapper}>
       <p>Tag your post with relevant topics for users to find below:</p>
-      <p>{`You can add a new tag too, but be cautious that you aren't creating a tag that already exists, as this will confuse users`}</p>
+      {/* <p>{`You can add a new tag too, but be cautious that you aren't creating a tag that already exists, as this will confuse users`}</p> */}
       <form
       className={styles.addNewOptionWrapper}
       >

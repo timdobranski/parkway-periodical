@@ -22,7 +22,7 @@ export default function Login() {
       return;
     }
     console.log('data in auth page: ', data);
-    router.push('/admin/new-post'); // Redirect after login
+    router.push('/admin/home'); // Redirect after login
   };
 
   const togglePasswordVisibility = () => {

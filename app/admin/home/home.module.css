@@ -45,3 +45,14 @@
   color: black;
   padding: .5rem;
 }
+.resumeDraft {
+  background-color: rgb(140, 255, 159);
+  font-size: 1.25rem;
+  border: none;
+  padding: .25rem .5rem;
+  border-radius: 5px;
+}
+.resumeDraft:hover {
+  cursor: pointer;
+  background-color: rgb(6, 201, 255);
+}

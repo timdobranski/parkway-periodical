@@ -83,9 +83,10 @@
   width: 100%;
   /* /* background-color: rgb(205, 234, 255); */
   background-color: rgb(212, 242, 255);
+  background-color: rgb(232, 244, 255);
 
   font-size: 1.0rem;
-  /* border: solid blue 2px; */
+  /* border: solid rgb(190, 190, 190) 1px; */
 }
 .navbarSectionItem:hover {
   cursor: pointer;

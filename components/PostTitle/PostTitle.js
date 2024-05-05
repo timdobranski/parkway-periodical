@@ -86,12 +86,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
 
       )}
       <>
-      <div className={styles.rightInfoWrapper}>
-        <p className={styles.date}>{date ? date :new Date().toLocaleDateString()}</p>
-        {viewContext !== 'edit' &&
-        <FontAwesomeIcon icon={faShareNodes} className={styles.shareIcon} onClick={id ? () => {handleShareClick(generateUrl())} : null}/>}
-      </div>
-        {showConfirm && <p className={styles.shareConfirm}>Link Copied</p>}
+
         <div className={styles.userWrapper}>
           {authorData?.photo ? <div className={styles.userImage} style={{backgroundImage: `url(${authorData.photo})`}}></div> : userIcon}
 

@@ -11,10 +11,11 @@ import WelcomeSlideshow from '../../../components/WelcomeSlideshow/WelcomeSlides
 import Intro from '../../../components/Intro/Intro';
 import PostTitle from '../../../components/PostTitle/PostTitle';
 import { format } from 'date-fns';
+import dateFormatter from '../../../utils/dateFormatter';
 import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState(null);
@@ -146,9 +147,21 @@ export default function Home({ introRunning, setIntroRunning }) {
             )}
           </React.Fragment>
         ))}
+        <div className={styles.postFooter}>
+          <div className={styles.shareWrapper}>
+          <FontAwesomeIcon icon={faCalendarDays} className={styles.shareIcon} />
+
+            <p className={styles.createdAt}>{dateFormatter(post.created_at)}</p>
+          </div>
+          <div className={styles.shareWrapper}>
+            <FontAwesomeIcon icon={faShare} className={styles.shareIcon} />
+            <p className={styles.shareLabel}>Share</p>
+          </div>
+        </div>
       </div>
+
     ))}
-    </div>
+      </div>
     </div>
 
 

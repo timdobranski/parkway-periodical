@@ -17,7 +17,7 @@
   padding: .5rem;
   overflow:visible;
   border-bottom: solid 1px rgb(223, 223, 223);
-  box-shadow: 0 7px 8px -10px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 7px 8px -10px rgba(0, 0, 0, 0.5);
 }
 .leftSideNavbarContent, .rightSideNavbarContent {
   display: flex;
@@ -81,7 +81,7 @@
 }
 .iconWrapper:hover {
   background-color: rgb(237, 237, 237);
-  border: solid rgb(176, 176, 176) 1px;
+  /* border: solid rgb(176, 176, 176) 1px; */
 }
 
 .menuIcon, .alertsIcon, .selectedMenuIcon {
@@ -108,6 +108,7 @@
 }
 .alertsIcon {
   color: rgb(249, 91, 91);
+  /* filter:drop-shadow(0px 0px 10px rgb(255, 110, 110)); */
 }
 .alertsIconDisabled {
   color: rgb(132, 132, 132);
@@ -207,11 +208,15 @@ ALERTS MENU-------------------------------------------
   position: relative;
   margin: 0;
 }
+.alertsHandle:hover {
+  cursor: pointer;
+
+}
 .alertsWrapper {
   box-sizing: border-box;
   position: absolute;
-  background-color: white;
-  padding: calc(1rem - 6px) 1rem;
+  background-color: rgb(1, 118, 150);
+  padding: 4px 8px;
   width: 450px;
   right: 0;
   z-index: 2001;
@@ -219,14 +224,36 @@ ALERTS MENU-------------------------------------------
 }
 .alertItem {
   box-sizing: border-box;
-  background-color: rgb(239, 239, 239);
+  background-color: rgb(255, 255, 255);
   padding: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  margin: 6px 0;
+  margin: 4px 0;
+  border: solid rgb(189, 189, 189) 1px;
+  border-radius: 5px;
+}
+.expireStatusIconWrapper {
+  width: 30px;
+  height: 30px;
+  margin: 0 2rem 0 0;
+  border-radius: 50%;
+  padding: 0;
+}
+.expiredContent, .expiringContent {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+.expiredContent {
+  color: rgb(253, 99, 99);
+  border-radius: 50%;
+}
+.expiringContent {
+  color: rgb(228, 190, 0);
 }
 .alertHeader {
   display: flex;
@@ -234,41 +261,50 @@ ALERTS MENU-------------------------------------------
   justify-content: center;
   align-items: flex-start;
   width: 75%;
+  font-size: 1.25rem;
 }
 .expiredLabel {
   font-weight: bold;
+  color:rgb(0, 123, 180);
+  text-decoration: underline;
+  text-decoration-color: red;
+  text-underline-offset: 2px;
   margin: 0;
 }
-.expiredItem {
+.expiredItemName {
   padding: 0rem;
   margin: 0;
-  text-decoration: underline;
 }
 .expiredDate {
   margin-bottom: 0;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  padding: .25rem 0rem;
+  border-radius: 3px;
 }
 .alertButtons {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  height: 100%;
   align-items: center;
-  margin: 0 0 0 1rem;
+  margin: 0;
   width: 25%;
   /* border: solid red 2px; */
 }
 .renewButton, .deleteButton {
   width: 75px;
   border: none;
-  border-radius: 0px;
   margin: .5rem 0;
   font-size: 1rem;
   padding: .25rem 0rem;
+  border-radius: 5px;
 }
 .renewButton:hover, .deleteButton:hover {
   cursor: pointer;
 }
 .renewButton {
-  background-color: rgb(44, 200, 252);
+  background-color: rgb(0, 124, 165);
   color: white;
   margin: 0;
 }
@@ -332,6 +368,7 @@ USER MENU---------------------------------------------
   margin: 0;
 
 }
+
 .autosaveStatusWrapper {
   box-sizing: border-box;
   margin: 0 1rem;;
@@ -340,20 +377,25 @@ USER MENU---------------------------------------------
   justify-content: flex-start;
   align-items: center;
   height: 100%;
-  width: 100px;
+  width: 200px;
+  /* border: solid red 2px; */
 }
 .autosaveStatus {
   font-size: 1rem;
+  /* border: solid blue 2px; */
+  /* height: 100%; */
+  width: 75%;
+  text-align: left;
 }
 .cloudIcon {
-  color: rgb(164, 164, 164);
+  color:rgb(148, 230, 250);
   margin: 0 .5rem;
   height:30px;
   width: 30px;
 }
 .cloudCheckIconWrapper {
   position: relative;
-  width: 100%;
+  width: 25%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -364,6 +406,7 @@ USER MENU---------------------------------------------
 }
 .emptyCloudIcon {
   color: rgb(198, 198, 198);
+  color:rgb(148, 230, 250);
   margin: 0 .5rem;
   height:30px;
   width: 30px;
@@ -375,6 +418,7 @@ USER MENU---------------------------------------------
 }
 .checkIcon {
   color: rgb(86, 255, 165);
+  color: rgb(255, 255, 255);
   margin: 0 .5rem;
   height:12px;
   width: 12px;

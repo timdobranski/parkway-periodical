@@ -10,7 +10,9 @@ import  React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
-import { faCaretDown, faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faBellSlash,
+import moment from 'moment-timezone';
+import dateFormatter from '../../utils/dateFormatter';
+import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faCircleExclamation,
   faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header({ user }) {
@@ -58,22 +60,25 @@ export default function Header({ user }) {
     }
   }
   async function fetchEntriesExpiringSoon(contentTypes) {
-    const oneWeekFromNow = new Date();
-    oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7);  // Set the date to one week from today
+    const nowInPacific = moment().tz('America/Los_Angeles');
+    const oneWeekFromNowInPacific = nowInPacific.clone().add(7, 'days');
 
     const results = await Promise.all(contentTypes.map(async (tableName) => {
       try {
         const { data, error } = await supabase
           .from(tableName)
           .select('*')  // Select all columns or specify which columns you need
-          .lte('expires', oneWeekFromNow.toISOString());  // 'expires' is less than or equal to one week from now
+          .lte('expires', oneWeekFromNowInPacific.toISOString());  // 'expires' is less than or equal to one week from now
 
         if (error) {
           throw error;
         }
         return {
           tableName,
-          entries: data
+          entries: data.map(entry => ({
+            ...entry,
+            expiredYet: moment(entry.expires).tz('America/Los_Angeles').isBefore(nowInPacific)
+          }))
         };
       } catch (error) {
         return {
@@ -82,9 +87,10 @@ export default function Header({ user }) {
         };
       }
     }));
-    console.log('results:', results)
-    setAlerts(results.filter(result => result.entries.length > 0));
+    console.log('results:', results);
+    setAlerts(results.filter(result => result.entries && result.entries.length > 0));
   }
+
   const pathname = usePathname();
   useEffect(() => {
     fetchEntriesExpiringSoon(contentTypes);
@@ -115,31 +121,40 @@ export default function Header({ user }) {
           <p className={styles.autosaveStatus}>Saving...</p>
         </>
         :
-        <div className={styles.cloudCheckIconWrapper}>
-          <FontAwesomeIcon icon={faCloud} className={styles.emptyCloudIcon}/>
-          <FontAwesomeIcon icon={faCheck} className={styles.checkIcon}/>
-        </div>
+        <>
+          <div className={styles.cloudCheckIconWrapper}>
+            <FontAwesomeIcon icon={faCloud} className={styles.emptyCloudIcon}/>
+            <FontAwesomeIcon icon={faCheck} className={styles.checkIcon}/>
+          </div>
+          <p className={styles.autosaveStatus}>Post Draft Saved</p>
+
+        </>
       }
     </div>
   )
   const alertsMenu = (
-    <div className={styles.alertsHandle}>
+    <div className={styles.alertsHandle} onClick={() => toggleMenuOpen('alerts')}>
       <div className={styles.iconWrapper}>
         <FontAwesomeIcon
           icon={faBell}
           className={alerts ? menuOpen === 'alerts' ? styles.selectedAlertsIcon : styles.alertsIcon : styles.alertsIconDisabled}
-          onClick={() => toggleMenuOpen('alerts')}
+
         />
       </div>
       <div className={`${styles.alertsWrapper} ${menuOpen === 'alerts' ? '' : 'hidden'}`}>
         {alerts.map(alert => (
           <React.Fragment key={alert.tableName}>
             {alert.entries.map(entry => (
-              <div className={styles.alertItem} key={entry.id}>
+              <div className={`${styles.alertItem}`} key={entry.id}>
                 <div className={styles.alertHeader}>
-                  <p className={styles.expiredLabel}>{`Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}: `}</p>
-                  <p className={styles.expiredItem}>{`${entry.title}`}</p>
-                  <p className={styles.expiredDate}>{`Expires on: ${entry.expires}`}</p>
+                  <p className={styles.expiredLabel}>{`${entry.expiredYet ? `Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}:` :
+                    `${alert.tableName.charAt(0).toUpperCase() + alert.tableName.slice(1, alert.tableName.length - 1)}
+                      expiring soon:`}`}</p>
+                  <p className={styles.expiredItemName}>{`${entry.title}`}</p>
+                  <p className={styles.expiredDate}>{`${entry.expiredYet ? 'Expired' : 'Expires'} on ${dateFormatter(entry.expires)}`}</p>
+                </div>
+                <div className={styles.expireStatusIconWrapper}>
+                  <FontAwesomeIcon icon={faCircleExclamation} className={`${entry.expiredYet ? styles.expiredContent : styles.expiringContent}`}/>
                 </div>
                 <div className={styles.alertButtons}>
                   <button className={styles.renewButton}>Update</button>
@@ -180,9 +195,6 @@ export default function Header({ user }) {
         <Link href='/admin/list?type=links'>
           <h2>LINKS</h2>
         </Link>
-        <Link href='/admin/settings'>
-          <h2>SETTINGS</h2>
-        </Link>
       </div>
     </div>
   )
@@ -202,9 +214,9 @@ export default function Header({ user }) {
           <h2 className={styles.userDetails}>{user?.position}</h2>
           <h2 className={styles.userDetails}>{user?.email}</h2>
         </div>
-          <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
-            <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
-          </div>
+        <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
+          <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
+        </div>
       </div>
     </div>
   )

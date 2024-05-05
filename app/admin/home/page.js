@@ -62,6 +62,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>POSTS</h2>
             </Link>
           </div>
+          <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button>
           <p>{`Posts: ${typeCounts.posts}`}</p>
           {/* <p>Number of EXPIRED posts</p> */}
         </div>
