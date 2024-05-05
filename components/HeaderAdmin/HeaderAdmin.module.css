@@ -80,7 +80,8 @@
   background: transparent;
 }
 .iconWrapper:hover {
-  background-color: rgb(180, 180, 180);
+  background-color: rgb(237, 237, 237);
+  border: solid rgb(176, 176, 176) 1px;
 }
 
 .menuIcon, .alertsIcon, .selectedMenuIcon {
@@ -91,12 +92,12 @@
   padding: 0;
 }
 .selectedMenuIcon, .iconWrapper:hover .menuIcon {
-  color: rgb(85, 201, 255);
-  background-color: rgb(0, 0, 0);
+  color: rgb(0, 123, 180);
+  /* background-color: rgb(0, 0, 0); */
   border-radius: 50%;
 }
 .selectedAlertsIcon {
-  color: rgb(85, 201, 255);
+  color: rgb(0, 123, 180);
   /* background-color: rgb(0, 0, 0); */
   border-radius: 50%;
   width: 100%;

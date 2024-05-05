@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import supabase from '../../utils/supabase'; // Update the path as per your directory structure
 import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
@@ -48,7 +48,9 @@ export default function AdminLayout({ children }) {
       <AdminProvider>
         <HeaderAdmin user={user}/>
         <div className='adminPageWrapper'>
-          {children}
+          <Suspense>
+            {children}
+          </Suspense>
         </div>
       </AdminProvider>
     </>
