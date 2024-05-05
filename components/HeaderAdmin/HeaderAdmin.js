@@ -9,15 +9,14 @@ import supabase from '../../utils/supabase';
 import  React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faBars, faFile, faBell, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
+import { faCaretDown, faBars, faGear, faUser, faFile, faBell, faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header({ user }) {
   const [storageUsage, setStorageUsage] = useState(null);
-  const [leftNavOpen, setLeftNavOpen] = useState(false);
-  const [rightNavOpen, setRightNavOpen] = useState(false);
-  const [alertsMenuOpen, setAlertsMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts } = useAdmin();
+  const router = useRouter();
   const contentTypes = ['electives', 'clubs', 'links', 'events'];
 
   async function checkStorageUsage() {
@@ -99,13 +98,14 @@ export default function Header({ user }) {
     checkStorageUsage().then(setStorageUsage);
   }, []);
 
-  const toggleNavOpen = (direction) => {
-    if (direction === 'left') {
-      setLeftNavOpen(prevState => !prevState); // Toggles the state of the left navigation
-    } else if (direction === 'right') {
-      setRightNavOpen(prevState => !prevState); // Toggles the state of the right navigation
-    }
-  };
+  const toggleMenuOpen = (menu) => {
+    // if menu is already open, close it
+    if (menuOpen === menu) {
+      setMenuOpen(false);
+    } else {
+      setMenuOpen(menu);
+    };
+  }
   const autosaveIndicator = (
     <div className={styles.autosaveStatusWrapper}>
       { saving ?
@@ -127,10 +127,10 @@ export default function Header({ user }) {
         <FontAwesomeIcon
           icon={faBell}
           className={alerts ? styles.messageIcon : styles.messageIconDisabled}
-          onClick={() => setAlertsMenuOpen(!alertsMenuOpen)}
+          onClick={() => toggleMenuOpen('alerts')}
         />
       </div>
-      <div className={`${styles.alertsWrapper} ${alertsMenuOpen ? '' : 'hidden'}`}>
+      <div className={`${styles.alertsWrapper} ${menuOpen === 'alerts' ? '' : 'hidden'}`}>
         {alerts.map(alert => (
           <React.Fragment key={alert.tableName}>
             {alert.entries.map(entry => (
@@ -152,12 +152,12 @@ export default function Header({ user }) {
     </div>
   )
   const rightNavbarMenu = (
-    <div className={styles.rightNavHandle} onClick={() => toggleNavOpen('right')}>
+    <div className={styles.rightNavHandle} onClick={() => toggleMenuOpen('right')}>
       <div className={styles.iconWrapper}>
         <FontAwesomeIcon icon={faBars} className={styles.menuIcon}/>
       </div>
       {/* <p className={styles.viewPages}>SETTINGS</p> */}
-      <div className={rightNavOpen ? styles.navContainerRight : styles.navContainerHidden}>
+      <div className={menuOpen === 'right' ? styles.navContainerRight : styles.navContainerHidden}>
         <Link href='/admin/home' className={styles.link}>
           <h2>HOME</h2>
         </Link>
@@ -187,14 +187,23 @@ export default function Header({ user }) {
   )
   const userMenu = (
     <div className={styles.userHandle}>
-      <img src={user ? user.photo : 'Loading...'} alt="User Avatar" className={styles.userPhoto} onClick={() => setUserMenuOpen(!userMenuOpen)}/>
-      <div className={userMenuOpen ? styles.navContainerRight : styles.navContainerHidden}>
-        <h2>{`${user?.first_name} ${user?.last_name}`}</h2>
-        <h2>{user?.position}</h2>
-        <h2>{user?.email}</h2>
-        <Link href='/admin/settings'>
-          <h2>SETTINGS</h2>
-        </Link>
+
+      <div className={styles.photoWrapper} onClick={() => toggleMenuOpen('user')}>
+        { user ?
+          <img src={user.photo} alt="User Avatar" className={styles.userPhoto} />
+          :
+          <FontAwesomeIcon icon={faUser} className={styles.menuIcon}/>
+        }
+      </div>
+      <div className={`${styles.userMenu} ${menuOpen !== 'user' ? 'hidden' : ''}`}>
+        <h2 className='smallerTitle'>{`${user?.first_name} ${user?.last_name}`}</h2>
+        <div className={styles.userDetailsWrapper}>
+          <h2 className={styles.userDetails}>{user?.position}</h2>
+          <h2 className={styles.userDetails}>{user?.email}</h2>
+        </div>
+          <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
+            <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
+          </div>
       </div>
     </div>
   )
@@ -212,14 +221,14 @@ export default function Header({ user }) {
         </Link>
       </div>
       <div className={styles.leftNavHandle}
-        onClick={() => {toggleNavOpen('left')}}
+        onClick={() => {toggleMenuOpen('left')}}
       >
         {/* <FontAwesomeIcon icon={faCaretDown} className={styles.menuIcon}/> */}
         <div className={styles.iconWrapper}>
           <FontAwesomeIcon icon={faFile} className={styles.menuIcon}/>
         </div>
 
-        <div className={leftNavOpen ? styles.navContainerLeft : styles.navContainerHidden}>
+        <div className={menuOpen === 'left' ? styles.navContainerLeft : styles.navContainerHidden}>
           <Link href='/'><h2>HOME</h2></Link>
           <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
           <Link href='/public/info'><h2>INFO</h2></Link>

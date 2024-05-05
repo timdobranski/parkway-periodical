@@ -80,6 +80,10 @@ export default function Settings () {
           <button className={styles.inviteButton}>Send Invite</button>
         </div>
       </div>
+      <button className={styles.archiveButton}>ARCHIVE CURRENT SCHOOL YEAR</button>
+      <p className={styles.archiveInstructions}>{`When you're done adding content for the current school year, click this button
+      to send all posts to the archive. All posts will be removed from the main page, and the year's archived
+      posts will no longer be editable.`}</p>
     </div>
     // </div>
   )

@@ -68,7 +68,7 @@ export default function List() {
 
   return (
     <div className='adminFeedWrapper'>
-      <div className='post'>
+      <div className='editablePost'>
         <h1 className='pageTitle'>{`${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character

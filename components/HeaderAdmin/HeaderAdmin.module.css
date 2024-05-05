@@ -18,10 +18,6 @@
   overflow:visible;
   border-bottom: solid 1px rgb(223, 223, 223);
 }
-.userPhoto {
-  object-fit: cover;
-  object-position: center;
-}
 .leftSideNavbarContent, .rightSideNavbarContent {
   display: flex;
   flex-direction: row;
@@ -68,11 +64,6 @@
 .leftNavHandle:hover, .rightNavHandle:hover {
   cursor: pointer;
 }
-.menuIcon{
-  height: 25px;
-  width: 25px;
-  color: rgb(88, 88, 88);
-}
 .iconWrapper, .userPhoto {
   position: relative;
   width: 38px;
@@ -96,18 +87,20 @@
   margin: 0;
   padding: 0;
 }
-
+.menuIcon{
+  color: rgb(88, 88, 88);
+}
 .viewPages {
   color: rgb(0, 0, 0);
   font-size: 1.5rem;
 }
-.navContainerLeft, .navContainerRight {
+/* ------------------------------------------------------
+LEFT AND RIGHT NAV CONTAINERS-------------------------
+------------------------------------------------------ */
+.navContainerLeft, .navContainerRight, .alertsWrapper, .userMenu {
   background-color: rgba(255, 255, 255, 1);
-  left: 50%;
-  transform: translateX(-50%);
   position: absolute;
   display: flex;
-  top: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -120,8 +113,8 @@
   top: 45px;
 }
 .navContainerLeft {
-
-
+  left: 50%;
+  transform: translateX(-50%);
 }
 .navContainerRight {
   left: auto;
@@ -179,19 +172,35 @@
 .messageIcon:hover {
   cursor: pointer;
 }
+.archiveButton {
+  background-color: rgb(255, 126, 126);
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 3px;
+  padding: .5rem 1rem;
+  margin: 0 2rem 0 0;
+  font-size: 1rem;
+}
+.archiveButton:hover {
+  cursor: pointer;
+}
+/* ------------------------------------------------------
+ALERTS MENU-------------------------------------------
+------------------------------------------------------ */
 .alertsHandle {
   position: relative;
   margin: 0;
 }
 .alertsWrapper {
+  box-sizing: border-box;
   position: absolute;
   background-color: white;
-  box-shadow: 0 0 7px rgba(0, 0, 0, .7);
   padding: calc(1rem - 6px) 1rem;
-  width: 400px;
-  top: 45px;
-  right: -2rem;
+  width: 450px;
+  right: 0;
   z-index: 2001;
+  top: 47px;
 }
 .alertItem {
   box-sizing: border-box;
@@ -251,6 +260,43 @@
 .deleteButton {
   background-color: rgb(249, 91, 91);
   color: white;
+}
+/* ------------------------------------------------------
+USER MENU---------------------------------------------
+------------------------------------------------------ */
+.photoWrapper {
+  height: 35px;
+  width: 35px;
+  background-color:rgb(88, 88, 88);
+  border-radius: 50%;
+}
+.userPhoto {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.userPhoto:hover {
+  cursor: pointer;
+}
+.userMenu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 1rem;
+  right: 20px;
+  top: 53px;
+}
+.userDetailsWrapper {
+  margin: 1rem 0 3rem 0;
+}
+.userDetails {
+  font-weight: normal;
+  font-size: 1.25rem;
+  margin: 0;
 }
 .storageStatusWrapper {
   box-sizing: border-box;
