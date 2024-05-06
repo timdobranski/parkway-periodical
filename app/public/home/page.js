@@ -126,7 +126,7 @@ export default function Home({ introRunning, setIntroRunning }) {
                 // blockIndex={index}
                 // updatePhotoContent={(files) => updatePhotoContent(index, files)}
                   isEditable={false}
-                  src={block}
+                  photo={block.content[0]}
                 // setActiveBlock={setActiveBlock}
                 />
               </div>
@@ -149,7 +149,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         ))}
         <div className={styles.postFooter}>
           <div className={styles.shareWrapper}>
-          <FontAwesomeIcon icon={faCalendarDays} className={styles.shareIcon} />
+            <FontAwesomeIcon icon={faCalendarDays} className={styles.shareIcon} />
 
             <p className={styles.createdAt}>{dateFormatter(post.created_at)}</p>
           </div>
