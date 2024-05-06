@@ -93,7 +93,7 @@
   /* border-top: solid 3px red; */
   padding-top: .5rem;
 }
-.shareWrapper {
+.shareWrapper, .createdAtWrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -115,7 +115,7 @@
 .createdAt {
   text-align: center;
 }
-.shareIcon, .shareLabel {
+.shareIcon, .shareLabel, .createdAtIcon {
   margin: 0 .5rem;
 
 }
@@ -127,12 +127,15 @@
 }
 .shareLabel {
   color: var(--primary-blue);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-decoration: underline;
   text-decoration-color: red;
   text-underline-offset: 2px;
   text-decoration-thickness: 1.5px;
   cursor: pointer;
+}
+.createdAt {
+  font-size: 1.25rem
 }
 .filterWrapper {
   position: absolute;
@@ -354,7 +357,7 @@
 
   }
   .createdAt, .shareLabel, .shareIcon {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin: .25rem;
   }
 }

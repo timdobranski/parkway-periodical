@@ -148,9 +148,8 @@ export default function Home({ introRunning, setIntroRunning }) {
           </React.Fragment>
         ))}
         <div className={styles.postFooter}>
-          <div className={styles.shareWrapper}>
-            <FontAwesomeIcon icon={faCalendarDays} className={styles.shareIcon} />
-
+          <div className={styles.createdAtWrapper}>
+            <FontAwesomeIcon icon={faCalendarDays} className={styles.createdAtIcon} />
             <p className={styles.createdAt}>{dateFormatter(post.created_at)}</p>
           </div>
           <div className={styles.shareWrapper}>
