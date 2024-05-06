@@ -11,7 +11,7 @@ import Image from 'next/image';
 export default function WelcomeSlideshow() {
   const welcomeImage = (
     <div className={styles.welcomeSlide}>
-      <img src='/images/parkwayNewLogo2.webp' alt='Parkway Logo' className={styles.welcomeLogo} />
+      <img src='/images/logos/parkwayNewLogo2.webp' alt='Parkway Logo' className={styles.welcomeLogo} />
     </div>
   )
 
