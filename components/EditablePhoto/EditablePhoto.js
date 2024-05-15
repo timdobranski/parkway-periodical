@@ -13,7 +13,7 @@ import supabase from '../../utils/supabase';
 
 export default function EditablePhoto({
   photo, isEditable, updatePhotoContent, deletePhoto, containerClassName,
-  index, setSelectedPhotos, handleTitleChange, handleCaptionChange, photoIndex}) {
+  index, setSelectedPhotos, handleTitleChange, handleCaptionChange, photoIndex, photoContext}) {
   const imageRef = useRef(null);
   const [crop, setCrop] = useState({ x: 0, y: 0, width: 100, height: 100, aspect: 16 / 9, unit: '%'});
   const [completedCrop, setCompletedCrop] = useState(null);
@@ -94,14 +94,20 @@ export default function EditablePhoto({
       <button onClick={finalizeCrop}>Confirm Crop</button>
     </div>
   )
-  const editMenu = (
-    <div className={styles.photoEditMenu}>
+
+  const selectPhotoAndCrop = (
+    <>
       <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
         <FontAwesomeIcon icon={faImage} className={styles.cropIcon} />
       </div>
       <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
         <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
       </div>
+    </>
+  )
+  const editMenu = (
+    <div className={styles.photoEditMenu}>
+      {selectPhotoAndCrop}
       <div className={styles.photoEditMenuIconWrapper}>
         <FontAwesomeIcon icon={faPen} className={styles.captionIcon} />
       </div>
@@ -142,7 +148,7 @@ export default function EditablePhoto({
       ref={imageRef}
       crossOrigin="anonymous"
       onLoad={() => setLoadingMessage('')}
-    // style={fileObj.style}
+      style={photo.style}
     />
   )
 

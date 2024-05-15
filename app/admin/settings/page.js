@@ -3,8 +3,9 @@
 import styles from './settings.module.css';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPencil } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../../utils/supabase';
+import CroppablePhoto from '../../../components/EditablePhoto/EditablePhoto';
 
 export default function Settings () {
   const [user, setUser] = useState(null);
@@ -46,11 +47,18 @@ export default function Settings () {
   if (!user) {
     return <div>Loading...</div>;
   }
+
+
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.userInfo}>
-        { user ? <img src={user.photo} alt='User Photo' className={styles.userPhoto} /> : userIcon}
-        <p className='smallerTitle'>{user ? `${user.first_name} ${user.last_name}` : 'User Name'}</p>
+      { user.photo ?
+        <div className={styles.currentPhotoPreviewWrapper}>
+        <img src={user.photo} alt='User Photo' className={styles.currentPhotoPreview}/>
+        <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
+        </div>
+
+        : userIcon}        <p className='smallerTitle'>{user ? `${user.first_name} ${user.last_name}` : 'User Name'}</p>
         <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
       </div>
 
@@ -59,7 +67,7 @@ export default function Settings () {
         <h3 className={styles.infoLabel}>Update Photo</h3>
         <div className={styles.inputWrapper}>
           <input className={styles.photoInput} type='file' placeholder='Select new photo' />
-          <button className={styles.inviteButton}>Confirm</button>
+          <button className={styles.inviteButton}>Update Photo</button>
         </div>
 
         <h3 className={styles.infoLabel}>Change Email</h3>
@@ -88,3 +96,9 @@ export default function Settings () {
     // </div>
   )
 }
+
+// if no photo, render icon
+
+// if photo, render photo with pencil icon to edit crop
+
+// on file change or pencil icon click, render CroppablePhoto component(croppable file, and confirm button)

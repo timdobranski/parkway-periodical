@@ -73,23 +73,24 @@ export default function Header({ user }) {
         if (error) {
           throw error;
         }
-        return {
+        return data.map(entry => ({
+          ...entry,
           tableName,
-          entries: data.map(entry => ({
-            ...entry,
-            expiredYet: moment(entry.expires).tz('America/Los_Angeles').isBefore(nowInPacific)
-          }))
-        };
+          expiredYet: moment(entry.expires).tz('America/Los_Angeles').isBefore(nowInPacific)
+        }));
       } catch (error) {
-        return {
-          tableName,
-          error: error.message
-        };
+        console.error(`Error fetching from ${tableName}:`, error.message);
+        return [];
       }
     }));
-    console.log('results:', results);
-    setAlerts(results.filter(result => result.entries && result.entries.length > 0));
+
+    // Flatten the results array and sort by expires value in reverse chronological order
+    const allEntries = results.flat().sort((a, b) => moment(b.expires).diff(moment(a.expires)));
+
+    console.log('allEntries:', allEntries);
+    setAlerts(allEntries);
   }
+
 
   const pathname = usePathname();
   useEffect(() => {
@@ -97,7 +98,7 @@ export default function Header({ user }) {
   }, [])
 
   useEffect(() => {
-    console.log(alerts);
+    console.log('alerts: ', alerts);
   }, [alerts])
 
   useEffect(() => {
@@ -142,26 +143,27 @@ export default function Header({ user }) {
         />
       </div>
       <div className={`${styles.alertsWrapper} ${menuOpen === 'alerts' ? '' : 'hidden'}`}>
-        {alerts.map(alert => (
+        {alerts.map((alert, index) => (
           <React.Fragment key={alert.tableName}>
-            {alert.entries.map(entry => (
-              <div className={`${styles.alertItem}`} key={entry.id}>
-                <div className={styles.alertHeader}>
-                  <p className={styles.expiredLabel}>{`${entry.expiredYet ? `Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}:` :
-                    `${alert.tableName.charAt(0).toUpperCase() + alert.tableName.slice(1, alert.tableName.length - 1)}
+            {/* {alert.entries.map((entry, index) => ( */}
+            <div className={`${styles.alertItem}`} key={index}>
+              <div className={styles.alertHeader}>
+                <p className={styles.expiredLabel}>{`${alert.expiredYet ? `Expired ${alert.tableName.slice(0, alert.tableName.length - 1)}:` :
+                  `${alert.tableName.charAt(0).toUpperCase() + alert.tableName.slice(1, alert.tableName.length - 1)}
                       expiring soon:`}`}</p>
-                  <p className={styles.expiredItemName}>{`${entry.title}`}</p>
-                  <p className={styles.expiredDate}>{`${entry.expiredYet ? 'Expired' : 'Expires'} on ${dateFormatter(entry.expires)}`}</p>
-                </div>
-                <div className={styles.expireStatusIconWrapper}>
-                  <FontAwesomeIcon icon={faCircleExclamation} className={`${entry.expiredYet ? styles.expiredContent : styles.expiringContent}`}/>
-                </div>
-                <div className={styles.alertButtons}>
-                  <button className={styles.renewButton}>Update</button>
-                  <button className={styles.deleteButton}>Delete</button>
-                </div>
+                <p className={styles.expiredItemName}>{`${alert.title}`}</p>
+                <p className={styles.expiredDate}>{`${alert.expiredYet ? 'Expired' : 'Expires'} on ${dateFormatter(alert.expires)}`}</p>
               </div>
-            ))}
+              <div className={styles.expireStatusIconWrapper}>
+                <FontAwesomeIcon icon={faCircleExclamation} className={`${alert.expiredYet ? styles.expiredContent : styles.expiringContent}`}/>
+              </div>
+              <div className={styles.alertButtons}>
+                <button className={styles.renewButton}>Update</button>
+                <button className={styles.deleteButton}>Delete</button>
+              </div>
+              {index !== alerts.length - 1 && <hr className={styles.alertDivider}/>}
+            </div>
+            {/* ))} */}
           </React.Fragment>
         ))}
       </div>
@@ -202,7 +204,7 @@ export default function Header({ user }) {
     <div className={styles.userHandle}>
 
       <div className={styles.photoWrapper} onClick={() => toggleMenuOpen('user')}>
-        { user ?
+        { user?.photo ?
           <img src={user.photo} alt="User Avatar" className={styles.userPhoto} />
           :
           <FontAwesomeIcon icon={faUser} className={styles.menuIcon}/>
@@ -211,8 +213,8 @@ export default function Header({ user }) {
       <div className={`${styles.userMenu} ${menuOpen !== 'user' ? 'hidden' : ''}`}>
         <h2 className='smallerTitle'>{`${user?.first_name} ${user?.last_name}`}</h2>
         <div className={styles.userDetailsWrapper}>
-          <h2 className={styles.userDetails}>{user?.position}</h2>
-          <h2 className={styles.userDetails}>{user?.email}</h2>
+          <h2 className={styles.userPosition}>{user?.position}</h2>
+          <h2 className={styles.userEmail}>{user?.email}</h2>
         </div>
         <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
           <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>

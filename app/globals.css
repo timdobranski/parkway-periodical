@@ -43,11 +43,14 @@
 ::-webkit-scrollbar-track {
   background: #ffffff;  /* or any color */
   background: rgba(0, 0, 0, 0);
+  /* padding-top: 5px; */
+  margin-top: 20px;
 }
 /* The handle (thumb) of the scrollbar */
 ::-webkit-scrollbar-thumb {
   background: rgb(255, 83, 83);
   padding-right: 2px;
+
 }
 /* The handle (thumb) when hovering over it */
 ::-webkit-scrollbar-thumb:hover {
@@ -123,6 +126,9 @@
   align-items: center;
   box-sizing: border-box;
   box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+
 }
 
 .adminFeedWrapper {
