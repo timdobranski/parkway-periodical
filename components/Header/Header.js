@@ -135,7 +135,7 @@ export default function Header({ skipAnimation }) {
       {/* desktop version of left navbar */}
       {desktopLeftNavbar}
       {/* mobile navbar left handle (social links) */}
-      <img src={'/images/logos/parkway.WEBP'} className={styles.leftNavbarHandle} alt="Parkway Academy Logo" fill='true' onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
+      <img src={'/images/logos/parkway.webp'} className={styles.leftNavbarHandle} alt="Parkway Academy Logo" fill='true' onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
       {/* mobile version of left navbar */}
       {mobileLeftNavbar}
       {/* title and subtitle */}

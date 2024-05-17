@@ -355,6 +355,7 @@
   align-items: center;
   z-index: 5000;
   padding-top: 4rem;
+  /* border: solid red 2px; */
 }
 .activeLeft {
   transform: translateX(0);
@@ -402,6 +403,7 @@
     /* border: solid red 2px; */
   }
   .closeIconLeft, .closeIconRight {
+    position: absolute;
     height: 50px;
     width: 50px;
     margin: 1.5rem;
@@ -409,6 +411,7 @@
     color: var(--primary-red);
     height: 30px;
     width: 30px;
+    top: 0;
   }
   .closeIconLeft {
     left: 0;
