@@ -7,25 +7,35 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
+import supabase from '../../utils/supabase';
+import dateFormatter from '../../utils/dateFormatter';
 
 export default function WelcomeSlideshow() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .gt('date', new Date().toISOString()) // Ensure dates are in the future
+        .order('date', { ascending: true })  // Sort by event_date in ascending order
+        .limit(5);
+      if (error) {
+        console.error('Error fetching events: ', error);
+      } else {
+        console.log('data: ', data)
+        setEvents(data);
+      }
+    }
+    fetchEvents();
+  }, []);
+
   const welcomeImage = (
     <div className={styles.welcomeSlide}>
       <img src='/images/logos/parkwayNewLogo2.webp' alt='Parkway Logo' className={styles.welcomeLogo} />
     </div>
-  )
-
-  const upcomingEvents = (
-    <div className={styles.upcomingEventsSlide}>
-      <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-      <ul className={styles.eventsList}>
-        <li className={styles.eventsItem}>Date: School Dance</li>
-        <li className={styles.eventsItem}>Date: Promotion Practice</li>
-        <li className={styles.eventsItem}>Date: Bowling Party</li>
-        <li className={styles.eventsItem}>Date: 8th Grade Promotion</li>
-      </ul>
-    </div>
-  )
+  );
   const familyResourceCenter = (
     <div className={styles.familyResourceCenter}>
       <div className={styles.frcTitleWrapper}>
@@ -40,17 +50,15 @@ export default function WelcomeSlideshow() {
         and parent training opportunities.`}</p>
       </div>
     </div>
-  )
-
-
+  );
   const storeLink = (
     <div className={styles.storeSlide}>
       <div className={styles.shirtContainer}>
+        <img src="/images/store/redShirt.webp" alt="Red Shirt" className={styles.shirtImage} />
+        <img src="/images/store/yellowShirt.webp" alt="Yellow Shirt" className={styles.shirtImage} />
         <img src="/images/store/blueShirt.webp" alt="Blue Shirt" className={styles.shirtImage} />
-        <img src="/images/store/redShirt.webp" alt="Red Shirt"  className={styles.shirtImage} />
-        <img src="/images/store/yellowShirt.webp" alt="Yellow Shirt"className={styles.shirtImage} />
-        <img src="/images/store/greenShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
-        <img src="/images/store/purpleShirt.webp" alt="Green Shirt"  className={styles.shirtImage} />
+        <img src="/images/store/greenShirt.webp" alt="Green Shirt" className={styles.shirtImage} />
+        <img src="/images/store/purpleShirt.webp" alt="Green Shirt" className={styles.shirtImage} />
       </div>
       <div className={styles.storeTextWrapper}>
         <p className={styles.schoolStoreText}>Looking for some new Parkway Academy spirit wear?
@@ -58,36 +66,49 @@ export default function WelcomeSlideshow() {
         <a href='https://teamlocker.squadlocker.com/#/lockers/parkway-sports-and-health-science-academy' className={styles.shopNow}>Visit Our School Store</a>
       </div>
     </div>
-  )
+  );
   const newContentSlide = (
     <div className={styles.featuredContentSlide}>
       <p>{`Spotlight: `}</p>
       <p>Randomly Chosen Elective or Club Featured Here</p>
     </div>
-  )
-  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, upcomingEvents, storeLink,  newContentSlide]);
+  );
+  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, storeLink, newContentSlide]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  // 5 different content slides:
-  // welcome image
-  // upcoming events
-  // recent new content
-  // store
-  // social media?
+
+  useEffect(() => {
+    const upcomingEvents = (
+      <div className={styles.upcomingEventsSlide}>
+        <a className={styles.viewAllEvents}>View All Events</a>
+        <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
+        <table className={styles.eventsTable}>
+          <tbody className={styles.eventsTableBody}>
+            {events.map((event, index) => (
+              <tr key={index} className={styles.eventsItem}>
+                <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
+                <td className={styles.eventTitle}>{event.title}</td>
+                <td className={styles.eventDescription}>{event.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+
+    setSlides([welcomeImage, familyResourceCenter, upcomingEvents, storeLink]);
+  }, [events]);
 
   const handleCarouselChange = (index) => {
     setCurrentPhotoIndex(index);
   };
-  const customPrevArrow = (clickHandler, hasPrev) => {
-    return (
-      <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null} className={hasPrev ? styles.arrowLeft : styles.arrowLeftDisabled}/>
-    );
-  }
-  const customNextArrow = (clickHandler, hasNext) => {
-    return (
-      <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
-    );
-  }
 
+  const customPrevArrow = (clickHandler, hasPrev) => (
+    <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null} className={hasPrev ? styles.arrowLeft : styles.arrowLeftDisabled} />
+  );
+
+  const customNextArrow = (clickHandler, hasNext) => (
+    <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled} />
+  );
 
   return (
     <>
@@ -105,19 +126,13 @@ export default function WelcomeSlideshow() {
           selectedItem={currentPhotoIndex}
           onChange={handleCarouselChange}
         >
-          {slides.map((slide, index) => {
-            console.log('slide: ', slide)
-            return (
-              <div
-                key={index}
-              >
-                {slide}
-              </div>
-
-            )
-          })}
+          {slides.map((slide, index) => (
+            <div key={index}>
+              {slide}
+            </div>
+          ))}
         </Carousel>
       </div>
     </>
-  )
+  );
 }

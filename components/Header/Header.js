@@ -9,7 +9,7 @@ import  { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faBars, faX } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header({ skipAnimation }) {
   const [user, setUser] = useState(null);
@@ -19,6 +19,7 @@ export default function Header({ skipAnimation }) {
   const router = useRouter();
   const pathname = usePathname()
 
+  // prevent scroll when nav menu is up on mobile
   useEffect(() => {
     const backgroundElement = document.querySelector('.background');
     if (leftNavbarOpen || rightNavbarOpen) {
@@ -68,14 +69,14 @@ export default function Header({ skipAnimation }) {
     </div>
   )
   const mobileLeftNavbar = (
-    <div className={styles.mobileLeftNavbarWrapper}>
+    <div className={`${styles.mobileLeftNavbarWrapper} ${leftNavbarOpen ? styles.activeLeft  : ''}`}>
       <div className={styles.socialWrapper}>
-        <FontAwesomeIcon icon={faX} className={styles.closeIcon} onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
+        <FontAwesomeIcon icon={faChevronLeft} className={styles.closeIconLeft} onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
         <p className={styles.visitUsOn}>VISIT US ON:</p>
         <div className={styles.socialLinksWrapper}>
           <Link href='https://www.facebook.com/PKMSkindness/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} />FACEBOOK</Link>
           <Link href='https://www.instagram.com/parkwaypatriots/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} />INSTAGRAM</Link>
-          <Link href='https://x.com/pkmspatriots?s=20' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faXTwitter} className={styles.socialIcon} />TWITTER/X</Link>
+          <Link href='https://x.com/pkmspatriots?s=20' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faXTwitter} className={styles.socialIcon} />X (TWITTER)</Link>
         </div>
       </div>
     </div>
@@ -99,20 +100,31 @@ export default function Header({ skipAnimation }) {
     </div>
   )
   const mobileRightNavbar = (
-    <div className={styles.mobileRightNavbarWrapper}>
-      <div className={styles.navContainer}>
-        <FontAwesomeIcon icon={faX} className={styles.closeIcon} onClick={() => setRightNavbarOpen(!rightNavbarOpen)}/>
+    <div className={`${styles.mobileRightNavbarWrapper} ${rightNavbarOpen ? styles.activeRight : ''}`}>
+      <div className={`${styles.navContainer}`}>
+        <FontAwesomeIcon icon={faChevronRight} className={styles.closeIconRight}  onClick={ () => setRightNavbarOpen(!rightNavbarOpen)}/>
         <div
-          onClick={() => {  setRightNavbarOpen(false); router.push('/public/home')}}>
+          onClick={() => {setRightNavbarOpen(false); router.push('/public/home')}}>
           <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
         </div>
         <div
-          onClick={() => {  setRightNavbarOpen(false); router.push('/public/info')}}>
+          onClick={() => {setRightNavbarOpen(false); router.push('/public/info')}}>
           <h2 className={isActive('/public/info') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
         </div>
         <div
-          onClick={() => {  setRightNavbarOpen(false); router.push('/public/archive')}}>
-          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2></div>
+          onClick={() => {setRightNavbarOpen(false); router.push('/public/archive')}}>
+          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
+        </div>
+        <hr className={styles.navDivider}></hr>
+        <div
+          onClick={() => {setRightNavbarOpen(false); router.push('https://sites.google.com/lmsvsd.net/familyresourcecenter?usp=sharing&authuser=0')}}>
+          <h2 className={styles.navLink}>FAMILY RESOURCE CENTER</h2>
+        </div>
+
+        <div
+          onClick={() => {setRightNavbarOpen(false); router.push('/public/archive')}}>
+          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>PARKWAY STORE</h2>
+        </div>
       </div>
     </div>
   )
@@ -123,9 +135,9 @@ export default function Header({ skipAnimation }) {
       {/* desktop version of left navbar */}
       {desktopLeftNavbar}
       {/* mobile navbar left handle (social links) */}
-      <img src={'/images/logos/parkway.png'} className={styles.leftNavbarHandle} alt="Parkway Academy Logo" fill='true' onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
+      <img src={'/images/logos/parkway.WEBP'} className={styles.leftNavbarHandle} alt="Parkway Academy Logo" fill='true' onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
       {/* mobile version of left navbar */}
-      {leftNavbarOpen && mobileLeftNavbar}
+      {mobileLeftNavbar}
       {/* title and subtitle */}
       <div className={styles.titleWrapper}>
         <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
@@ -136,7 +148,7 @@ export default function Header({ skipAnimation }) {
       {/* desktop version of navbar */}
       {desktopRightNavbar}
       {/* mobile version of navbar */}
-      {rightNavbarOpen && mobileRightNavbar}
+      {mobileRightNavbar}
       {user && (<Link href='/admin/home'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
 
     </div>

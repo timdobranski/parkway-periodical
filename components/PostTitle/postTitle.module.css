@@ -143,8 +143,8 @@
     text-decoration-thickness: 1px;
     border-bottom: none;
     text-underline-offset: .25rem;
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.75rem;
+    /* font-weight: bold; */
     /* line-height: 1.9; */
   }
   .date {

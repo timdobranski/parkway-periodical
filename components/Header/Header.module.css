@@ -28,18 +28,8 @@
     transform: translateY(-5px);
   }
 }
-@keyframes slideFromLeft {
-  to {
-    left: 0;
-  }
-}
 
-/* Animation for sliding in from the right */
-@keyframes slideFromRight {
-  to {
-    right: 0;
-  }
-}
+
 .headerContainer {
   box-sizing: border-box;
   position: absolute;
@@ -276,6 +266,10 @@
     display: inline-block;
     position: relative;
   }
+  .navDivider {
+    width: 70%;
+    margin: 1rem
+  }
   .leftNavbarHandle {
     margin-left: 0rem;
     width: 40px;
@@ -326,28 +320,51 @@
     display: none;
   }
 
-  .mobileLeftNavbarWrapper, .mobileRightNavbarWrapper{
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    z-index: 9999;
-    overflow-y:hidden;
-    border: solid red 40px;
-    animation: slideFromRight 2s ease-out;
-    animation-fill-mode: forwards;
-  }
-  .mobileLeftNavbarWrapper {
-    overflow: hidden;
-    animation: slideFromRight 2s ease-out;
-    left: -100vw;
+/* Common styles for both left and right navbar wrappers */
+.mobileLeftNavbarWrapper, .mobileRightNavbarWrapper {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  z-index: 9999;
+  overflow-y: hidden;
+  transition: transform .3s ease-out !important;
+}
+.mobileRightNavbarWrapper {
+  transform: translateX(100%) ;
+}
+.mobileLeftNavbarWrapper {
+  transform: translateX(-100%);
+}
+.navContainer {
+  /* position: fixed; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 110vh;
+  overflow: hidden;
+  background: var(--primary-blue);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 5000;
+  padding-top: 4rem;
+}
+.activeLeft {
+  transform: translateX(0);
+}
+.activeRight {
+  transform: translateX(0);
+}
 
-  }
   .socialWrapper {
-    position: fixed !important;
+    position: fixed;
     overflow-y: hidden;
     top: 0;
     left: 0;
@@ -375,41 +392,32 @@
     align-items: center;
     /* border: solid red 2px; */
     margin: 2rem 1rem;
-    width: 80%;
+    /* width: 80%; */
   }
-  .socialIcon, .closeIcon {
+  .socialIcon {
     height: 40px;
     width: 40px;
     margin: 1rem;
     padding: .75rem;
+    /* border: solid red 2px; */
   }
-  .closeIcon {
+  .closeIconLeft, .closeIconRight {
+    height: 50px;
+    width: 50px;
+    margin: 1.5rem;
     position: absolute;
-    top: 0;
-    right: 0;
     color: var(--primary-red);
     height: 30px;
     width: 30px;
-
   }
-  .socialIcon {
-
-  }
-  .navContainer {
-    position: fixed;
-    top: 0;
+  .closeIconLeft {
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background: var(--primary-blue);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    z-index: 5000;
-    padding-top: 4rem;
   }
+  .closeIconRight {
+    right: 0;
+  }
+
+
   .navContainer h2 {
     /* color: red; */
     font-size: 2rem;
