@@ -19,9 +19,9 @@ export default function About() {
 
         <div className={styles.sectionWrapper}>
           <Link href='/public/info/electives' className={styles.link}>
-            <h3 className='whiteSubTitle'>ELECTIVES</h3>
+            <h3 className={styles.subtitle}>ELECTIVES</h3>
           </Link>
-          <p className='centeredWhiteText'>Check out our amazing student elective courses</p>
+          <p className={styles.description}>Check out our amazing student elective courses</p>
         </div>
         <div className={styles.sectionWrapper}>
           <Link href='/public/info/clubs' className={styles.link}>
