@@ -13,7 +13,7 @@ export default function About() {
       {/* <div className={styles.aboutWrapper}> */}
       <div className='pageTitleWrapper'>
         <h1 className='whiteTitle'>INFO</h1>
-        <p className='centeredWhiteText'>{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
+        <p className={styles.welcome}>{`Welcome to the Parkway Periodical! You've made it to the official parent & community newsletter for
             Parkway Health & Sciences Academy. We're glad you're here! Browse the resources below to learn more about our
             elective classes, clubs, staff and more.`}</p>
 
@@ -25,27 +25,27 @@ export default function About() {
         </div>
         <div className={styles.sectionWrapper}>
           <Link href='/public/info/clubs' className={styles.link}>
-            <h3 className='whiteSubTitle'>CLUBS</h3>
+            <h3 className={styles.subtitle}>CLUBS</h3>
           </Link>
-          <p className='centeredWhiteText'>Learn about the before & after school clubs we offer</p>
+          <p className={styles.description}>Learn about the before & after school clubs we offer</p>
         </div>
         <div className={styles.sectionWrapper}>
           <Link href='/public/info/links' className={styles.link}>
-            <h3 className='whiteSubTitle'>RESOURCES</h3>
+            <h3 className={styles.subtitle}>RESOURCES</h3>
           </Link>
-          <p className='centeredWhiteText'>Find links to helpful online resources here</p>
+          <p className={styles.description}>Find links to helpful online resources here</p>
         </div>
         <div className={styles.sectionWrapper}>
           <Link href='/public/info/events' className={styles.link}>
-            <h3 className='whiteSubTitle'>EVENTS</h3>
+            <h3 className={styles.subtitle}>EVENTS</h3>
           </Link>
-          <p className='centeredWhiteText'>Keep up with all our upcoming events</p>
+          <p className={styles.description}>Keep up with all our upcoming events</p>
         </div>
         <div className={styles.sectionWrapper}>
           <Link href='/public/info/staff' className={styles.link}>
-            <h3 className='whiteSubTitle'>OUR TEAM</h3>
+            <h3 className={styles.subtitle}>OUR TEAM</h3>
           </Link>
-          <p className='centeredWhiteText'>Meet the people that make Parkway great!</p>
+          <p className={styles.description}>Meet the people that make Parkway great!</p>
           {/* </div> */}
         </div>
       </div>

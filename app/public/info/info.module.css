@@ -1,6 +1,11 @@
+.welcome {
+  color: white;
+  text-align: center;
+  font-size: 1.25rem;
+}
 .sectionWrapper {
   /* border: solid black 2px !important; */
-  margin: 1rem;
+  margin: 0rem;
   padding: 0 1rem 0rem 1rem;
   width: 100%;
 }
@@ -17,18 +22,26 @@
   text-decoration: underline;
   text-decoration-color: red;
 }
+.description {
+  color: white;
+  text-align: center;
+  font-size: 1.25rem;
+  margin-top: .25rem;
+}
 @media(max-width: 768px) {
   .sectionWrapper {
     background-color: white;
-    width: 80%;
+    width: 90%;
+    max-width: 500px;
     border-radius: 15px;
+    margin:.5rem 0;
   }
   .subtitle {
     color: var(--primary-blue);
     margin-bottom: 0;
+    /* font-weight: bold; */
   }
   .description {
-    color: black;
-    text-align: center;
+    color: rgb(0, 0, 0);
   }
 }
