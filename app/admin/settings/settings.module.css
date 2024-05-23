@@ -48,11 +48,11 @@
   overflow: hidden;
   /* width: fit-content; */
   margin: 0 auto;
+  margin-bottom: 1rem;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* border: solid red 2px; */
 }
 .currentPhotoPreview {
   height: 100%;

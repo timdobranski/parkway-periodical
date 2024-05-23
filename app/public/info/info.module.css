@@ -35,6 +35,7 @@
     max-width: 500px;
     border-radius: 15px;
     margin:.5rem 0;
+    padding: 0 1rem;
   }
   .subtitle {
     color: var(--primary-blue);

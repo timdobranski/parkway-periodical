@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import supabase from '../../utils/supabase';
-import  React, { useState, useEffect } from 'react';
+import  React, { useState, useEffect, useRef } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
@@ -21,89 +21,111 @@ export default function Header({ user }) {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts } = useAdmin();
   const router = useRouter();
   const contentTypes = ['electives', 'clubs', 'links', 'events'];
+  const leftMenuRef = useRef();
+  const rightMenuRef = useRef();
+  const alertsMenuRef = useRef();
+  const userMenuRef = useRef();
+  const pathname = usePathname();
+  // fetch entries expiring soon
+  useEffect(() => {
+    async function fetchEntriesExpiringSoon(contentTypes) {
+      const nowInPacific = moment().tz('America/Los_Angeles');
+      const oneWeekFromNowInPacific = nowInPacific.clone().add(7, 'days');
 
-  async function checkStorageUsage() {
-    try {
-      // Name of your bucket
-      const bucketName = 'posts';
-      // Path inside your bucket (if you have a specific folder you're targeting)
-      const folderPath = 'photos';
+      const results = await Promise.all(contentTypes.map(async (tableName) => {
+        try {
+          const { data, error } = await supabase
+            .from(tableName)
+            .select('*')  // Select all columns or specify which columns you need
+            .lte('expires', oneWeekFromNowInPacific.toISOString());  // 'expires' is less than or equal to one week from now
 
-      // Get a reference to the bucket
-      const { data, error } = await supabase.storage.from(bucketName).list(folderPath, {
-        limit: 100, // Adjust the limit as per your needs, max is 1000
-        offset: 0,
-      });
+          if (error) {
+            throw error;
+          }
+          return data.map(entry => ({
+            ...entry,
+            tableName,
+            expiredYet: moment(entry.expires).tz('America/Los_Angeles').isBefore(nowInPacific)
+          }));
+        } catch (error) {
+          console.error(`Error fetching from ${tableName}:`, error.message);
+          return [];
+        }
+      }));
 
-      if (error) {
-        throw error;
-      }
+      // Flatten the results array and sort by expires value in reverse chronological order
+      const allEntries = results.flat().sort((a, b) => moment(b.expires).diff(moment(a.expires)));
 
-      // Sum the sizes of all files
-      const totalSizeBytes = data.reduce((acc, file) => acc + file.metadata.size, 0);
-
-      // Convert bytes to gigabytes
-      const totalSizeGB = totalSizeBytes / (1024 ** 3);
-
-      // Calculate the percentage of 1 GB used
-      const percentageUsed = (totalSizeGB / 1) * 100;
-      const numberOfFiles = data.length;
-
-      return {
-        percentageUsed: parseFloat(percentageUsed.toFixed(2)),
-        numberOfFiles: numberOfFiles
-      };
-
-    } catch (error) {
-      console.error('Error calculating storage usage:', error);
-      return null;
+      console.log('allEntries:', allEntries);
+      setAlerts(allEntries);
     }
-  }
-  async function fetchEntriesExpiringSoon(contentTypes) {
-    const nowInPacific = moment().tz('America/Los_Angeles');
-    const oneWeekFromNowInPacific = nowInPacific.clone().add(7, 'days');
 
-    const results = await Promise.all(contentTypes.map(async (tableName) => {
+    fetchEntriesExpiringSoon(contentTypes);
+  }, [])
+  // console log alerts
+  useEffect(() => {
+    console.log('alerts: ', alerts);
+  }, [alerts])
+  // check storage usage
+  useEffect(() => {
+    async function checkStorageUsage() {
       try {
-        const { data, error } = await supabase
-          .from(tableName)
-          .select('*')  // Select all columns or specify which columns you need
-          .lte('expires', oneWeekFromNowInPacific.toISOString());  // 'expires' is less than or equal to one week from now
+        // Name of your bucket
+        const bucketName = 'posts';
+        // Path inside your bucket (if you have a specific folder you're targeting)
+        const folderPath = 'photos';
+
+        // Get a reference to the bucket
+        const { data, error } = await supabase.storage.from(bucketName).list(folderPath, {
+          limit: 100, // Adjust the limit as per your needs, max is 1000
+          offset: 0,
+        });
 
         if (error) {
           throw error;
         }
-        return data.map(entry => ({
-          ...entry,
-          tableName,
-          expiredYet: moment(entry.expires).tz('America/Los_Angeles').isBefore(nowInPacific)
-        }));
+
+        // Sum the sizes of all files
+        const totalSizeBytes = data.reduce((acc, file) => acc + file.metadata.size, 0);
+
+        // Convert bytes to gigabytes
+        const totalSizeGB = totalSizeBytes / (1024 ** 3);
+
+        // Calculate the percentage of 1 GB used
+        const percentageUsed = (totalSizeGB / 1) * 100;
+        const numberOfFiles = data.length;
+
+        return {
+          percentageUsed: parseFloat(percentageUsed.toFixed(2)),
+          numberOfFiles: numberOfFiles
+        };
+
       } catch (error) {
-        console.error(`Error fetching from ${tableName}:`, error.message);
-        return [];
+        console.error('Error calculating storage usage:', error);
+        return null;
       }
-    }));
-
-    // Flatten the results array and sort by expires value in reverse chronological order
-    const allEntries = results.flat().sort((a, b) => moment(b.expires).diff(moment(a.expires)));
-
-    console.log('allEntries:', allEntries);
-    setAlerts(allEntries);
-  }
-
-
-  const pathname = usePathname();
-  useEffect(() => {
-    fetchEntriesExpiringSoon(contentTypes);
-  }, [])
-
-  useEffect(() => {
-    console.log('alerts: ', alerts);
-  }, [alerts])
-
-  useEffect(() => {
+    }
     console.log('user: ', user)
     checkStorageUsage().then(setStorageUsage);
+  }, []);
+  // handle click outside menus
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        (leftMenuRef.current && !leftMenuRef.current.contains(event.target)) &&
+        (rightMenuRef.current && !rightMenuRef.current.contains(event.target)) &&
+        (alertsMenuRef.current && !alertsMenuRef.current.contains(event.target)) &&
+        (userMenuRef.current && !userMenuRef.current.contains(event.target))
+      ) {
+        setMenuOpen(false);
+
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const toggleMenuOpen = (menu) => {
@@ -134,7 +156,7 @@ export default function Header({ user }) {
     </div>
   )
   const alertsMenu = (
-    <div className={styles.alertsHandle} onClick={() => toggleMenuOpen('alerts')}>
+    <div className={styles.alertsHandle} onClick={() => toggleMenuOpen('alerts')} ref={alertsMenuRef}>
       <div className={styles.iconWrapper}>
         <FontAwesomeIcon
           icon={faBell}
@@ -170,7 +192,7 @@ export default function Header({ user }) {
     </div>
   )
   const rightNavbarMenu = (
-    <div className={styles.rightNavHandle} onClick={() => toggleMenuOpen('right')}>
+    <div className={styles.rightNavHandle} onClick={() => toggleMenuOpen('right')} ref={rightMenuRef}>
       <div className={styles.iconWrapper}>
         <FontAwesomeIcon icon={menuOpen === 'right' ? faCircleChevronUp : faCircleChevronDown} className={`${menuOpen === 'right' ? styles.selectedMenuIcon : styles.menuIcon}`}/>
       </div>
@@ -201,7 +223,7 @@ export default function Header({ user }) {
     </div>
   )
   const userMenu = (
-    <div className={styles.userHandle}>
+    <div className={styles.userHandle} ref={userMenuRef}>
 
       <div className={styles.photoWrapper} onClick={() => toggleMenuOpen('user')}>
         { user?.photo ?
@@ -235,7 +257,9 @@ export default function Header({ user }) {
           <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
         </Link>
       </div>
-      <div className={styles.leftNavHandle}
+      <div
+        className={styles.leftNavHandle}
+        ref={leftMenuRef}
         onClick={() => {toggleMenuOpen('left')}}
       >
         {/* <FontAwesomeIcon icon={faCaretDown} className={styles.menuIcon}/> */}
@@ -262,14 +286,9 @@ export default function Header({ user }) {
     </div>
   )
 
-
   return (
     <div className={styles.headerContainer}>
       {leftSideNavbar}
-
-
-
-
       {rightSideNavbar}
     </div>
   )

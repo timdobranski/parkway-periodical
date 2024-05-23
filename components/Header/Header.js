@@ -1,8 +1,6 @@
 'use client'
 
 import styles from './Header.module.css';
-import logo from '../../public/images/logos/parkway.png';
-import Image from 'next/image';
 import Link from 'next/link';
 import supabase from '../../utils/supabase';
 import  { useState, useEffect } from 'react';
@@ -122,8 +120,8 @@ export default function Header({ skipAnimation }) {
         </div>
 
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/archive')}}>
-          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>PARKWAY STORE</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('https://teamlocker.squadlocker.com/#/lockers/parkway-sports-and-health-science-academy')}}>
+          <h2 className={styles.navLink}>PARKWAY STORE</h2>
         </div>
       </div>
     </div>

@@ -52,13 +52,13 @@ export default function Settings () {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.userInfo}>
-      { user.photo ?
+
         <div className={styles.currentPhotoPreviewWrapper}>
-        <img src={user.photo} alt='User Photo' className={styles.currentPhotoPreview}/>
+        <img src={user.photo? user.photo : userIcon} alt='User Photo' className={styles.currentPhotoPreview}/>
         <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
         </div>
 
-        : userIcon}        <p className='smallerTitle'>{user ? `${user.first_name} ${user.last_name}` : 'User Name'}</p>
+        <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
         <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
       </div>
 
