@@ -25,18 +25,19 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
-  const postTags = [
-    {name: 'All Departments', value: 'all'},
-    {name: 'Sports', value: 1},
-    {name: 'Science', value: 2},
-    {name: 'Electives', value: 3},
-    {name: 'Math', value: 4},
-    {name: 'Language Arts', value: 5},
-    {name: 'Before/After School', value: 6},
-    {name: 'Next School Year', value: 7},
-    {name: 'Social Studies', value: 8},
-    {name: 'Counciling & Wellness', value: 9},
-  ]
+  const [postTags, setPostTags]  = useState([]);
+  // const postTags = [
+  //   {name: 'All Departments', value: 'all'},
+  //   {name: 'Sports', value: 1},
+  //   {name: 'Science', value: 2},
+  //   {name: 'Electives', value: 3},
+  //   {name: 'Math', value: 4},
+  //   {name: 'Language Arts', value: 5},
+  //   {name: 'Before/After School', value: 6},
+  //   {name: 'Next School Year', value: 7},
+  //   {name: 'Social Studies', value: 8},
+  //   {name: 'Counciling & Wellness', value: 9},
+  // ]
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
@@ -87,7 +88,19 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching posts:', error);
     }
   };
-
+  const getTags = async () => {
+    const { data, error } = await supabase.from('tags').select('*');
+    if (data) {
+      console.log('tags: ', data);
+      setPostTags([{name: 'All Departments', id: 'all'}, ...data]);
+    }
+    if (error) {
+      console.error('Error fetching tags:', error);
+    }
+  }
+  useEffect(() => {
+    console.log('post tags: ', postTags);
+  }, [postTags])
   useEffect(() => {
     console.log('display type changed: ', displayType);
   }, [displayType])
@@ -95,6 +108,10 @@ export default function Home({ introRunning, setIntroRunning }) {
   useEffect(() => {
     getPosts({tagId: tagId});
   }, [tagId]);
+
+  useEffect(() => {
+    getTags();
+  }, [])
 
   const handleFilterChange = (event) => {
     const value = event.target.value;
@@ -109,6 +126,18 @@ export default function Home({ introRunning, setIntroRunning }) {
     setSearchQuery(null);
     getPosts();
   }
+  const handleShareClick = (id) => {
+    const baseUrl = window.location.origin;
+    const shareUrl = `${baseUrl}/public/home/postId=${id}`;
+
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => {
+        alert('Link copied to clipboard!');
+      })
+      .catch(err => {
+        console.error('Failed to copy the link: ', err);
+      });
+  };
 
   const filterAndSearchPosts = (
     <div className={styles.filterWrapper}>
@@ -129,7 +158,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         onChange={handleFilterChange}
       >
         {postTags.map(tag => (
-          <option key={tag.value} value={tag.value}>{tag.name}</option>
+          <option key={tag.value} value={tag.id}>{tag.name}</option>
         ))}
       </select>
     </div>
@@ -144,7 +173,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
           <span className={styles.tagLabel}>
-            {postTags.find(tag => tag.value === tagId).name}
+            {postTags.find(tag => tag.id === tagId).name}
           </span>
           </p>
           {posts.length === 0 && noResultsMessage}
@@ -207,9 +236,12 @@ export default function Home({ introRunning, setIntroRunning }) {
             <FontAwesomeIcon icon={faCalendarDays} className={styles.createdAtIcon} />
             <p className={styles.createdAt}>{dateFormatter(post.created_at)}</p>
           </div>
-          <div className={styles.shareWrapper}>
+          <div className={styles.shareWrapper}
+            onClick={() => handleShareClick(post.id)}
+          >
             <FontAwesomeIcon icon={faShare} className={styles.shareIcon} />
             <p className={styles.shareLabel}>Share</p>
+            <p className={styles.linkCopyConfirm}>Link copied</p>
           </div>
         </div>
       </div>
