@@ -21,7 +21,6 @@ export default function Header({ skipAnimation }) {
   useEffect(() => {
     const backgroundElement = document.querySelector('.background');
     if (leftNavbarOpen || rightNavbarOpen) {
-      console.log('OVERFLOW HIDDEN');
       if (backgroundElement) backgroundElement.classList.add('no-scroll');
     } else {
       if (backgroundElement) backgroundElement.classList.remove('no-scroll');
@@ -51,7 +50,7 @@ export default function Header({ skipAnimation }) {
   }, []);
 
   const isActive = (href) => {
-    console.log('isActive: ', pathname, href)
+    // console.log('isActive: ', pathname, href)
     // Check for exact match or specific condition
     return pathname === href || router.pathname === '/public/home' && href === '/public/home' || router.pathname === '/public/archive' && href === '/public/archive' || router.pathname === '/public/about' && href === '/public/about';
   };

@@ -118,7 +118,6 @@ export default function Header({ user }) {
         (userMenuRef.current && !userMenuRef.current.contains(event.target))
       ) {
         setMenuOpen(false);
-
       }
     }
 

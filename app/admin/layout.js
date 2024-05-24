@@ -7,8 +7,6 @@ import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
 import { useAdmin } from '../../contexts/AdminContext';
 import { AdminProvider } from '../../contexts/AdminContext';
 
-
-
 export default function AdminLayout({ children }) {
   const router = useRouter();
   const [user, setUser] = useState(null);

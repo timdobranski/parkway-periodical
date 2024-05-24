@@ -24,7 +24,19 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagId, setTagId] = useState(null)
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
-
+  const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
+  const postTags = [
+    {name: 'All Departments', value: 'all'},
+    {name: 'Sports', value: 1},
+    {name: 'Science', value: 2},
+    {name: 'Electives', value: 3},
+    {name: 'Math', value: 4},
+    {name: 'Language Arts', value: 5},
+    {name: 'Before/After School', value: 6},
+    {name: 'Next School Year', value: 7},
+    {name: 'Social Studies', value: 8},
+    {name: 'Counciling & Wellness', value: 9},
+  ]
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
@@ -35,7 +47,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       .select('*');
 
     if (tagId) {
-      console.log('tag ID: ', tagId)
+      setDisplayType('tag');
       // Fetch post IDs from post_tags where tag_id matches
       const { data, error: postTagError } = await supabase
         .from('post_tags')
@@ -47,15 +59,16 @@ export default function Home({ introRunning, setIntroRunning }) {
         return;
       }
       const postTagData = data;
-      // console.log('data from postTagData: ', data)
-      console.log('postTagData: ', data);
       const postIds = postTagData.map(pt => pt.post);
       query = query.in('id', postIds);
     } else if (searchQuery) {
+      setDisplayType('search');
       query = query.ilike('searchableText', `%${searchQuery}%`);
     } else if (postId) {
+      setDisplayType('id');
       query = query.eq('id', postId);
     } else {
+      setDisplayType('all');
       query = query.order('id', { ascending: false });
     }
 
@@ -66,7 +79,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         content: JSON.parse(post.content)
       }));
 
-      console.log('new posts state: ', parsedData);
+      // console.log('new posts state: ', parsedData);
       setPosts(parsedData);
     }
 
@@ -75,25 +88,35 @@ export default function Home({ introRunning, setIntroRunning }) {
     }
   };
 
+  useEffect(() => {
+    console.log('display type changed: ', displayType);
+  }, [displayType])
 
   useEffect(() => {
     getPosts({tagId: tagId});
   }, [tagId]);
 
-  useEffect(() => {
-    // console.log('INTRO RUNNING: ', introRunning)
-  })
   const handleFilterChange = (event) => {
-    console.log('running filter change...')
     const value = event.target.value;
-    console.log('new tagId value: ', value)
     setTagId(value === 'all' ? null : parseInt(value));
   };
+
+  const noResultsMessage = (
+    <p className='centeredWhiteText'>{`It looks like there aren't any posts for this ${displayType === 'search' ? 'search' : 'category'} yet`}</p>
+  )
+  const resetPosts = () => {
+    setTagId(null);
+    setSearchQuery(null);
+    getPosts();
+  }
 
   const filterAndSearchPosts = (
     <div className={styles.filterWrapper}>
       <div className={styles.searchWrapper}>
-        <FontAwesomeIcon icon={searchExpanded ? faChevronLeft : faMagnifyingGlass} className={searchExpanded ? styles.searchIconExpanded : styles.searchIcon} onClick={() => setSearchExpanded(!searchExpanded)} />
+        <FontAwesomeIcon
+          icon={searchExpanded ? faChevronLeft : faMagnifyingGlass}
+          className={searchExpanded ? styles.searchIconExpanded : styles.searchIcon}
+          onClick={() => setSearchExpanded(!searchExpanded)} />
         <input
           type='search'
           placeholder='Search for topics'
@@ -101,21 +124,13 @@ export default function Home({ introRunning, setIntroRunning }) {
 
         <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>{`Results for ${searchQuery}`}</p>
       </div>
-      <select name='filter' id='filter'
+      <select name='filter' id='filter' value={tagId || 'all'}
         className={`${styles.filterSelect}`}
         onChange={handleFilterChange}
       >
-        <option value="" disabled selected hidden>Browse Posts</option>
-        <option value='all'>All Departments</option>
-        <option value={3}>Electives</option>
-        <option value={1}>Sports</option>
-        <option value={2}>Science</option>
-        <option value={4}>Math</option>
-        <option value={5}>Language Arts</option>
-        <option value={8}>Social Studies</option>
-        <option value={6}>Before/After School</option>
-        <option value={9}>Counciling & Wellness</option>
-        <option value={7}>Next School Year</option>
+        {postTags.map(tag => (
+          <option key={tag.value} value={tag.value}>{tag.name}</option>
+        ))}
       </select>
     </div>
   )
@@ -125,7 +140,17 @@ export default function Home({ introRunning, setIntroRunning }) {
       <div className='feedWrapper'>
         <WelcomeSlideshow />
         {filterAndSearchPosts}
-
+        {displayType === 'tag' && tagId &&
+        <>
+          <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
+          <span className={styles.tagLabel}>
+            {postTags.find(tag => tag.value === tagId).name}
+          </span>
+          </p>
+          {posts.length === 0 && noResultsMessage}
+          <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts</button>
+        </>
+        }
 
         {posts &&
     posts.map((post, i) => (

@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './settings.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../../utils/supabase';
@@ -54,8 +54,8 @@ export default function Settings () {
       <div className={styles.userInfo}>
 
         <div className={styles.currentPhotoPreviewWrapper}>
-        <img src={user.photo? user.photo : userIcon} alt='User Photo' className={styles.currentPhotoPreview}/>
-        <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
+          <img src={user.photo? user.photo : userIcon} alt='User Photo' className={styles.currentPhotoPreview}/>
+          <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
         </div>
 
         <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
