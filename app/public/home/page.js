@@ -21,6 +21,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState(null);
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
+  const [tagId, setTagId] = useState(null)
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchExpanded, setSearchExpanded] = useState(false);
 
@@ -28,12 +29,31 @@ export default function Home({ introRunning, setIntroRunning }) {
   // const [introRunning, setIntroRunning] = useState(true);
 
   // get and parse post data
-  const getPosts = async () => {
+  const getPosts = async ({ tagId, searchQuery, postId } = {}) => {
     let query = supabase
       .from('posts')
       .select('*');
 
-    if (postId) {
+    if (tagId) {
+      console.log('tag ID: ', tagId)
+      // Fetch post IDs from post_tags where tag_id matches
+      const { data, error: postTagError } = await supabase
+        .from('post_tags')
+        .select('post')
+        .eq('tag', tagId);
+
+      if (postTagError) {
+        console.error('Error fetching post tags:', postTagError);
+        return;
+      }
+      const postTagData = data;
+      // console.log('data from postTagData: ', data)
+      console.log('postTagData: ', data);
+      const postIds = postTagData.map(pt => pt.post);
+      query = query.in('id', postIds);
+    } else if (searchQuery) {
+      query = query.ilike('searchableText', `%${searchQuery}%`);
+    } else if (postId) {
       query = query.eq('id', postId);
     } else {
       query = query.order('id', { ascending: false });
@@ -45,6 +65,8 @@ export default function Home({ introRunning, setIntroRunning }) {
         ...post,
         content: JSON.parse(post.content)
       }));
+
+      console.log('new posts state: ', parsedData);
       setPosts(parsedData);
     }
 
@@ -52,14 +74,21 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching posts:', error);
     }
   };
-  useEffect(() => {
 
-    getPosts();
-  }, [postId]);
 
   useEffect(() => {
-    console.log('INTRO RUNNING: ', introRunning)
+    getPosts({tagId: tagId});
+  }, [tagId]);
+
+  useEffect(() => {
+    // console.log('INTRO RUNNING: ', introRunning)
   })
+  const handleFilterChange = (event) => {
+    console.log('running filter change...')
+    const value = event.target.value;
+    console.log('new tagId value: ', value)
+    setTagId(value === 'all' ? null : parseInt(value));
+  };
 
   const filterAndSearchPosts = (
     <div className={styles.filterWrapper}>
@@ -73,31 +102,32 @@ export default function Home({ introRunning, setIntroRunning }) {
         <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>{`Results for ${searchQuery}`}</p>
       </div>
       <select name='filter' id='filter'
-        className={`${styles.filterSelect}
-        `}
+        className={`${styles.filterSelect}`}
+        onChange={handleFilterChange}
       >
         <option value="" disabled selected hidden>Browse Posts</option>
         <option value='all'>All Departments</option>
-        <option value='sports'>Sports</option>
-        <option value='health'>Science</option>
-        <option value='science'>Music</option>
-        <option value='academics'>Math</option>
-        <option value='academics'>English</option>
-        <option value='academics'>Social Science</option>
-        <option value='academics'>Extracurriculars</option>
-        <option value='academics'>2024/25 School Year</option>
+        <option value={3}>Electives</option>
+        <option value={1}>Sports</option>
+        <option value={2}>Science</option>
+        <option value={4}>Math</option>
+        <option value={5}>Language Arts</option>
+        <option value={8}>Social Studies</option>
+        <option value={6}>Before/After School</option>
+        <option value={9}>Counciling & Wellness</option>
+        <option value={7}>Next School Year</option>
       </select>
     </div>
   )
   const renderedPosts =
     <div className={styles.feedWrapperContainer}>
-    {/* <div className='topFeedShadow'></div> */}
-    <div className='feedWrapper'>
-      <WelcomeSlideshow />
-      {filterAndSearchPosts}
+      {/* <div className='topFeedShadow'></div> */}
+      <div className='feedWrapper'>
+        <WelcomeSlideshow />
+        {filterAndSearchPosts}
 
 
-      {posts &&
+        {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>
         {post.content.map((block, index) => (

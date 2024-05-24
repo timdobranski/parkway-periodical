@@ -139,11 +139,9 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
           <button className="ql-align" value="right"></button>
         </span>
         <span className='ql-formats'>
-
           <button class="ql-list" value="ordered"><i class="your-icon-class">OL</i></button>
           <button class="ql-list" value="bullet"><i class="your-icon-class">UL</i></button>
         </span>
-
         {/* <button className="ql-align" value="justify"></button> */}
       </span>
     )
@@ -154,12 +152,11 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
   return (
     <Editor
       key={isEditable ? 'editable' : 'readonly'}
-
       value={src.content}
-      onTextChange={(e) => setTextState(e.htmlValue)}
       placeholder='No text added yet. Click to add some text'
       {...(!isEditable && { readOnly: true })}
       {...(!isEditable && { showHeader: false })}
+      {...(isEditable && { onTextChange: (e) => setTextState(e.htmlValue) })}
       showHeader={isEditable || false}
       headerTemplate={toolbar}
     />

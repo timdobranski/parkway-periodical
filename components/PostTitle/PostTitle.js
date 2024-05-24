@@ -40,7 +40,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
   }, [user])
 
   useEffect(() => {
-    console.log('AUTHOR IN POST TITLE: ', authorData)
+    // console.log('AUTHOR IN POST TITLE: ', authorData)
   }, [authorData])
 
 
