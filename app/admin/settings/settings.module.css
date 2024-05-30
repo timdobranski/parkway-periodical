@@ -44,7 +44,7 @@
   position: relative;
   height: 150px;
   width: 150px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   overflow: hidden;
   /* width: fit-content; */
   margin: 0 auto;
@@ -61,11 +61,12 @@
   overflow: hidden; /* Keeps the image from spilling outside the border-radius */
   object-fit: cover;
   object-position: center;
+  border-radius: 50%;
 }
-.currentPhotoPreview:hover {
+/* .currentPhotoPreview:hover {
   cursor: pointer;
   filter:brightness(.6);
-}
+} */
 .currentPhotoPreviewWrapper:hover .editIcon {
   display: block;
   cursor: pointer;
@@ -77,12 +78,13 @@
   height: 25px;
   width: 25px;
   padding: .75rem;
-  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, .7);
   border: solid white 2px;
   border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  /* transform: translate(-50%, -50%); */
 }
 .editIcon:hover .currentPhotoPreview {
 
@@ -93,6 +95,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 .userInfo {
   font-size: 1.5rem;

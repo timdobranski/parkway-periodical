@@ -1,0 +1,173 @@
+.filterWrapper {
+  position: absolute;
+  left:50%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: space-between;
+  animation: slideUp .25s ease-out forwards;
+  /* border: solid red 2px; */
+}
+.searchBar, .filterSelect {
+  font-size: 1.25rem;
+  margin: 0 1rem;
+  padding: .25rem .1rem;
+  border: solid 1px rgb(0, 89, 124);
+  font-family: Louis George Cafe;
+}
+.searchIcon {
+  display: none;
+}
+.searchWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  /* border: solid red 2px; */
+}
+.searchBar, .searchBarExpanded {
+  width: 100%;
+
+}
+.searchButton {
+  font-size: 1.25rem;
+  padding: .25rem 1rem;
+  background-color: var(--primary-red);
+  color: white;
+  border: none;
+  margin-right: 4rem;
+  font-family: Louis George Cafe;
+
+}
+.filterSelect {
+  min-width: 100px;;
+  border-radius: 2px;
+  border: none;
+}
+.video {
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
+}
+.videoMobileWrapper {
+  display: none; /* Initially hidden, will be shown in the media query */
+}
+.filterWrapper {
+  position: relative;
+  width: 80%;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: flex-end;
+  padding: .5rem .1rem .5rem .1rem;
+  animation: none;
+  left: 0;
+  border: none;
+  margin: 0 auto;
+  animation: slideUpNoPosition 1s ease-out forwards;
+}
+.searchWrapper {
+  position: absolute;
+  flex-grow: 1;
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  border: none;
+  margin: 1rem 0;;
+  padding: 0 .5rem;
+}
+.searchIcon, .searchIconExpanded {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border: solid white 2px;
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  padding: 10px;
+}
+.searchIcon:hover {
+
+}
+.searchIconExpanded {
+  background-color: var(--primary-red);
+}
+.searchBar, .searchBarExpanded {
+  height: 40px;
+  margin: 0 .25rem;
+  z-index: 1;
+}
+.searchIcon:hover, .searchIconExpanded:hover {
+  cursor: pointer;
+}
+.searchBar {
+  position: relative;
+  width: 40px;
+  min-width: 0px;
+  border-radius: 50%;
+  padding: 5px;
+  text-align: center;
+  outline: none;
+  transition: width 0.4s ease-in-out, border-radius 0.1s ease-in-out 0.3s, background-color 0.4s;
+  background-color: var(--primary-red);
+  color: var(--primary-red);
+}
+.searchBarExpanded {
+  position: relative;
+  width: 100%;
+  font-size: 1.25rem;
+  padding: 0 5px 0 50px;
+  border: none;
+  border-radius: 20px;
+  transition: width 0.4s ease-in-out,  background-color 0.4s ease-in-out 0.3s ;
+  border: solid white 2px;
+  z-index: 1;
+  border: none;
+  background-color: white;;
+}
+.searchBar:hover {
+  cursor: pointer;
+
+}
+.searchBar::placeholder {
+  color: transparent;
+}
+.searchButton {
+  display: none;
+}
+.filterSelect {
+  position: relative;
+  right: 0;
+  width: 80%;
+  min-width: 50px;
+  margin: .5rem 2rem .5rem 1rem;
+  border: none;
+  border-radius: 15;
+}
+
+@media(max-width: 768px) {
+  .filterWrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem 0 .5rem 1rem;
+    animation: none;
+    left: 0;
+    animation: slideUpNoCenter 2s ease
+    /* border: solid red */
+  }
+  .searchBarExpanded {
+    /* border: solid green 2px; */
+    width: calc(100% - 1rem)
+  }
+  .filterSelect {
+    width: calc(100% - 30vw);
+    margin-right: 1vw;
+  }
+}

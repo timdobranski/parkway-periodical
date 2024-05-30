@@ -64,11 +64,11 @@ export default function Settings () {
 
       <div className={styles.editUserInfoWrapper}>
 
-        <h3 className={styles.infoLabel}>Update Photo</h3>
+        {/* <h3 className={styles.infoLabel}>Update Photo</h3>
         <div className={styles.inputWrapper}>
           <input className={styles.photoInput} type='file' placeholder='Select new photo' />
           <button className={styles.inviteButton}>Update Photo</button>
-        </div>
+        </div> */}
 
         <h3 className={styles.infoLabel}>Change Email</h3>
         <div className={styles.inputWrapper}>
