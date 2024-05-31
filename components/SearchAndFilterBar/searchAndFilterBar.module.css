@@ -1,33 +1,42 @@
-.filterWrapper {
-  position: absolute;
-  left:50%;
-  width: 100%;
+.mainWrapper {
+  position: relative;
+  width: 90%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: space-between;
-  animation: slideUp .25s ease-out forwards;
-  /* border: solid red 2px; */
+  align-items: flex-end;
+  animation: none;
+  left: 0;
+  margin: 0 auto;
+  animation: slideUpNoPosition 1s ease-out forwards;
+  /* border: solid yellow 2px; */
 }
+.filterSelect {
+  min-width: 100px;
+  border-radius: 2px;
+  border: none;
+  position: relative;
+  width: 80%;
+  min-width: 50px;
+  margin: 0 auto;
+  border: solid red 2px;
+  margin-right: 2rem;
+  text-align: left;
+}
+
+
 .searchBar, .filterSelect {
   font-size: 1.25rem;
-  margin: 0 1rem;
-  padding: .25rem .1rem;
+  margin: 0 2rem 0 6rem;
+  padding: .25rem .25rem;
   border: solid 1px rgb(0, 89, 124);
   font-family: Louis George Cafe;
 }
 .searchIcon {
   display: none;
 }
-.searchWrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  /* border: solid red 2px; */
-}
 .searchBar, .searchBarExpanded {
   width: 100%;
-
 }
 .searchButton {
   font-size: 1.25rem;
@@ -37,32 +46,6 @@
   border: none;
   margin-right: 4rem;
   font-family: Louis George Cafe;
-
-}
-.filterSelect {
-  min-width: 100px;;
-  border-radius: 2px;
-  border: none;
-}
-.video {
-  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.5);
-}
-.videoMobileWrapper {
-  display: none; /* Initially hidden, will be shown in the media query */
-}
-.filterWrapper {
-  position: relative;
-  width: 80%;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-  align-items: flex-end;
-  padding: .5rem .1rem .5rem .1rem;
-  animation: none;
-  left: 0;
-  border: none;
-  margin: 0 auto;
-  animation: slideUpNoPosition 1s ease-out forwards;
 }
 .searchWrapper {
   position: absolute;
@@ -72,8 +55,9 @@
   display: flex;
   flex-direction: row;
   border: none;
-  margin: 1rem 0;;
+  margin: 1rem 0;
   padding: 0 .5rem;
+  /* border: solid red 2px; */
 }
 .searchIcon, .searchIconExpanded {
   box-sizing: border-box;
@@ -109,15 +93,16 @@
   min-width: 0px;
   border-radius: 50%;
   padding: 5px;
-  text-align: center;
+  text-align: left;
   outline: none;
   transition: width 0.4s ease-in-out, border-radius 0.1s ease-in-out 0.3s, background-color 0.4s;
   background-color: var(--primary-red);
   color: var(--primary-red);
+
 }
 .searchBarExpanded {
   position: relative;
-  width: 100%;
+  width: 100% !important;
   font-size: 1.25rem;
   padding: 0 5px 0 50px;
   border: none;
@@ -127,6 +112,7 @@
   z-index: 1;
   border: none;
   background-color: white;;
+  /* border: solid red 2px; */
 }
 .searchBar:hover {
   cursor: pointer;
@@ -138,15 +124,14 @@
 .searchButton {
   display: none;
 }
-.filterSelect {
-  position: relative;
-  right: 0;
-  width: 80%;
-  min-width: 50px;
-  margin: .5rem 2rem .5rem 1rem;
-  border: none;
-  border-radius: 15;
+.searchBarExpanded::-webkit-search-cancel-button {
+  -webkit-appearance: none; /* Remove default appearance */
+  /* appearance: none; */
+  height: 20px; /* Set the height */
+  width: 20px; /* Set the width */
 }
+
+
 
 @media(max-width: 768px) {
   .filterWrapper {

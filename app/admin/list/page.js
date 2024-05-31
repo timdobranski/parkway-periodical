@@ -79,10 +79,14 @@ export default function List() {
 
           return (
             <div className={styles.listWrapper} key={index}>
-              <div className={styles.collapsedContentWrapper} onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}>
+              <div className={styles.collapsedContentWrapper}>
                 <div className={styles.titleWrapper}>
-                  <FontAwesomeIcon icon={expanded === index ? faChevronUp : faChevronDown} className={styles.dropdownIcon} />
-                  <h3 className='smallerPostTitle'>{item.title || item.name}</h3>
+                  <FontAwesomeIcon
+                    icon={expanded === index ? faChevronUp : faChevronDown}
+                    className={styles.dropdownIcon}
+                    onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}
+                  />
+                  <h3 className='smallerPostTitle' onClick={() => router.push(`/public/home?postId=${item.id}`)}>{item.title || item.name}</h3>
                 </div>
                 <div className={styles.editControlsWrapper}>
                   <button className={styles.editButton}  onClick={() => router.push(editUrl)}>Edit</button>
@@ -94,6 +98,7 @@ export default function List() {
                 <p>{item.position}</p>
                 <p>{item.description || item.bio}</p>
                 <p>{item.url}</p>
+                {/* {TODO: ADD ITEM AUTHOR AND DATE FOR POSTS}  */}
               </div>
             </div>
           )

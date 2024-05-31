@@ -19,12 +19,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home({ introRunning, setIntroRunning }) {
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const searchParams = useSearchParams();
   const postId = searchParams.get('postId');
   const [tagId, setTagId] = useState(null)
   const [searchQuery, setSearchQuery] = useState(null);
-  // const [searchExpanded, setSearchExpanded] = useState(false);
   const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
   const [postTags, setPostTags]  = useState([]);
   const [showLinkCopied, setShowLinkCopied] = useState(false);
@@ -39,7 +38,9 @@ export default function Home({ introRunning, setIntroRunning }) {
       .select('*');
 
     if (tagId) {
-      setDisplayType('tag');
+      setSearchQuery(null);
+      postId = null;
+      // setDisplayType('tag');
       // Fetch post IDs from post_tags where tag_id matches
       const { data, error: postTagError } = await supabase
         .from('post_tags')
@@ -54,9 +55,11 @@ export default function Home({ introRunning, setIntroRunning }) {
       const postIds = postTagData.map(pt => pt.post);
       query = query.in('id', postIds);
     } else if (searchQuery) {
+      setTagId(null)
       setDisplayType('search');
       query = query.ilike('searchableText', `%${searchQuery}%`);
     } else if (postId) {
+      console.log('POST ID REGISTERED: ', postId)
       setDisplayType('id');
       query = query.eq('id', postId);
     } else {
@@ -84,7 +87,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     const { data, error } = await supabase.from('tags').select('*');
     if (data) {
       console.log('tags: ', data);
-      setPostTags([{name: 'All Departments', id: 'all'}, ...data]);
+      setPostTags([{name: 'All Posts', id: 'all'}, ...data]);
     }
     if (error) {
       console.error('Error fetching tags:', error);
@@ -92,12 +95,20 @@ export default function Home({ introRunning, setIntroRunning }) {
   };
   // get posts with tag id when tag ID changes
   useEffect(() => {
+    if (tagId) {
     getPosts({tagId: tagId});
+    }
   }, [tagId]);
+  useEffect(() => {
+    if (postId) {
+    getPosts({postId: postId});
+    }
+  }, [postId]);
   // get tags when the page loads
   useEffect(() => {
     getTags();
   }, [])
+
 
   const handleFilterChange = (event) => {
     const value = event.target.value;
@@ -119,12 +130,12 @@ export default function Home({ introRunning, setIntroRunning }) {
     const shareUrl = `${baseUrl}/public/home/postId=${id}`;
 
     navigator.clipboard.writeText(shareUrl)
-    .then(() => {
-      setShowLinkCopied(true);
-      setTimeout(() => {
-        setShowLinkCopied(false);
-      }, 2000);
-    })
+      .then(() => {
+        setShowLinkCopied(true);
+        setTimeout(() => {
+          setShowLinkCopied(false);
+        }, 2000);
+      })
       .catch(err => {
         console.error('Failed to copy the link: ', err);
       });
@@ -141,19 +152,38 @@ export default function Home({ introRunning, setIntroRunning }) {
           setTagId={setTagId}
           handleFilterChange={handleFilterChange}
           searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
+          setSearch={setSearchQuery}
+          getPosts={getPosts}
         />
-        {displayType === 'tag' && tagId &&
+
+        {searchQuery &&
+        <>
+          <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>
+            {`Search results for "${searchQuery}"`}
+          </p>
+        </>
+        }
+        {tagId &&
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
             <span className={styles.tagLabel}>
               {postTags.find(tag => tag.id === tagId).name}
             </span>
           </p>
-          {posts.length === 0 && noResultsMessage}
-          <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts</button>
         </>
         }
+        {postId &&
+        <>
+          <p className={styles.viewingPostsMessage}>{`Viewing post #${postId} `}
+          </p>
+        </>
+        }
+        {posts.length === 0 && noResultsMessage}
+        {postId || tagId || searchQuery ?
+          <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
+          </button> : null
+        }
+
 
         {posts &&
     posts.map((post, i) => (
