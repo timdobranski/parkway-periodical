@@ -17,16 +17,19 @@ import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function Home({ introRunning, setIntroRunning }) {
   const [posts, setPosts] = useState([]);
   const searchParams = useSearchParams();
-  const postId = searchParams.get('postId');
   const [tagId, setTagId] = useState(null)
   const [searchQuery, setSearchQuery] = useState(null);
   const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
   const [postTags, setPostTags]  = useState([]);
   const [showLinkCopied, setShowLinkCopied] = useState(false);
+  const router = useRouter();
+  let postId = searchParams.get('postId');
+  const pathname = usePathname();
 
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
@@ -38,6 +41,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       .select('*');
 
     if (tagId) {
+      {postId && removeQueryString()}
       setSearchQuery(null);
       postId = null;
       // setDisplayType('tag');
@@ -93,12 +97,21 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching tags:', error);
     }
   };
+  // helper to remove post ID query string
+  const removeQueryString = () => {
+    console.log('pathname: ', pathname)
+    router.push(
+pathname
+
+    );
+  };
   // get posts with tag id when tag ID changes
   useEffect(() => {
     if (tagId) {
     getPosts({tagId: tagId});
     }
   }, [tagId]);
+  // get posts with postId when postId changes
   useEffect(() => {
     if (postId) {
     getPosts({postId: postId});
@@ -114,7 +127,6 @@ export default function Home({ introRunning, setIntroRunning }) {
     const value = event.target.value;
     setTagId(value === 'all' ? null : parseInt(value));
   };
-
   const noResultsMessage = (
     <p className='centeredWhiteText'>{`It looks like there aren't any posts for this ${displayType === 'search' ? 'search' : 'category'} yet`}</p>
   )
@@ -123,6 +135,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     setTagId(null);
     setSearchQuery(null);
     getPosts();
+    removeQueryString();
   }
   // copy post url to clipboard
   const handleShareClick = (id) => {

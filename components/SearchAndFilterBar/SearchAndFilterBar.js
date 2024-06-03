@@ -51,6 +51,7 @@ export default function SearchAndFilterBar ({ setSearch, postTags, tagId, setTag
       <select name='filter' id='filter' value={tagId || 'all'}
         className={`${styles.filterSelect}`}
         onChange={handleFilterChange}
+
       >
         {postTags?.map(tag => (
           <option key={tag.id} value={tag.id}>{tag.name}</option>
