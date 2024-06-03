@@ -118,7 +118,7 @@
   overflow-y: auto;
   overflow-x: visible !important;
   height: calc(100vh - 100px);
-  border: solid white 6px;
+  border: solid rgb(255, 255, 255) 4px;
   border-bottom: 0;
   padding: 2rem 1.5rem 4rem calc(1.5rem + 8px);
   display: flex;

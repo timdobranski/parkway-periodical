@@ -178,7 +178,17 @@
 .createdAt {
   font-size: 1.25rem
 }
-
+.offlineMessage {
+  font-size: 1.5rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* z-index: 100; */
+  background-color: rgba(255, 255, 255, .7);
+  border: solid white 4px;
+  padding: .5rem 1rem;
+  transform: translate(-50%, -50%);
+}
 
 @media(max-width: 768px) {
   .mobileHeaderWrapper {

@@ -18,8 +18,11 @@ import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
+import useOnlineStatus from '../../../utils/useOnlineStatus';
+
 
 export default function Home({ introRunning, setIntroRunning }) {
+  const isOnline = useOnlineStatus();
   const [posts, setPosts] = useState([]);
   const searchParams = useSearchParams();
   const [tagId, setTagId] = useState(null)
@@ -41,6 +44,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       .select('*');
 
     if (tagId) {
+      console.log('TAG ID: ', tagId)
       {postId && removeQueryString()}
       setSearchQuery(null);
       postId = null;
@@ -99,16 +103,15 @@ export default function Home({ introRunning, setIntroRunning }) {
   };
   // helper to remove post ID query string
   const removeQueryString = () => {
-    console.log('pathname: ', pathname)
-    router.push(
-pathname
-
-    );
+    postId = null;
+    router.push(pathname);
   };
   // get posts with tag id when tag ID changes
   useEffect(() => {
     if (tagId) {
-    getPosts({tagId: tagId});
+    getPosts({ tagId, searchQuery, postId });
+    } else {
+      getPosts({ tagId, searchQuery, postId })
     }
   }, [tagId]);
   // get posts with postId when postId changes
@@ -121,10 +124,15 @@ pathname
   useEffect(() => {
     getTags();
   }, [])
+  useEffect(() => {
+    getPosts();
+  }, [])
 
 
   const handleFilterChange = (event) => {
+    console.log('inside handle filter change')
     const value = event.target.value;
+    console.log('value: ', value);
     setTagId(value === 'all' ? null : parseInt(value));
   };
   const noResultsMessage = (
@@ -140,7 +148,7 @@ pathname
   // copy post url to clipboard
   const handleShareClick = (id) => {
     const baseUrl = window.location.origin;
-    const shareUrl = `${baseUrl}/public/home/postId=${id}`;
+    const shareUrl = `${baseUrl}/public/home/?postId=${id}`;
 
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
@@ -267,6 +275,11 @@ pathname
       </div>
     </div>
 
+  if (!isOnline) {
+    return (
+      <p className={styles.offlineMessage}>{`It looks like you're offline. Check your internet connection, and try refreshing the page.`}</p>
+    )
+  }
 
   return (
     <>

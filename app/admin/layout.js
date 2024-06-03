@@ -11,9 +11,7 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    console.log('USER IN LAYOUT PAGE: ', user)
-  }, [user])
+
   useEffect(() => {
     // Check if the user is authenticated
     const checkAuth = async () => {
