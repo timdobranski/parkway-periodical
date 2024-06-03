@@ -5,6 +5,9 @@
   padding: .5rem;
   height: 15px;
 }
+.addIcon:hover {
+  cursor: pointer;
+}
 .dropdownIcon {
   margin: 0 1rem;
 }

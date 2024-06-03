@@ -134,7 +134,7 @@
 
 
 @media(max-width: 768px) {
-  .filterWrapper {
+  .mainWrapper {
     position: relative;
     width: 100%;
     display: flex;

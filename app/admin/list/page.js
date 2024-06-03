@@ -72,7 +72,8 @@ export default function List() {
         <h1 className='pageTitle'>{`${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
-          router.push(`/admin/new-content?type=${type}`);
+          type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
+          ;
         }}/>        {list && list.map((item, index) => {
 
           const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
