@@ -48,7 +48,7 @@ export default function SearchAndFilterBar ({ setSearch, postTags, tagId, setTag
         />
       </div>
 
-      <select name='filter' id='filter' value={tagId}
+      <select name='filter' id='filter' value={tagId || ''}
         className={`${styles.filterSelect}`}
         onChange={handleFilterChange}
 
