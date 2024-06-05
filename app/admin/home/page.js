@@ -9,7 +9,7 @@ import supabase from '../../../utils/supabase';
 
 
 export default function AdminHomePage() {
-  const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events'];
+  const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events', 'drafts'];
   const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {
     acc[type] = 0; // initialize all counts to zero
     return acc;
@@ -62,7 +62,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>POSTS</h2>
             </Link>
           </div>
-          <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button>
+          {typeCounts.drafts ? <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button> : null}
           <p>{`Posts: ${typeCounts.posts}`}</p>
           {/* <p>Number of EXPIRED posts</p> */}
         </div>

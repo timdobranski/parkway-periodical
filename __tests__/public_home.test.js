@@ -1,61 +1,40 @@
+import { mockRouter } from '../__mocks__/mocks.js';
 import { render, screen, cleanup } from '@testing-library/react';
 import Home from '../app/public/home/page.js';
-import { useRouter } from 'next/navigation';
-// import { RouterContext } from 'next/dist/shared/lib/router-context'; // Import RouterContext
-import mockRouter from 'next-router-mock';
-import useOnlineStatus from '../../../utils/useOnlineStatus';
+// import mockRouter from 'next-router-mock';
 
+// // Mock next/navigation to use next-router-mock
+// jest.mock('next/navigation', () => ({
+//   useRouter: () => mockRouter,
+//   usePathname: () => mockRouter.pathname,
+//   useSearchParams: () => new URLSearchParams(mockRouter.query),
+// }));
 
-// use the mock router
-jest.mock('next/navigation', () => ({
-  useRouter: () => mockRouter,
-  usePathname: () => mockRouter.pathname,
-  useSearchParams: () => new URLSearchParams(mockRouter.query),
-}));
+// // Mock console methods before each test
+// beforeEach(() => {
+//   jest.spyOn(console, 'log').mockImplementation(() => {});
+//   jest.spyOn(console, 'warn').mockImplementation(() => {});
+//   jest.spyOn(console, 'error').mockImplementation(() => {});
+// });
 
-// mock the supabase client
-jest.mock('../../../utils/supabase', () => ({
-  from: jest.fn().mockReturnThis(),
-  select: jest.fn().mockReturnThis(),
-  eq: jest.fn().mockReturnThis(),
-  in: jest.fn().mockReturnThis(),
-  order: jest.fn().mockReturnThis(),
-}));
-
-// mock the useOnlineStatus hook
-jest.mock('../../../utils/useOnlineStatus', () => jest.fn(() => true));
-
-
-
-
-
-// override console methods
-beforeEach(() => {
-  jest.spyOn(console, 'log').mockImplementation(() => {});
-  jest.spyOn(console, 'warn').mockImplementation(() => {});
-  jest.spyOn(console, 'error').mockImplementation(() => {});
-});
-// clean up after each test
-afterEach(() => {
-  jest.restoreAllMocks();
-  cleanup();
-  jest.resetAllMocks();
-});
+// // Restore console methods and clean up after each test
+// afterEach(() => {
+//   jest.restoreAllMocks();
+//   cleanup(); // Clean up after each test to prevent leaks
+//   jest.resetAllMocks(); // Reset all mocks after each test
+// });
 
 describe('Home', () => {
+  it('renders a specific post when provided a postId', () => {
+    mockRouter.setCurrentUrl('/public/home?postId=96');
 
-  it('renders the header title "Parkway Periodical"', () => {
-    mockRouter.setCurrentUrl('/public/home?postId=101');
+    const { container } = render(<Home />);
 
-    const number = 1;
-    // <RouterContext.Provider value={mockRouter}>
-      render(<Home />);
-    // </RouterContext.Provider>
+    // Find all elements with the post class name
+    const posts = container.getElementsByClassName('post');
+    expect(posts.length).toBe(1); // Ensure only one post is rendered
 
-    // const heading = screen.getByRole('heading', { name: /parkway periodical/i });
-    // expect(heading).toBeInTheDocument();
-    expect(number).toEqual(1);
+    // Check that the post's content matches the expected text for post 96
+    expect(posts[0]).toHaveTextContent('Demo of Photo Carousel & Text Options');
   });
-
-
 });

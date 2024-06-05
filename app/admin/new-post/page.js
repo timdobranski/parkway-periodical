@@ -81,11 +81,13 @@ export default function NewPostPage() {
         .single();
 
       if (draft) {
+        console.log('existing draft found')
         setContentBlocks(JSON.parse(draft.content));
       } else {
+        console.log('no draft found')
         const emptyPost = [{ type: 'title', content: '', style: { width: '0px', height: '0px', x: 0, y: 0 } }];
         setContentBlocks(emptyPost);
-        updateDraft({ author: user.supabase_user.id, content: emptyPost });
+        // updateDraft({ author: user.supabase_user.id, content: emptyPost });
       }
     }
   }
@@ -102,16 +104,32 @@ export default function NewPostPage() {
       console.error('Error updating draft:', error);
     }
   }
+  async function deleteDraft() {
+    try {
+      const { error } = await supabase
+        .from('drafts')
+        .delete()
+        .match({ author: user.supabase_user.id });
+
+      if (error) throw error;
+      console.log('Draft deleted');
+    } catch (error) {
+      console.error('Error deleting draft:', error);
+    }
+  }
   // update the draft when content changes (debounced)
   useEffect(() => {
+    const isNewPost = contentBlocks.length === 1 && contentBlocks[0].content === '';
     if (contentBlocks.length && user) {
-      const post = {
-        content: JSON.stringify(contentBlocks),
-        'post-type': 'weekly-update', // Example type
-        author: user.supabase_user.id
-      };
-      setSaving(true);
-      debouncedUpdateDraftRef.current(post);
+      if (isNewPost) { deleteDraft() } else {
+        const post = {
+          content: JSON.stringify(contentBlocks),
+          'post-type': 'weekly-update', // Example type
+          author: user.supabase_user.id
+        };
+        setSaving(true);
+        debouncedUpdateDraftRef.current(post);
+      }
     }
   }, [contentBlocks, user]);
   useEffect(() => {
