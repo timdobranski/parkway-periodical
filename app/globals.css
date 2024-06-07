@@ -101,7 +101,7 @@
   justify-content: flex-start;
   overflow-y: auto;
   height: calc(100vh - 50px);
-  background-color: rgb(237, 237, 237);
+  background-color: rgb(246, 246, 246);
   /* border: solid blue 4px; */
 }
 .feedWrapper {

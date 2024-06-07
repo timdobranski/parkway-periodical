@@ -10,6 +10,7 @@ import CroppablePhoto from '../../../components/EditablePhoto/EditablePhoto';
 export default function Settings () {
   const [user, setUser] = useState(null);
   const userIcon = <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
+  const [newUserEmail, setNewUserEmail] = useState('');
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
@@ -44,10 +45,32 @@ export default function Settings () {
     getAndSetUser();
   }, []);
 
+  const sendRequestToInviteNewUser = async (email) => {
+    try {
+      const response = await fetch('/api/inviteUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong');
+      }
+
+      alert('Invite sent successfully');
+    } catch (error) {
+      console.error('Error in client request to server:', error);
+      alert('Failed to send invite');
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
-
 
   return (
     <div className={styles.pageWrapper}>
@@ -84,8 +107,17 @@ export default function Settings () {
 
         <h3 className={styles.infoLabel}>Invite New User</h3>
         <div className={styles.inputWrapper}>
-          <input className={styles.updateInput} type='email' placeholder='Enter email address' />
-          <button className={styles.inviteButton}>Send Invite</button>
+          <input
+            className={styles.updateInput}
+            value={newUserEmail}
+            onChange={(e) => setNewUserEmail(e.target.value)}
+            type='email'
+            placeholder='Enter email address'
+          />
+          <button
+            className={styles.inviteButton}
+            onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
+          >Send Invite</button>
         </div>
       </div>
       <button className={styles.archiveButton}>ARCHIVE CURRENT SCHOOL YEAR</button>
