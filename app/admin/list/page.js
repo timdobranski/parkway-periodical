@@ -19,7 +19,7 @@ export default function List() {
   // types: electives, clubs, posts, staff, links
 
   useEffect(() => {
-  console.log('expanded: ', expanded)
+    console.log('expanded: ', expanded)
   }, [expanded])
   const getList = async () => {
     const { data, error } = await supabase
@@ -74,36 +74,38 @@ export default function List() {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
           type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
           ;
-        }}/>        {list && list.map((item, index) => {
+        }}/>
+        <div className={styles.sectionWrapper}>
+          {list && list.map((item, index) => {
+            const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
 
-          const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
-
-          return (
-            <div className={styles.listWrapper} key={index}>
-              <div className={styles.collapsedContentWrapper}>
-                <div className={styles.titleWrapper}>
-                  <FontAwesomeIcon
-                    icon={expanded === index ? faChevronUp : faChevronDown}
-                    className={styles.dropdownIcon}
-                    onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}
-                  />
-                  <h3 className='smallerPostTitle' onClick={() => router.push(`/public/home?postId=${item.id}`)}>{item.title || item.name}</h3>
+            return (
+              <div className={styles.listWrapper} key={index}>
+                <div className={styles.collapsedContentWrapper}>
+                  <div className={styles.titleWrapper}>
+                    <FontAwesomeIcon
+                      icon={expanded === index ? faChevronUp : faChevronDown}
+                      className={styles.dropdownIcon}
+                      onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}
+                    />
+                    <h3 className='smallerPostTitle' onClick={() => router.push(`/public/home?postId=${item.id}`)}>{item.title || item.name}</h3>
+                  </div>
+                  <div className={styles.editControlsWrapper}>
+                    <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
+                    <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>DELETE</button>
+                  </div>
                 </div>
-                <div className={styles.editControlsWrapper}>
-                  <button className={styles.editButton}  onClick={() => router.push(editUrl)}>Edit</button>
-                  <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>Delete</button>
+                <div className={expanded === index ? styles.expandedInfo : styles.expandedInfoHidden}>
+                  {item.when && <p>{`Meets: ${item.when}`}</p>}
+                  <p>{item.position}</p>
+                  <p>{item.description || item.bio}</p>
+                  <p>{item.url}</p>
+                  {/* {TODO: ADD ITEM AUTHOR AND DATE FOR POSTS}  */}
                 </div>
               </div>
-              <div className={expanded === index ? styles.expandedInfo : styles.expandedInfoHidden}>
-                {item.when && <p>{`Meets: ${item.when}`}</p>}
-                <p>{item.position}</p>
-                <p>{item.description || item.bio}</p>
-                <p>{item.url}</p>
-                {/* {TODO: ADD ITEM AUTHOR AND DATE FOR POSTS}  */}
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </div>
   )

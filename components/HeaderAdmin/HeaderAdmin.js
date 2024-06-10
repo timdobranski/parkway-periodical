@@ -126,7 +126,9 @@ export default function Header({ user }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
+  useEffect(() => {
+    console.log('user in header: ', user);
+  }, [user])
   const toggleMenuOpen = (menu) => {
     // if menu is already open, close it
     if (menuOpen === menu) {
@@ -249,6 +251,14 @@ export default function Header({ user }) {
     </div>
 
   )
+  const testEmailErrorButton = (
+    <button
+    onClick={() => { throw new Error('Test Error'); }}
+    className={styles.testErrorButton}
+  >
+  Test Error Email
+  </button>
+  )
   const leftSideNavbar = (
     <div className={styles.leftSideNavbarContent}>
       <div className={styles.logoContainer}>
@@ -279,6 +289,9 @@ export default function Header({ user }) {
   )
   const rightSideNavbar = (
     <div className={styles.rightSideNavbarContent}>
+      { user && (user.id === 1 || user.id === 3) &&
+        testEmailErrorButton
+        }
       {alertsMenu}
       {rightNavbarMenu}
       {user && userMenu}

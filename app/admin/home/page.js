@@ -126,11 +126,6 @@ export default function AdminHomePage() {
           </div>
           <p>{`Staff: ${typeCounts.staff}`}</p>
         </div>
-
-        <button
-          onClick={() => { throw new Error('Test Error'); }}
-        >
-          Test Error</button>
       </div>
       {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}
     </>
