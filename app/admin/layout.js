@@ -6,6 +6,7 @@ import supabase from '../../utils/supabase'; // Update the path as per your dire
 import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
 import { useAdmin } from '../../contexts/AdminContext';
 import { AdminProvider } from '../../contexts/AdminContext';
+import ErrorHandling from '../../components/ErrorHandling/ErrorHandling';
 
 export default function AdminLayout({ children }) {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function AdminLayout({ children }) {
         <div className='adminPageWrapper'>
           <Suspense>
             {children}
+            <ErrorHandling />
           </Suspense>
         </div>
       </AdminProvider>

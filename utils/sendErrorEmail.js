@@ -1,16 +1,15 @@
-// utils/sendEmail.js
 import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.NEXT_SENDGRID_API_KEY);
 
 export const sendErrorEmail = async (error, context = {}) => {
   const { page, user, additionalInfo } = context;
   const msg = {
-    to: 'timdobranski@gmail.com', // Change to your recipient
+    to: 'singlecut@hotmail.com', // Change to your recipient
     from: 'timdobranski@gmail.com', // Change to your verified sender
     subject: 'Error Notification',
     text: `
-      An error occurred: ${error.message}
+      An error occurred in Parkway Periodical: ${error.message}
       Page: ${page || 'N/A'}
       User: ${user || 'N/A'}
       Additional Info: ${additionalInfo || 'N/A'}
@@ -25,9 +24,13 @@ export const sendErrorEmail = async (error, context = {}) => {
   };
 
   try {
-    await sgMail.send(msg);
-    console.log('Error email sent');
+    const response = await sgMail.send(msg);
+    console.log('sgMail.send() response: ', response);
+
+    // console.log('Error email sent');
+    return true; // Return true on success
   } catch (err) {
     console.error('Error sending email', err);
+    throw new Error('Failed to send email'); // Throw an error to handle it in the API route
   }
 };

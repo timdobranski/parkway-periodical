@@ -1,28 +1,24 @@
-import { NextResponse } from 'next/server';
 import { sendErrorEmail } from '../../../utils/sendErrorEmail';
 
 export async function POST(request) {
-  console.log('INSIDE SEND ERROR EMAIL')
-  const { error, context } = await request.json();
-
-  if (!error || !context) {
-    return NextResponse.json({ error: 'Either error or context not provided to API route handler' }, { status: 400 });
-  }
-
   try {
-    const result = await sendErrorEmail(error, context);
+    const { error, context } = await request.json();
 
-    if (!result) {
-      return NextResponse.json({ error: 'Failed to send email: no response' }, { status: 500 });
+    if (!error || !context) {
+      return new Response(JSON.stringify({ error: 'Missing required parameters' }), {
+        status: 400,
+      });
     }
 
-    return NextResponse.json({ message: 'Email sent', data: result }, { status: 200 });
-  } catch (error) {
-    console.error('Error sending email:', error);
-    return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
+    const errorEmailResult = await sendErrorEmail(error, context);
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+    });
+    console.log('Error email result:', errorEmailResult)
+  } catch (err) {
+    console.error('Error in API route:', err);
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+    });
   }
-}
-
-export function OPTIONS() {
-  return NextResponse.json({ error: `Method Not Allowed` }, { status: 405, headers: { Allow: 'POST' } });
 }

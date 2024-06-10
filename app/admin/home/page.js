@@ -127,11 +127,10 @@ export default function AdminHomePage() {
           <p>{`Staff: ${typeCounts.staff}`}</p>
         </div>
 
-        {/* <div className={styles.sectionWrapper}>
-          <Link href='/admin/settings'>
-            <h2 className={styles.link}>SETTINGS</h2>
-          </Link>
-        </div> */}
+        <button
+          onClick={() => { throw new Error('Test Error'); }}
+        >
+          Test Error</button>
       </div>
       {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}
     </>
