@@ -19,22 +19,20 @@
     /* border: solid red 2px; */
     width: 100vw;
 }
-
-.userIcon {
+.userIcon, .userPhoto {
   height: 80px;
   width: 80px;
-  margin: 2rem;
-  padding: 1.5rem;
   border-radius: 50%;
-  border: solid black 2px;
-  color: var(--primary-blue);
-  background-color: rgb(208, 239, 255)
+}
+.userIcon {
+  padding: 1.5rem;
+  border: solid rgb(185, 185, 185) 1px;
+  color: rgb(90, 90, 90);
+  background-color: rgb(241, 241, 241)
 }
 .userPhoto {
-  height: 80px;
-  width: 80px;
-  border-radius: 50%;
-  margin: 1rem auto; /* Center horizontally in a block container */
+
+  margin: 1rem auto;
   display: block; /* Change from flex to block for an img element */
   overflow: hidden; /* Keeps the image from spilling outside the border-radius */
   object-fit: cover; /* Cover the container, cropping the image as necessary */

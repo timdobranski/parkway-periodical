@@ -9,8 +9,10 @@ import CroppablePhoto from '../../../components/EditablePhoto/EditablePhoto';
 
 export default function Settings () {
   const [user, setUser] = useState(null);
-  const userIcon = <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
+  const userIcon = (<FontAwesomeIcon icon={faUser} className={styles.userIcon} />)
   const [newUserEmail, setNewUserEmail] = useState('');
+  const [nonAdminUsers, setNonAdminUsers] = useState([]);
+
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
@@ -44,6 +46,15 @@ export default function Settings () {
     };
     getAndSetUser();
   }, []);
+  useEffect(() => {
+    if (user && user.admin) {
+      const fetchNonAdminUsers = async () => {
+        const users = await getAllNonAdminUsers();
+        setNonAdminUsers(users);
+      }
+      fetchNonAdminUsers();
+    }
+  }, [user])
 
   const sendRequestToInviteNewUser = async (email) => {
     try {
@@ -68,6 +79,25 @@ export default function Settings () {
     }
   };
 
+  const getAllNonAdminUsers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('admin', false);
+
+      if (error) {
+        console.error('Error fetching non-admin users:', error);
+        return null;
+      }
+      return data;
+
+    } catch (error) {
+      console.error('Error in client request to server:', error);
+      return null;
+    }
+  }
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -75,9 +105,13 @@ export default function Settings () {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.userInfo}>
-
         <div className={styles.currentPhotoPreviewWrapper}>
-          <img src={user.photo? user.photo : userIcon} alt='User Photo' className={styles.currentPhotoPreview}/>
+          {
+            user.photo ?
+            <img src={user.photo} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon}/>
+            :
+            userIcon
+          }
           <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
         </div>
 
@@ -86,12 +120,6 @@ export default function Settings () {
       </div>
 
       <div className={styles.editUserInfoWrapper}>
-
-        {/* <h3 className={styles.infoLabel}>Update Photo</h3>
-        <div className={styles.inputWrapper}>
-          <input className={styles.photoInput} type='file' placeholder='Select new photo' />
-          <button className={styles.inviteButton}>Update Photo</button>
-        </div> */}
 
         <h3 className={styles.infoLabel}>Change Email</h3>
         <div className={styles.inputWrapper}>
@@ -119,11 +147,39 @@ export default function Settings () {
             onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
           >Send Invite</button>
         </div>
+
+        { user.admin &&
+        <>
+          <h3 className={styles.infoLabel}>Remove User</h3>
+          <div className={styles.inputWrapper}>
+            <select
+              className={styles.updateInput}
+              value={newUserEmail}
+              onChange={(e) => setNewUserEmail(e.target.value)}
+              type='email'
+              placeholder='Enter email address'
+            >
+              <option value=''>{nonAdminUsers.length ? 'Select user to remove' : 'No users to remove yet'}</option>
+              {nonAdminUsers.map((user, index) => {
+                return <option key={index} value={user.email}>{user.email}</option>
+              })}
+            </select>
+            <button
+              className={styles.inviteButton}
+              onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
+            >Remove</button>
+          </div>
+        </>
+        }
       </div>
-      <button className={styles.archiveButton}>ARCHIVE CURRENT SCHOOL YEAR</button>
-      <p className={styles.archiveInstructions}>{`When you're done adding content for the current school year, click this button
+      {user.admin &&
+      <>
+        <button className={styles.archiveButton}>ARCHIVE CURRENT SCHOOL YEAR</button>
+        <p className={styles.archiveInstructions}>{`When you're done adding content for the current school year, click this button
       to send all posts to the archive. All posts will be removed from the main page, and the year's archived
       posts will no longer be editable.`}</p>
+      </>
+      }
     </div>
     // </div>
   )
