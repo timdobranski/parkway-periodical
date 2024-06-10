@@ -224,11 +224,11 @@ export default function Header({ user }) {
   const userMenu = (
     <div className={styles.userHandle} ref={userMenuRef}>
 
-      <div className={styles.photoWrapper} onClick={() => toggleMenuOpen('user')}>
+      <div className={user?.photo ? styles.photoWrapper : styles.userIconWrapper} onClick={() => toggleMenuOpen('user')}>
         { user?.photo ?
           <img src={user.photo} alt="User Avatar" className={styles.userPhoto} />
           :
-          <FontAwesomeIcon icon={faUser} className={styles.menuIcon}/>
+          <FontAwesomeIcon icon={faUser} className={styles.userIcon}/>
         }
       </div>
       <div className={`${styles.userMenu} ${menuOpen !== 'user' ? 'hidden' : ''}`}>
