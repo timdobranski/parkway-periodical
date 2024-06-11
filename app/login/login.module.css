@@ -3,12 +3,16 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;}
+  height: 80vh;
+}
+
 .loginContainer * {
-font-family: Louis George Cafe;
 }
 .loginHeader {
-font-family: Louis George Cafe;
+  font-size: 2rem;
+  font-weight: normal;
+  margin: 1rem;
+  color: white;
 }
 .loginForm {
   display: flex;
@@ -20,8 +24,8 @@ font-family: Louis George Cafe;
   border: none;
   border-radius: 20px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.367);
+  background: rgb(0, 114, 163);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.367);
 
 }
 .loginInput {
@@ -60,4 +64,8 @@ padding-right: 30px; /* Adjust as necessary */
   padding: 10px;
   font-size: 20px;
   background: rgba(255, 255, 255, 0.5);
+}
+.loginButton:hover {
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
 }

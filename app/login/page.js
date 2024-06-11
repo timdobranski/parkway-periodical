@@ -32,7 +32,8 @@ export default function Login() {
   return (
     <div className={styles.loginContainer}>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <h1 className={styles.loginHeader}>Login</h1>
+        <h1 className='siteTitle'>PARKWAY PERIODICAL</h1>
+        <h3 className={styles.loginHeader}>Login</h3>
         <input
           type="text"
           value={email}

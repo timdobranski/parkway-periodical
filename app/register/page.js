@@ -3,7 +3,7 @@
 export default function Register() {
   return (
     <div>
-      <h1>New User Signup</h1>
+      <h1 className='postTitle'>New User Signup</h1>
       <form>
         <label>
           Email:

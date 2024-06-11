@@ -85,10 +85,26 @@
   box-sizing: border-box;
   background-color: black;
   overflow: hidden;
+  background-color: white;
 }
 .background * {
   font-family: Louis George Cafe;
-
+}
+.siteTitle {
+  font-family: Louis George Cafe;
+  font-weight: bold;
+  margin: auto;
+  margin-bottom: 0;
+  text-align: center;
+  -webkit-text-stroke: 1px rgb(255, 255, 255);
+  background: url('/images/texture.jpeg') no-repeat center / cover;
+  background: linear-gradient(to right, rgb(0, 118, 182), rgb(1, 112, 203));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  color: var(--primary-red);
+  margin-bottom: -10px;
+  font-size: 3.5rem;
 }
 .adminPageWrapper {
   position: relative;
