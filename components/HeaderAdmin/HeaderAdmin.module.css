@@ -392,7 +392,7 @@ USER MENU---------------------------------------------
   top: 53px;
 }
 .userDetailsWrapper {
-  margin: 1rem 0 3rem 0;
+  margin: 1rem 0 1rem 0;
 }
 .userEmail, .userPosition {
   font-weight: normal;
@@ -403,6 +403,17 @@ USER MENU---------------------------------------------
   font-weight: bold;
   font-size: 1.25rem;
   margin-top: 0;
+}
+.logout {
+  font-size: 1.25rem;
+  margin: 2rem 0 0 0;
+  padding: .5rem 1rem;
+  background-color: rgb(255, 126, 126);
+  color: black;
+  border: none;
+}
+.logout:hover {
+  cursor: pointer;
 }
 .storageStatusWrapper {
   box-sizing: border-box;

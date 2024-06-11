@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import moment from 'moment-timezone';
 import dateFormatter from '../../utils/dateFormatter';
+import logUserOut from '../../utils/logUserOut';
 import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faCircleExclamation,
   faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -242,6 +243,10 @@ export default function Header({ user }) {
         <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
           <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
         </div>
+        <button
+          className={styles.logout}
+          onClick={() => logUserOut(router)}
+        >Log Out</button>
       </div>
     </div>
   )
