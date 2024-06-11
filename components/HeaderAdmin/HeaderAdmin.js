@@ -178,9 +178,9 @@ export default function Header({ user }) {
                 <p className={styles.expiredItemName}>{`${alert.title}`}</p>
                 <p className={styles.expiredDate}>{`${alert.expiredYet ? 'Expired' : 'Expires'} on ${dateFormatter(alert.expires)}`}</p>
               </div>
-              <div className={styles.expireStatusIconWrapper}>
+              {/* <div className={styles.expireStatusIconWrapper}>
                 <FontAwesomeIcon icon={faCircleExclamation} className={`${alert.expiredYet ? styles.expiredContent : styles.expiringContent}`}/>
-              </div>
+              </div> */}
               <div className={styles.alertButtons}>
                 <button className={styles.renewButton}>Update</button>
                 <button className={styles.deleteButton}>Delete</button>
