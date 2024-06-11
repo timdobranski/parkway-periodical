@@ -31,6 +31,7 @@ export default function Login() {
 
   return (
     <div className={styles.loginContainer}>
+      <img src="/images/logos/parkway.webp" alt="Parkway Periodical Logo" className={styles.logo} />
       <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h1 className='siteTitle'>PARKWAY PERIODICAL</h1>
         <h3 className={styles.loginHeader}>Login</h3>
@@ -56,7 +57,7 @@ export default function Login() {
             icon={showPassword ? faEye : faEyeSlash}
           />
         </div>
-
+    <p className={styles.forgotPassword}>Forgot Password?</p>
         <button type="submit" className={styles.loginButton}>Login</button>
       </form>
     </div>
