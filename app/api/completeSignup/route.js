@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import supabaseAdmin from '../../utils/supabaseAdmin';
+import supabaseAdmin from '../../../utils/supabaseAdmin';
 
 export async function POST(request) {
   console.log('INSIDE COMPLETE SIGNUP');
