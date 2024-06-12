@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import supabaseAdmin from '../../../utils/supabaseAdmin';
 
+const siteURL = process.env.NEXT_SITE_URL;
 export async function POST(request) {
-  const siteURL = process.env.NEXT_SITE_URL;
+  console.log('NEXT SITE URL-------------------------: ', siteURL)
 
   async function inviteNewUser(email) {
     const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
