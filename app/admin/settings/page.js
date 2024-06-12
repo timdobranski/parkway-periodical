@@ -11,6 +11,7 @@ export default function Settings () {
   const [user, setUser] = useState(null);
   const userIcon = (<FontAwesomeIcon icon={faUser} className={styles.userIcon} />)
   const [newUserEmail, setNewUserEmail] = useState('');
+  const [newUserAdminStatus, setNewUserAdminStatus] = useState(false);
   const [nonAdminUsers, setNonAdminUsers] = useState([]);
 
   useEffect(() => {
@@ -74,8 +75,8 @@ export default function Settings () {
 
       alert('Invite sent successfully');
     } catch (error) {
-      console.error('Error in client request to server:', error);
-      alert('Failed to send invite');
+      console.error('Error in client request to server:', error.message);
+      alert(`Invite not sent: ${error.message}` || 'An unexpected error occurred');
     }
   };
 
@@ -142,6 +143,15 @@ export default function Settings () {
             type='email'
             placeholder='Enter email address'
           />
+          {/* <label className={styles.adminLabel}>Make New User An Administrator?</label>
+          <p className={styles.info}>Administrators can add/remove users and  adjust site global settings like social media links, etc.</p>
+          <input
+            className={styles.makeAdministratorCheckbox}
+            type='checkbox'
+            checked={newUserAdminStatus}
+            onChange={() => setNewUserAdminStatus(!newUserAdminStatus)}>
+
+            </input> */}
           <button
             className={styles.inviteButton}
             onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
@@ -167,7 +177,9 @@ export default function Settings () {
             <button
               className={styles.inviteButton}
               onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
-            >Remove</button>
+            >
+              Remove
+            </button>
           </div>
         </>
         }

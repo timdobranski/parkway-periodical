@@ -1,9 +1,22 @@
 import { NextResponse } from 'next/server';
-import supabase from '../../../utils/supabase';
-import { inviteNewUser } from '../../../utils/inviteNewUser';
+import supabaseAdmin from '../../../utils/supabaseAdmin';
 
 export async function POST(request) {
-  console.log('INSIDE POST FUNCTION')
+  const siteURL = process.env.NEXT_SITE_URL;
+
+  async function inviteNewUser(email) {
+    const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+      redirectTo: `${siteURL}/register`,
+    });
+
+    if (error) {
+      console.error('Error inviting user:', error);
+      return { error: error.message }; // Return the error message
+    }
+
+    return data;
+  }
+
   const { email } = await request.json();
 
   if (!email) {
@@ -13,11 +26,11 @@ export async function POST(request) {
   try {
     const result = await inviteNewUser(email);
 
-    if (!result) {
-      return NextResponse.json({ error: 'Failed to invite user' }, { status: 500 });
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: 500 }); // Return the error message if there is one
     }
 
-    return NextResponse.json({ message: 'Invite sent successfully', data: result }, { status: 200 });
+    return NextResponse.json({ message: 'Invite sent successfully', data: result.data }, { status: 200 });
   } catch (error) {
     console.error('Error inviting user:', error);
     return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
@@ -27,3 +40,4 @@ export async function POST(request) {
 export function OPTIONS() {
   return NextResponse.json({ error: `Method Not Allowed` }, { status: 405, headers: { Allow: 'POST' } });
 }
+

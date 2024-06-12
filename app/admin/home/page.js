@@ -50,7 +50,7 @@ export default function AdminHomePage() {
   }, []);
   return (
     <>
-      <h1 className='pageTitle'>ADMIN HOME</h1>
+      <h1 className={`${styles.adminHomeTitle} pageTitle`}>ADMIN HOME</h1>
       <div className={styles.homeGrid}>
 
         <div className={styles.sectionWrapper}>

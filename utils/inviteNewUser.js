@@ -1,8 +1,11 @@
 import supabaseAdmin from './supabaseAdmin';
 
+const siteURL = process.env.NEXT_SITE_URL;
+console.log('site url env: ', siteURL)
+
 export async function inviteNewUser(email) {
   const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: '/register',
+    redirectTo: `${siteURL}/register`,
   });
 
   if (error) {
