@@ -1,17 +1,29 @@
 import { NextResponse } from 'next/server';
 import supabaseAdmin from '../../../utils/supabaseAdmin';
 
-const siteURL = process.env.NEXT_SITE_URL;
 export async function POST(request) {
-  console.log('NEXT SITE URL-------------------------: ', siteURL)
+  const getURL = () => {
+    let url =
+      process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+      process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+      'http://localhost:3000/'
+    // Make sure to include `https://` when not localhost.
+    url = url.startsWith('http') ? url : `https://${url}`
+    // Make sure to include a trailing `/`.
+    url = url.endsWith('/') ? url : `${url}/`
+    url += 'register'
+    return url
+  }
 
   async function inviteNewUser(email) {
+    const url = getURL();
+    console.log('FINAL REDIRECT URL: ', url);
     const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-      redirectTo: `${siteURL}/register`,
+      redirectTo: url,
     });
 
     if (error) {
-      console.error('Error inviting user:', error);
+      console.error('Error inviting user in inviteNewUser function:', error.message);
       return { error: error.message }; // Return the error message
     }
 
@@ -26,19 +38,20 @@ export async function POST(request) {
 
   try {
     const result = await inviteNewUser(email);
-
+    console.log('result: ', result);
     if (result.error) {
       return NextResponse.json({ error: result.error }, { status: 500 }); // Return the error message if there is one
     }
 
     return NextResponse.json({ message: 'Invite sent successfully', data: result.data }, { status: 200 });
   } catch (error) {
-    console.error('Error inviting user:', error);
+    console.error('Error inviting userrr:', error);
     return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
   }
 }
 
 export function OPTIONS() {
+  console.log('hit options');
   return NextResponse.json({ error: `Method Not Allowed` }, { status: 405, headers: { Allow: 'POST' } });
 }
 
