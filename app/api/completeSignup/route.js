@@ -3,16 +3,16 @@ import supabaseAdmin from '../../../utils/supabaseAdmin';
 
 export async function POST(request) {
   console.log('INSIDE COMPLETE SIGNUP');
-  const { email, firstName, lastName, position, password } = await request.json();
+  const { firstName, lastName, position, password, id, email } = await request.json();
 
-  if (!email || !firstName || !lastName || !position || !password) {
+  if (!firstName || !lastName || !position || !password || !id || !email) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
   }
 
   try {
     // Update the user's password
-    const { error: authError } = await supabaseAdmin.auth.api.updateUserById(email, {
-      password,
+    const { error: authError } = await supabaseAdmin.auth.admin.updateUserById(id, {
+      password: password,
     });
 
     if (authError) {
@@ -21,17 +21,17 @@ export async function POST(request) {
     }
 
     // Update the user's details in the users table
-    const { data, error: updateError } = await supabaseAdmin
+    const { error: usersInsertError } = await supabaseAdmin
       .from('users')
-      .update({ first_name: firstName, last_name: lastName, position })
-      .eq('email', email);
+      .insert({ first_name: firstName, last_name: lastName, position: position, email: email, auth_id: id })
 
-    if (updateError) {
-      console.error('Error updating user details:', updateError);
-      return NextResponse.json({ error: 'Failed to update user details' }, { status: 500 });
+
+    if (usersInsertError) {
+      console.error('Error adding new user to users table:', updateError);
+      return NextResponse.json({ error: 'Failed to add user to users table' }, { status: 500 });
     }
 
-    return NextResponse.json({ message: 'User updated successfully', data }, { status: 200 });
+    return NextResponse.json({ message: 'User updated successfully' }, { status: 200 });
   } catch (error) {
     console.error('An unexpected error occurred:', error);
     return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
