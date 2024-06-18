@@ -245,11 +245,16 @@
   overflow-wrap: break-word;
   text-align: center;
 }
-.smallerPostTitle {
+.smallerPostTitle, .smallerPostTitleDisabled {
   font-size: 1.75rem;
   text-underline-offset: .2rem;
   margin-bottom: 0;
   padding-bottom:0;
+}
+.smallerPostTitleDisabled {
+  text-decoration: underline;
+  text-decoration-color: rgb(209, 209, 209);
+  color: rgb(172, 172, 172);
 }
 .postTitle {
   font-size: 2.5rem;

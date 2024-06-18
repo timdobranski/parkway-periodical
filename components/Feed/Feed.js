@@ -56,7 +56,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
     fileInput.value = ''; // Clear the input after processing all files
     setLoading(false);
   };
-
   const processFile = (file) => new Promise((resolve, reject) => {
     if (!file) reject("No file provided");
     const reader = new FileReader();
@@ -122,7 +121,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       img.src = dataURL;
     });
   };
-
   const deletePhoto = async (blockIndex, filename) => {
     console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename);
     // Attempt to remove the photo from storage
@@ -141,7 +139,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       removePhotoFromBlock(blockIndex, filename);
     }
   };
-
   // sets new properties on the block. works on layouts if passed the nestedIndex  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
   const updateBlock = (index, updatedProperties, nestedIndex = null) => {
     // console.log('INSIDE UPDATE BLOCK FUNCTION: ', index, updatedProperties, nestedIndex)

@@ -57,6 +57,9 @@
 }
 .wideFormSection {
   flex-direction: column;
+  padding: 1rem 0 2rem 0;
+  border-radius: 10px;
+  background-color: rgb(244, 244, 244);
   margin-bottom: 2rem;
   margin-top: 1rem;
 }
@@ -96,10 +99,29 @@
   background: rgb(0, 112, 156);
   color: white;
 }
+.completeSignupButton:hover {
+  cursor: pointer;
+}
 .textareaDisabledNotice {
   position: absolute;
   bottom: -2rem;
   background-color:rgb(255, 142, 142);
   margin: 1rem 0 .25rem 0;
   padding: .1rem .5rem;
+}
+.photoPlaceholder {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  padding: 1rem;
+  background-color: rgb(238, 238, 238);
+  border: solid black 1px;
+  margin-bottom: 2rem;
+  margin-top: 0;
+}
+.photo {
+  width: 300px;
+}
+.disabledText {
+  color: rgb(167, 167, 167);
 }
