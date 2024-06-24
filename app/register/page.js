@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../utils/supabase';
+import CroppablePhoto from '../../components/CroppablePhoto/CroppablePhoto';
 
 export default function Register() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function Register() {
   const [aboutMe, setAboutMe] = useState('');
   const [session, setSession] = useState({});
   const [photo, setPhoto] = useState('');
+  const [filePath, setFilePath] = useState('');
 
   // check auth
   useEffect(() => {
@@ -57,11 +59,24 @@ export default function Register() {
     getUserAuthData();
   }, [router]);
   useEffect(() => {
+    if (session && session.user) {
+      console.log('session: ', session)
+      setFilePath(`photos/${formatEmail(session.user.email)}${session.user.id}`)
+    }
+  }, [session])
+  useEffect(() => {
     if (!includeInStaff) {setAboutMe('')}
   }, [includeInStaff])
   useEffect(() => {
-    console.log('photo: ', photo)
+    console.log('photo changed: ', photo)
   }, [photo])
+
+  // on mount, check for existing photo
+  useEffect(() => {
+    if (filePath) {
+      getProfilePhoto('original')
+    }
+  }, [filePath])
 
   const finishSignup = async (e) => {
     e.preventDefault()
@@ -96,17 +111,47 @@ export default function Register() {
       alert('There was an error completing registration: ', response)
     }
   }
+  // retreive supabase photo: original or cropped type
+  const getProfilePhoto = async (type) => {
+    const { data, error: urlError } = await supabase.storage
+      .from('users')
+      .getPublicUrl(`${filePath}/${type}`);
+
+    if (urlError) {
+      console.error('Error getting public URL:', urlError);
+      return;
+    }
+    console.log('data: ', data)
+    setPhoto(data.publicUrl);
+  }
+  const formatEmail = (email) => {
+    console.log('email: ', email)
+    // Split the email address into local part and domain part
+    const [localPart, domainPartWithExtension] = email.split('@');
+
+    // Remove any special characters from the local part and domain part
+    const sanitizedLocalPart = localPart.replace(/[^a-zA-Z0-9]/g, '');
+
+    // Remove the dot and the extension from the domain part
+    const domainPart = domainPartWithExtension.split('.')[0];
+    const sanitizedDomainPart = domainPart.replace(/[^a-zA-Z0-9]/g, '');
+
+    // Combine them in the desired format
+    const formattedEmail = `${sanitizedLocalPart}_${sanitizedDomainPart}`;
+
+    return formattedEmail;
+  }
+
+
   // when user selects photo, upload it, then download it to render
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const fileName = 'original';
-      const filePath = `photos/${session.user.email}/${fileName}`;
 
       // Upload to Supabase storage
       const { data, error } = await supabase.storage
         .from('users') // Ensure this is your actual bucket name
-        .upload(filePath, file);
+        .upload(`${filePath}/original`, file);
 
       if (error) {
         console.error('Error uploading file:', error);
@@ -114,16 +159,8 @@ export default function Register() {
       }
 
       // Get the public URL of the uploaded file
-      const { data: publicURL, error: urlError } = await supabase.storage
-        .from('users')
-        .getPublicUrl(filePath);
+      await getProfilePhoto('original')
 
-      if (urlError) {
-        console.error('Error getting public URL:', urlError);
-        return;
-      }
-
-      setPhoto(publicURL);
     }
   };
 
@@ -165,10 +202,16 @@ export default function Register() {
         </div>
 
         <div className={styles.wideFormSection}>
-          <label className={'smallerPostTitle'}>Photo:</label>
-          <input className={styles.formInput} type="file" name="photo" onChange={handleFileChange}/>
+          <label className={'smallerPostTitle'}>Profile Photo:</label>
+          <input className={styles.photoInput} type="file" name="photo" onChange={handleFileChange}/>
           { photo ?
-            <img className={styles.photo} src={photo.publicUrl} /> :
+            // <img className={styles.photo} src={photo.publicUrl} />
+            <CroppablePhoto
+              photo={photo}
+              ratio={1}
+              filePath={`photos/${session?.user?.email}/cropped`}
+            />
+            :
             <FontAwesomeIcon icon={faUser} className={styles.photoPlaceholder}/>
           }
         </div>

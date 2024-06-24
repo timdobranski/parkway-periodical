@@ -1,0 +1,22 @@
+.photoPreview {
+  height: 200px;
+  border-radius: 50%;
+}
+.previewWrapper {
+  position: relative;
+}
+.cropIcon {
+  position: absolute;
+  border-radius: 50%;
+  padding: .5rem;
+  background-color: rgb(163, 163, 163);
+  height: 20px;
+  width: 20px;
+  color: white;
+  top: 80%;
+}
+
+.croppablePhotoWrapper {
+  border: solid red 2px;
+  height: 200px;
+}
