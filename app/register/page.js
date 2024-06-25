@@ -122,7 +122,8 @@ export default function Register() {
       return;
     }
     console.log('data: ', data)
-    setPhoto(data.publicUrl);
+    const cacheBustedUrl = `${data.publicUrl}?cache_bust=${new Date().getTime()}`;
+    setPhoto(cacheBustedUrl);
   }
   const formatEmail = (email) => {
     console.log('email: ', email)
@@ -146,12 +147,12 @@ export default function Register() {
   // when user selects photo, upload it, then download it to render
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
+    const timestamp = Date.now();
     if (file) {
-
       // Upload to Supabase storage
       const { data, error } = await supabase.storage
         .from('users') // Ensure this is your actual bucket name
-        .upload(`${filePath}/original`, file);
+        .upload(`${filePath}/original`, file, { upsert: true });
 
       if (error) {
         console.error('Error uploading file:', error);

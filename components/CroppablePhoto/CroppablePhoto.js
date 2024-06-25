@@ -55,7 +55,7 @@ export default function CroppablePhoto ({ photo, ratio, filepath }) {
 
       const { data, error } = await supabase.storage
         .from('users') // Ensure this is your actual bucket name
-        .upload(`${filepath}/cropped`, file)
+        .upload(`${filepath}/cropped`, file, { upsert: true })
 
       if (error) {
         console.error('Error uploading file:', error)
@@ -79,7 +79,9 @@ export default function CroppablePhoto ({ photo, ratio, filepath }) {
   if (!cropActive) {
     return (
       <div className={styles.previewWrapper}>
-        <img src={photo} className={styles.photoPreview} key='userPhoto' />
+        <div className={styles.previewImageWrapper}>
+          <img src={photo} className={styles.photoPreview} key='userPhoto' />
+        </div>
         <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => setCropActive(true)}/>
       </div>
     )
