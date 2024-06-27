@@ -4,7 +4,7 @@ import styles from './register.module.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPencil, faImage } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../utils/supabase';
 import CroppablePhoto from '../../components/CroppablePhoto/CroppablePhoto';
 
@@ -20,6 +20,8 @@ export default function Register() {
   const [session, setSession] = useState({});
   const [photo, setPhoto] = useState('');
   const [filePath, setFilePath] = useState('');
+  const [cropActive, setCropActive] = useState(false);
+  const [loadingPhoto, setLoadingPhoto] = useState(false);
 
   // check auth
   useEffect(() => {
@@ -74,7 +76,7 @@ export default function Register() {
   // on mount, check for existing photo
   useEffect(() => {
     if (filePath) {
-      getProfilePhoto('original')
+      getProfilePhoto()
     }
   }, [filePath])
 
@@ -112,10 +114,10 @@ export default function Register() {
     }
   }
   // retreive supabase photo: original or cropped type
-  const getProfilePhoto = async (type) => {
+  const getProfilePhoto = async () => {
     const { data, error: urlError } = await supabase.storage
       .from('users')
-      .getPublicUrl(`${filePath}/${type}`);
+      .getPublicUrl(`${filePath}`);
 
     if (urlError) {
       console.error('Error getting public URL:', urlError);
@@ -123,6 +125,14 @@ export default function Register() {
     }
     console.log('data: ', data)
     const cacheBustedUrl = `${data.publicUrl}?cache_bust=${new Date().getTime()}`;
+    // if there's a photo, set it. If not, console log the error
+    const response = await fetch(cacheBustedUrl);
+    if (!response.ok) {
+      console.error('User photo not found, received status:', response.status);
+      return;
+    }
+
+    setLoadingPhoto(false)
     setPhoto(cacheBustedUrl);
   }
   const formatEmail = (email) => {
@@ -146,13 +156,16 @@ export default function Register() {
 
   // when user selects photo, upload it, then download it to render
   const handleFileChange = async (event) => {
+    setLoadingPhoto(true);
+    if (cropActive) {setCropActive(false)};
+    if (photo) {setPhoto('')};
     const file = event.target.files[0];
     const timestamp = Date.now();
     if (file) {
       // Upload to Supabase storage
       const { data, error } = await supabase.storage
         .from('users') // Ensure this is your actual bucket name
-        .upload(`${filePath}/original`, file, { upsert: true });
+        .upload(`${filePath}`, file, { upsert: true });
 
       if (error) {
         console.error('Error uploading file:', error);
@@ -160,8 +173,8 @@ export default function Register() {
       }
 
       // Get the public URL of the uploaded file
-      await getProfilePhoto('original')
-
+      await getProfilePhoto();
+      setCropActive(true);
     }
   };
 
@@ -206,14 +219,27 @@ export default function Register() {
           <label className={'smallerPostTitle'}>Profile Photo:</label>
           <input className={styles.photoInput} type="file" name="photo" onChange={handleFileChange}/>
           { photo ?
-            // <img className={styles.photo} src={photo.publicUrl} />
-            <CroppablePhoto
-              photo={photo}
-              ratio={1}
-              filePath={`photos/${session?.user?.email}/cropped`}
-            />
+            cropActive ?
+              <CroppablePhoto
+                photo={photo}
+                ratio={1}
+                bucket={'users'}
+                filePath={`photos/${session?.user?.email}/cropped`}
+                setCropActive={setCropActive}
+              /> :
+              <>
+                <img className={styles.photo} src={photo} />
+                <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => setCropActive(true)}/>
+              </>
+
             :
-            <FontAwesomeIcon icon={faUser} className={styles.photoPlaceholder}/>
+            loadingPhoto ?
+              <div className={styles.loadingMessageWrapper}>
+                <p>Loading Photo...</p>
+                <FontAwesomeIcon icon={faImage} className={styles.loadingSpinner} />
+              </div>
+              :
+              <FontAwesomeIcon icon={faUser} className={styles.photoPlaceholder}/>
           }
         </div>
 
