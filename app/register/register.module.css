@@ -75,6 +75,7 @@
   margin-bottom: .25rem;
 }
 .checkbox {
+  color: rgb(0, 93, 139);
   height: 20px;
   width: 20px;
 }
@@ -169,9 +170,6 @@
   width: 30px;
   animation: rotateAndScale 1.5s linear infinite;
   color: rgb(88, 191, 255);
-}
-.saveCropButton {
-  margin: 1rem;
 }
 
 @keyframes rotateAndScale {

@@ -76,7 +76,7 @@ export default function Register() {
   // on mount, check for existing photo
   useEffect(() => {
     if (filePath) {
-      getProfilePhoto()
+      getProfilePhoto('cropped')
     }
   }, [filePath])
 
@@ -91,6 +91,10 @@ export default function Register() {
     if (password.length < 6) {
       alert('Password must be at least 6 characters')
       return;
+    }
+    if (cropActive) {
+      alert(`Your photo hasn't been uploaded yet. If you'd like to add an optional photo, please finish
+        cropping the one you've uploaded. Otherwise, please remove it.`)
     }
     // conditions are met; add user
     const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe };
@@ -114,10 +118,10 @@ export default function Register() {
     }
   }
   // retreive supabase photo: original or cropped type
-  const getProfilePhoto = async () => {
+  const getProfilePhoto = async (type) => {
     const { data, error: urlError } = await supabase.storage
       .from('users')
-      .getPublicUrl(`${filePath}`);
+      .getPublicUrl(`${filePath}/${type}`);
 
     if (urlError) {
       console.error('Error getting public URL:', urlError);
@@ -165,7 +169,7 @@ export default function Register() {
       // Upload to Supabase storage
       const { data, error } = await supabase.storage
         .from('users') // Ensure this is your actual bucket name
-        .upload(`${filePath}`, file, { upsert: true });
+        .upload(`${filePath}/original`, file, { upsert: true });
 
       if (error) {
         console.error('Error uploading file:', error);
@@ -173,7 +177,7 @@ export default function Register() {
       }
 
       // Get the public URL of the uploaded file
-      await getProfilePhoto();
+      await getProfilePhoto('original');
       setCropActive(true);
     }
   };

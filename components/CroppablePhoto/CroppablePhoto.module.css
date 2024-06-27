@@ -20,9 +20,14 @@
 }
 .saveCropButton {
   margin: 1rem;
-  background-color: rgb(72, 176, 255);
+  background-color: rgb(0, 112, 156);
+  color: white;
   border: none;
   border-radius: 5px;
-  padding: .25rem .5rem;
-  font-weight: bold;
+  padding: .5rem 1rem;
+  font-size: 1.25rem;
+  /* font-weight: bold; */
+}
+.saveCropButton:hover {
+  cursor: pointer;
 }

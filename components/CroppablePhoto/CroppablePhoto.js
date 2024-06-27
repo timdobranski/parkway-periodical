@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './CroppablePhoto.module.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import supabase from '../../utils/supabase'
@@ -19,10 +19,11 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
     }
   );
   const [completedCrop, setCompletedCrop] = useState(null);
-  const [imageRef, setImageRef] = useState(null);
+  const imageRef = useRef(null);
 
   const onImageLoaded = (image) => {
-    setImageRef(image);
+    imageRef.current = image;
+    return false; // Required to prevent ReactCrop from breaking the crop object.
   };
 
   const onCropComplete = (crop) => {
@@ -34,8 +35,15 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
   };
 
   const uploadCroppedPhoto = async (e) => {
+    console.log('INSIDE UPLOAD CROPPED PHOTO FUNCTION...')
     e.preventDefault()
     if (!completedCrop || !imageRef) {
+      if (!completedCrop) {
+        console.log('No completed crop; returning...')
+      }
+      if (!imageRef) {
+        console.log('No imageRef; returning...');
+      }
       return;
     }
 
@@ -47,7 +55,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
     const ctx = canvas.getContext('2d');
 
     ctx.drawImage(
-      imageRef,
+      imageRef.current,
       completedCrop.x * scaleX,
       completedCrop.y * scaleY,
       completedCrop.width * scaleX,
@@ -88,7 +96,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
           onChange={onCropChange}
           aspect={ratio}
         >
-          <img src={photo} alt="Crop preview" className={styles.croppableImage}/>
+          <img src={photo} ref={imageRef} alt="Crop preview" className={styles.croppableImage}/>
         </ReactCrop>
       </div>
       <button onClick={(e) => uploadCroppedPhoto(e)} className={styles.saveCropButton}>SAVE</button>
