@@ -8,7 +8,7 @@ import supabase from '../../utils/supabase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrop, faPencil } from '@fortawesome/free-solid-svg-icons'
 
-export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive }) {
+export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, getCroppedPhoto }) {
   const [crop, setCrop] = useState(
     {
       unit: 'px',
@@ -42,11 +42,11 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
 
 
   const uploadCroppedPhoto = async (e) => {
-    console.log('INSIDE UPLOAD CROPPED PHOTO FUNCTION...')
-    e.preventDefault()
+    console.log('INSIDE UPLOAD CROPPED PHOTO FUNCTION...');
+    e.preventDefault();
     if (!completedCrop || !imageRef.current) {
       if (!completedCrop) {
-        console.log('No completed crop; returning...')
+        console.log('No completed crop; returning...');
       }
       if (!imageRef.current) {
         console.log('No imageRef; returning...');
@@ -73,20 +73,27 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
       completedCrop.height
     );
 
-    canvas.toBlob(async (blob) => {
-      const file = new File([blob], 'cropped.webp', { type: 'image/webp' });
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp'));
+    const file = new File([blob], 'cropped.webp', { type: 'image/webp' });
 
+    try {
       const { data, error } = await supabase.storage
-        .from(bucket) // Ensure this is your actual bucket name
-        .upload(`${filePath}`, file, { upsert: true });
+        .from(bucket)
+        .upload(`${filePath}/cropped`, file, { upsert: true });
 
       if (error) {
         console.error('Error uploading file:', error);
         return;
       }
-      // Handle the uploaded photo URL (e.g., set it to state or display it)
-    }, 'image/webp');
-    setCropActive(false);
+
+      console.log('Uploaded file path:', `${filePath}/cropped`);
+      setCropActive(false);
+
+      // Ensure that getCroppedPhoto is awaited
+      await getCroppedPhoto();
+    } catch (error) {
+      console.error('Error during upload or fetching cropped photo:', error);
+    }
   };
 
   return (

@@ -70,16 +70,17 @@ export default function Register() {
   useEffect(() => {
     if (!includeInStaff) {setAboutMe('')}
   }, [includeInStaff])
-  // useEffect(() => {
-  //   console.log('photo changed: ', photo)
-  // }, [photo])
-
   // on mount, check for existing photo
   useEffect(() => {
     if (filePath) {
       getProfilePhoto('cropped')
     }
   }, [filePath])
+  useEffect(() => {
+    if (!cropActive) {
+
+    }
+  }, [cropActive])
 
   const finishSignup = async (e) => {
     e.preventDefault()
@@ -121,45 +122,56 @@ export default function Register() {
   // retreive supabase photo: original or cropped type
   const getProfilePhoto = async (type) => {
     console.log('getting profile photo from: ', `${filePath}/${type}`)
-    const { data, error: urlError } = await supabase.storage
+    const { data } = await supabase
+      .storage
       .from('users')
       .getPublicUrl(`${filePath}/${type}`);
 
-    if (urlError) {
-      console.error('Error getting public URL:', urlError);
-      return;
-    }
-    console.log('data: ', data)
+
+    console.log('getProfilePhoto getPublicUrl returned: ', data.publicUrl)
     const cacheBustedUrl = `${data.publicUrl}?cache_bust=${new Date().getTime()}`;
     // if there's a photo, set it. If not, console log the error
     const response = await fetch(cacheBustedUrl);
     if (!response.ok) {
-      console.error('User photo not found, received status:', response.status);
+      setPhoto('');
+      setLoadingPhoto(false);
+      console.error('User photo not found, received:', response);
       return;
     }
-
-    setLoadingPhoto(false)
+    console.log('user photo response: ', response)
     setPhoto(cacheBustedUrl);
+    setLoadingPhoto(false)
   }
-  const formatEmail = (email) => {
-    console.log('email: ', email)
-    // Split the email address into local part and domain part
-    const [localPart, domainPartWithExtension] = email.split('@');
+  // const formatEmail = (email) => {
+  //   console.log('email: ', email)
+  //   // Split the email address into local part and domain part
+  //   const [localPart, domainPartWithExtension] = email.split('@');
 
-    // Remove any special characters from the local part and domain part
-    const sanitizedLocalPart = localPart.replace(/[^a-zA-Z0-9]/g, '');
+  //   // Remove any special characters from the local part and domain part
+  //   const sanitizedLocalPart = localPart.replace(/[^a-zA-Z0-9]/g, '');
 
-    // Remove the dot and the extension from the domain part
-    const domainPart = domainPartWithExtension.split('.')[0];
-    const sanitizedDomainPart = domainPart.replace(/[^a-zA-Z0-9]/g, '');
+  //   // Remove the dot and the extension from the domain part
+  //   const domainPart = domainPartWithExtension.split('.')[0];
+  //   const sanitizedDomainPart = domainPart.replace(/[^a-zA-Z0-9]/g, '');
 
-    // Combine them in the desired format
-    const formattedEmail = `${sanitizedLocalPart}_${sanitizedDomainPart}`;
+  //   // Combine them in the desired format
+  //   const formattedEmail = `${sanitizedLocalPart}_${sanitizedDomainPart}`;
 
-    return formattedEmail;
+  //   return formattedEmail;
+  // }
+
+  const getOriginalPhotoForCrop = async () => {
+    console.log('inside getOriginalPhotoForCrop')
+    setLoadingPhoto(true);
+    await getProfilePhoto('original');
+    setLoadingPhoto(false);
+    setCropActive(true);
   }
-
-
+  const getCroppedPhoto = async() => {
+    setLoadingPhoto(true);
+    await getProfilePhoto('cropped');
+    setLoadingPhoto(false);
+  }
   // when user selects photo, upload it, then download it to render
   const handleFileChange = async (event) => {
     setLoadingPhoto(true);
@@ -178,9 +190,7 @@ export default function Register() {
         return;
       }
 
-      // Get the public URL of the uploaded file
-      await getProfilePhoto('original');
-      setCropActive(true);
+      getOriginalPhotoForCrop();
     }
   };
 
@@ -232,10 +242,11 @@ export default function Register() {
                 bucket={'users'}
                 filePath={filePath}
                 setCropActive={setCropActive}
+                getCroppedPhoto={getCroppedPhoto}
               /> :
               <>
-                <img className={styles.photo} src={photo} />
-                <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => setCropActive(true)}/>
+                <img className={styles.photo} src={`${photo}`} />
+                <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => getOriginalPhotoForCrop()}/>
               </>
 
             :
