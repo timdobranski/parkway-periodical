@@ -60,18 +60,19 @@ export default function Register() {
 
     getUserAuthData();
   }, [router]);
+  // set the file path for upload photos based on email
   useEffect(() => {
     if (session && session.user) {
       console.log('session: ', session)
-      setFilePath(`photos/${formatEmail(session.user.email)}${session.user.id}`)
+      setFilePath(`photos/${session.user.email}`)
     }
   }, [session])
   useEffect(() => {
     if (!includeInStaff) {setAboutMe('')}
   }, [includeInStaff])
-  useEffect(() => {
-    console.log('photo changed: ', photo)
-  }, [photo])
+  // useEffect(() => {
+  //   console.log('photo changed: ', photo)
+  // }, [photo])
 
   // on mount, check for existing photo
   useEffect(() => {
@@ -119,6 +120,7 @@ export default function Register() {
   }
   // retreive supabase photo: original or cropped type
   const getProfilePhoto = async (type) => {
+    console.log('getting profile photo from: ', `${filePath}/${type}`)
     const { data, error: urlError } = await supabase.storage
       .from('users')
       .getPublicUrl(`${filePath}/${type}`);
@@ -228,7 +230,7 @@ export default function Register() {
                 photo={photo}
                 ratio={1}
                 bucket={'users'}
-                filePath={`photos/${session?.user?.email}/cropped`}
+                filePath={filePath}
                 setCropActive={setCropActive}
               /> :
               <>

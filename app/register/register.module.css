@@ -125,9 +125,9 @@
 }
 .photo {
   border-radius: 50%;
-  /* height: auto; */
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
+  border: solid rgb(0, 100, 163) 2px;
 }
 .disabledText {
   color: rgb(167, 167, 167);
@@ -137,11 +137,11 @@
   border-radius: 50%;
   padding: .5rem;
   background-color: rgba(101, 101, 101, 0.9);
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   color: white;
   top: 75%;
-  left: 85%;
+  left: 65%;
   transform: translateX(-50%);
   border: solid 1px white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, .8);

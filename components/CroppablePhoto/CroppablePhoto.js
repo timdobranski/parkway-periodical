@@ -15,7 +15,8 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
       width: 100,
       height: 100,
       x: 0,
-      y: 0
+      y: 0,
+      aspect: ratio
     }
   );
   const [completedCrop, setCompletedCrop] = useState(null);
@@ -34,22 +35,28 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
     setCrop({ ...newCrop, aspect: ratio });
   };
 
+  useEffect(() => {
+    console.log('crop state: ', completedCrop)
+  }, [completedCrop])
+
+
+
   const uploadCroppedPhoto = async (e) => {
     console.log('INSIDE UPLOAD CROPPED PHOTO FUNCTION...')
     e.preventDefault()
-    if (!completedCrop || !imageRef) {
+    if (!completedCrop || !imageRef.current) {
       if (!completedCrop) {
         console.log('No completed crop; returning...')
       }
-      if (!imageRef) {
+      if (!imageRef.current) {
         console.log('No imageRef; returning...');
       }
       return;
     }
 
     const canvas = document.createElement('canvas');
-    const scaleX = imageRef.naturalWidth / imageRef.width;
-    const scaleY = imageRef.naturalHeight / imageRef.height;
+    const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
+    const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
     canvas.width = completedCrop.width;
     canvas.height = completedCrop.height;
     const ctx = canvas.getContext('2d');
@@ -96,7 +103,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
           onChange={onCropChange}
           aspect={ratio}
         >
-          <img src={photo} ref={imageRef} alt="Crop preview" className={styles.croppableImage}/>
+          <img src={photo} ref={imageRef} alt="Crop preview" className={styles.croppableImage} crossOrigin="anonymous"/>
         </ReactCrop>
       </div>
       <button onClick={(e) => uploadCroppedPhoto(e)} className={styles.saveCropButton}>SAVE</button>
