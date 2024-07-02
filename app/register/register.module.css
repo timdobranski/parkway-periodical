@@ -171,7 +171,13 @@
   animation: rotateAndScale 1.5s linear infinite;
   color: rgb(88, 191, 255);
 }
-
+.phoneInput {
+  margin: 1rem;
+  padding: .5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  width: 100px;
+}
 @keyframes rotateAndScale {
   0%{
     transform: rotate(0deg) scale(1);

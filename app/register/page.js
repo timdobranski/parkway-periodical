@@ -19,9 +19,11 @@ export default function Register() {
   const [aboutMe, setAboutMe] = useState('');
   const [session, setSession] = useState({});
   const [photo, setPhoto] = useState('');
+  const [croppedPhoto, setCroppedPhoto] = useState('');
   const [filePath, setFilePath] = useState('');
   const [cropActive, setCropActive] = useState(false);
   const [loadingPhoto, setLoadingPhoto] = useState(false);
+  const [phoneExt, setPhoneExt] = useState('');
 
   // check auth
   useEffect(() => {
@@ -68,7 +70,7 @@ export default function Register() {
     }
   }, [session])
   useEffect(() => {
-    if (!includeInStaff) {setAboutMe('')}
+    if (!includeInStaff) {setAboutMe(''); setPhoneExt('')}
   }, [includeInStaff])
   // on mount, check for existing photo
   useEffect(() => {
@@ -95,11 +97,12 @@ export default function Register() {
       return;
     }
     if (cropActive) {
-      alert(`Your photo hasn't been uploaded yet. If you'd like to add an optional photo, please finish
-        cropping the one you've uploaded. Otherwise, please remove it.`)
+      alert(`You haven't finished setting your photo. If you'd like to add an optional photo, please finish
+        cropping the one you've uploaded. Otherwise, you can remove it.`)
     }
+
     // conditions are met; add user
-    const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe };
+    const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe, phoneExt };
     registrationData.id = session.user.id;
     registrationData.email = session.user.email;
     const response = await fetch('/api/completeSignup', {method: 'POST', body: JSON.stringify(registrationData)});
@@ -271,6 +274,18 @@ export default function Register() {
           <p className={`${styles.instructions} ${includeInStaff ? null : styles.disabledText}`}>Use this section to write a short introduction about yourself for users to read on the staff page</p>
           {!includeInStaff && <p className={styles.textareaDisabledNotice}>{`To edit, check the 'Show Me On Staff Page' box`}</p>}
           <textarea className={styles.formInput} disabled={!includeInStaff} maxLength={500} type="text" name="include in staff" value={aboutMe} onChange={(e) => {setAboutMe(e.target.value)}}/>
+        </div>
+
+        <div className={styles.wideFormSection} >
+          <label className={includeInStaff ? 'smallerPostTitle' : 'smallerPostTitleDisabled'}>Phone Ext.</label>
+          <input
+            type='number'
+            pattern="\d{4}"
+            className={styles.phoneInput}
+            disabled={!includeInStaff}
+            value={phoneExt}
+            onChange={e => setPhoneExt(e.target.value)}
+          />
         </div>
 
         <button className={styles.completeSignupButton} type="submit" onClick={(e) => {finishSignup(e)}}>Complete Sign Up</button>
