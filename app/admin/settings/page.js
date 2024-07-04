@@ -5,7 +5,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../../utils/supabase';
-import CroppablePhoto from '../../../components/EditablePhoto/EditablePhoto';
+import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
 
 export default function Settings () {
   const [user, setUser] = useState(null);
@@ -13,6 +13,10 @@ export default function Settings () {
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserAdminStatus, setNewUserAdminStatus] = useState(false);
   const [nonAdminUsers, setNonAdminUsers] = useState([]);
+  const [cropActive, setCropActive] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [originalPhoto, setOriginalPhoto] = useState('');
+  const [croppedPhoto, setCroppedPhoto] = useState('');
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -98,6 +102,44 @@ export default function Settings () {
       return null;
     }
   }
+  const handleFileChange = async () => {
+    // upload original to supabase
+  }
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  const updatePhotoModalContent = (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContentWrapper}>
+        <p className={styles.infoLabel}>Crop Or Change Photo</p>
+        <input className={styles.photoInput} type="file" name="photo" />
+        <div className={styles.cropWrapper}>
+          {setCropActive &&
+          <CroppablePhoto
+            photo={user.photo}
+            ratio={1}
+            bucket={'users'}
+            filePath={`photos/${user.email}`}
+            setCropActive={setCropActive}
+          />
+          }
+        </div>
+      </div>
+    </div>
+  )
+  const userPhoto = (
+    <div className={styles.currentPhotoPreviewWrapper}>
+      {
+        user?.photo ?
+          <img src={user.photo} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon}/>
+          :
+          userIcon
+      }
+      <FontAwesomeIcon icon={faPencil} className={styles.editIcon} onClick={() => setModalIsOpen(true)}/>
+    </div>
+  )
 
   if (!user) {
     return <div>Loading...</div>;
@@ -105,16 +147,9 @@ export default function Settings () {
 
   return (
     <div className={styles.pageWrapper}>
+      {modalIsOpen && updatePhotoModalContent}
       <div className={styles.userInfo}>
-        <div className={styles.currentPhotoPreviewWrapper}>
-          {
-            user.photo ?
-            <img src={user.photo} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon}/>
-            :
-            userIcon
-          }
-          <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
-        </div>
+        {userPhoto}
 
         <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
         <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
@@ -122,11 +157,11 @@ export default function Settings () {
 
       <div className={styles.editUserInfoWrapper}>
 
-        <h3 className={styles.infoLabel}>Change Email</h3>
+        {/* <h3 className={styles.infoLabel}>Change Email</h3>
         <div className={styles.inputWrapper}>
           <input className={styles.updateInput} type='email' placeholder={user.email} />
           <button className={styles.inviteButton}>Confirm</button>
-        </div>
+        </div> */}
 
         <h3 className={styles.infoLabel}>Change Password</h3>
         <div className={styles.inputWrapper}>

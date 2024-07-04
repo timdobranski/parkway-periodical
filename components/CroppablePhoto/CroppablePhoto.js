@@ -8,6 +8,14 @@ import supabase from '../../utils/supabase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrop, faPencil } from '@fortawesome/free-solid-svg-icons'
 
+// Props:
+// photo - a string url of the photo
+// ratio - a number for the aspect ratio
+// bucket - the name of the supabase storage bucket
+// filepath - the path to the folder of the file
+// setCropActive - a function that that can be passed a boolean to unmount the component when the crop is complete
+// getCroppedPhoto -
+
 export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, getCroppedPhoto }) {
   const [crop, setCrop] = useState(
     {
@@ -90,7 +98,9 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
       setCropActive(false);
 
       // Ensure that getCroppedPhoto is awaited
-      await getCroppedPhoto();
+      if (getCroppedPhoto) {
+        await getCroppedPhoto();
+      }
     } catch (error) {
       console.error('Error during upload or fetching cropped photo:', error);
     }
@@ -99,7 +109,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
   return (
     <>
       <div className={styles.croppablePhotoWrapper}>
-        {/* <p>Crop Photo</p> */}
+        <p>Crop Photo</p>
         <ReactCrop
         // src={photo}
           crop={crop}

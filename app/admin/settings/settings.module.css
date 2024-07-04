@@ -168,3 +168,34 @@
   margin: 0rem;
   width: 500px;
 }
+.modalOverlay {
+  background-color: rgba(0, 0, 0, .7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  overflow-y:hidden;
+}
+.modalContentWrapper {
+  background-color: white;
+  width: 800px;
+  height: 600px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  border-radius: 10px;
+}
+.cropWrapper {
+  width: 80%;
+  margin: 0 auto;
+  height: 70%;
+
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; */
+}
