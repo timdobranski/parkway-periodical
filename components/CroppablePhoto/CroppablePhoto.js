@@ -7,14 +7,8 @@ import 'react-image-crop/dist/ReactCrop.css'
 import supabase from '../../utils/supabase'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrop, faPencil } from '@fortawesome/free-solid-svg-icons'
+import userPhotos from '../../utils/userPhotos';
 
-// Props:
-// photo - a string url of the photo
-// ratio - a number for the aspect ratio
-// bucket - the name of the supabase storage bucket
-// filepath - the path to the folder of the file
-// setCropActive - a function that that can be passed a boolean to unmount the component when the crop is complete
-// getCroppedPhoto -
 
 export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, afterUpload }) {
   const [crop, setCrop] = useState(
@@ -65,10 +59,13 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
     const canvas = document.createElement('canvas');
     const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
     const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
-    canvas.width = completedCrop.width;
-    canvas.height = completedCrop.height;
+
+    // Adjust the canvas size to match the original image's dimensions for the cropped area
+    canvas.width = completedCrop.width * scaleX;
+    canvas.height = completedCrop.height * scaleY;
     const ctx = canvas.getContext('2d');
 
+    // Use the original image's dimensions for the crop area calculations
     ctx.drawImage(
       imageRef.current,
       completedCrop.x * scaleX,
@@ -77,29 +74,31 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
       completedCrop.height * scaleY,
       0,
       0,
-      completedCrop.width,
-      completedCrop.height
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY
     );
 
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp'));
     const file = new File([blob], 'cropped.webp', { type: 'image/webp' });
-
+    const url = `${filePath}/cropped?t=${Date.now()}`
     try {
       const { data, error } = await supabase.storage
         .from(bucket)
-        .upload(`${filePath}/cropped`, file, { upsert: true });
+        .upload(`${url}`, file, { upsert: true });
 
       if (error) {
         console.error('Error uploading file:', error);
         return;
       }
+      // const { success, error, value } = await userPhotos.setProfilePhoto(email, 'cropped', file)
 
       // console.log('Uploaded file path:', `${filePath}/cropped`);
-      afterUpload();
+      await afterUpload();
     } catch (error) {
       console.error('Error during upload or fetching cropped photo:', error);
     }
   };
+
 
   return (
     <>

@@ -3,9 +3,10 @@
 import styles from './settings.module.css';
 import { useEffect, useState, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../../utils/supabase';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
+import userPhotos from '../../../utils/userPhotos';
 
 export default function Settings () {
   const [user, setUser] = useState(null);
@@ -15,8 +16,7 @@ export default function Settings () {
   const [nonAdminUsers, setNonAdminUsers] = useState([]);
   const [cropActive, setCropActive] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [originalPhoto, setOriginalPhoto] = useState('');
-  const [croppedPhoto, setCroppedPhoto] = useState('');
+  const [photo, setPhoto] = useState('');
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -27,7 +27,6 @@ export default function Settings () {
         // If session exists, set the user
         console.log('session exists: ', response.data.session.user);
         setUser(response.data.session.user);
-
         // Fetch user data from the users table where auth_id matches the user id
         const { data: userData, error } = await supabase
           .from('users') // Replace 'users' with your actual table name if different
@@ -52,6 +51,21 @@ export default function Settings () {
     getAndSetUser();
   }, []);
   useEffect(() => {
+    if (user && user.email) {
+      // const cacheBustedUrl = `${user.photo}?t=${Date.now()}`;
+      const getInitialPhoto = async () => {
+        const { success, error, value } = await userPhotos.getProfilePhoto(user.email, 'cropped');
+        if (error) {
+          console.log('error retreiving user photo on mount: ', error)
+          return
+        }
+        if (success) {
+          setPhoto(value);
+        }
+      }
+      getInitialPhoto();
+      // setPhoto(cacheBustedUrl);
+    }
     if (user && user.admin) {
       const fetchNonAdminUsers = async () => {
         const users = await getAllNonAdminUsers();
@@ -60,6 +74,9 @@ export default function Settings () {
       fetchNonAdminUsers();
     }
   }, [user])
+  useEffect(() => {
+    console.log('photo changed: ', photo)
+  }, [photo])
 
   const sendRequestToInviteNewUser = async (email) => {
     try {
@@ -83,7 +100,6 @@ export default function Settings () {
       alert(`Invite not sent: ${error.message}` || 'An unexpected error occurred');
     }
   };
-
   const getAllNonAdminUsers = async () => {
     try {
       const { data, error } = await supabase
@@ -102,42 +118,95 @@ export default function Settings () {
       return null;
     }
   }
-  const handleFileChange = async () => {
-    // upload original to supabase
+  const handleFileChange = async (e) => {
+    console.log('file upload for user photo changed: ', e);
+    const file = e.target.files[0];
+    const { success, error, value } = await userPhotos.setProfilePhoto(user.email, 'original', file);
+
+    if (error) {
+      console.log('Error uploading file to supabase storage')
+    }
+    if (value) {
+      const { success: updatedTable, error: errorUpdatingTable } = await userPhotos.setPhotoInUsersTable(user.email, value);
+      if (errorUpdatingTable) {
+        console.log('Error updating users table with new photo url')
+      }
+      setPhoto(value)
+    }
+  }
+  const afterCrop = async () => {
+    // update users table here
+    setCropActive(false);
+    const { success, value, error } = await userPhotos.getProfilePhoto(user.email, 'cropped')
+    if (error) {
+      console.log('Error in afterCrop function retreiving new cropped photo from supabase after crop complete')
+      return
+    }
+    if (success) {
+      const { success, error} = await userPhotos.setPhotoInUsersTable(user.email, value)
+      if (error) {
+        console.log('error setting the new photo in the users table inside afterCrop function: ', error)
+      }
+      setPhoto(value)
+      return
+    }
   }
 
   if (!user) {
     return <div>Loading...</div>;
   }
 
+  const userPhoto = (editOrCrop, handler) => (
+    <div className={styles.currentPhotoPreviewWrapper}>
+      {photo ? (
+        <img src={photo} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon} />
+      ) : (
+        userIcon
+      )}
+
+      {(editOrCrop === 'edit' || (editOrCrop === 'crop' && photo)) && (
+        <FontAwesomeIcon
+          icon={editOrCrop === 'edit' ? faPencil : faCrop}
+          className={styles.editIcon}
+          onClick={handler}
+        />
+      )}
+
+    </div>
+  );
+
+
   const updatePhotoModalContent = (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContentWrapper}>
+        <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.modalBackButton} onClick={() => {setCropActive(false); setModalIsOpen(false)}} />
         <p className={styles.infoLabel}>Crop Or Change Photo</p>
-        <input className={styles.photoInput} type="file" name="photo" />
+        {!photo && <p>No photo current set. Upload a photo here</p>}
+
+        <input className={styles.photoInput} type="file" name="photo" onChange={(e) => handleFileChange(e)}/>
         <div className={styles.cropWrapper}>
-          {cropActive &&
-          <CroppablePhoto
-            photo={user.photo}
-            ratio={1}
-            bucket={'users'}
-            filePath={`photos/${user.email}`}
-            setCropActive={setCropActive}
-          />
+          {cropActive ?
+            <CroppablePhoto
+              photo={photo}
+              ratio={1}
+              bucket={'users'}
+              filePath={`photos/${user.email}`}
+              setCropActive={setCropActive}
+              afterUpload={afterCrop}
+            /> :
+            userPhoto('crop', async () => {
+              const { success, error, value } = await userPhotos.getProfilePhoto(user.email, 'original');
+
+              if (error) {
+                console.log('error setting photo to original for crop');
+                return;
+              }
+              setPhoto(value);
+              setCropActive(true)
+            })
           }
         </div>
       </div>
-    </div>
-  )
-  const userPhoto = (
-    <div className={styles.currentPhotoPreviewWrapper}>
-      {
-        user?.photo ?
-          <img src={user.photo} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon}/>
-          :
-          userIcon
-      }
-      <FontAwesomeIcon icon={faPencil} className={styles.editIcon} onClick={() => setModalIsOpen(true)}/>
     </div>
   )
 
@@ -149,7 +218,7 @@ export default function Settings () {
     <div className={styles.pageWrapper}>
       {modalIsOpen && updatePhotoModalContent}
       <div className={styles.userInfo}>
-        {userPhoto}
+        {userPhoto('edit', () => setModalIsOpen(true))}
 
         <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
         <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
