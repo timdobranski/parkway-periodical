@@ -16,7 +16,7 @@ import { faCrop, faPencil } from '@fortawesome/free-solid-svg-icons'
 // setCropActive - a function that that can be passed a boolean to unmount the component when the crop is complete
 // getCroppedPhoto -
 
-export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, getCroppedPhoto }) {
+export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, afterUpload }) {
   const [crop, setCrop] = useState(
     {
       unit: 'px',
@@ -94,13 +94,8 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
         return;
       }
 
-      console.log('Uploaded file path:', `${filePath}/cropped`);
-      setCropActive(false);
-
-      // Ensure that getCroppedPhoto is awaited
-      if (getCroppedPhoto) {
-        await getCroppedPhoto();
-      }
+      // console.log('Uploaded file path:', `${filePath}/cropped`);
+      afterUpload();
     } catch (error) {
       console.error('Error during upload or fetching cropped photo:', error);
     }

@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faImage } from '@fortawesome/free-solid-svg-icons';
 import supabase from '../../utils/supabase';
 import CroppablePhoto from '../../components/CroppablePhoto/CroppablePhoto';
+import userPhotos from '../../utils/userPhotos';
 
 export default function Register() {
   const router = useRouter();
@@ -25,6 +26,9 @@ export default function Register() {
   const [loadingPhoto, setLoadingPhoto] = useState(false);
   const [phoneExt, setPhoneExt] = useState('');
 
+  // returns obj with success, error, & value keys
+  // takes in user email, type string 'cropped' or 'original', and file if setting
+  const { getProfilePhoto, setProfilePhoto } = userPhotos;
   // check auth
   useEffect(() => {
     const getUserAuthData = async () => {
@@ -62,27 +66,33 @@ export default function Register() {
 
     getUserAuthData();
   }, [router]);
-  // set the file path for upload photos based on email
+  // set the photo if it already exists
   useEffect(() => {
+    const setInitialPhoto = async() => {
+      const { success: successRetreivingCroppedPhoto, error: errorRetreivingCroppedPhoto, value: croppedPhoto } = await getProfilePhoto(session.user.email, 'cropped');
+      if (successRetreivingCroppedPhoto) {
+        setPhoto(croppedPhoto)
+        return
+      }
+      const { success: successRetreivingOriginalPhoto, error: errorRetreivingOriginalPhoto, value: originalPhoto } = await getProfilePhoto(session.user.email, 'original');
+      if (successRetreivingOriginalPhoto) {
+        setPhoto(originalPhoto)
+        return
+      }
+    }
     if (session && session.user) {
-      console.log('session: ', session)
-      setFilePath(`photos/${session.user.email}`)
+      setInitialPhoto()
     }
   }, [session])
+
   useEffect(() => {
     if (!includeInStaff) {setAboutMe(''); setPhoneExt('')}
   }, [includeInStaff])
-  // on mount, check for existing photo
-  useEffect(() => {
-    if (filePath) {
-      getProfilePhoto('cropped')
-    }
-  }, [filePath])
-  useEffect(() => {
-    if (!cropActive) {
 
-    }
-  }, [cropActive])
+  useEffect (() => {
+    console.log('photo: ', photo)
+  }, [photo])
+
 
   const finishSignup = async (e) => {
     e.preventDefault()
@@ -123,77 +133,79 @@ export default function Register() {
     }
   }
   // retreive supabase photo: original or cropped type
-  const getProfilePhoto = async (type) => {
-    console.log('getting profile photo from: ', `${filePath}/${type}`)
-    const { data } = await supabase
-      .storage
-      .from('users')
-      .getPublicUrl(`${filePath}/${type}`);
+  // const getProfilePhoto = async (type) => {
+  //   console.log('getting profile photo from: ', `${filePath}/${type}`)
+  //   const { data } = await supabase
+  //     .storage
+  //     .from('users')
+  //     .getPublicUrl(`${filePath}/${type}`);
 
 
-    console.log('getProfilePhoto getPublicUrl returned: ', data.publicUrl)
-    const cacheBustedUrl = `${data.publicUrl}?cache_bust=${new Date().getTime()}`;
-    // if there's a photo, set it. If not, console log the error
-    const response = await fetch(cacheBustedUrl);
-    if (!response.ok) {
-      setPhoto('');
-      setLoadingPhoto(false);
-      console.error('User photo not found, received:', response);
-      return;
-    }
-    console.log('user photo response: ', response)
-    setPhoto(cacheBustedUrl);
-    setLoadingPhoto(false)
-  }
-  // const formatEmail = (email) => {
-  //   console.log('email: ', email)
-  //   // Split the email address into local part and domain part
-  //   const [localPart, domainPartWithExtension] = email.split('@');
-
-  //   // Remove any special characters from the local part and domain part
-  //   const sanitizedLocalPart = localPart.replace(/[^a-zA-Z0-9]/g, '');
-
-  //   // Remove the dot and the extension from the domain part
-  //   const domainPart = domainPartWithExtension.split('.')[0];
-  //   const sanitizedDomainPart = domainPart.replace(/[^a-zA-Z0-9]/g, '');
-
-  //   // Combine them in the desired format
-  //   const formattedEmail = `${sanitizedLocalPart}_${sanitizedDomainPart}`;
-
-  //   return formattedEmail;
+  //   console.log('getProfilePhoto getPublicUrl returned: ', data.publicUrl)
+  //   const cacheBustedUrl = `${data.publicUrl}?cache_bust=${new Date().getTime()}`;
+  //   // if there's a photo, set it. If not, console log the error
+  //   const response = await fetch(cacheBustedUrl);
+  //   if (!response.ok) {
+  //     setPhoto('');
+  //     setLoadingPhoto(false);
+  //     console.error('User photo not found, received:', response);
+  //     return;
+  //   }
+  //   console.log('user photo response: ', response)
+  //   setPhoto(cacheBustedUrl);
+  //   setLoadingPhoto(false)
   // }
 
   const getOriginalPhotoForCrop = async () => {
     console.log('inside getOriginalPhotoForCrop')
     setLoadingPhoto(true);
-    await getProfilePhoto('original');
-    setLoadingPhoto(false);
-    setCropActive(true);
+    const { success, value, error } = await getProfilePhoto(session.user.email, 'original');
+    if (success) {
+      setPhoto(value);
+      setLoadingPhoto(false);
+      setCropActive(true);
+    }
   }
-  const getCroppedPhoto = async() => {
+  const afterCropUpload = async() => {
+    console.log('inside afterCrop, setting loading to true')
     setLoadingPhoto(true);
-    await getProfilePhoto('cropped');
+    const { success, error, value }= await getProfilePhoto(session.user.email, 'cropped');
+    if (!success) {
+      alert(`Couldn't upload your cropped image at this time.`)
+      console.log('Error retreiving cropped user profile photo: ', error)
+      return;
+    }
     setLoadingPhoto(false);
+    setCropActive(false)
+    setPhoto(value);
   }
   // when user selects photo, upload it, then download it to render
   const handleFileChange = async (event) => {
     setLoadingPhoto(true);
-    if (cropActive) {setCropActive(false)};
-    if (photo) {setPhoto('')};
+
+    if (cropActive) {
+      setCropActive(false);
+    }
+
+    if (photo) {
+      setPhoto('');
+    }
+
     const file = event.target.files[0];
-    const timestamp = Date.now();
-    if (file) {
-      // Upload to Supabase storage
-      const { data, error } = await supabase.storage
-        .from('users') // Ensure this is your actual bucket name
-        .upload(`${filePath}/original`, file, { upsert: true });
+    if (!file) return;
 
-      if (error) {
-        console.error('Error uploading file:', error);
-        return;
-      }
+    const uploadPhoto = await setProfilePhoto(session.user.email, 'original', file);
+    if (!(uploadPhoto.success)) {
+      console.log('error: ', uploadPhoto)
+      setLoadingPhoto(false);
+      alert(`Couldn't upload your photo at this time. Please try again later. Administrators have been notified.`);
+      return;
+    }
 
-      getOriginalPhotoForCrop();
+    const originalPhoto = await getProfilePhoto(session.user.email, 'original');
+    if (originalPhoto.success) {
+      setCropActive(true)
+      setPhoto(originalPhoto.value);
     }
   };
 
@@ -243,12 +255,14 @@ export default function Register() {
                 photo={photo}
                 ratio={1}
                 bucket={'users'}
-                filePath={filePath}
+                filePath={`photos/${session?.user?.email}`}
                 setCropActive={setCropActive}
-                getCroppedPhoto={getCroppedPhoto}
+                afterUpload={afterCropUpload}
               /> :
               <>
-                <img className={styles.photo} src={`${photo}`} />
+                <div className={styles.photoWrapper} >
+                  <img className={styles.photo} src={`${photo}`} />
+                </div>
                 <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => getOriginalPhotoForCrop()}/>
               </>
 

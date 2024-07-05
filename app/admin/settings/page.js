@@ -116,7 +116,7 @@ export default function Settings () {
         <p className={styles.infoLabel}>Crop Or Change Photo</p>
         <input className={styles.photoInput} type="file" name="photo" />
         <div className={styles.cropWrapper}>
-          {setCropActive &&
+          {cropActive &&
           <CroppablePhoto
             photo={user.photo}
             ratio={1}
