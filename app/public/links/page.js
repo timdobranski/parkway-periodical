@@ -2,7 +2,7 @@
 
 import styles from './links.module.css'
 import { useState, useEffect } from 'react';
-import supabase from '../../../../utils/supabase';
+import supabase from '../../../utils/supabase';
 import Link from 'next/link';
 
 
