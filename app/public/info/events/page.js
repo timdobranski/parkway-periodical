@@ -41,7 +41,7 @@ export default function EventsPage() {
             <div className={styles.infoWrapper}>
               {<p className={`whiteSubTitle ${styles.title}`}>{item.title}</p>}
               {item.date && <p className={`centeredWhiteText ${styles.date}`}>{dateFormatter(item.date)}</p>}
-              <p className={`centeredWhiteText ${styles.startTime}`}>{`${timeFormatter(item.startTime)} - ${timeFormatter(item.endTime)}`}</p>
+              { item.startTime && <p className={`centeredWhiteText ${styles.startTime}`}>{`${timeFormatter(item.startTime)}${item.endTime && ' - ' + timeFormatter(item.endTime)}`}</p>}
               <div className={styles.divider}></div>
             </div>
             <div className={styles.contentWrapper}>

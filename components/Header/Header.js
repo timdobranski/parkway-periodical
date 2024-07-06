@@ -84,15 +84,21 @@ export default function Header({ skipAnimation }) {
         <Link href='/public/home'>
           <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
         </Link>
-        <Link href='/public/info'>
+        {/* <Link href='/public/info'>
           <h2 className={isActive('/public/info') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
+        </Link> */}
+        <Link href='/public/info/electives'>
+          <h2 className={isActive('/public/info/electives') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ELECTIVES</h2>
+        </Link>
+        <Link href='/public/info/clubs'>
+          <h2 className={isActive('/public/info/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
+        </Link>
+        <Link href='/public/info/events'>
+          <h2 className={isActive('/public/info/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
         </Link>
         <Link href='/public/archive'>
           <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </Link>
-        {/* <Link href='/public/about'>
-          <h2 className={isActive('/public/about') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ABOUT</h2>
-        </Link> */}
       </div>
     </div>
   )

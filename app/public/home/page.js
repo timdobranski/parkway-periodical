@@ -16,7 +16,7 @@ import dateFormatter from '../../../utils/dateFormatter';
 import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays, faPen, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
 import useOnlineStatus from '../../../utils/useOnlineStatus';
 
@@ -55,6 +55,8 @@ export default function Home({ introRunning, setIntroRunning }) {
       }
     };
     getAndSetUser();
+    getTags();
+    getPosts();
   }, []);
 
   useEffect(() => {
@@ -143,11 +145,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       getPosts({postId: postId});
     }
   }, [postId]);
-  // get tags when the page loads
-  useEffect(() => {
-    getTags();
-    getPosts();
-  }, [])
+
   useEffect(() => {
     const getUserId = async (id) => {
       console.log('id passed to getUserId: ', id)
@@ -161,7 +159,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         return;
       }
       console.log('data from id fetch: ', data)
-      setUserId(data.id)
+      setUserId(data[0].id)
     }
     getUserId(user.id)
   }, [user])
@@ -306,16 +304,16 @@ export default function Home({ introRunning, setIntroRunning }) {
           >
             <FontAwesomeIcon icon={faShare} className={styles.shareIcon} />
             <p className={styles.shareLabel}>Share</p>
-            {
-              user && post.author === userId &&
-              <div>
-                <button>
-                  <FontAwesomeIcon icon={faPen} />
-                  <p>EDIT</p>
-                </button>
-              </div>
-            }
           </div>
+          {
+            user && post.author === userId &&
+              <button
+                className={styles.editPostButton}
+                onClick={() => router.push(`/admin/new-post/?postId=${post.id}`)}
+              >
+                <FontAwesomeIcon icon={faGear} className={styles.editPostIcon}/>
+              </button>
+          }
         </div>
       </div>
 

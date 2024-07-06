@@ -76,6 +76,17 @@
   animation: bounce .5s linear forwards;
   cursor: pointer;
 }
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  /* width: 100%;
+  height: 100%; */
+  /* border: solid red 2px; */
+}
 .title {
   font-family: Louis George Cafe;
   font-weight: bold;
@@ -188,12 +199,12 @@
   outline: none;
 }
 .navLink {
-  margin: 0 1rem;
+  margin: 0 .75rem;
   font-family: Louis George Cafe;
   color: rgb(43, 133, 207);
   color: rgb(255, 83, 83);
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: normal;
   text-decoration: none;
   transform: scale(1);
@@ -245,8 +256,77 @@
   cursor: pointer;
   background: rgb(84, 195, 255);
 }
+/* handle title on resizing of page */
+@media (max-width: 1600px) {
+  .title {
+    font-size: 3rem;
+  }
+  .navLink {
+    font-size: 1.25rem;
+    margin: 0 .35rem;
+  }
+}
+@media (max-width: 1400px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .navLink {
+    font-size: 1rem;
+    margin: 0 .25rem;
+  }
+  .subtitle {
+    width: 35vw;
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+@media (max-width: 1150px) {
+  .title {
+    font-size: 2rem;
+  }
+  .navLink {
+    font-size: .85rem;
+    margin: 0 .25rem;
+  }
+  .subtitle {
+    width: 30vw;
+    font-size: 1rem;
+    margin-top: .5rem;
+    text-align: center;
+  }
+}
+@media (max-width: 1000px) {
+  .title {
+    font-size: 2rem;
+  }
+  .navLink {
+    font-size: .85rem;
+    margin: 0 .25rem;
+  }
+  .subtitle {
+    width: 40vw;
+    margin-top: .5rem;
+    text-align: center;
+  }
+  .socialIcon {
+    width: 20px;
+    height: 20px;
+    margin: .25rem;
+    padding: 4px;
+    font-size: 1.25rem;
+  }
+  .socialWrapper {
+    border: solid red 2px;
+    width:
+  }
+  .logoContainer {
+    margin: 0 1rem 0 .5rem;
+    width: 40px;
+    height: 40px;
+  }
+}
 
-
+/* MOBILE STYLING */
 @media (max-width: 768px) {
   .headerContainer {
     position: relative;
