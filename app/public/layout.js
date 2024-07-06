@@ -9,34 +9,20 @@ import Header from '../../components/Header/Header';
 
 
 export default function Home({ children }) {
-  const [introRunning, setIntroRunning] = useState(false);
+  const [introRunning, setIntroRunning] = useState(true);
   const [finishedLoading, setFinishedLoading] = useState(false);
-  const [isQueryProcessed, setIsQueryProcessed] = useState(false);
-  const searchParams = useSearchParams();
-  const runIntro = searchParams.get('intro');
 
-  useEffect(() => {
-    if (runIntro === 't') {
-      setIntroRunning(true);
-    }
-    setIsQueryProcessed(true);
-  }, [runIntro]);
+
+
 
   const welcomeModal = (
     <div className={`${styles.introContainer} ${finishedLoading ? styles.fadeInFromWhite : styles.whiteBackground}`} onClick={() => setIntroRunning(false)}>
       {/* mobile logo */}
       <div className={styles.mobileLogo}>
-        {/* {finishedLoading ? */}
-        <AnimatedShield finishedLoading={finishedLoading}/>
-        {/* : */}
-        {/* <div className={styles.animationPlaceholder}
-          >
-          LOADING...
-          </div> */}
-        {/* } */}
+        {finishedLoading && <AnimatedShield finishedLoading={finishedLoading}/>}
       </div>
       {/* desktop logo */}
-      <div className={styles.desktopLogoContainer}>
+      {finishedLoading && <div className={styles.desktopLogoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
         <img
           src={'/images/logos/titledLogoNoShield.webp'}
@@ -44,29 +30,24 @@ export default function Home({ children }) {
           className={styles.logo}
         />
       </div>
-      <h1 className={styles.enterButton}>{finishedLoading ? 'WELCOME!' : 'LOADING...' }</h1>
-      {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
+      }
+      <h1 className={styles.enterButton}>{finishedLoading ? 'WELCOME!' : 'LOADING' }</h1>
+      {/* {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>} */}
     </div>
   )
 
-  if (!isQueryProcessed) {
-    return null; // or a loading spinner if you prefer
-  }
 
   return (
-    <Suspense >
-
     <div>
       <Intro
         introRunning={introRunning}
         setFinishedLoading={setFinishedLoading}
-        />
+      />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null : <Header introRunning={introRunning}/>}
       { introRunning ? null :
         children
       }
     </div>
-      </Suspense>
   );
 }

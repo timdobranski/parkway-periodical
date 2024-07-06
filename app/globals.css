@@ -33,6 +33,8 @@
   --primary-blue: rgba(0, 89, 124, 1);
   --primary-red: rgb(250, 88, 88);
   --photo-border: 6px solid white;
+  --mobile-background: linear-gradient(to left, rgb(0, 129, 181) 0%, rgb(0, 78, 109) 100%);
+
   /* --gallery-photo-margin: 1rem; */
 }
 /* The entire scrollbar */
@@ -310,7 +312,7 @@
   z-index: 2000;
   backdrop-filter: blur(8px);
   animation: slideUpNoCenter .5s ease-out forwards;
-  margin: 2rem 0rem;
+  margin: 1rem 0rem;
   padding: 1rem 2rem .5rem 2rem;
   overflow: visible;
   min-height: none;
@@ -548,7 +550,7 @@
     padding: 0 .5rem;
     height: fit-content;
     min-height: 100vh;
-    background: linear-gradient(to left, rgba(0, 172, 240, 0.7) 0%, rgba(0, 89, 124, 0.7) 100%);
+    background: var(--mobile-background);
     border: none;
     display: flex;
     flex-direction: column;

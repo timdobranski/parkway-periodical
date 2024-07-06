@@ -68,16 +68,21 @@ export default function WelcomeSlideshow() {
     </div>
   );
   const archiveSlide = (
-    <div className={styles.featuredContentSlide}>
+    <div className={styles.archiveSlide}>
       <div className={styles.archiveTextWrapper}>
-      <h3 className={`whiteSubTitle ${styles.archiveTitle}`}>
-        <a href="/public/archive" rel="noopener noreferrer">
-          {`Parkway Archive`}
-        </a>
-      </h3>
-      <p>Parkway has a long and rich history serving students throughout La Mesa for decades. Check it out in the Parkway Archive!</p>
+        <h3 className={`whiteSubTitle ${styles.archiveTitle}`}>
+          <a href="/public/archive" rel="noopener noreferrer">
+            {`Parkway Archive`}
+          </a>
+        </h3>
+        <p>Parkway has a long and rich history serving students throughout La Mesa for decades. Check it out in the Parkway Archive!</p>
       </div>
-      <img src='/images/campus/parkwayHistorical.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/public/archive')}}/>
+      <div className={styles.archiveImageSectionWrapper}>
+        <div className={styles.archiveImageWrapper}>
+          <img src='/images/campus/parkwayHistorical.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/public/archive')}}/>
+          {/* <p className={styles.archiveImageCaption}>Parkway Circa 1963</p> */}
+        </div>
+      </div>
     </div>
   );
 
@@ -91,21 +96,21 @@ export default function WelcomeSlideshow() {
       <div className={styles.upcomingEventsSlide}>
         <a className={styles.viewAllEvents}>View All Events</a>
         <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-        <table className={styles.eventsTable}>
-          <tbody className={styles.eventsTableBody}>
-            {events.length > 0 ?
-
-              events.map((event, index) => (
+        {events.length ?
+          <table className={styles.eventsTable}>
+            <tbody className={styles.eventsTableBody}>
+              {events.map((event, index) => (
                 <tr key={index} className={styles.eventsItem}>
                   <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
                   <td className={styles.eventTitle}>{event.title}</td>
                   <td className={styles.eventDescription}>{event.description}</td>
                 </tr>
-              )) :
-              <p>No upcoming events to show yet</p>
-            }
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table> :
+          <p>No upcoming events to show yet</p>
+
+        }
       </div>
     );
 

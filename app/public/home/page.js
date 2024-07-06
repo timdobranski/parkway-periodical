@@ -170,7 +170,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     setTagId(value === 'all' ? null : parseInt(value));
   };
   const noResultsMessage = (
-    <p className='centeredWhiteText'>{`It looks like there aren't any posts for this ${displayType === 'search' ? 'search' : 'category'} yet`}</p>
+    <p className={styles.noResultsMessage}>{`It looks like there aren't any posts for this ${displayType === 'search' ? 'search' : 'category'} yet`}</p>
   )
   // reset posts to all
   const resetPosts = () => {

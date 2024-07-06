@@ -26,7 +26,7 @@
   -ms-user-select: none;     /* IE10+ and Edge */
   user-select: none;
 }
-.welcomeSlide, .storeSlide, .upcomingEventsSlide, .featuredContentSlide, .familyResourceCenter {
+.welcomeSlide, .storeSlide, .upcomingEventsSlide, .archiveSlide, .familyResourceCenter {
   position: relative;
   top: 0;
   left: 0;
@@ -97,6 +97,15 @@ margin-top: 1rem;
   -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* For Chrome, Safari */
   filter: drop-shadow(0 0 2px rgba(0,0,0,1)); /* Standard syntax */
 }
+.archiveSlide {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+}
 .archiveTextWrapper {
   box-sizing: border-box;
   display: flex;
@@ -121,15 +130,33 @@ margin-top: 1rem;
 .archiveTitle {
   font-size: 1.75rem;
 }
+.archiveImageSectionWrapper {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.archiveImageWrapper {
+  position: relative;
+  border: solid rgb(255, 255, 255) 6px;
+  height: 200px;
+  transform: rotate(-2deg);
+}
 .archiveImage {
   position: relative;
   height: 100%;
-  width: auto !important;
-  border: solid red 40px;
+  width: 100%;
   display: block;
-  -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* For Chrome, Safari */
-  filter: drop-shadow(0 0 2px rgba(0,0,0,1)); /* Standard syntax */
-
+}
+.archiveImageCaption {
+  position: absolute;
+  bottom: -1rem;
+  right: .5rem;
+  color: black;
+  font-weight: bold;
+  z-index: 10;
 }
 .storeSlide {
   display: flex;

@@ -8,6 +8,7 @@
   animation: none;
   left: 0;
   margin: 0 auto;
+  margin: .5rem 0 1rem 0;
   animation: slideUpNoPosition 1s ease-out forwards;
   /* border: solid yellow 2px; */
 }
@@ -102,7 +103,7 @@
 }
 .searchBarExpanded {
   position: relative;
-  width: 100% !important;
+  width: 100%;
   font-size: 1.25rem;
   padding: 0 5px 0 50px;
   border: none;
@@ -144,15 +145,17 @@
     padding: .5rem 0 .5rem 1rem;
     animation: none;
     left: 0;
-    animation: slideUpNoCenter 2s ease
+    animation: slideUpNoCenter 2s ease;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     /* border: solid red */
   }
   .searchBarExpanded {
     /* border: solid green 2px; */
-    width: calc(100% - 1rem)
+    width: calc(100% - 2rem)
   }
   .filterSelect {
     width: calc(100% - 30vw);
-    margin-right: 1vw;
+    right: 1rem;
   }
 }
