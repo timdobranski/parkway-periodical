@@ -110,9 +110,10 @@ export default function Intro({ introRunning, setFinishedLoading }) {
                 className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage} ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
                 key={`${rowIndex}-${index}`}
               >
-                <p className={styles.imageCaption}>
+                {/* <p className={styles.imageCaption}>
                   {imageCaptions['row' + (rowIndex + 1)][((index % rowImages.length) + 1).toString()]}
-                </p>                <div
+                </p>                 */}
+                <div
                   className={
                     index % 2 === (rowIndex % 2 === 0 ? 0 : 1)
                       ? introRunning ? styles.redOverlay : styles.redOverlayFaded

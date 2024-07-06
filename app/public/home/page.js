@@ -16,7 +16,7 @@ import dateFormatter from '../../../utils/dateFormatter';
 import { useSearchParams } from 'next/navigation';
 import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays, faPen } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
 import useOnlineStatus from '../../../utils/useOnlineStatus';
 
@@ -33,10 +33,33 @@ export default function Home({ introRunning, setIntroRunning }) {
   const router = useRouter();
   let postId = searchParams.get('postId');
   const pathname = usePathname();
+  const [user, setUser] = useState({});
+  const [userId, setUserId] = useState('');
 
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
+  useEffect(() => {
+    const getAndSetUser = async () => {
+      const response = await supabase.auth.getSession();
+
+      // Check if the session exists
+      if (response.data.session) {
+        // If session exists, set the user
+        console.log('session exists: ', response.data.session.user);
+        setUser(response.data.session.user);
+
+      } else {
+        // If no session, redirect to /auth
+        console.log('no session');
+      }
+    };
+    getAndSetUser();
+  }, []);
+
+  useEffect(() => {
+    console.log('userId changed: ', userId)
+  }, [userId])
   // get and parse post data
   const getPosts = async ({ tagId, searchQuery, postId } = {}) => {
     let query = supabase
@@ -109,7 +132,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   // get posts with tag id when tag ID changes
   useEffect(() => {
     if (tagId) {
-    getPosts({ tagId, searchQuery, postId });
+      getPosts({ tagId, searchQuery, postId });
     } else {
       getPosts({ tagId, searchQuery, postId })
     }
@@ -117,16 +140,31 @@ export default function Home({ introRunning, setIntroRunning }) {
   // get posts with postId when postId changes
   useEffect(() => {
     if (postId) {
-    getPosts({postId: postId});
+      getPosts({postId: postId});
     }
   }, [postId]);
   // get tags when the page loads
   useEffect(() => {
     getTags();
-  }, [])
-  useEffect(() => {
     getPosts();
   }, [])
+  useEffect(() => {
+    const getUserId = async (id) => {
+      console.log('id passed to getUserId: ', id)
+      const { data, error } = await supabase
+        .from('users')
+        .select('id')
+        .eq('auth_id', id)
+
+      if (error) {
+        console.log('error getting user id from auth id:', error)
+        return;
+      }
+      console.log('data from id fetch: ', data)
+      setUserId(data.id)
+    }
+    getUserId(user.id)
+  }, [user])
 
 
   const handleFilterChange = (event) => {
@@ -145,6 +183,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     getPosts();
     removeQueryString();
   }
+
   // copy post url to clipboard
   const handleShareClick = (id) => {
     const baseUrl = window.location.origin;
@@ -267,6 +306,15 @@ export default function Home({ introRunning, setIntroRunning }) {
           >
             <FontAwesomeIcon icon={faShare} className={styles.shareIcon} />
             <p className={styles.shareLabel}>Share</p>
+            {
+              user && post.author === userId &&
+              <div>
+                <button>
+                  <FontAwesomeIcon icon={faPen} />
+                  <p>EDIT</p>
+                </button>
+              </div>
+            }
           </div>
         </div>
       </div>

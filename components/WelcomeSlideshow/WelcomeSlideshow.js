@@ -83,13 +83,17 @@ export default function WelcomeSlideshow() {
         <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
         <table className={styles.eventsTable}>
           <tbody className={styles.eventsTableBody}>
-            {events.map((event, index) => (
-              <tr key={index} className={styles.eventsItem}>
-                <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
-                <td className={styles.eventTitle}>{event.title}</td>
-                <td className={styles.eventDescription}>{event.description}</td>
-              </tr>
-            ))}
+            {events.length > 0 ?
+
+              events.map((event, index) => (
+                <tr key={index} className={styles.eventsItem}>
+                  <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
+                  <td className={styles.eventTitle}>{event.title}</td>
+                  <td className={styles.eventDescription}>{event.description}</td>
+                </tr>
+              )) :
+              <p>No upcoming events to show yet</p>
+            }
           </tbody>
         </table>
       </div>
