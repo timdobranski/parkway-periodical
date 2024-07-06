@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import supabase from '../../../../utils/supabase';
+import supabase from '../../../utils/supabase';
 import styles from './events.module.css';
-import dateFormatter from '../../../../utils/dateFormatter';
-import timeFormatter from '../../../../utils/timeFormatter';
+import dateFormatter from '../../../utils/dateFormatter';
+import timeFormatter from '../../../utils/timeFormatter';
 
 export default function EventsPage() {
 

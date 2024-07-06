@@ -1,9 +1,9 @@
 'use client'
 
 import styles from './clubs.module.css'
-import ElectiveBlock from '../../../../components/ElectiveBlock/ElectiveBlock'
+import ElectiveBlock from '../../../components/ElectiveBlock/ElectiveBlock'
 import { useState, useEffect } from 'react';
-import supabase from '../../../../utils/supabase';
+import supabase from '../../../utils/supabase';
 
 export default function ClubsPage() {
   const [clubsData, setClubsData] = useState([]);
