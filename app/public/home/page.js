@@ -39,6 +39,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
+  // get and set user, tags, and posts
   useEffect(() => {
     const getAndSetUser = async () => {
       const response = await supabase.auth.getSession();
@@ -59,9 +60,6 @@ export default function Home({ introRunning, setIntroRunning }) {
     getPosts();
   }, []);
 
-  useEffect(() => {
-    console.log('userId changed: ', userId)
-  }, [userId])
   // get and parse post data
   const getPosts = async ({ tagId, searchQuery, postId } = {}) => {
     let query = supabase
@@ -200,28 +198,28 @@ export default function Home({ introRunning, setIntroRunning }) {
   };
 
   const renderedPosts =
-    <div className={styles.feedWrapperContainer}>
-      {/* <div className='topFeedShadow'></div> */}
+  // <div className={styles.feedWrapperContainer}>
       <div className='feedWrapper'>
-        <WelcomeSlideshow />
-        <SearchAndFilterBar
-          postTags={postTags}
-          tagId={tagId}
-          setTagId={setTagId}
-          handleFilterChange={handleFilterChange}
-          searchQuery={searchQuery}
-          setSearch={setSearchQuery}
-          getPosts={getPosts}
-        />
+        <div className='slideUp'>
+          <WelcomeSlideshow />
+          <SearchAndFilterBar
+            postTags={postTags}
+            tagId={tagId}
+            setTagId={setTagId}
+            handleFilterChange={handleFilterChange}
+            searchQuery={searchQuery}
+            setSearch={setSearchQuery}
+            getPosts={getPosts}
+          />
 
-        {searchQuery &&
+          {searchQuery &&
         <>
           <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>
             {`Search results for "${searchQuery}"`}
           </p>
         </>
-        }
-        {tagId &&
+          }
+          {tagId &&
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
             <span className={styles.tagLabel}>
@@ -229,21 +227,21 @@ export default function Home({ introRunning, setIntroRunning }) {
             </span>
           </p>
         </>
-        }
-        {postId &&
+          }
+          {postId &&
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing post #${postId} `}
           </p>
         </>
-        }
-        {posts.length === 0 && noResultsMessage}
-        {postId || tagId || searchQuery ?
-          <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
-          </button> : null
-        }
+          }
+          {posts.length === 0 && noResultsMessage}
+          {postId || tagId || searchQuery ?
+            <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
+            </button> : null
+          }
 
 
-        {posts &&
+          {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>
         {post.content.map((block, index) => (
@@ -318,8 +316,8 @@ export default function Home({ introRunning, setIntroRunning }) {
       </div>
 
     ))}
+        </div>
       </div>
-    </div>
 
   if (!isOnline) {
     return (

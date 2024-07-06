@@ -9,28 +9,28 @@ export default function Home() {
 
 
   useEffect(() => {
-    router.push('/public/home')
+    router.push('/public/home?intro=t')
   }, [])
 
-  const welcomeModal = (
-    <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
-      <img src='../../images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.titledLogo} />
-      <h1 className={styles.enterButton}>Loading</h1>
-    </div>
-  )
+  // const welcomeModal = (
+  //   <div className={styles.introContainer} onClick={() => setIntroRunning(false)}>
+  //     <img src='../../images/logos/titledLogoThumb.png' alt='Intro Image' className={styles.titledLogo} />
+  //     <h1 className={styles.enterButton}>Loading</h1>
+  //   </div>
+  // )
 
 
 
   return (
     <div
-    style={{
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      width: '100vw',
-      height: '100vh',
-      zIndex: '1000',
-    }}>
+      style={{
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: '100vw',
+        height: '100vh',
+        zIndex: '1000',
+      }}>
     </div>
   );
 }

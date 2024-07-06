@@ -8,7 +8,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: slideUpNoPosition .75s ease-out forwards;
   /* overflow: hidden; */
   overflow: visible;
   margin-bottom: 2rem;

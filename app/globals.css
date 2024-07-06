@@ -74,6 +74,10 @@
 }
 .slideUp {
   animation: slideUpNoCenter .5s ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
 }
 .background {
   position: absolute;

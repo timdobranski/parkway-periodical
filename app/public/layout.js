@@ -4,16 +4,24 @@ import React, { useEffect, useState, Suspense } from 'react';
 import styles from './layout.module.css';
 import Intro from '../../components/Intro/Intro';
 import AnimatedShield from '../../components/AnimatedShield/AnimatedShield';
-// import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Header from '../../components/Header/Header';
 
 
 export default function Home({ children }) {
-  const [introRunning, setIntroRunning] = useState(true);
-  const [finishedLoading, setFinishedLoading] = useState(false);
+  const [introRunning, setIntroRunning] = useState(false);
+  const [finishedLoading, setFinishedLoading] = useState(true);
+  const [isQueryProcessed, setIsQueryProcessed] = useState(false);
+  const searchParams = useSearchParams();
+  const runIntro = searchParams.get('intro');
 
-
-
+  useEffect(() => {
+    if (runIntro === 't') {
+      setIntroRunning(true);
+      setFinishedLoading(false);
+    }
+    setIsQueryProcessed(true);
+  }, [runIntro]);
 
   const welcomeModal = (
     <div className={`${styles.introContainer} ${finishedLoading ? styles.fadeInFromWhite : styles.whiteBackground}`} onClick={() => setIntroRunning(false)}>
@@ -42,7 +50,9 @@ export default function Home({ children }) {
     </div>
   )
 
-
+  if (!isQueryProcessed) {
+    return null; // or a loading spinner if you prefer
+  }
 
   return (
     <div>
