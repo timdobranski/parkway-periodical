@@ -1,9 +1,9 @@
 'use client'
 
 import styles from './staff.module.css'
-import supabase from '../../../../utils/supabase';
+import supabase from '../../../utils/supabase';
 import { useState, useEffect } from 'react';
-import StaffBlock from '../../../../components/StaffBlock/StaffBlock';
+import StaffBlock from '../../../components/StaffBlock/StaffBlock';
 
 
 export default function StaffPage() {
