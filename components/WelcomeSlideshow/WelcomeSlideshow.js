@@ -67,13 +67,23 @@ export default function WelcomeSlideshow() {
       </div>
     </div>
   );
-  const newContentSlide = (
+  const archiveSlide = (
     <div className={styles.featuredContentSlide}>
-      <p>{`Spotlight: `}</p>
-      <p>Randomly Chosen Elective or Club Featured Here</p>
+      <div className={styles.archiveTextWrapper}>
+      <h3 className={`whiteSubTitle ${styles.archiveTitle}`}>
+        <a href="/public/archive" rel="noopener noreferrer">
+          {`Parkway Archive`}
+        </a>
+      </h3>
+      <p>Parkway has a long and rich history serving students throughout La Mesa for decades. Check it out in the Parkway Archive!</p>
+      </div>
+      <img src='/images/campus/parkwayHistorical.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/public/archive')}}/>
     </div>
   );
-  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, storeLink, newContentSlide]);
+
+
+
+  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, storeLink, archiveSlide]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
   useEffect(() => {
@@ -99,7 +109,7 @@ export default function WelcomeSlideshow() {
       </div>
     );
 
-    setSlides([welcomeImage, familyResourceCenter, upcomingEvents, storeLink]);
+    setSlides([welcomeImage, familyResourceCenter, archiveSlide, storeLink, upcomingEvents]);
   }, [events]);
 
   const handleCarouselChange = (index) => {

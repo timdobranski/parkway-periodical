@@ -10,7 +10,7 @@ import Header from '../../components/Header/Header';
 
 export default function Home({ children }) {
   const [introRunning, setIntroRunning] = useState(false);
-  const [finishedLoading, setFinishedLoading] = useState(true);
+  const [finishedLoading, setFinishedLoading] = useState(false);
   const [isQueryProcessed, setIsQueryProcessed] = useState(false);
   const searchParams = useSearchParams();
   const runIntro = searchParams.get('intro');
@@ -18,7 +18,6 @@ export default function Home({ children }) {
   useEffect(() => {
     if (runIntro === 't') {
       setIntroRunning(true);
-      setFinishedLoading(false);
     }
     setIsQueryProcessed(true);
   }, [runIntro]);
@@ -55,16 +54,19 @@ export default function Home({ children }) {
   }
 
   return (
+    <Suspense >
+
     <div>
       <Intro
         introRunning={introRunning}
         setFinishedLoading={setFinishedLoading}
-      />
+        />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null : <Header introRunning={introRunning}/>}
       { introRunning ? null :
         children
       }
     </div>
+      </Suspense>
   );
 }

@@ -97,6 +97,40 @@ margin-top: 1rem;
   -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* For Chrome, Safari */
   filter: drop-shadow(0 0 2px rgba(0,0,0,1)); /* Standard syntax */
 }
+.archiveTextWrapper {
+  box-sizing: border-box;
+  display: flex;
+  color: white;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* position: relative; */
+  padding: 1rem 3rem;
+
+  height: 100%;
+  width: 50%;
+  text-align: left;
+}
+.archiveTextWrapper a {
+  color: inherit;
+  text-decoration: none;
+}
+.archiveTextWrapper p {
+  font-size: 1.15rem;
+}
+.archiveTitle {
+  font-size: 1.75rem;
+}
+.archiveImage {
+  position: relative;
+  height: 100%;
+  width: auto !important;
+  border: solid red 40px;
+  display: block;
+  -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* For Chrome, Safari */
+  filter: drop-shadow(0 0 2px rgba(0,0,0,1)); /* Standard syntax */
+
+}
 .storeSlide {
   display: flex;
   flex-direction: row;
