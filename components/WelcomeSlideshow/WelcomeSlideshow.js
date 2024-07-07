@@ -9,9 +9,11 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import Image from 'next/image';
 import supabase from '../../utils/supabase';
 import dateFormatter from '../../utils/dateFormatter';
+import { useRouter } from 'next/navigation';
 
 export default function WelcomeSlideshow() {
   const [events, setEvents] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -70,16 +72,17 @@ export default function WelcomeSlideshow() {
   const archiveSlide = (
     <div className={styles.archiveSlide}>
       <div className={styles.archiveTextWrapper}>
-        <h3 className={`whiteSubTitle ${styles.archiveTitle}`}>
-          <a href="/public/archive" rel="noopener noreferrer">
-            {`Parkway Archive`}
-          </a>
+        <h3
+          className={`whiteSubTitle ${styles.archiveTitle}`}
+          onClick={() => {router.push('/public/archive')}}
+        >
+          {`Parkway Archive`}
         </h3>
         <p>Parkway has a long and rich history serving students throughout La Mesa for decades. Check it out in the Parkway Archive!</p>
       </div>
       <div className={styles.archiveImageSectionWrapper}>
         <div className={styles.archiveImageWrapper}>
-          <img src='/images/campus/parkwayHistorical.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/public/archive')}}/>
+          <img src='/images/archive/1.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/public/archive')}}/>
           {/* <p className={styles.archiveImageCaption}>Parkway Circa 1963</p> */}
         </div>
       </div>

@@ -205,11 +205,12 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
   border: solid white 2px;
-  background-color: var(--primary-red);
+  /* background-color: var(--primary-red); */
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -217,11 +218,15 @@
 }
 .editPostButton:hover {
   cursor: pointer;
+  background-color: rgb(215, 215, 215);
 }
 .editPostIcon {
-  height: 25px;
-  width: 25px;
-  color: rgb(0, 0, 0);
+  height: 30px;
+  width: 30px;
+  color: rgb(149, 149, 149);
+}
+.editPostButton:hover .editPostIcon {
+  color: black;
 }
 
 @media(max-width: 768px) {

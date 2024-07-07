@@ -85,6 +85,7 @@
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
+  width: 100%;
 }
 .background {
   position: absolute;
@@ -440,7 +441,6 @@
   border: none !important;
   font-size: 1.25rem !important;
   z-index: 0 !important;
-  line-height: 1.5 !important;
 }
 .ql-editor {
   background-color: rgba(0, 0, 0, 0) !important;

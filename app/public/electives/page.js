@@ -31,13 +31,10 @@ export default function Electives() {
     setSelectedPathway(event.target.value);
   };
 
-  if (!electivesData.length) {
-    return <div>Loading...</div>
-  }
 
   return (
     <div className='feedWrapper'>
-      {/* <div className={`slideUp`}> */}
+      <div className={`slideUp`}>
       <h1 className='whiteTitle'>ELECTIVES</h1>
       <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
 
@@ -50,7 +47,7 @@ export default function Electives() {
         </select>
       </div>
 
-      {electivesData.map((elective, index) => {
+      {electivesData.map && electivesData.map((elective, index) => {
         return (
           <ElectiveBlock
             key={index}
@@ -60,7 +57,7 @@ export default function Electives() {
         )
       })}
 
-      {/* </div> */}
+      </div>
     </div>
   )
 }

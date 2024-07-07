@@ -27,23 +27,27 @@ export default function ClubsPage() {
     getElectives();
   }, [])
 
-  if (!clubsData.length) {
-    return <div>{`It looks like there aren't any clubs added yet.`}</div>
-  }
+  // if (!clubsData.length) {
+  //   return <div>{`It looks like there aren't any clubs added yet.`}</div>
+  // }
 
   return (
     <div className='feedWrapper'>
-      <h1 className='whiteTitle'>BEFORE & AFTER SCHOOL CLUBS</h1>
+      <div className={`slideUp`}>
+        <h1 className='whiteTitle'>BEFORE & AFTER SCHOOL CLUBS</h1>
 
-      {clubsData.map((club, index) => {
-        return (
-          <ElectiveBlock
-            key={index}
-            electiveData={club}
-            color={index % 2 === 0 ? 'blue' : 'red'}
-          />
-        )
-      })}
+        {clubsData.length ?
+          clubsData.map((club, index) => {
+            return (
+              <ElectiveBlock
+                key={index}
+                electiveData={club}
+                color={index % 2 === 0 ? 'blue' : 'red'}
+              />
+            )
+          }) :
+          <div>{`It looks like there aren't any clubs added yet.`}</div>}
+      </div>
     </div>
   )
 }

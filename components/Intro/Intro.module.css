@@ -220,6 +220,15 @@ color: black;
   font-weight: bold;
 
 }
+@media(max-width: 1400px) {
+  .credit, .creditLink {
+    font-size: .75rem;
+    width: 100px;
+    text-align: center;
+    border-top-left-radius: 10px;
+  }
+
+}
 @media(max-width: 768px) {
   .wrapperAfterIntro {
     display: none; /* Hides the whole component on mobile */

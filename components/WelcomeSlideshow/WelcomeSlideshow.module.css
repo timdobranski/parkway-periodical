@@ -84,7 +84,7 @@ margin-top: 1rem;
   text-decoration: inherit;  /* Removes underline from links */
 }
 .welcomeSlide {
-  background-image: url('/images/quad.png');
+  background-image: url('/images/campus/quad.png');
   background-size: cover;
   background-position: center;
 }
