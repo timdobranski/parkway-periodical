@@ -127,8 +127,16 @@ margin-top: 1rem;
 .archiveTextWrapper p {
   font-size: 1.15rem;
 }
+.archiveTextWrapper a:hover {
+  cursor: pointer !important;
+  position: relative;
+  z-index: 100;
+}
 .archiveTitle {
   font-size: 1.75rem;
+}
+.archiveTitle:hover {
+  cursor: pointer;
 }
 .archiveImageSectionWrapper {
   width: 50%;

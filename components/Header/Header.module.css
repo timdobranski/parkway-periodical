@@ -306,6 +306,7 @@
 @media (max-width: 1150px) {
   .title {
     font-size: 2rem;
+    width: 70vw;
   }
   .navLink {
     font-size: .85rem;
@@ -383,9 +384,10 @@
     height: 40px;
   }
   .rightNavbarHandle {
-    margin-right: 0rem;
+    margin-right: -1rem;
     width: 30px;
     height: 30px;
+
   }
   .desktopNavbarWrapper {
     display: none;
@@ -395,17 +397,19 @@
   }
   .titleWrapper {
     width: 75%;
-    max-width: 500px;
+    position: relative;
+    transform: none;
+    /* max-width: 500px; */
     height: fit-content;
     text-align: center;
     padding: 0 0 .5rem 0;
-    margin: 0 1.5rem;
+    margin: 0;
+    left: unset;
     /* border: solid red 2px; */
   }
   .title {
     font-size: 7vw;
     line-height: 1.0;
-    /* font-weight: normal; */
     -webkit-text-stroke: .5px rgb(255, 255, 255);
   }
   .subtitle {

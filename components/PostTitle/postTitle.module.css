@@ -94,7 +94,7 @@
 .userImage {
   height: 60px;
   width: 60px;
-  border: solid rgb(91, 91, 91) 1px;
+  /* border: solid rgb(91, 91, 91) 1px; */
   border-radius: 50%;
   margin: .25rem;
   display: flex;
