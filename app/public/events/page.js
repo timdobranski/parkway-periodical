@@ -36,7 +36,7 @@ export default function EventsPage() {
     <div className='feedWrapper'>
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>EVENTS</h1>
-        <p className='centeredWhiteText marginBelow'>{`Check out everything going on at Parkway!`}</p>
+        {data.length ? <p className='centeredWhiteText marginBelow'>{`Check out everything going on at Parkway!`}</p> : null}
         {data.length ? data.map((item, index) => {
           return (
             <div className={styles.itemWrapper} key={index}>

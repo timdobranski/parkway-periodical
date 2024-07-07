@@ -13,8 +13,8 @@
   padding: 0 2rem 2rem 2rem;
 }
 .selectSchoolYearLabel {
-  margin: 1.5rem 0 0 0;
-
+  margin: 2rem 0 1rem 0;
+  font-size: 2rem !important;
 
 }
 .select {
@@ -39,6 +39,9 @@
   width: auto;
   object-fit: contain;
   pointer-events: none;
+  border: solid white 2px !important;
+  background-color: rgba(0, 0, 0, .5);
+
 }
 .arrowLeft, .arrowRight {
   background-color: rgba(0, 90, 120, 1);
@@ -73,8 +76,18 @@
 .archivePhotoCaption {
   margin-top: 1rem;
   padding: .5rem 1rem;
-  /* min-height: 100px; */
+  min-height: 100px;
   background: rgba(0, 0, 0, .5);
   width: 90%;
   transition: height 0.5s ease;
+  border: solid white 2px;
+}
+.historyCenterLogo {
+  position: absolute;
+  right: 0rem;
+  top: -1rem;
+  /* border: solid white 2px; */
+  width: 120px;
+  filter: drop-shadow(0 0 5px rgb(255, 255, 255));
+
 }

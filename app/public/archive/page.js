@@ -65,10 +65,14 @@ export default function Archive() {
     <div className='feedWrapper'>
       <div className='slideUp'>
         <h1 className='whiteTitle'>ARCHIVE</h1>
-        <p className='centeredWhiteText'>{`Here you can explore Parkway's history, from the first years of the school to the present day.`}</p>
+        <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
+          <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo}/>
+        </a>
+        <p className='centeredWhiteText'>{`Here you can explore Parkway's history, from the first years of the school to the present day.
+        The slideshow below explores photos and events throughout Parkway's history in La Mesa.`}</p>
         <p className={`centeredWhiteText ${styles.endOfIntroParagraph}`}>
         {`The photos and articles displayed here were kindly provided to us by the La Mesa History Center. You can learn more about them `}
-          <a href="your-link-url-here" target="_blank" rel="noopener noreferrer" className={styles.historyCenterLink}>here</a>.
+          <a href="https://lamesahistory.com/" target="_blank" rel="noopener noreferrer" className={styles.historyCenterLink}>here</a>.
         </p>
 
 
@@ -101,6 +105,9 @@ export default function Archive() {
 
 
         <label className={`whiteSubTitle ${styles.selectSchoolYearLabel}`}>Periodical Archive</label>
+        <p className={`centeredWhiteText ${styles.endOfIntroParagraph}`}>
+        {`Here you can browse prior years of Parkway Periodicals' posts. Select a school year from the dropdown below to view archived posts from that year.`}
+        </p>
         <select className={styles.select}>
           {!schoolYears.length && <option value="No School Years To Show Yet">No School Years To View Yet</option>}
         </select>

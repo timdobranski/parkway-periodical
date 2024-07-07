@@ -36,6 +36,8 @@ export default function ClubsPage() {
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>BEFORE & AFTER SCHOOL CLUBS</h1>
 
+        <p className={`centeredWhiteText ${styles.marginBelow}`}>{`Check out all the clubs available to students this year!
+        We're always adding new clubs throughout the year.`}</p>
         {clubsData.length ?
           clubsData.map((club, index) => {
             return (
