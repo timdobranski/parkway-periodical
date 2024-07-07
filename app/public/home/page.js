@@ -162,6 +162,9 @@ export default function Home({ introRunning, setIntroRunning }) {
     getUserId(user.id)
   }, [user])
 
+  useEffect(() => {
+    console.log('userId changed: ', userId)
+  }, [userId])
 
   const handleFilterChange = (event) => {
     console.log('inside handle filter change')
@@ -244,6 +247,14 @@ export default function Home({ introRunning, setIntroRunning }) {
           {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>
+        {user && post.author === userId &&
+              <button
+                className={styles.editPostButton}
+                onClick={() => router.push(`/admin/new-post/?postId=${post.id}`)}
+              >
+                <FontAwesomeIcon icon={faGear} className={styles.editPostIcon}/>
+              </button>
+        }
         {post.content.map((block, index) => (
           <React.Fragment key={index}>
             {block.type === 'title' && (
@@ -303,15 +314,6 @@ export default function Home({ introRunning, setIntroRunning }) {
             <FontAwesomeIcon icon={faShare} className={styles.shareIcon} />
             <p className={styles.shareLabel}>Share</p>
           </div>
-          {
-            user && post.author === userId &&
-              <button
-                className={styles.editPostButton}
-                onClick={() => router.push(`/admin/new-post/?postId=${post.id}`)}
-              >
-                <FontAwesomeIcon icon={faGear} className={styles.editPostIcon}/>
-              </button>
-          }
         </div>
       </div>
 

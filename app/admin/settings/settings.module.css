@@ -60,6 +60,7 @@
   object-fit: cover;
   object-position: center;
   border-radius: 50%;
+  /* border: dashed rgb(143, 143, 143) 1px; */
 }
 /* .currentPhotoPreview:hover {
   cursor: pointer;
@@ -106,12 +107,15 @@
   font-size: 1.75rem;
   border: none;
   padding: .5rem 1rem;
-  /* text-decoration: underline; */
+  text-decoration: underline;
+  text-decoration-color: red;
+  color: var(--primary-blue);
 }
 .info {
   text-decoration: italic;
   font-size: 1.25rem;
-  margin: .5rem;
+  margin: .5rem 0;
+  width: 500px;
 }
 .inviteUserInputWrapper {
   display: flex;
@@ -125,6 +129,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  background-color: rgb(238, 238, 238);
+  padding: 2rem 2rem;
+  border-radius: 10px;
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, .5); */
   /* border: solid red 2px; */
 }
 .photoInput {
@@ -138,10 +146,21 @@
   border-radius: 5px;
   width: 500px;
 }
-.makeAdministratorCheckbox {
-  width: 20px;
-  height: 20px;
+.newUserTypeSelect {
+  width: 400px;
+  font-size: 1.25rem;
+  font-weight: 200;
+  padding: .25rem .5rem;
+  /* height: 20px; */
   margin: 1rem;
+}
+.adminLabel {
+  font-size: 1.5rem;
+  /* font-weight: bold; */
+  margin: 1rem 0 0 0;
+  padding: .25rem .5rem;
+  background-color: rgb(255, 153, 153);
+
 }
 .inviteButton {
   padding: .5rem 1rem;
@@ -151,6 +170,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top:1rem;
 }
 .archiveButton {
   background-color: rgb(255, 126, 126);

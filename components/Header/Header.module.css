@@ -205,7 +205,7 @@
   color: rgb(255, 83, 83);
   color: white;
   font-size: 1.25rem;
-  font-weight: normal;
+  font-weight: 200;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;

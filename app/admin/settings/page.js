@@ -105,7 +105,7 @@ export default function Settings () {
       const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('admin', false);
+        // .eq('admin', false);
 
       if (error) {
         console.error('Error fetching non-admin users:', error);
@@ -247,15 +247,17 @@ export default function Settings () {
             type='email'
             placeholder='Enter email address'
           />
-          {/* <label className={styles.adminLabel}>Make New User An Administrator?</label>
-          <p className={styles.info}>Administrators can add/remove users and  adjust site global settings like social media links, etc.</p>
-          <input
-            className={styles.makeAdministratorCheckbox}
+          <label className={styles.adminLabel}>User Permissions</label>
+          <select
+            className={styles.newUserTypeSelect}
             type='checkbox'
             checked={newUserAdminStatus}
             onChange={() => setNewUserAdminStatus(!newUserAdminStatus)}>
-
-            </input> */}
+            <option value={false}>Standard User</option>
+            <option value={true}>Administrator</option>
+          </select>
+          <p className={styles.info}>{`Standard Users can create content and edit only the content they've created`}</p>
+          <p className={styles.info}>{`Administrators can invite/remove users and edit all content, including content created by another user.`}</p>
           <button
             className={styles.inviteButton}
             onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
@@ -275,7 +277,7 @@ export default function Settings () {
             >
               <option value=''>{nonAdminUsers.length ? 'Select user to remove' : 'No users to remove yet'}</option>
               {nonAdminUsers.map((user, index) => {
-                return <option key={index} value={user.email}>{user.email}</option>
+                return <option key={index} value={user.email}>{`${user.first_name} ${user.last_name } - ${user.email}`}</option>
               })}
             </select>
             <button

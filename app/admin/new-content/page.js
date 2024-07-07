@@ -54,6 +54,7 @@ export default function NewContentPage() {
     is reached, you can set your club to either delete automatically, or to remind you to update it.`
   }
   const [formData, setFormData] = useState({});
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -272,7 +273,7 @@ export default function NewContentPage() {
 
   return (
     <div className='adminFeedWrapper'>
-      <div className='post'>
+      <div className='post' style={{boxShadow: '0 0 5px rgba(0, 0, 0, .5)'}}>
         <h1 className='pageTitle'>{id ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
         <p>{introText[type]}</p>
         {formData && form}

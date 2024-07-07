@@ -1,10 +1,15 @@
-@font-face {
+/* @font-face {
   font-family: 'Nadall';
   src: url('../public/fonts/NADALL.TTF') format('truetype');
-}
+} */
 @font-face {
   font-family: 'Louis George Cafe';
   src: url('../public/fonts/Louis George Cafe Light.ttf') format('truetype');
+  font-weight: 200; /* or 400 */
+}
+@font-face {
+  font-family: 'Louis George Cafe';
+  src: url('../public/fonts/Louis George Cafe.ttf') format('truetype');
   font-weight: normal; /* or 400 */
 }
 @font-face {
@@ -34,7 +39,7 @@
   --primary-red: rgb(250, 88, 88);
   --photo-border: 6px solid white;
   --mobile-background: linear-gradient(to left, rgb(0, 129, 181) 0%, rgb(0, 78, 109) 100%);
-
+  font-weight: 200;
   /* --gallery-photo-margin: 1rem; */
 }
 /* The entire scrollbar */
@@ -219,7 +224,7 @@
   text-align: center;
   color: white;
   font-size: 3rem;
-  font-weight: normal;
+  font-weight: 200;
   text-decoration: underline;
   text-decoration-color: rgb(255, 0, 0);
   text-decoration-thickness: 3px;
@@ -435,6 +440,7 @@
   border: none !important;
   font-size: 1.25rem !important;
   z-index: 0 !important;
+  line-height: 1.5 !important;
 }
 .ql-editor {
   background-color: rgba(0, 0, 0, 0) !important;
