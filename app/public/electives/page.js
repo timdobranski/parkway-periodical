@@ -10,6 +10,7 @@ export default function Electives() {
   const [selectedPathway, setSelectedPathway] = useState('All');
   const [pathways, setPathways] = useState(['Business Technology & Design Pathway', 'Engineering & Design Pathway', 'Medical Pathway', 'Traditional Electives']);
 
+  // fetch all electives on page load
   useEffect(() => {
     const getElectives = async () => {
       const { data, error } = await supabase
@@ -21,41 +22,49 @@ export default function Electives() {
       }
 
       if (data) {
-        console.log('electives data:', data)
+        console.log('electives data:', data);
         setElectivesData(data);
       }
     }
+
     getElectives();
-  }, [])
+  }, []);
+
+
   const handleChange = (event) => {
     setSelectedPathway(event.target.value);
   };
 
+  const filteredElectives = electivesData.filter(elective =>
+    selectedPathway === 'All' || elective.pathway === selectedPathway
+  );
 
   return (
     <div className='feedWrapper'>
       <div className={`slideUp`}>
-      <h1 className='whiteTitle'>ELECTIVES</h1>
-      <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
+        <h1 className='whiteTitle'>ELECTIVES</h1>
+        <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
 
-      <div className={styles.selectPathwayWrapper}>
-        <select value={selectedPathway} onChange={handleChange} className={styles.selectPathway}>
-          <option value="All">All</option>
-          {pathways.map((pathway, index) => (
-            <option key={index} value={pathway}>{pathway}</option>
-          ))}
-        </select>
-      </div>
+        <div className={styles.selectPathwayWrapper}>
+          <select value={selectedPathway} onChange={handleChange} className={styles.selectPathway}>
+            <option value="All">All</option>
+            {pathways.map((pathway, index) => (
+              <option key={index} value={pathway}>{pathway}</option>
+            ))}
+          </select>
+        </div>
 
-      {electivesData.map && electivesData.map((elective, index) => {
-        return (
-          <ElectiveBlock
-            key={index}
-            electiveData={elective}
-            color={index % 2 === 0 ? 'blue' : 'red'}
-          />
-        )
-      })}
+        {filteredElectives.length > 0 ? (
+          filteredElectives.map((elective, index) => (
+            <ElectiveBlock
+              key={index}
+              electiveData={elective}
+              color={index % 2 === 0 ? 'blue' : 'red'}
+            />
+          ))
+        ) : (
+          <p className='centeredWhiteText'>No electives currently offered for the selected pathway.</p>
+        )}
 
       </div>
     </div>

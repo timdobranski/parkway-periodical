@@ -65,9 +65,9 @@ export default function Archive() {
     <div className='feedWrapper'>
       <div className='slideUp'>
         <h1 className='whiteTitle'>ARCHIVE</h1>
-        <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
+        {/* <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
           <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo}/>
-        </a>
+        </a> */}
         <p className='centeredWhiteText'>{`Here you can explore Parkway's history, from the first years of the school to the present day.
         The slideshow below explores photos and events throughout Parkway's history in La Mesa.`}</p>
         <p className={`centeredWhiteText ${styles.endOfIntroParagraph}`}>

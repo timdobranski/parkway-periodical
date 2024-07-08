@@ -89,5 +89,5 @@
   /* border: solid white 2px; */
   width: 120px !important;
   filter: drop-shadow(0 0 5px rgb(255, 255, 255));
-
+  z-index: 9999;
 }
