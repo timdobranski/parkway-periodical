@@ -98,6 +98,9 @@ export default function Archive() {
                 className={styles.slideImg}
                 onContextMenu="return false;"
               />
+                 <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
+          <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo}/>
+        </a>
             </div>
           ))}
         </Carousel>

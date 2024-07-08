@@ -47,7 +47,7 @@ export default function AdminLayout({ children }) {
         <div className='adminPageWrapper'>
           <Suspense>
             {children}
-            <ErrorHandling />
+            {/* <ErrorHandling /> */}
           </Suspense>
         </div>
       </AdminProvider>

@@ -4,10 +4,10 @@ export default function logUserOut(router) {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      alert(error.message);
-      return;
+      console.log('Error logging out:', error.message)
+    } else {
+      router.push('/');
     }
-    router.push('/');
   };
   handleLogout();
 }

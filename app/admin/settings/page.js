@@ -13,9 +13,11 @@ export default function Settings () {
   const userIcon = (<FontAwesomeIcon icon={faUser} className={styles.userIcon} />)
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserAdminStatus, setNewUserAdminStatus] = useState(false);
-  const [nonAdminUsers, setNonAdminUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [cropActive, setCropActive] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [message, setMessage] = useState('');
   const [photo, setPhoto] = useState('');
 
   useEffect(() => {
@@ -67,16 +69,21 @@ export default function Settings () {
       // setPhoto(cacheBustedUrl);
     }
     if (user && user.admin) {
-      const fetchNonAdminUsers = async () => {
-        const users = await getAllNonAdminUsers();
-        setNonAdminUsers(users);
+      const fetchUsers = async () => {
+        const users = await getAllUsers();
+        setUsers(users);
       }
-      fetchNonAdminUsers();
+      fetchUsers();
     }
   }, [user])
   useEffect(() => {
     console.log('photo changed: ', photo)
   }, [photo])
+  useEffect(() => {
+    if (message) {
+      alert(message);
+    }
+  }, [message])
 
   const sendRequestToInviteNewUser = async (email) => {
     try {
@@ -100,7 +107,7 @@ export default function Settings () {
       alert(`Invite not sent: ${error.message}` || 'An unexpected error occurred');
     }
   };
-  const getAllNonAdminUsers = async () => {
+  const getAllUsers = async () => {
     try {
       const { data, error } = await supabase
         .from('users')
@@ -118,6 +125,7 @@ export default function Settings () {
       return null;
     }
   }
+
   const handleFileChange = async (e) => {
     console.log('file upload for user photo changed: ', e);
     const file = e.target.files[0];
@@ -175,7 +183,6 @@ export default function Settings () {
     </div>
   );
 
-
   const updatePhotoModalContent = (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContentWrapper}>
@@ -209,7 +216,34 @@ export default function Settings () {
       </div>
     </div>
   )
+  const handlePasswordChange = async () => {
+    try {
+      const response = await fetch('/api/changePassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: newPassword, id: user.auth_id}),
+      });
 
+      if (response.ok) {
+        const { error: signInError } = await supabase.auth.signIn({
+          email: user.email,
+          password: newPassword,
+        });
+
+        if (signInError) {
+          setMessage(`Password Changed Successfully. Please sign in again. ${signInError.message}`);
+        } else {
+          setMessage('Password changed successfully.');
+        }
+      } else {
+        setMessage(`Error: ${response}`);
+      }
+    } catch (error) {
+      setMessage('An error occurred. Please try again.');
+    }
+  };
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -232,41 +266,53 @@ export default function Settings () {
           <button className={styles.inviteButton}>Confirm</button>
         </div> */}
 
-        <h3 className={styles.infoLabel}>Change Password</h3>
+        <h3 className='smallerTitle'>Change Password</h3>
         <div className={styles.inputWrapper}>
-          <input className={styles.updateInput} type='password' placeholder='Enter new password' />
-          <button className={styles.inviteButton}>Confirm</button>
-        </div>
-
-        <h3 className={styles.infoLabel}>Invite New User</h3>
-        <div className={styles.inputWrapper}>
-          <input
-            className={styles.updateInput}
-            value={newUserEmail}
-            onChange={(e) => setNewUserEmail(e.target.value)}
-            type='email'
-            placeholder='Enter email address'
+          <input className={styles.updateInput}
+            type='password'
+            value={newPassword}
+            placeholder='Enter new password'
+            onChange={(e) => setNewPassword(e.target.value)}
           />
-          <label className={styles.adminLabel}>User Permissions</label>
-          <select
-            className={styles.newUserTypeSelect}
-            type='checkbox'
-            checked={newUserAdminStatus}
-            onChange={() => setNewUserAdminStatus(!newUserAdminStatus)}>
-            <option value={false}>Standard User</option>
-            <option value={true}>Administrator</option>
-          </select>
-          <p className={styles.info}>{`Standard Users can create content and edit only the content they've created`}</p>
-          <p className={styles.info}>{`Administrators can invite/remove users and edit all content, including content created by another user.`}</p>
           <button
             className={styles.inviteButton}
-            onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
-          >Send Invite</button>
+            onClick={(e) => {handlePasswordChange()}}
+          >Confirm</button>
         </div>
+
+        {user.admin &&
+        <>
+          <h3 className='smallerTitle'>Invite New User</h3>
+          <div className={styles.inputWrapper}>
+            <input
+              className={styles.updateInput}
+              value={newUserEmail}
+              onChange={(e) => setNewUserEmail(e.target.value)}
+              type='email'
+              placeholder='Enter email address'
+            />
+            <label className={styles.adminLabel}>User Permissions</label>
+            <select
+              className={styles.newUserTypeSelect}
+              type='checkbox'
+              checked={newUserAdminStatus}
+              onChange={() => setNewUserAdminStatus(!newUserAdminStatus)}>
+              <option value={false}>Standard User</option>
+              <option value={true}>Administrator</option>
+            </select>
+            <p className={styles.info}>{`Standard Users can create content and edit only the content they've created`}</p>
+            <p className={styles.info}>{`Administrators can invite/remove users and edit all content, including content created by another user.`}</p>
+            <button
+              className={styles.inviteButton}
+              onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
+            >Send Invite</button>
+          </div>
+        </>
+        }
 
         { user.admin &&
         <>
-          <h3 className={styles.infoLabel}>Remove User</h3>
+          <h3 className='smallerTitle'>Remove User</h3>
           <div className={styles.inputWrapper}>
             <select
               className={styles.updateInput}
@@ -275,8 +321,8 @@ export default function Settings () {
               type='email'
               placeholder='Enter email address'
             >
-              <option value=''>{nonAdminUsers.length ? 'Select user to remove' : 'No users to remove yet'}</option>
-              {nonAdminUsers.map((user, index) => {
+              <option value=''>{users.length ? 'Select user to remove' : 'No users to remove yet'}</option>
+              {users.map((user, index) => {
                 return <option key={index} value={user.email}>{`${user.first_name} ${user.last_name } - ${user.email}`}</option>
               })}
             </select>
@@ -291,12 +337,13 @@ export default function Settings () {
         }
       </div>
       {user.admin &&
-      <>
-        <button className={styles.archiveButton}>ARCHIVE CURRENT SCHOOL YEAR</button>
-        <p className={styles.archiveInstructions}>{`When you're done adding content for the current school year, click this button
-      to send all posts to the archive. All posts will be removed from the main page, and the year's archived
+      <div className={styles.inputWrapper}>
+        <button className={styles.archiveButton}>MOVE TO NEW SCHOOL YEAR</button>
+        <p className={styles.archiveInstructions}>{`When you're done adding posts for the school year, click this button
+      to send all current posts to the archive and switch the app over to a new school year. All posts will be removed from the main page, and the year's archived
       posts will no longer be editable.`}</p>
-      </>
+        <h3 className={styles.warning}>***CANNOT BE UNDONE***</h3>
+      </div>
       }
     </div>
     // </div>
