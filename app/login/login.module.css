@@ -12,8 +12,9 @@
 .loginContainer * {
 }
 .loginHeader {
+  /* display: none; */
   font-size: 2rem;
-  font-weight: normal;
+  font-weight: 200;
   margin: 1rem;
   color: white;
 }
@@ -34,7 +35,7 @@
   width: 400px;
   height: 40px;
   border: none;
-  border-radius: 10px;
+  border-radius: 4px;
   margin: 10px;
   padding: 10px;
   padding-right: 30px;
@@ -55,7 +56,7 @@ right: 30px; /* Adjust as necessary */
 cursor: pointer;
 }
 .forgotPassword {
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   font-size: 1.25rem;
   margin: .5rem 0 1rem 0;
   text-decoration: underline;
@@ -65,15 +66,16 @@ cursor: pointer;
 }
 .loginButton {
   width: 100px;
-  height: 40px;
+  /* height: 40px; */
   border: none;
-  border-radius: 10px;
+  border-radius: 4px;
   margin: 10px;
   padding: 10px;
   font-size: 20px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgb(255, 100, 100);
+  /* border: solid white 2px; */
+  color: white;
 }
 .loginButton:hover {
-  background: rgba(255, 255, 255, 0.8);
   cursor: pointer;
 }

@@ -109,7 +109,7 @@ export default function Archive() {
 
         <label className={`whiteSubTitle ${styles.selectSchoolYearLabel}`}>Periodical Archive</label>
         <p className={`centeredWhiteText ${styles.endOfIntroParagraph}`}>
-        {`Here you can browse prior years of Parkway Periodicals' posts. Select a school year from the dropdown below to view archived posts from that year.`}
+        {`Browse prior years of Parkway Periodicals' posts below. Select a school year from the dropdown menu below to view archived posts from that year.`}
         </p>
         <select className={styles.select}>
           {!schoolYears.length && <option value="No School Years To Show Yet">No School Years To View Yet</option>}

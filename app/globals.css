@@ -83,7 +83,7 @@
   animation: slideUpNoCenter .5s ease-out forwards;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
+  margin-bottom: 5rem;
   align-items: center;
   width: 100%;
 }

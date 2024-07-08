@@ -58,7 +58,7 @@ export default function Header({ skipAnimation }) {
   const desktopLeftNavbar = (
     <div className={styles.desktopLeftNavbarWrapper}>
       <div className={styles.socialWrapper}>
-        <img src={'/images/logos/parkway.webp'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/')}/>
+        <img src={'/images/logos/parkway.webp'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/public/home')}/>
         <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link>
         <Link href='https://www.instagram.com/parkwaypatriots/'><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} /></Link>
         <Link href='https://x.com/pkmspatriots?s=20'><FontAwesomeIcon icon={faXTwitter} className={styles.socialIcon} /></Link>
@@ -81,9 +81,9 @@ export default function Header({ skipAnimation }) {
   const desktopRightNavbar = (
     <div className={styles.desktopRightNavbarWrapper}>
       <div className={styles.navContainer}>
-        <Link href='/public/home'>
+        {/* <Link href='/public/home'>
           <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
-        </Link>
+        </Link> */}
         {/* <Link href='/public/info'>
           <h2 className={isActive('/public/info') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>INFO</h2>
         </Link> */}
@@ -98,6 +98,9 @@ export default function Header({ skipAnimation }) {
         </Link>
         <Link href='/public/events'>
           <h2 className={isActive('/public/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
+        </Link>
+        <Link href='/public/links'>
+          <h2 className={isActive('/public/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
         </Link>
         <Link href='/public/archive'>
           <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>

@@ -30,7 +30,8 @@ export default function NewContentPage() {
     deleteOnExpire: false,
     duration: '',
     cte: false,
-    image: ''
+    image: '',
+    pathway: ''
   };
   const staffFormData = {
     name: '',
@@ -134,15 +135,15 @@ export default function NewContentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, url, description, bio, when, expires, deleteOnExpire, duration, cte } = formData;
+    const { title, url, description, bio, when, expires, deleteOnExpire, duration, cte, pathway } = formData;
 
     // Convert empty string in 'expires' to null if necessary
     const effectiveExpires = expires === '' ? null : expires;
 
     // Prepare the payload dynamically based on whether linkId is available
     const payload = id ?
-      { id: id, title, url, description, expires, deleteOnExpire, when, bio, duration, cte } :
-      { title, url, description, expires, deleteOnExpire, duration, cte, bio, when };
+      { id: id, title, url, description, expires, deleteOnExpire, when, bio, duration, cte, pathway } :
+      { title, url, description, expires, deleteOnExpire, duration, cte, bio, when, pathway };
 
     // Determine the operation based on linkId's presence
     const operation = id ? 'update' : 'insert';
@@ -154,7 +155,7 @@ export default function NewContentPage() {
     if (error) {
       console.error(`Error ${operation} database:`, error);
     } else {
-      console.log(`Successfully ${operation} database:`, data);
+      console.log(`Successfully ${operation}ed database:`, data);
       router.push(`/admin/list?type=${type}`);  // Assuming 'router' is correctly defined and imported
     }
   };
@@ -202,18 +203,18 @@ export default function NewContentPage() {
       </div>
       }
       <div className={styles.groupedFormSections}>
-      {formData.startTime !== undefined &&
+        {formData.startTime !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='description' className={styles.label}>Start Time</label>
         <input type='time' name='startTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
       </div>
-      }
-      {formData.endTime !== undefined &&
+        }
+        {formData.endTime !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>End Time</label>
           <input type='time' name='endTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
         </div>
-      }
+        }
       </div>
       {formData.when !== undefined &&
         <div className={styles.formSection}>
@@ -233,9 +234,22 @@ export default function NewContentPage() {
       {formData.cte !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>CTE Class?</label>
-        <select  name='cte' className={styles.onExpire} value={formData.deleteOnExpire} onChange={handleChange}>
+        <select  name='cte' className={styles.onExpire} value={formData.cte} onChange={handleChange}>
           <option value={true}>Yes</option>
           <option value={false}>No</option>
+        </select>
+      </div>
+      }
+      {formData.duration !== undefined &&
+      <div className={styles.formSection}>
+        <label htmlFor='reminder' className={styles.label}>Pathway</label>
+        <select  name='pathway' className={styles.onExpire} value={formData.pathway} onChange={handleChange}>
+          <option value="Traditional Electives">Traditional Electives</option>
+          <option value="Medical Pathway">Medical Pathway</option>
+          <option value="Engineering & Design Pathway">Engineering & Design Pathway</option>
+          <option value="Business Technology & Design Pathway">Business Technology & Design Pathway</option>
+          <option value="Traditional Electives">Traditional Electives</option>
+
         </select>
       </div>
       }
@@ -267,7 +281,11 @@ export default function NewContentPage() {
         </select>
       </div>
       }
-      <button type='submit' className={styles.submitButton}>{id ? `Update ${singularType}` : `Add ${type.slice(-1) === 's' ? type.slice(0, -1) : type}`}</button>
+      <button
+        type='submit'
+        className={styles.submitButton}
+      >
+        {id ? `Update ${singularType}` : `Add ${type.slice(-1) === 's' ? type.slice(0, -1) : type}`}</button>
     </form>
   )
 
