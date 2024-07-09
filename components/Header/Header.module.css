@@ -66,6 +66,7 @@
   width: 60px;
   height: 60px;
   margin: 0 3rem 0 1rem;
+  perspective: revert;
   /* box-shadow: 0 0 35px rgba(0, 0, 0, .6); */
   /* border-radius: 50%;
   overflow: visible; */

@@ -42,6 +42,8 @@
   font-weight: 200;
   /* --gallery-photo-margin: 1rem; */
 }
+/* WEBKIT SCROLLBAR */
+
 /* The entire scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -61,8 +63,20 @@
 }
 /* The handle (thumb) when hovering over it */
 ::-webkit-scrollbar-thumb:hover {
-  background: #29c6ff;
+  background: #006a90;
 }
+/* FIREFOX ONLY */
+@-moz-document url-prefix() {
+  body {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255, 83, 83) rgba(0, 0, 0, 0);
+  }
+  .custom-scrollbar-element {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255, 83, 83) rgba(0, 0, 0, .5);
+  }
+}
+
 .no-scroll {
   overflow: hidden !important;
 }
@@ -80,6 +94,7 @@
   display: none !important;
 }
 .slideUp {
+  -webkit-animation: slideUpNoCenter .5s ease-out forwards; /* For Safari and older WebKit browsers */
   animation: slideUpNoCenter .5s ease-out forwards;
   display: flex;
   flex-direction: column;
@@ -98,6 +113,9 @@
   background-color: black;
   overflow: hidden;
   background-color: white;
+}
+.slide-wrapper-axis-horizontal {
+  z-index: -1 !important;
 }
 .background * {
   font-family: Louis George Cafe;
