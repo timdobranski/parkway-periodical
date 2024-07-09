@@ -69,7 +69,6 @@ margin-top: 1rem;
   font-size: 1.25rem;
   margin: 0;
   padding: 0;
-  text-decoration-color: red !important;
 }
 .frcSubtitle2 {
   font-size: 1rem;
@@ -86,18 +85,18 @@ margin-top: 1rem;
   text-decoration: inherit;  /* Removes underline from links */
 }
 .welcomeSlide {
-  background-image: url('/images/campus/quad.png');
+  background-image: url('/images/campus/overhead2.webp');
   background-size: cover;
   background-position: center;
 }
 .welcomeLogo {
   position: relative;
-  height: 200px !important;
+  height: 180px !important;
   width: auto !important;
   border: solid red 40px;
   display: block;
   -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* For Chrome, Safari */
-  filter: drop-shadow(0 0 2px rgba(0,0,0,1)); /* Standard syntax */
+  filter: drop-shadow(0 0 8px rgba(0,0,0,1)); /* Standard syntax */
 }
 .archiveSlide {
   display: flex;

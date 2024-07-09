@@ -202,9 +202,9 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const renderedPosts =
   // <div className={styles.feedWrapperContainer}>
-      <div className='feedWrapper'>
+  <div className='feedWrapper'>
+        <WelcomeSlideshow />
         <div className='slideUp'>
-          <WelcomeSlideshow />
           <SearchAndFilterBar
             postTags={postTags}
             tagId={tagId}
