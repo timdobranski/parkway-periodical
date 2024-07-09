@@ -91,9 +91,9 @@ margin-top: 1rem;
 }
 .welcomeLogo {
   position: relative;
-  height: 180px !important;
+  height: 200px !important;
   width: auto !important;
-  border: solid red 40px;
+  margin-bottom: 1rem;
   display: block;
   -webkit-filter: drop-shadow(0 0 3px rgb(255, 255, 255)); /* For Chrome, Safari */
   filter: drop-shadow(0 0 8px rgba(0,0,0,1)); /* Standard syntax */

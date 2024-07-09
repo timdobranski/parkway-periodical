@@ -38,6 +38,7 @@
   --primary-blue: rgba(0, 89, 124, 1);
   --primary-red: rgb(250, 88, 88);
   --photo-border: 6px solid white;
+  --galleryMargin: 6px;
   --mobile-background: linear-gradient(to left, rgb(0, 129, 181) 0%, rgb(0, 78, 109) 100%);
   font-weight: 200;
   /* --gallery-photo-margin: 1rem; */
