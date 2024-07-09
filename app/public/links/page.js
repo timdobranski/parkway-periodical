@@ -28,22 +28,20 @@ export default function LinksPage() {
     getLinks();
   }, [])
 
-  if (!linksData.length) {
-    return <div>{`It looks like there aren't any links added yet.`}</div>
-  }
 
   return (
     <div className='feedWrapper'>
-      <h1 className='whiteTitle'>RESOURCES</h1>
+      <h1 className='whiteTitle'>LINKS</h1>
       <p className='centeredWhiteText marginBelow'>{`Below you'll find links to helpful resources for Parkway families:`}</p>
-      {linksData.map((link, index) => {
+      {linksData.length ? linksData.map((link, index) => {
         return (
           <div className={styles.linkWrapper} key={index}>
             <Link href={link.url} className='whiteSubTitle centeredText'>{link.title}</Link>
             {link.description && <p className='centeredWhiteText'>{link.description}</p>}
           </div>
         )
-      })}
+      }) :
+        <div className='centeredWhiteText'>{`It looks like there aren't currently any links available.`}</div>}
     </div>
   )
 
