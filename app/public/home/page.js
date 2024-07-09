@@ -190,7 +190,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
-        setShowLinkCopied(true);
+        setShowLinkCopied(id);
         setTimeout(() => {
           setShowLinkCopied(false);
         }, 2000);
@@ -203,26 +203,26 @@ export default function Home({ introRunning, setIntroRunning }) {
   const renderedPosts =
   // <div className={styles.feedWrapperContainer}>
   <div className='feedWrapper'>
-        <WelcomeSlideshow />
-        <div className='slideUp'>
-          <SearchAndFilterBar
-            postTags={postTags}
-            tagId={tagId}
-            setTagId={setTagId}
-            handleFilterChange={handleFilterChange}
-            searchQuery={searchQuery}
-            setSearch={setSearchQuery}
-            getPosts={getPosts}
-          />
+    <WelcomeSlideshow />
+    <div className='slideUp'>
+      <SearchAndFilterBar
+        postTags={postTags}
+        tagId={tagId}
+        setTagId={setTagId}
+        handleFilterChange={handleFilterChange}
+        searchQuery={searchQuery}
+        setSearch={setSearchQuery}
+        getPosts={getPosts}
+      />
 
-          {searchQuery &&
+      {searchQuery &&
         <>
           <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>
             {`Search results for "${searchQuery}"`}
           </p>
         </>
-          }
-          {tagId &&
+      }
+      {tagId &&
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
             <span className={styles.tagLabel}>
@@ -230,21 +230,21 @@ export default function Home({ introRunning, setIntroRunning }) {
             </span>
           </p>
         </>
-          }
-          {postId &&
+      }
+      {/* {postId &&
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing post #${postId} `}
           </p>
         </>
-          }
-          {posts.length === 0 && noResultsMessage}
-          {postId || tagId || searchQuery ?
-            <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
-            </button> : null
-          }
+      } */}
+      {posts.length === 0 && noResultsMessage}
+      {postId || tagId || searchQuery ?
+        <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
+        </button> : null
+      }
 
 
-          {posts &&
+      {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>
         {user && post.author === userId &&
@@ -303,7 +303,7 @@ export default function Home({ introRunning, setIntroRunning }) {
           </React.Fragment>
         ))}
         <div className={styles.postFooter}>
-          <p className={`${styles.linkCopyConfirm} ${showLinkCopied ? styles.show : ''}`}>Link copied!</p>
+          <p className={`${styles.linkCopyConfirm} ${showLinkCopied === post.id ? styles.show : ''}`}>Link copied!</p>
           <div className={styles.createdAtWrapper}>
             <FontAwesomeIcon icon={faCalendarDays} className={styles.createdAtIcon} />
             <p className={styles.createdAt}>{dateFormatter(post.created_at)}</p>
@@ -318,8 +318,8 @@ export default function Home({ introRunning, setIntroRunning }) {
       </div>
 
     ))}
-        </div>
-      </div>
+    </div>
+  </div>
 
   if (!isOnline) {
     return (

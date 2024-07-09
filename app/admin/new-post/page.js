@@ -59,6 +59,7 @@ export default function NewPostPage() {
   }
   async function initContent(user) {
     if (postId) {
+      console.log('post id found: ', postId)
       const { data, error } = await supabase
         .from('posts')
         .select('*')

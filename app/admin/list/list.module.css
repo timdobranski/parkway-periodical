@@ -55,7 +55,7 @@
   /* border: solid red 2px; */
 }
 .title {
-  font-weight: normal;
+  font-weight: 200;
   margin: 0;
 }
 .expandedInfoHidden {
@@ -75,7 +75,7 @@
   background-color: rgb(63, 181, 255);
   font-size: 1.25rem;
   color: rgb(0, 0, 0);
-  font-weight: bold;
+  font-weight: normal;
   border: none;
   padding: .25rem .5rem;
   margin: .5rem;
