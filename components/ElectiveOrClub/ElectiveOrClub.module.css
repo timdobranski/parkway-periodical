@@ -3,12 +3,11 @@
   border: solid white 2px;
   height: 250px;
   min-height: 250px;
-  width: 100%;
+  width: 98%;
   margin:1rem 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 1);
   display: flex;
   flex-direction: row;
-  /* background-color: black; */
 }
 .titleWrapperRight, .titleWrapperLeft {
   box-sizing: border-box;
@@ -23,8 +22,8 @@
   flex-direction: column;
   justify-content: space-between;;
   z-index: 2;
+  padding: .5rem 1rem;
   /* border: solid red 2px; */
-  padding: 1rem;
 }
 .titleWrapperRight {
   right: 0;
@@ -44,7 +43,6 @@
   width: 25px;
   margin: 0;
   background-color: rgb(255, 84, 84);
-  /* box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0; */
   border: solid rgb(255, 255, 255) 2px;
   border-radius: 50%;
   padding: .5rem;
@@ -57,7 +55,6 @@
 }
 .navIcon {
   left: -23px;
-
 }
 .navIconRight {
   right: -23px;
@@ -84,13 +81,7 @@
 .rightPhotoWrapper {
   left: 0;
 }
-/* .underPhotoWrapper {
-  filter: brightness(.4) blur(2px);
-  transition: width 0.75s ease-in-out;
-  width: 0px;
-  overflow: hidden;
-  z-index: -1;
-} */
+
 .slideInFromLeft {
   transition-delay: 0.5s;
   width: 70%; /* Target width after animation */
@@ -122,9 +113,6 @@
   object-position: center;
   height: 100%;
 }
-/* .underPhoto {
-  filter: grayscale(1)
-} */
 .leftOverlay {
   mix-blend-mode: overlay;
   background-color: rgb(92, 197, 250);
@@ -153,27 +141,16 @@
   left: 0;
   padding-left: 3rem;
 }
-/* .descriptionWrapperLeft p {
-  text-align: right;
-} */
 .descriptionWrapperRight {
   padding-right: 3rem;
   right: 0;
 }
-/* .descriptionWrapperRight p {
-  text-align: left;
-} */
-.meetsLabel {
-  font-weight: bold;
-  color: var(--primary-blue);
-  text-decoration: underline;
-  text-decoration-color: red;
-}
 .clubMeetTimeWrapper, .clubMeetTimeWrapperRight {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  /* border: solid red 2px; */
+  background-color: rgb(119, 255, 160);
+  padding: .5rem;
+  width: 85%;
 }
 .clubMeetTimeWrapperRight {
   text-align: right;
@@ -185,15 +162,15 @@
 
 .clubMeetLabel {
   font-weight: bold;
-  color: var(--primary-blue);
   text-decoration: underline;
-  text-decoration-color: red;
   margin: 0;
+  /* color: var(--primary-blue); */
+  /* text-decoration-color: red; */
 }
 .clubMeetTime {
   /* font-weight: bold; */
   font-size: 1.25rem;
-  color: var(--primary-blue);
+  /* color: var(--primary-blue); */
   margin: 0;
 }
 .electiveMetadataWrapper, .electiveMetadataWrapperRight {
@@ -212,32 +189,28 @@
 .cte, .cteRight, .yearLong, .trimester {
   display: inline;
   width: auto;
-  padding: .25rem .5rem;
-  margin: .5rem;
+  padding: .25rem .75rem;
+  margin: .25rem 0;
+  /* margin: 0; */
+  font-weight: normal;
 }
 .cte, .cteRight {
   bottom: 1rem;
   background-color: rgb(149, 255, 149);
-  box-shadow: 0 0 6px rgba(141, 141, 141, 0.747);
+  /* box-shadow: 0 0 6px rgba(141, 141, 141, 0.747); */
 }
 .cte {
   left: 1rem;
 }
 .cteRight {
   right: 1rem;
-
-}
-.yearLong, .trimester {
-  background-color: rgb(255, 139, 139);
-  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); */
-
 }
 .yearLong {
- background-color: rgb(16, 179, 255);
+ background-color: rgb(64, 193, 253);
  /* box-shadow: 0 0 20px rgba(75, 192, 255, .75) */
 }
 .trimester {
-  background-color: rgb(255, 112, 112);
+  background-color: rgb(254, 131, 131);
 }
 .electiveWrapper:hover {
   cursor: pointer;
@@ -286,6 +259,7 @@
     height: auto;
     display: flex;
     flex-direction: column;
+    display: none;
     /* border: none; */
   }
   .titleWrapperRight, .titleWrapperLeft {
@@ -298,6 +272,7 @@
   }
   .classTitleRight, .classTitle {
     text-align: center;
+
   }
   .photoAndDescriptionWrapper {
     position: relative;
@@ -383,3 +358,15 @@
     margin: 0 0 .5rem 0;
   }
 }
+
+
+/* .underPhotoWrapper {
+  filter: brightness(.4) blur(2px);
+  transition: width 0.75s ease-in-out;
+  width: 0px;
+  overflow: hidden;
+  z-index: -1;
+}
+ .underPhoto {
+  filter: grayscale(1)
+} */

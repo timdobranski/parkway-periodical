@@ -1,8 +1,9 @@
 'use client'
 
 import styles from './electives.module.css'
-import ElectiveBlock from '../../../components/ElectiveBlock/ElectiveBlock'
-import { useState, useEffect } from 'react';
+import Elective from '../../../components/ElectiveOrClub/ElectiveOrClub'
+import ElectiveMobile from '../../../components/ElectiveOrClubMobile/ElectiveOrClubMobile'
+import { useState, useEffect, Fragment } from 'react';
 import supabase from '../../../utils/supabase';
 
 export default function Electives() {
@@ -56,11 +57,19 @@ export default function Electives() {
 
         {filteredElectives.length > 0 ? (
           filteredElectives.map((elective, index) => (
-            <ElectiveBlock
-              key={index}
-              electiveData={elective}
+            <Fragment
+            key={index}>
+            <Elective
+
+              data={elective}
               titleSide={index % 2 === 0 ? 'left' : 'right'}
             />
+            <ElectiveMobile
+
+            data={elective}
+            titleSide={index % 2 === 0 ? 'left' : 'right'}
+          />
+          </Fragment>
           ))
         ) : (
           <p className='centeredWhiteText'>No electives currently offered for the selected pathway.</p>

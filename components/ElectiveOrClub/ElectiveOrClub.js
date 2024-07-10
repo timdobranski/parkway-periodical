@@ -1,12 +1,20 @@
 'use client'
 
-import styles from './ElectiveBlock.module.css'
+import styles from './ElectiveOrClub.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
-export default function ElectiveBlock({ electiveData, titleSide }) {
+// sample props:
+
+// const data = {
+
+// }
+
+
+export default function ElectiveOrClub({ data, titleSide }) {
   const [expanded, setExpanded] = useState(false)
+
   const responsiveArrowButton = (
     <FontAwesomeIcon
       icon={titleSide === 'right' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
@@ -22,10 +30,22 @@ export default function ElectiveBlock({ electiveData, titleSide }) {
     <div className={` ${titleSide === 'right' ? styles.rightPhotoWrapper : styles.leftPhotoWrapper} ${expanded ? (titleSide === 'left' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
       onClick={() => setExpanded(!expanded)}
     >
-      <img src={electiveData.image}className={styles.photo}/>
+      <img src={data.image}className={styles.photo}/>
       {responsiveArrowButton}
       {/* {mobileArrowButton} */}
 
+    </div>
+  )
+  const clubMeetTime = (
+    <div className={titleSide === 'right' ? styles.clubMeetTimeWrapperRight : styles.clubMeetTimeWrapper}>
+      <p className={styles.clubMeetLabel}>MEETS:</p>
+      <p className={styles.clubMeetTime}>{data.when}</p>
+    </div>
+  )
+  const electiveMetadata = (
+    <div className={titleSide === 'right' ? styles.electiveMetadataWrapperRight : styles.electiveMetadataWrapper}>
+      <p className={`${data.duration === 'YEARLONG' ? styles.yearLong : styles.trimester}`}>{data.duration}</p>
+      <p className={titleSide === 'right' ? styles.cteRight : styles.cte}>CTE BRIDGE COURSE</p>
     </div>
   )
   // const underImage = (
@@ -40,44 +60,28 @@ export default function ElectiveBlock({ electiveData, titleSide }) {
   //   </div>
   // )
 
-  const clubMeetTime = (
-    <div className={titleSide === 'right' ? styles.clubMeetTimeWrapperRight : styles.clubMeetTimeWrapper}>
-      <p className={styles.clubMeetLabel}>MEETS:</p>
-      <p className={styles.clubMeetTime}>{electiveData.when}</p>
-    </div>
-  )
+
 
   return (
     <>
       <div className={styles.electiveWrapper}>
 
         <div className={`${titleSide === 'right' ? styles.titleWrapperRight : styles.titleWrapperLeft}`} onClick={() => setExpanded(!expanded)}>
-          <h2 className={titleSide === 'right' ? styles.classTitleRight : styles.classTitle}>{electiveData.title}</h2>
-          {electiveData. duration && <div className={titleSide === 'right' ? styles.electiveMetadataWrapperRight : styles.electiveMetadataWrapper}>
-            <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
-            <p className={titleSide === 'right' ? styles.cteRight : styles.cte}>CTE Bridge Course</p>
-          </div>}
-          {
-            electiveData.when && clubMeetTime
-          }
-        </div>
-        <div className={styles.photoAndDescriptionWrapper}>
+          <h2 className={titleSide === 'right' ? styles.classTitleRight : styles.classTitle}>{data.title}</h2>
 
-          <div className={`${titleSide === 'right' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
-            onClick={() => setExpanded(!expanded)}
-          >
-            {/* {electiveData.when && (
-              <p className={styles.when}>
-                <span className={styles.meetsLabel}>MEETS:</span> {electiveData.when}
-              </p>
-            )} */}
-            <p className={styles.classText}>{electiveData.description}</p>
+          {data.duration && electiveMetadata}
+          {data.when && clubMeetTime}
+
+        </div>
+
+        <div className={styles.photoAndDescriptionWrapper}>
+          <div className={`${titleSide === 'right' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`} onClick={() => setExpanded(!expanded)}>
+            <p className={styles.classText}>{data.description}</p>
           </div>
 
           {overImage}
 
         </div>
-
       </div>
     </>
   )

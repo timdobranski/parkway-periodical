@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './clubs.module.css'
-import ElectiveBlock from '../../../components/ElectiveBlock/ElectiveBlock'
+import Club from '../../../components/ElectiveOrClub/ElectiveOrClub'
 import { useState, useEffect } from 'react';
 import supabase from '../../../utils/supabase';
 
@@ -41,9 +41,9 @@ export default function ClubsPage() {
         {clubsData.length ?
           clubsData.map((club, index) => {
             return (
-              <ElectiveBlock
+              <Club
                 key={index}
-                electiveData={club}
+                data={club}
                 titleSide={index % 2 === 0 ? 'left' : 'right'}
               />
             )
