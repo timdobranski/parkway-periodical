@@ -227,7 +227,7 @@ export default function Settings () {
       });
 
       if (response.ok) {
-        const { error: signInError } = await supabase.auth.signIn({
+        const { error: signInError } = await supabase.auth.signInWithPassword({
           email: user.email,
           password: newPassword,
         });

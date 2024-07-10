@@ -18,9 +18,10 @@ export default function AdminLayout({ children }) {
     const checkAuth = async () => {
       const { data, error } = await supabase.auth.getSession()
 
+        if (error) console.log('Error: ', error)
 
       // If there's no session, redirect to /login
-      if (!data) {
+      if (!data || !data.session || !data.session.user) {
         router.push('/login');
         return;
       }
@@ -33,12 +34,17 @@ export default function AdminLayout({ children }) {
 
       if(userDataError) {
         console.error('Error fetching user data: ', userDataError)
+        // throw userDataError;
       }
       setUser(userData);
 
     };
     checkAuth();
   }, [router]);
+
+  if (!user) {
+    return <div className='loadingMessage'>Loading...</div>
+  }
 
   return (
     <>

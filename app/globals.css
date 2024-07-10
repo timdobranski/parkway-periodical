@@ -440,6 +440,16 @@
   cursor: nwse-resize;
   border: solid rgb(255, 255, 255) 2px;
 }
+.loadingMessage {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(244, 244, 244);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
 
 /* --------------PRIME TEXT EDITOR STYLES---------------- */
 .p-editor-container {
