@@ -34,7 +34,7 @@ export default function ClubsPage() {
   return (
     <div className='feedWrapper'>
       <div className={`slideUp`}>
-        <h1 className='whiteTitle'>BEFORE & AFTER SCHOOL CLUBS</h1>
+        <h1 className='whiteTitle'>SCHOOL CLUBS</h1>
 
         <p className={`centeredWhiteText ${styles.marginBelow}`}>{`Check out all the clubs available to students this year!
         We're always adding new clubs throughout the year.`}</p>

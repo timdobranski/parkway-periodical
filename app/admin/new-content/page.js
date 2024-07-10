@@ -21,6 +21,7 @@ export default function NewContentPage() {
     title: '',
     url: '',
     description: '',
+    category: '',
     expires: '',
     deleteOnExpire: false
   };
@@ -158,35 +159,49 @@ export default function NewContentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Extract the necessary fields from the form data
-    const { title, url, description, bio, when, expires, deleteOnExpire, duration, cte, pathway } = formData;
+    // if there's an id, we're updating an existing item, so we need to include it in the form data
+    if (id) formData.id = id;
 
-    // Convert empty string in 'expires' to null if necessary
-    // const effectiveExpires = expires === '' ? null : expires;
-
-    // Prepare the payload dynamically based on whether linkId is available
-    const payload = id ?
-      { id: id, title, url, description, deleteOnExpire, when, bio, duration, cte, pathway } :
-      { title, url, description,  deleteOnExpire, duration, cte, bio, when, pathway };
-
-    payload.expires = expires || null
+    // sanitize date field for database if empty
+    formData.expires = expires || null
 
     // Determine the operation based on linkId's presence
     const operation = id ? 'update' : 'insert';
 
     const { data, error } = await supabase
       .from(type)
-      .upsert(payload);
+      .upsert(formData);
 
     if (error) {
       console.error(`Error ${operation} database:`, error);
       alert(`There was an error creating your new ${singularType}. Please try again. If the issue persists, please contact support.`)
     } else {
       console.log(`Successfully ${operation}ed database:`, data);
-      setStep(2)
-      // router.push(`/admin/list?type=${type}`);
+      if (mode === 'create') {
+        setStep(2)
+      } else {
+        router.push(`/admin/list?type=${type}`);
+      }
     }
   };
+  const afterPhotoUpload = async() => {
+    const getAndSetNewPhoto = async () => {
+      const { data, error } = await supabase
+        .from(type)
+        .select('image')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Error fetching photo:', error);
+        return;
+      }
+
+      setPhoto(data.image);
+
+    }
+    getAndSetNewPhoto();
+  }
 
   const editPhoto = (
     <div className={styles.photoUploadWrapper}>
@@ -207,7 +222,7 @@ export default function NewContentPage() {
           bucket={'contentTypes'}
           filePath={`${type}/${formData.title || formData.name}`}
           setCropActive={setCropActive}
-          afterUpload={handlePhotoChange}
+          afterUpload={afterPhotoUpload}
         />
         :
         <img src={photo} className={styles.existingImagePreview}/>

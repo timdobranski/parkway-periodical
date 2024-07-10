@@ -355,9 +355,22 @@
   .electiveMetadataWrapper {
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
+    /* border: solid red 2px; */
+    width: 100vw;
   }
   .electiveMetadataWrapperRight {
+    width: 100vw;
     flex-direction: row;
     align-items: center;
+    justify-content: space-around;
+
+  }
+  .clubMeetTimeWrapper, .clubMeetTimeWrapperRight {
+    align-items: center;
+    text-align: center;
+  }
+  .clubMeetLabel {
+    margin: 0 0 .5rem 0;
   }
 }
