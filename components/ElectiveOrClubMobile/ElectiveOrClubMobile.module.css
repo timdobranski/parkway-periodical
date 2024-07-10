@@ -103,7 +103,9 @@
   color: white;
   text-align: center;
   font-size: 1.25rem;
-  padding: 0 .5rem;
+  padding: .75rem;
+  margin: 0;
+  background-color: rgba(0, 0, 0, .5);
   /* text-align: justify; */
 }
 .classTitle, .classTitleRight {
@@ -156,15 +158,6 @@
   .classTitleRight, .classTitle {
     text-align: center;
 
-  }
-  /* .photoAndDescriptionWrapper {
-    position: relative;
-    height: 200px;
-  } */
-
-
-  .when {
-    margin: 0 auto;
   }
   .meetsLabel {
     display: block;

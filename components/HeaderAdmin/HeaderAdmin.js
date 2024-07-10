@@ -243,6 +243,7 @@ export default function Header({ user }) {
         <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
           <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
         </div>
+          <p className={styles.settingsLabel}>SETTINGS</p>
         <button
           className={styles.logout}
           onClick={() => logUserOut(router)}
@@ -258,7 +259,6 @@ export default function Header({ user }) {
   )
   const testEmailErrorButton = (
     <button
-    onClick={() => { throw new Error('Test Error'); }}
     className={styles.testErrorButton}
   >
   Test Error Email

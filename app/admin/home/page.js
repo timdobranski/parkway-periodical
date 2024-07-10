@@ -52,7 +52,6 @@ export default function AdminHomePage() {
     <>
       <h1 className={`${styles.adminHomeTitle} pageTitle`}>ADMIN HOME</h1>
       <div className={styles.homeGrid}>
-
         <div className={styles.sectionWrapper}>
           <div className={styles.titleWrapper}>
             <Link href='/admin/new-post'>
@@ -63,7 +62,7 @@ export default function AdminHomePage() {
             </Link>
           </div>
           {typeCounts.drafts ? <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button> : null}
-          <p>{`Posts: ${typeCounts.posts}`}</p>
+          <p>{`Total Posts: ${typeCounts.posts}`}</p>
           {/* <p>Number of EXPIRED posts</p> */}
         </div>
 
@@ -76,7 +75,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>EVENTS</h2>
             </Link>
           </div>
-          <p>{`Events: ${typeCounts.events}`}</p>
+          <p>{`Total Events: ${typeCounts.events}`}</p>
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -88,7 +87,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>ELECTIVES</h2>
             </Link>
           </div>
-          <p>{`Electives: ${typeCounts.electives}`}</p>
+          <p>{`Total Electives: ${typeCounts.electives}`}</p>
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -100,7 +99,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>CLUBS</h2>
             </Link>
           </div>
-          <p>{`Clubs: ${typeCounts.clubs}`}</p>
+          <p>{`Total Clubs: ${typeCounts.clubs}`}</p>
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -112,7 +111,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>LINKS</h2>
             </Link>
           </div>
-          <p>{`Links: ${typeCounts.links}`}</p>
+          <p>{`Total Links: ${typeCounts.links}`}</p>
         </div>
 
         <div className={styles.sectionWrapper}>
@@ -124,7 +123,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>STAFF</h2>
             </Link>
           </div>
-          <p>{`Staff: ${typeCounts.staff}`}</p>
+          <p>{`Total Staff: ${typeCounts.staff}`}</p>
         </div>
       </div>
       {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}

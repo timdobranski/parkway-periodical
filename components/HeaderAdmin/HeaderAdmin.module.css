@@ -367,7 +367,6 @@ ALERTS MENU-------------------------------------------
   background-color: rgb(253, 92, 92);
   color: black;
   /* border: solid 1px rgb(255, 104, 104); */
-
   /* color: rgb(0, 0, 0); */
 }
 /* ------------------------------------------------------
@@ -440,9 +439,7 @@ USER MENU---------------------------------------------
   font-family: Louis George Cafe;
   font-size: 1.25rem;
   margin: 0;
-
 }
-
 .autosaveStatusWrapper {
   box-sizing: border-box;
   margin: 0 1rem;;
@@ -501,6 +498,11 @@ USER MENU---------------------------------------------
   left: 9px;
   top: calc(50% + 2px);
   transform: translate(0, -50%);
+}
+.settingsLabel {
+  font-weight: normal;
+  font-size: 1.25rem;
+  margin-top: .25rem;
 }
 @media (max-width: 768px) {
   .headerContainer {
