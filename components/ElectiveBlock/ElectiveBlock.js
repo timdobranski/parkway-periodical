@@ -40,7 +40,12 @@ export default function ElectiveBlock({ electiveData, titleSide }) {
   //   </div>
   // )
 
-
+  const clubMeetTime = (
+    <div className={titleSide === 'right' ? styles.clubMeetTimeWrapperRight : styles.clubMeetTimeWrapper}>
+      <p className={styles.clubMeetLabel}>MEETS:</p>
+      <p className={styles.clubMeetTime}>{electiveData.when}</p>
+    </div>
+  )
 
   return (
     <>
@@ -48,12 +53,13 @@ export default function ElectiveBlock({ electiveData, titleSide }) {
 
         <div className={`${titleSide === 'right' ? styles.titleWrapperRight : styles.titleWrapperLeft}`} onClick={() => setExpanded(!expanded)}>
           <h2 className={titleSide === 'right' ? styles.classTitleRight : styles.classTitle}>{electiveData.title}</h2>
-          <div className={titleSide === 'right' ? styles.electiveMetadataWrapperRight : styles.electiveMetadataWrapper}>
-          <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
-          <p className={titleSide === 'right' ? styles.cteRight : styles.cte}>CTE Bridge Course</p>
-
-          </div>
-
+          {electiveData. duration && <div className={titleSide === 'right' ? styles.electiveMetadataWrapperRight : styles.electiveMetadataWrapper}>
+            <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
+            <p className={titleSide === 'right' ? styles.cteRight : styles.cte}>CTE Bridge Course</p>
+          </div>}
+          {
+            electiveData.when && clubMeetTime
+          }
         </div>
         <div className={styles.photoAndDescriptionWrapper}>
 

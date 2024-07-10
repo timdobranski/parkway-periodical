@@ -44,7 +44,7 @@ export default function ClubsPage() {
               <ElectiveBlock
                 key={index}
                 electiveData={club}
-                color={index % 2 === 0 ? 'blue' : 'red'}
+                titleSide={index % 2 === 0 ? 'left' : 'right'}
               />
             )
           }) :
