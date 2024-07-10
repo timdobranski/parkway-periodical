@@ -214,6 +214,7 @@ export default function NewContentPage() {
       }
        <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
       {photo && photo !== `/images/${type}/${singularType}Placeholder.webp` &&
+    cropActive ?  <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.cropIcon} onClick={() => setCropActive(true)} /> :
     <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} onClick={() => setCropActive(true)} />}
       {cropActive ?
         <CroppablePhoto

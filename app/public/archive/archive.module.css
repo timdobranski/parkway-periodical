@@ -17,19 +17,29 @@
   flex-direction: row;
   justify-content: space-between;
   /* align-items: center; */
-  width: 400px;
+  position: relative;
+  width: 475px;
   border: solid rgb(166, 166, 166) 1px;
   padding: 0;
   background-color: rgba(0, 0, 0, .5);
-  margin: 0 0 1rem 0;
+  margin: 1rem 0 2rem 0;
   color: white;
 }
-.photosOrArticlesWrapper * {
+.photosOrArticlesWrapper p {
   margin: 0;
   /* height: 100%; */
-  width: 100%;
-  padding: .5rem 1rem;
-  text-align: center;
+  width: 50%;
+  /* text-align: center; */
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+.newsArticles {
+  text-align: right;
+  padding-right: 2rem;
+}
+.historicPhotos {
+  text-align: left;
+  padding-left: 2rem;
 }
 .photosOrArticlesWrapper *:hover {
   cursor: pointer;
@@ -128,10 +138,10 @@
 }
 .historyCenterLogo {
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%, -50%);
   /* border: solid white 2px; */
-  width: 90px !important;
-  filter: drop-shadow(0 0 5px rgb(255, 255, 255));
-  z-index: 9999;
+  width: 110px;
+  filter: drop-shadow(0 0 3px rgb(0, 207, 100));
 }

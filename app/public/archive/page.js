@@ -110,8 +110,11 @@ export default function Archive() {
         </p>
 
         <div className={styles.photosOrArticlesWrapper}>
-          <p className={`${photosOrArticles === 'photos' ? styles.active : styles.inactive}`} onClick={() => setPhotosOrArticles('photos')}>HISTORIC PHOTOS</p>
-          <p className={`${photosOrArticles === 'articles' ? styles.active : styles.inactive}`} onClick={() => setPhotosOrArticles('articles')}>NEWS ARTICLES</p>
+          <p className={`${photosOrArticles === 'photos' ? styles.active : styles.inactive} ${styles.historicPhotos}`} onClick={() => setPhotosOrArticles('photos')}>HISTORIC PHOTOS</p>
+          <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
+            <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo}/>
+          </a>
+          <p className={`${photosOrArticles === 'articles' ? styles.active : styles.inactive} ${styles.newsArticles}`} onClick={() => setPhotosOrArticles('articles')}>NEWS ARTICLES</p>
         </div>
         <div className={styles.archiveCarouselWrapper}>
           <Carousel
@@ -144,9 +147,6 @@ export default function Archive() {
                 </>
               ))}
           </Carousel>
-          <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
-            <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo}/>
-          </a>
         </div>
 
         <label className={`whiteSubTitle ${styles.selectSchoolYearLabel}`}>Periodical Archive</label>

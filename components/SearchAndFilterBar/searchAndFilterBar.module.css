@@ -152,7 +152,7 @@
   }
   .searchBarExpanded {
     /* border: solid green 2px; */
-    width: calc(100% - 2rem)
+    width: calc(100% - 5vw)
   }
   .filterSelect {
     width: calc(100% - 30vw);
