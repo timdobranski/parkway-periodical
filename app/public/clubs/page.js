@@ -1,8 +1,9 @@
 'use client'
 
-import styles from './clubs.module.css'
-import Club from '../../../components/ElectiveOrClub/ElectiveOrClub'
-import { useState, useEffect } from 'react';
+import styles from './clubs.module.css';
+import Club from '../../../components/ElectiveOrClub/ElectiveOrClub';
+import ClubMobile from '../../../components/ElectiveOrClubMobile/ElectiveOrClubMobile';
+import { useState, useEffect, Fragment } from 'react';
 import supabase from '../../../utils/supabase';
 
 export default function ClubsPage() {
@@ -41,11 +42,16 @@ export default function ClubsPage() {
         {clubsData.length ?
           clubsData.map((club, index) => {
             return (
+              <Fragment key={index}>
               <Club
-                key={index}
                 data={club}
                 titleSide={index % 2 === 0 ? 'left' : 'right'}
               />
+              <ClubMobile
+                data={club}
+                titleSide={index % 2 === 0 ? 'left' : 'right'}
+              />
+              </Fragment>
             )
           }) :
           <div>{`It looks like there aren't any clubs added yet.`}</div>}
