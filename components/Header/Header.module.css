@@ -216,15 +216,15 @@
   height: fit-content;
   /* text-shadow: 0 0 15px rgba(0, 0, 0, .8); */
 }
-.navLink h2 {
+.navLink {
   font-family: Louis George Cafe;
   color: white;
   font-size: 1.5rem;
   text-decoration: none;
   transform: scale(1);
   transition: transform .3s ease-in-out;
-  border: none !important;
-  font-weight: normal;
+  /* border: none !important; */
+  font-weight: 200;
 }
 .navLink:hover{
   transform: scale(1.2);
@@ -368,6 +368,10 @@
     background-color: rgba(0, 92, 129);
     border-bottom: 2px solid rgba(0, 52, 73, .4);
     background: var(--mobile-background);
+  }
+  .navLink {
+    margin: 0;
+    font-size: 1rem;
   }
   .leftNavbarHandle, .rightNavbarHandle {
     display: inline-block;

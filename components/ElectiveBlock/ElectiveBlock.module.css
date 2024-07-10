@@ -21,7 +21,7 @@
   backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;;
   z-index: 2;
   /* border: solid red 2px; */
   padding: 1rem;
@@ -153,9 +153,16 @@
   left: 0;
   padding-left: 3rem;
 }
+/* .descriptionWrapperLeft p {
+  text-align: right;
+} */
 .descriptionWrapperRight {
+  padding-right: 3rem;
   right: 0;
 }
+/* .descriptionWrapperRight p {
+  text-align: left;
+} */
 .meetsLabel {
   font-weight: bold;
   color: var(--primary-blue);
@@ -191,11 +198,13 @@
 }
 .electiveMetadataWrapper, .electiveMetadataWrapperRight {
   /* border: solid red 2px; */
+  position: relative;
   display: flex;
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  bottom: 0;
 }
 .electiveMetadataWrapperRight {
   align-items: flex-end;
@@ -249,7 +258,7 @@
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
   /* border: solid red 2px; */
-  margin-top: .5rem;
+  margin-top: 0rem;
   width: 100%;
 }
 .classTitle {

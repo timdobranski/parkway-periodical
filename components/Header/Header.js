@@ -129,6 +129,10 @@ export default function Header({ skipAnimation }) {
           <h2 className={isActive('/public/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
         </div>
         <div
+          onClick={() => {setRightNavbarOpen(false); router.push('/public/links')}}>
+          <h2 className={isActive('/public/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
+        </div>
+        <div
           onClick={() => {setRightNavbarOpen(false); router.push('/public/archive')}}>
           <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </div>
