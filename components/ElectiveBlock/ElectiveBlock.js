@@ -2,43 +2,43 @@
 
 import styles from './ElectiveBlock.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faChevronLeft, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
-export default function ElectiveBlock({ electiveData, color }) {
+export default function ElectiveBlock({ electiveData, titleSide }) {
   const [expanded, setExpanded] = useState(false)
   const responsiveArrowButton = (
     <FontAwesomeIcon
-      icon={color === 'red' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
-      className={color === 'red' ? styles.navIconRight : styles.navIcon}/>
+      icon={titleSide === 'right' ? (expanded ? faChevronRight :faChevronLeft) : (expanded ? faChevronLeft : faChevronRight)}
+      className={titleSide === 'right' ? styles.navIconRight : styles.navIcon}/>
   )
   const mobileArrowButton = (
     <FontAwesomeIcon
-      icon={(expanded ? faChevronLeft : faChevronRight)}
-      className={color === 'red' ? styles.navIconRightMobile : styles.navIconMobile}/>
+      icon={(expanded ? faChevronUp : faChevronDown)}
+      className={titleSide === 'right' ? styles.navIconRightMobile : styles.navIconMobile}/>
   )
 
   const overImage = (
-    <div className={` ${color === 'red' ? styles.redPhotoWrapper : styles.bluePhotoWrapper} ${expanded ? (color === 'red' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
+    <div className={` ${titleSide === 'right' ? styles.rightPhotoWrapper : styles.leftPhotoWrapper} ${expanded ? (titleSide === 'left' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
       onClick={() => setExpanded(!expanded)}
     >
       <img src={electiveData.image}className={styles.photo}/>
       {responsiveArrowButton}
-      {mobileArrowButton}
+      {/* {mobileArrowButton} */}
 
     </div>
   )
-  const underImage = (
-    <div className={`
-    ${color === 'red' ? styles.redPhotoWrapper : styles.bluePhotoWrapper}
-    ${expanded ? (color === 'red' ? styles.slideInFromLeft : styles.slideInFromRight) : null}
-    ${styles.underPhotoWrapper}`}
+  // const underImage = (
+  //   <div className={`
+  //   ${titleSide === 'right' ? styles.rightPhotoWrapper : styles.leftPhotoWrapper}
+  //   ${expanded ? (titleSide === 'right' ? styles.slideInFromLeft : styles.slideInFromRight) : null}
+  //   ${styles.underPhotoWrapper}`}
 
-    onClick={() => setExpanded(!expanded)}>
-      <img src={electiveData.image}className={styles.underPhoto}></img>
-      <div className={`${color === 'red' ? styles.redOverlay : styles.blueOverlay}`}></div>
-    </div>
-  )
+  //   onClick={() => setExpanded(!expanded)}>
+  //     <img src={electiveData.image}className={styles.underPhoto}></img>
+  //     <div className={`${titleSide === 'right' ? styles.rightOverlay : styles.leftOverlay}`}></div>
+  //   </div>
+  // )
 
 
 
@@ -46,25 +46,30 @@ export default function ElectiveBlock({ electiveData, color }) {
     <>
       <div className={styles.electiveWrapper}>
 
-        <div className={`${color === 'red' ? styles.titleWrapperRed : styles.titleWrapperBlue}`} onClick={() => setExpanded(!expanded)}>
-          <h2 className={color === 'red' ? styles.classTitleRight : styles.classTitle}>{electiveData.title}</h2>
-          {electiveData.cte && <p className={styles.cte}>CTE Bridge Course</p>}
+        <div className={`${titleSide === 'right' ? styles.titleWrapperRight : styles.titleWrapperLeft}`} onClick={() => setExpanded(!expanded)}>
+          <h2 className={titleSide === 'right' ? styles.classTitleRight : styles.classTitle}>{electiveData.title}</h2>
+          <div className={titleSide === 'right' ? styles.electiveMetadataWrapperRight : styles.electiveMetadataWrapper}>
+          <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>
+          <p className={titleSide === 'right' ? styles.cteRight : styles.cte}>CTE Bridge Course</p>
+
+          </div>
+
         </div>
         <div className={styles.photoAndDescriptionWrapper}>
 
-          <div className={`${color === 'red' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
+          <div className={`${titleSide === 'right' ? styles.descriptionWrapperLeft : styles.descriptionWrapperRight}`}
             onClick={() => setExpanded(!expanded)}
           >
-            {electiveData.when && (
+            {/* {electiveData.when && (
               <p className={styles.when}>
                 <span className={styles.meetsLabel}>MEETS:</span> {electiveData.when}
               </p>
-            )}
+            )} */}
             <p className={styles.classText}>{electiveData.description}</p>
-            {electiveData.duration && <p className={`${electiveData.duration === 'Year Long' ? styles.yearLong : styles.trimester}`}>{electiveData.duration}</p>}
           </div>
 
           {overImage}
+
         </div>
 
       </div>

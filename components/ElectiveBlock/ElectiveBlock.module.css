@@ -6,9 +6,11 @@
   width: 100%;
   margin:1rem 0;
   box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+  display: flex;
+  flex-direction: row;
   /* background-color: black; */
 }
-.titleWrapperRed, .titleWrapperBlue {
+.titleWrapperRight, .titleWrapperLeft {
   box-sizing: border-box;
   position: absolute;;
   top: 0;
@@ -24,12 +26,12 @@
   /* border: solid red 2px; */
   padding: 1rem;
 }
-.titleWrapperRed {
+.titleWrapperRight {
   right: 0;
   border-left: solid 6px white;
   align-items: flex-end;
 }
-.titleWrapperBlue {
+.titleWrapperLeft {
   left: 0;
   border-right: solid 6px white;
   align-items: flex-start;
@@ -66,7 +68,7 @@
 .navIcon:hover, .navIconRight:hover {
   transform: scale(1.2);
 }
-.bluePhotoWrapper, .redPhotoWrapper {
+.leftPhotoWrapper, .rightPhotoWrapper {
   box-sizing: border-box;
   position: absolute;
   height: 100%;
@@ -76,20 +78,19 @@
   transition: width 0.75s ease-in-out;
   background-color: #f0f0f0;
 }
-.bluePhotoWrapper {
+.leftPhotoWrapper {
   right: 0;
 }
-.redPhotoWrapper {
+.rightPhotoWrapper {
   left: 0;
 }
-.underPhotoWrapper {
+/* .underPhotoWrapper {
   filter: brightness(.4) blur(2px);
-  /* backdrop-filter: blur(8px); */
   transition: width 0.75s ease-in-out;
   width: 0px;
   overflow: hidden;
   z-index: -1;
-}
+} */
 .slideInFromLeft {
   transition-delay: 0.5s;
   width: 70%; /* Target width after animation */
@@ -108,7 +109,7 @@
 .slideOutRight {
   width: 0%;
 }
-.photo, .redOverlay, .blueOverlay {
+.photo, .rightOverlay, .leftOverlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -121,14 +122,14 @@
   object-position: center;
   height: 100%;
 }
-.underPhoto {
+/* .underPhoto {
   filter: grayscale(1)
-}
-.blueOverlay {
+} */
+.leftOverlay {
   mix-blend-mode: overlay;
   background-color: rgb(92, 197, 250);
 }
-.redOverlay {
+.rightOverlay {
   background-color: rgb(255, 84, 84);
   mix-blend-mode: overlay;
 }
@@ -167,18 +168,39 @@
   width: calc(100% - 2rem);
   padding: .5rem 1rem;
 }
-.cte, .yearLong, .trimester {
+.electiveMetadataWrapper, .electiveMetadataWrapperRight {
+  /* border: solid red 2px; */
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.electiveMetadataWrapperRight {
+  align-items: flex-end;
+}
+.cte, .cteRight, .yearLong, .trimester {
   display: inline;
   width: auto;
   padding: .25rem .5rem;
   margin: .5rem;
 }
-.cte {
-  position: absolute;
+.cte, .cteRight {
   bottom: 1rem;
-  left: 1rem;
   background-color: rgb(149, 255, 149);
-  box-shadow: 0 0 10px rgba(141, 141, 141, 0.747);
+  box-shadow: 0 0 6px rgba(141, 141, 141, 0.747);
+}
+.cte {
+  left: 1rem;
+}
+.cteRight {
+  right: 1rem;
+
+}
+.yearLong, .trimester {
+  background-color: rgb(255, 139, 139);
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); */
+
 }
 .yearLong {
  background-color: rgb(16, 179, 255);
@@ -236,7 +258,7 @@
     flex-direction: column;
     /* border: none; */
   }
-  .titleWrapperRed, .titleWrapperBlue {
+  .titleWrapperRight, .titleWrapperLeft {
     position: relative;
     width: 100%;
     height: auto;
@@ -260,22 +282,24 @@
   }
   .navIconRight {
     display: none;
-    right: -23px;
   }
   .navIconMobile {
     display: inline-block;
+    right: 50%;
+    top: -23px;
+    transform: translateX(50%);
     /* border: solid red 20px; */
   }
-  .bluePhotoWrapper, .redPhotoWrapper {
+  .leftPhotoWrapper, .rightPhotoWrapper {
     position: relative;
     top: 0;
     height: 100%;
     width: 100%;
   }
-  .bluePhotoWrapper {
+  .leftPhotoWrapper {
     right: 0;
   }
-  .redPhotoWrapper {
+  .rightPhotoWrapper {
     left: 0;
   }
   .slideOutLeft, .slideOutRight {
@@ -299,10 +323,20 @@
     display: block;
     margin-bottom: .25rem;
   }
-  .cte {
-    position: relative;
-    margin: .75rem 0;
-    left: 0;
-    /* border: solid red 2px; */
+  .electiveMetadataWrapper, .electiveMetadataWrapperRight {
+    margin: 0;
+    padding: 0;
+  }
+  .cte, .cteRight, .yearLong, .trimester {
+    margin: 0;
+    /* padding: 0; */
+  }
+  .electiveMetadataWrapper {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .electiveMetadataWrapperRight {
+    flex-direction: row;
+    align-items: center;
   }
 }

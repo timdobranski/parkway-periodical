@@ -107,7 +107,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
         <ReactCrop
         // src={photo}
           crop={crop}
-          circularCrop={true}
+          circularCrop={ratio === 1 ? true : false}
           // ruleOfThirds
           onImageLoaded={onImageLoaded}
           onComplete={onCropComplete}

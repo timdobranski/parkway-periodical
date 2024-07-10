@@ -59,7 +59,7 @@ export default function Electives() {
             <ElectiveBlock
               key={index}
               electiveData={elective}
-              color={index % 2 === 0 ? 'blue' : 'red'}
+              titleSide={index % 2 === 0 ? 'left' : 'right'}
             />
           ))
         ) : (

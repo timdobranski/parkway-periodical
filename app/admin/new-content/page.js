@@ -5,9 +5,18 @@ import { useSearchParams } from 'next/navigation';
 import supabase from '../../../utils/supabase';
 import styles from './new-content.module.css';
 import { useRouter } from 'next/navigation';
+import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewContentPage() {
   const router = useRouter()
+  const [photo, setPhoto] = useState('');
+  const [cropActive, setCropActive] = useState(false);
+  const [step, setStep] = useState(1); // step 1: add info, step 2: add/crop photo
+  const [mode, setMode] = useState('');
+
+  // define which values should be collected for each content type
   const linkFormData = {
     title: '',
     url: '',
@@ -54,19 +63,30 @@ export default function NewContentPage() {
     clubs: `Use this form to add or update a school club on the website. To help keep the clubs up to date, you can set an expiration date for your club. Once the date
     is reached, you can set your club to either delete automatically, or to remind you to update it.`
   }
+  // initialize form data state
   const [formData, setFormData] = useState({});
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
+  // if user is editing an existing item, there will be an id in the URL
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const type = searchParams.get('type');
+
+  useEffect(() => {
+    if (id) {
+      setMode('edit');
+    } else {
+      setMode('create');
+    }
+  }, [id])
+  // convenience variable for singular content type
   const singularType = type.slice(-1) === 's' ? type.slice(0, -1) : type;
 
   useEffect(() => {
     console.log('Form data changed: ', formData);
   }, [formData])
 
-
+  // populate the fields with existing data if editing, or with empty strings if adding new
   useEffect(() => {
     const fetchLinkData = async () => {
       if (id) {
@@ -113,6 +133,12 @@ export default function NewContentPage() {
     fetchLinkData();
   }, [id, type]);
 
+  useEffect(() => {
+    if (step === 2) {
+      setPhoto(`/images/${type}/${singularType}Placeholder.webp`)
+    }
+  }, [step])
+  // update whichever field is being edited
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -120,30 +146,30 @@ export default function NewContentPage() {
       [name]: value
     }));
   };
-  const handlePhotoChange = () => {
-    const uploadPhoto = async() => {
-
-      const { data, error } = await supabase
-        .storage
-        .from(type)
-        .upload('public/avatar1.png', avatarFile, {
-          cacheControl: '3600',
-          upsert: false
-        })
+  // upload photo and set photo url in item's database row
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const photoUrl = URL.createObjectURL(file);
+      setPhoto(photoUrl);
     }
-  }
+  };
+  // submit the form data to the database
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Extract the necessary fields from the form data
     const { title, url, description, bio, when, expires, deleteOnExpire, duration, cte, pathway } = formData;
 
     // Convert empty string in 'expires' to null if necessary
-    const effectiveExpires = expires === '' ? null : expires;
+    // const effectiveExpires = expires === '' ? null : expires;
 
     // Prepare the payload dynamically based on whether linkId is available
     const payload = id ?
-      { id: id, title, url, description, expires, deleteOnExpire, when, bio, duration, cte, pathway } :
-      { title, url, description, expires, deleteOnExpire, duration, cte, bio, when, pathway };
+      { id: id, title, url, description, deleteOnExpire, when, bio, duration, cte, pathway } :
+      { title, url, description,  deleteOnExpire, duration, cte, bio, when, pathway };
+
+    payload.expires = expires || null
 
     // Determine the operation based on linkId's presence
     const operation = id ? 'update' : 'insert';
@@ -154,11 +180,41 @@ export default function NewContentPage() {
 
     if (error) {
       console.error(`Error ${operation} database:`, error);
+      alert(`There was an error creating your new ${singularType}. Please try again. If the issue persists, please contact support.`)
     } else {
       console.log(`Successfully ${operation}ed database:`, data);
-      router.push(`/admin/list?type=${type}`);  // Assuming 'router' is correctly defined and imported
+      setStep(2)
+      // router.push(`/admin/list?type=${type}`);
     }
   };
+
+  const editPhoto = (
+    <div className={styles.photoUploadWrapper}>
+      {mode === 'edit' ?
+        <label className={styles.label}>Photo</label> :
+        <>
+          <h1 className='pageTitle'>CHOOSE PHOTO</h1>
+          <p>Choose a photo to represent your {singularType}. If you skip this step, a placeholder photo will be added.</p>
+        </>
+      }
+       <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
+      {photo && photo !== `/images/${type}/${singularType}Placeholder.webp` &&
+    <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} onClick={() => setCropActive(true)} />}
+      {cropActive ?
+        <CroppablePhoto
+          photo={photo}
+          ratio={2.6}
+          bucket={'contentTypes'}
+          filePath={`${type}/${formData.title || formData.name}`}
+          setCropActive={setCropActive}
+          afterUpload={handlePhotoChange}
+        />
+        :
+        <img src={photo} className={styles.existingImagePreview}/>
+      }
+    </div>
+  )
+
   const form = (
     <form className={styles.form} onSubmit={handleSubmit}>
       {formData.title !== undefined &&
@@ -248,21 +304,11 @@ export default function NewContentPage() {
           <option value="Medical Pathway">Medical Pathway</option>
           <option value="Engineering & Design Pathway">Engineering & Design Pathway</option>
           <option value="Business Technology & Design Pathway">Business Technology & Design Pathway</option>
-          <option value="Traditional Electives">Traditional Electives</option>
-
         </select>
       </div>
       }
 
-      {formData.image !== undefined &&
-      <div className={styles.formSection}>
-        <label className={styles.label}>Photo</label>
-        {formData.image &&
-          <img src={formData.image}className={styles.existingImagePreview}/>
-        }
-        <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
-      </div>
-      }
+      {mode === 'edit' && editPhoto}
 
       {formData.expires !== undefined &&
       <div className={styles.formSection}>
@@ -292,9 +338,19 @@ export default function NewContentPage() {
   return (
     <div className='adminFeedWrapper'>
       <div className='post' style={{boxShadow: '0 0 5px rgba(0, 0, 0, .5)'}}>
-        <h1 className='pageTitle'>{id ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
-        <p>{introText[type]}</p>
-        {formData && form}
+
+        {/* page title & intro paragraph */
+          step === 1 &&
+          <>
+            <h1 className='pageTitle'>{mode === 'edit' ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
+            <p>{introText[type]}</p>
+          </>
+        }
+
+
+        {/* { render form if step 1, or render photo upload if BOTH (step 2 and in create mode). step 2 in edit mode should never happen */
+          step === 1 ? formData && form : mode === 'create' ? editPhoto : null
+        }
 
       </div>
     </div>
