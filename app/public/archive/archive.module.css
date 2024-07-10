@@ -145,3 +145,29 @@
   width: 110px;
   filter: drop-shadow(0 0 3px rgb(0, 207, 100));
 }
+@media (max-width: 768px) {
+  .photosOrArticlesWrapper {
+    width: 100%;
+    max-width: 500px;
+  }
+  .historyCenterLogo {
+    width: 80px;
+  }
+  .historicPhotos {
+    padding-left: .5rem;
+  }
+  .newsArticles {
+    padding-right: .5rem;
+  }
+}
+@media(max-width: 375px) {
+  .photosOrArticlesWrapper {
+    margin-top: 3rem;
+  }
+  .photosOrArticlesWrapper p {
+    text-align: center;
+  }
+  .historyCenterLogo {
+    top: -40px;
+  }
+}
