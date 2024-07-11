@@ -2,12 +2,12 @@
 
 import styles from './links.module.css'
 import { useState, useEffect } from 'react';
-import supabase from '../../../utils/supabase';
+import { createClient }from '../../../utils/supabase/client';
 import Link from 'next/link';
 
 
 export default function LinksPage() {
-
+  const supabase = createClient();
   const [linksData, setLinksData] = useState([]);
 
   useEffect(() => {

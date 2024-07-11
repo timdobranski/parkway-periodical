@@ -2,10 +2,11 @@
 
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '../utils/supabase';
+import { createClient } from '../utils/supabase/client';
 import { redirect } from 'next/navigation';
 
 const AdminContext = createContext();
+const supabase = createClient();
 
 export function useAdmin() {
   return useContext(AdminContext);

@@ -2,13 +2,14 @@
 
 import styles from './archive.module.css';
 import { useEffect, useState } from 'react';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Archive() {
+  const supabase = createClient();
   const [schoolYears, setSchoolYears] = useState([]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);

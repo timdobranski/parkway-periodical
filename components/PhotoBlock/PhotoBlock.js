@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './photoBlock.module.css';
 import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 import PhotoGrid from '../PhotoGrid/PhotoGrid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleUp, faPlus} from '@fortawesome/free-solid-svg-icons';

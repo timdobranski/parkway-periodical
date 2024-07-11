@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faAdd } from '@fortawesome/free-solid-svg-icons';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 
 
 export default function AdminHomePage() {
+  const supabase = createClient();
   const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events', 'drafts'];
   const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {
     acc[type] = 0; // initialize all counts to zero

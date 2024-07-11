@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState, useContext, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '../../utils/supabase'; // Update the path as per your directory structure
+import { createClient } from '../../utils/supabase/client'; // Update the path as per your directory structure
 import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
 import { useAdmin } from '../../contexts/AdminContext';
 import { AdminProvider } from '../../contexts/AdminContext';
 import ErrorHandling from '../../components/ErrorHandling/ErrorHandling';
 
 export default function AdminLayout({ children }) {
+  const supabase = createClient();
   const router = useRouter();
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
   // const [user, setUser] = useState(null);
@@ -23,14 +24,11 @@ export default function AdminLayout({ children }) {
         router.push('/login');
         return;
       }
-      // if there's a session and user, but they need to change their password, redirect to change password
 
+      // if there's a session and user
       if (data && data.session && data.session.user) {
-        if (data.session.user.needsToChangePassword) {
-          router.push('/admin/changePassword');
-          return;
-        }
 
+        // valid session and user with full permissions
         const { data: userData, error: userDataError } = await supabase
           .from('users')
           .select('*')
@@ -40,6 +38,7 @@ export default function AdminLayout({ children }) {
         if (userDataError) {
           console.error('Error fetching user data: ', userDataError);
         } else {
+          // set the user data
           setUser(userData);
         }
       }

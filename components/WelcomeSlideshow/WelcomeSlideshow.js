@@ -7,11 +7,12 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 import dateFormatter from '../../utils/dateFormatter';
 import { useRouter } from 'next/navigation';
 
 export default function WelcomeSlideshow() {
+  const supabase = createClient();
   const [events, setEvents] = useState([]);
   const router = useRouter();
 

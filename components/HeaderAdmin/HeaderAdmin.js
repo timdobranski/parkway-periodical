@@ -5,7 +5,7 @@ import logo from '../../public/images/logos/parkway.webp';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 import  React, { useState, useEffect, useRef } from 'react';
 import { useAdmin } from '../../contexts/AdminContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,6 +17,7 @@ import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell,
   faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header({ user }) {
+  const supabase = createClient();
   const [storageUsage, setStorageUsage] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts } = useAdmin();

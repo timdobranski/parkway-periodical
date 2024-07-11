@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 import styles from './events.module.css';
 import dateFormatter from '../../../utils/dateFormatter';
 import timeFormatter from '../../../utils/timeFormatter';
 
 export default function EventsPage() {
-
+  const supabase = createClient();
   const [data, setData] = useState([]);
 
   useEffect(() => {

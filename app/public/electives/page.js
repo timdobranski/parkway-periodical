@@ -4,9 +4,10 @@ import styles from './electives.module.css'
 import Elective from '../../../components/ElectiveOrClub/ElectiveOrClub'
 import ElectiveMobile from '../../../components/ElectiveOrClubMobile/ElectiveOrClubMobile'
 import { useState, useEffect, Fragment } from 'react';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 
 export default function Electives() {
+  const supabase = createClient();
   const [electivesData, setElectivesData] = useState([]);
   const [selectedPathway, setSelectedPathway] = useState('All');
   const [pathways, setPathways] = useState(['Business Technology & Design Pathway', 'Engineering & Design Pathway', 'Medical Pathway', 'Traditional Electives']);
@@ -60,12 +61,10 @@ export default function Electives() {
             <Fragment
             key={index}>
             <Elective
-
               data={elective}
               titleSide={index % 2 === 0 ? 'left' : 'right'}
             />
             <ElectiveMobile
-
             data={elective}
             titleSide={index % 2 === 0 ? 'left' : 'right'}
           />

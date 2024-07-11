@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 import styles from './home.module.css';
 import Video from '../../../components/Video/Video';
 import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
@@ -22,6 +22,7 @@ import useOnlineStatus from '../../../utils/useOnlineStatus';
 
 
 export default function Home({ introRunning, setIntroRunning }) {
+  const supabase = createClient();
   const isOnline = useOnlineStatus();
   const [posts, setPosts] = useState([]);
   const searchParams = useSearchParams();

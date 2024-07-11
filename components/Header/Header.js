@@ -2,7 +2,7 @@
 
 import styles from './Header.module.css';
 import Link from 'next/link';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 import  { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-sv
 import { faBars, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header({ skipAnimation }) {
+  const supabase = createClient();
   const [user, setUser] = useState(null);
   const [leftNavbarOpen, setLeftNavbarOpen] = useState(false);
   const [rightNavbarOpen, setRightNavbarOpen] = useState(false);

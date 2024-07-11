@@ -9,11 +9,12 @@ import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { Rnd } from 'react-rnd';
 import PrimeText from '../PrimeText/PrimeText';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 
 export default function EditablePhoto({
   photo, isEditable, updatePhotoContent, deletePhoto, containerClassName,
   index, setSelectedPhotos, handleTitleChange, handleCaptionChange, photoIndex, photoContext}) {
+  const supabase = createClient()
   const imageRef = useRef(null);
   const [crop, setCrop] = useState({ x: 0, y: 0, width: 100, height: 100, aspect: 16 / 9, unit: '%'});
   const [completedCrop, setCompletedCrop] = useState(null);

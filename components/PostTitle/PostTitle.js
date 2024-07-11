@@ -2,9 +2,10 @@ import styles from './postTitle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 
 export default function PostTitle({ isEditable, src, updateTitle, index, activeBlock, setActiveBlock, date, user, authorId, id, viewContext }) {
+  const supabase = createClient();
   const [authorPhoto, setAuthorPhoto] = useState(null)
   const [authorData, setAuthorData] = useState(null)
   const [showConfirm, setShowConfirm] = useState(false);
@@ -88,7 +89,11 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
       <>
 
         <div className={styles.userWrapper}>
-          {authorData && authorData.photo ? <div className={styles.userImage} style={{backgroundImage: `url(${authorData.photo})`}}></div> : userIcon}
+          {authorData && authorData.photo ?
+            <div className={styles.userImage} style={{backgroundImage: `url(${authorData.photo})`}}></div>
+            :
+            userIcon
+          }
           <div className={styles.userTitleWrapper}>
             <p className={styles.userName}>{viewContext === 'view' ? `${authorData.first_name} ${authorData.last_name}` : `${user.first_name} ${user.last_name}`} </p>
             <p className={styles.userPosition}>{viewContext === 'view' ? `${authorData.position}` : `${user.position}`}</p>

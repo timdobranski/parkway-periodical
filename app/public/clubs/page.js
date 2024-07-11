@@ -4,9 +4,10 @@ import styles from './clubs.module.css';
 import Club from '../../../components/ElectiveOrClub/ElectiveOrClub';
 import ClubMobile from '../../../components/ElectiveOrClubMobile/ElectiveOrClubMobile';
 import { useState, useEffect, Fragment } from 'react';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 
 export default function ClubsPage() {
+  const supabase = createClient();
   const [clubsData, setClubsData] = useState([]);
 
 

@@ -1,6 +1,7 @@
-import supabase from './supabase';
+import { createClient } from './supabase/client';
 
 export default function logUserOut(router) {
+  const supabase = createClient();
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
