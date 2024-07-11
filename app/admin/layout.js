@@ -10,37 +10,62 @@ import ErrorHandling from '../../components/ErrorHandling/ErrorHandling';
 
 export default function AdminLayout({ children }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
+  // const [user, setUser] = useState(null);
 
 
   useEffect(() => {
-    // Check if the user is authenticated
     const checkAuth = async () => {
-      const { data, error } = await supabase.auth.getSession()
+      const { data, error } = await supabase.auth.getSession();
 
-        if (error) console.log('Error: ', error)
-
-      // If there's no session, redirect to /login
-      if (!data || !data.session || !data.session.user) {
+      // if there's no session or user, reidrect to login
+      if (error || !data || !data.session || !data.session.user) {
         router.push('/login');
         return;
       }
-      console.log('session response data: ', data)
-      const { data: userData, error: userDataError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_id', data.session.user.id)
-        .single();
+      // if there's a session and user, but they need to change their password, redirect to change password
 
-      if(userDataError) {
-        console.error('Error fetching user data: ', userDataError)
-        // throw userDataError;
+      if (data && data.session && data.session.user) {
+        if (data.session.user.needsToChangePassword) {
+          router.push('/admin/changePassword');
+          return;
+        }
+
+        const { data: userData, error: userDataError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('auth_id', data.session.user.id)
+          .single();
+
+        if (userDataError) {
+          console.error('Error fetching user data: ', userDataError);
+        } else {
+          setUser(userData);
+        }
       }
-      setUser(userData);
-
+      setIsLoading(false);
     };
+
     checkAuth();
-  }, [router]);
+
+    const { data: {subscription}} = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('AUTH EVENT: ', event)
+      if (event === 'SIGNED_OUT' || !session) {
+        setUser(null);
+        router.push('/login');
+      }
+
+      if (event === 'PASSWORD_RECOVERY') {
+        // router.push('/admin/changePassword');
+      } else {
+        setUser(session?.user || null);
+      }
+    });
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
 
   if (!user) {
     return <div className='loadingMessage'>Loading...</div>
@@ -53,7 +78,6 @@ export default function AdminLayout({ children }) {
         <div className='adminPageWrapper'>
           <Suspense>
             {children}
-            {/* <ErrorHandling /> */}
           </Suspense>
         </div>
       </AdminProvider>

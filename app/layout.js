@@ -1,4 +1,6 @@
 import './globals.css'
+import { AdminProvider } from '../contexts/AdminContext';
+
 
 const url = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -13,7 +15,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <div className='background'>
+          <AdminProvider>
           {children}
+          </AdminProvider>
         </div>
       </body>
     </html>

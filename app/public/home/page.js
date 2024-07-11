@@ -237,7 +237,7 @@ export default function Home({ introRunning, setIntroRunning }) {
           </p>
         </>
       } */}
-      {posts.length === 0 && noResultsMessage}
+      {posts && posts.length === 0 && noResultsMessage}
       {postId || tagId || searchQuery ?
         <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
         </button> : null

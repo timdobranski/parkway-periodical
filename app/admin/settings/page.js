@@ -19,6 +19,8 @@ export default function Settings () {
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [photo, setPhoto] = useState('');
+  const [userToRemove, setUserToRemove] = useState('');
+
 
   useEffect(() => {
     const getAndSetUser = async () => {
@@ -159,6 +161,33 @@ export default function Settings () {
       return
     }
   }
+  const removeUser = async (email) => {
+    try {
+      // now call the server to revoke the user's auth
+      const response = await fetch('/api/removeUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: userToRemove }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage('User deleted successfully')
+      } else {
+        console.error('Error removing user:', result.error);
+        return;
+      }
+
+      const newUsers = users.filter(user => user.email !== email);
+      setUsers(newUsers);
+
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  }
 
   if (!user) {
     return <div>Loading...</div>;
@@ -268,6 +297,7 @@ export default function Settings () {
 
         <h3 className='smallerTitle'>Change Password</h3>
         <div className={styles.inputWrapper}>
+          <p>{`New passwords must have `}</p>
           <input className={styles.updateInput}
             type='password'
             value={newPassword}
@@ -316,10 +346,9 @@ export default function Settings () {
           <div className={styles.inputWrapper}>
             <select
               className={styles.updateInput}
-              value={newUserEmail}
-              onChange={(e) => setNewUserEmail(e.target.value)}
+              value={userToRemove}
+              onChange={(e) => setUserToRemove(e.target.value)}
               type='email'
-              placeholder='Enter email address'
             >
               <option value=''>{users.length ? 'Select user to remove' : 'No users to remove yet'}</option>
               {users.map((user, index) => {
@@ -328,7 +357,7 @@ export default function Settings () {
             </select>
             <button
               className={styles.inviteButton}
-              onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
+              onClick={() => {if (userToRemove) {removeUser(userToRemove)}}}
             >
               Remove
             </button>
