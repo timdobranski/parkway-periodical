@@ -4,13 +4,14 @@ import styles from './CroppablePhoto.module.css'
 import { useState, useEffect, useRef } from 'react'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
-import supabase from '../../utils/supabase'
+import { createClient } from '../../utils/supabase/client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrop, faPencil } from '@fortawesome/free-solid-svg-icons'
 import userPhotos from '../../utils/userPhotos';
 
 
 export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, afterUpload }) {
+  const supabase = createClient();
   const [crop, setCrop] = useState(
     {
       unit: 'px',

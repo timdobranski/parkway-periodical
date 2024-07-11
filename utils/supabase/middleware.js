@@ -46,6 +46,15 @@ export async function updateSession(request) {
     return NextResponse.redirect(url)
   }
 
+  if (!user && request.nextUrl.pathname.startsWith('/api')) {
+    return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+
+
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:

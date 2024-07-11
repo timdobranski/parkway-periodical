@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import supabaseAdmin from '../../../utils/supabaseAdmin';
+import { createClient } from '../../../utils/supabase/server';
 
 export async function POST(request) {
+  const supabaseAdmin = createClient();
   const getURL = () => {
     let url =
       process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.

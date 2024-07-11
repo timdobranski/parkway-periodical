@@ -4,11 +4,12 @@ import styles from './settings.module.css';
 import { useEffect, useState, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
 import userPhotos from '../../../utils/userPhotos';
 
 export default function Settings () {
+  const supabase = createClient();
   const [user, setUser] = useState(null);
   const userIcon = (<FontAwesomeIcon icon={faUser} className={styles.userIcon} />)
   const [newUserEmail, setNewUserEmail] = useState('');
