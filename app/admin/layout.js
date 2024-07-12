@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState, useContext, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { createClient } from '../../utils/supabase/client'; // Update the path as per your directory structure
 import HeaderAdmin from '../../components/HeaderAdmin/HeaderAdmin';
 import { useAdmin } from '../../contexts/AdminContext';
@@ -11,10 +11,11 @@ import ErrorHandling from '../../components/ErrorHandling/ErrorHandling';
 export default function AdminLayout({ children }) {
   const supabase = createClient();
   const router = useRouter();
+  const pathname = usePathname();
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
   // const [user, setUser] = useState(null);
 
-
+  console.log('pathname: ', pathname);
   useEffect(() => {
     const checkAuth = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -73,7 +74,7 @@ export default function AdminLayout({ children }) {
   return (
     <>
       <AdminProvider>
-        <HeaderAdmin user={user}/>
+        {pathname !== '/admin/register' && <HeaderAdmin user={user}/>}
         <div className='adminPageWrapper'>
           <Suspense>
             {children}

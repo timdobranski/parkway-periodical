@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '../../../utils/supabase';
+import {createClient } from '../../../utils/supabase/client';
 import styles from './new-post.module.css';
 import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
 import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight'
@@ -13,6 +13,7 @@ import { useAdmin } from '../../../contexts/AdminContext';
 
 
 export default function NewPostPage() {
+  const supabase = createClient();
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([]);
@@ -140,6 +141,14 @@ export default function NewPostPage() {
   // PUBLISH POST---------------------------------------------
 
   async function publishPost(contentBlocks, postId) {
+    const searchableText = contentBlocks.map((block) => {
+      if (block.type === 'text') {
+        return block.content;
+      }
+      return '';
+    });
+    console.log('searchableText: ', searchableText)
+
     setPublishingStatus(true);
     const post = {
       content: JSON.stringify(contentBlocks),

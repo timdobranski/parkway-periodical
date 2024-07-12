@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 import styles from './Feed.module.css';
 import PrimeText from '../../components/PrimeText/PrimeText';
 import Video from '../../components/Video/Video';
@@ -20,6 +20,7 @@ import Intro from '../../components/Intro/Intro';
 export default function Feed({ contentBlocks, setContentBlocks, user,
   activeBlock, setActiveBlock, viewContext, orientation, addBlock }) {
 
+  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const blocksRef = useRef({});
 

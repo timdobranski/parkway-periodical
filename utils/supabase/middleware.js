@@ -40,19 +40,24 @@ export async function updateSession(request) {
 
   // protect pages in admin directory
   if (!user && request.nextUrl.pathname.startsWith('/admin')) {
-    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
   }
 
+  // protect api routes
   if (!user && request.nextUrl.pathname.startsWith('/api')) {
     return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
     });
   }
-
+  // protect registration page
+  if (!user && request.nextUrl.pathname.startsWith('/register')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
 
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

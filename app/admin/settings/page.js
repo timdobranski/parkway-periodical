@@ -115,7 +115,7 @@ export default function Settings () {
       const { data, error } = await supabase
         .from('users')
         .select('*')
-        // .eq('admin', false);
+        .eq('active', true);
 
       if (error) {
         console.error('Error fetching non-admin users:', error);

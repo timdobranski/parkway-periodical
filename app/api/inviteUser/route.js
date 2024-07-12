@@ -28,18 +28,53 @@ export async function POST(request) {
 
   async function inviteNewUser(email) {
     const url = getURL();
-    console.log('FINAL REDIRECT URL: ', url);
     const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
       redirectTo: url,
     });
 
-    if (error) {
-      console.error('Error inviting user in inviteNewUser function:', error.message);
-      return { error: error.message }; // Return the error message
+    // if there's an error and it's not because the email already exists, return an error message
+    if (error && error.code !== 'email_exists') {
+      console.error('Error inviting user in inviteNewUser function:', JSON.stringify(error));
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
+      // if there's an error and it IS because the email already exists, resend the invite email
+    if (error && error.code === 'email_exists') {
+
+      const getUserIdByEmail = async (email) => {
+        const { data, error } = await supabaseAdmin
+          .from('auth.users')
+          .select('id')
+          .eq('email', email)
+          .single()
+
+        if (error) {
+          console.error('Error fetching user ID:', error)
+          return null
+        }
+        console.log('data: ', data)
+        return data.id
+      }
+      const userId = await getUserIdByEmail(email);
+
+      const { data: deleteData, error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId);
+      if (deleteError) {
+        console.error('Error deleting user:', deleteError);
+        return { error: 'Error deleting user' };
+      }
+      const { data: retryData, error: retryError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+        redirectTo: url,
+      });
+      if (retryError) {
+        console.error('Error resending invite:', retryError);
+        return { error: 'Error resending invite' };
+      }
+      return { data: retryData };
+
+    }
     return data;
   }
+
 
   const { email } = await request.json();
 
@@ -49,7 +84,7 @@ export async function POST(request) {
 
   try {
     const result = await inviteNewUser(email);
-    console.log('result: ', result);
+    console.log('Invite user: ', result);
     if (result.error) {
       return NextResponse.json({ error: result.error }, { status: 500 }); // Return the error message if there is one
     }

@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './list.module.css';
-import supabase from '../../../utils/supabase';
+import {createClient } from '../../../utils/supabase/client';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 
 
 export default function List() {
+  const supabase = createClient();
   const [list, setList] = useState(null);
   const searchParams = useSearchParams();
   const type = searchParams.get('type');

@@ -5,11 +5,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faImage } from '@fortawesome/free-solid-svg-icons';
-import supabase from '../../utils/supabase';
+import { createClient } from '../../utils/supabase/client';
 import CroppablePhoto from '../../components/CroppablePhoto/CroppablePhoto';
 import userPhotos from '../../utils/userPhotos';
 
 export default function Register() {
+  const supabase = createClient();
   const router = useRouter();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -25,6 +26,9 @@ export default function Register() {
   const [cropActive, setCropActive] = useState(false);
   const [loadingPhoto, setLoadingPhoto] = useState(false);
   const [phoneExt, setPhoneExt] = useState('');
+  const [previousUser, setPreviousUser] = useState(false);
+
+
 
   // returns obj with success, error, & value keys
   // takes in user email, type string 'cropped' or 'original', and file if setting
@@ -66,7 +70,7 @@ export default function Register() {
 
     getUserAuthData();
   }, [router]);
-  // set the photo if it already exists
+  // set the photo if it already exists. Check cropped, then original, based on email and users bucket
   useEffect(() => {
     const setInitialPhoto = async() => {
       const { success: successRetreivingCroppedPhoto, error: errorRetreivingCroppedPhoto, value: croppedPhoto } = await getProfilePhoto(session.user.email, 'cropped');
@@ -89,9 +93,43 @@ export default function Register() {
     if (!includeInStaff) {setAboutMe(''); setPhoneExt('')}
   }, [includeInStaff])
 
-  useEffect (() => {
-    console.log('photo: ', photo)
-  }, [photo])
+  // useEffect (() => {
+  //   console.log('photo: ', photo)
+  // }, [photo])
+
+  useEffect(() => {
+    if (!session.user) {
+      console.log('no session user')
+      return;
+    }
+    console.log('checking for existing user data with email: ', session)
+    const checkForExistingUser = async () => {
+    const { data: existingUserData, error: existingUserError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', session.user?.email)
+      .single();
+
+      if (existingUserError) {
+        console.error('Error fetching existing user data: ', existingUserError)
+      }
+
+      if (existingUserData) {
+        console.log("existing user data: ", existingUserData)
+        setFirstName(existingUserData.first_name);
+        setLastName(existingUserData.last_name);
+        setPosition(existingUserData.position);
+        setEmail(existingUserData.email);
+        // setIncludeInStaff(existingUserData.include_in_staff);
+        setAboutMe(existingUserData.about_me);
+        setPhoneExt(existingUserData.phone_ext);
+        setPhoto(existingUserData.photo)
+        setPreviousUser(true);
+      }
+    }
+    checkForExistingUser();
+  }, [session])
+
 
 
   const finishSignup = async (e) => {
@@ -208,6 +246,10 @@ export default function Register() {
       setPhoto(originalPhoto.value);
     }
   };
+  const instructions = 'To complete registration, fill in the fields below:';
+  const previousUserInstructions = `Based on your email address, it looks like you've been here before. Welcome back!
+  Your required info has been prefilled below, except for your password.
+  If you'd like to make any changes, you can do so now.`;
 
   return (
     <div className={styles.pageWrapper}>
@@ -216,7 +258,7 @@ export default function Register() {
         <h1 className='siteTitle'>PARKWAY PERIODICAL</h1>
       </div>
       <h2 className='postTitle'>New User Signup</h2>
-      <p className={styles.instructions}>To complete registration, fill in the fields below:</p>
+      <p className={styles.instructions}>{previousUser ? previousUserInstructions : instructions}</p>
 
       <form className={styles.registrationForm}>
 

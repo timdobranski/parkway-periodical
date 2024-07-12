@@ -28,6 +28,8 @@
   font-size: 1.25rem;
   margin: 1rem;
   text-align: center;
+  width: 80%;
+  max-width: 500px;
 }
 
 .registrationForm {
