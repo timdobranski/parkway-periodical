@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import supabase from '../../../utils/supabase';
+import { createClient } from '../../../utils/supabase/client';
 import styles from './new-content.module.css';
 import { useRouter } from 'next/navigation';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function NewContentPage() {
+  const supabase = createClient();
   const router = useRouter()
   const [photo, setPhoto] = useState('');
   const [cropActive, setCropActive] = useState(false);

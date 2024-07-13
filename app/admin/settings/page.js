@@ -7,10 +7,11 @@ import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free
 import { createClient } from '../../../utils/supabase/client';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
 import userPhotos from '../../../utils/userPhotos';
+import { useAdmin } from '../../../contexts/AdminContext';
+
 
 export default function Settings () {
   const supabase = createClient();
-  const [user, setUser] = useState(null);
   const userIcon = (<FontAwesomeIcon icon={faUser} className={styles.userIcon} />)
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserAdminStatus, setNewUserAdminStatus] = useState(false);
@@ -21,40 +22,9 @@ export default function Settings () {
   const [message, setMessage] = useState('');
   const [photo, setPhoto] = useState('');
   const [userToRemove, setUserToRemove] = useState('');
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
 
 
-  useEffect(() => {
-    const getAndSetUser = async () => {
-      const response = await supabase.auth.getSession();
-
-      // Check if the session exists
-      if (response.data.session) {
-        // If session exists, set the user
-        console.log('session exists: ', response.data.session.user);
-        setUser(response.data.session.user);
-        // Fetch user data from the users table where auth_id matches the user id
-        const { data: userData, error } = await supabase
-          .from('users') // Replace 'users' with your actual table name if different
-          .select('*') // Selects all columns, adjust if needed
-          .eq('auth_id', response.data.session.user.id)
-          .single(); // Replace 'auth_id' with your actual column name if different
-
-        if (error) {
-          console.error('Error fetching user data:', error);
-        } else {
-          console.log('User data:', userData);
-          // Do something with userData, like setting it to state or processing it
-          setUser(userData);
-        }
-
-      } else {
-        // If no session, log no session
-        console.log('no session');
-        // Optionally, redirect to /auth or handle the lack of session
-      }
-    };
-    getAndSetUser();
-  }, []);
   useEffect(() => {
     if (user && user.email) {
       // const cacheBustedUrl = `${user.photo}?t=${Date.now()}`;
@@ -79,9 +49,11 @@ export default function Settings () {
       fetchUsers();
     }
   }, [user])
-  useEffect(() => {
-    console.log('photo changed: ', photo)
-  }, [photo])
+
+  // useEffect(() => {
+  //   console.log('photo changed: ', photo)
+  // }, [photo])
+
   useEffect(() => {
     if (message) {
       alert(message);
@@ -128,7 +100,6 @@ export default function Settings () {
       return null;
     }
   }
-
   const handleFileChange = async (e) => {
     console.log('file upload for user photo changed: ', e);
     const file = e.target.files[0];
@@ -212,7 +183,6 @@ export default function Settings () {
 
     </div>
   );
-
   const updatePhotoModalContent = (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContentWrapper}>
@@ -274,9 +244,6 @@ export default function Settings () {
       setMessage('An error occurred. Please try again.');
     }
   };
-  if (!user) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className={styles.pageWrapper}>

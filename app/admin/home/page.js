@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faAdd } from '@fortawesome/free-solid-svg-icons';
 import { createClient } from '../../../utils/supabase/client';
+import { useAdmin } from '../../../contexts/AdminContext';
 
 
 export default function AdminHomePage() {
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
   const supabase = createClient();
   const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events', 'drafts'];
   const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {

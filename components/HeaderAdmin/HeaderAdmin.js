@@ -16,11 +16,11 @@ import logUserOut from '../../utils/logUserOut';
 import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faCircleExclamation,
   faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-export default function Header({ user }) {
+export default function Header() {
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
   const supabase = createClient();
   const [storageUsage, setStorageUsage] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts } = useAdmin();
   const router = useRouter();
   const contentTypes = ['electives', 'clubs', 'links', 'events'];
   const leftMenuRef = useRef();
@@ -36,11 +36,18 @@ export default function Header({ user }) {
 
       const results = await Promise.all(contentTypes.map(async (tableName) => {
         try {
-          const { data, error } = await supabase
-            .from(tableName)
-            .select('*')  // Select all columns or specify which columns you need
-            .lte('expires', oneWeekFromNowInPacific.toISOString());  // 'expires' is less than or equal to one week from now
+          let query = supabase
+          .from(tableName)
+          .select('*')
+          .lte('expires', oneWeekFromNowInPacific.toISOString());
 
+        // Conditionally add the author filter
+        if (user && !user.admin) {
+          query = query.eq('author', user.id);
+        }
+
+        // Execute the query
+        const { data, error } = await query;
           if (error) {
             throw error;
           }
@@ -65,9 +72,9 @@ export default function Header({ user }) {
     fetchEntriesExpiringSoon(contentTypes);
   }, [])
   // console log alerts
-  useEffect(() => {
-    console.log('alerts: ', alerts);
-  }, [alerts])
+  // useEffect(() => {
+  //   console.log('alerts: ', alerts);
+  // }, [alerts])
   // check storage usage
   useEffect(() => {
     async function checkStorageUsage() {
@@ -128,9 +135,7 @@ export default function Header({ user }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  useEffect(() => {
-    console.log('user in header: ', user);
-  }, [user])
+
   const toggleMenuOpen = (menu) => {
     // if menu is already open, close it
     if (menuOpen === menu) {

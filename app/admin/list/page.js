@@ -7,10 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-
-
+import { useAdmin } from '../../../contexts/AdminContext';
 
 export default function List() {
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
   const supabase = createClient();
   const [list, setList] = useState(null);
   const searchParams = useSearchParams();
@@ -22,10 +22,17 @@ export default function List() {
   useEffect(() => {
     console.log('expanded: ', expanded)
   }, [expanded])
+
+
   const getList = async () => {
-    const { data, error } = await supabase
+    let query = supabase
       .from(type)
       .select('*');
+
+    if (!user.admin) {
+      query = query.eq('author', user.id);
+    }
+    const { data, error } = await query
 
     if (data) {
       if (data.length === 0) {
@@ -40,10 +47,12 @@ export default function List() {
       setList([]);
     }
   };
+
+
   // get list
   useEffect(() => {
     getList();
-  }, [type]);
+  }, [type, user]);
 
   useEffect(() => {
     console.log('TYPE: ', type)
@@ -70,7 +79,7 @@ export default function List() {
   return (
     <div className='adminFeedWrapper'>
       <div className='editablePost'>
-        <h1 className='pageTitle'>{`${type.toUpperCase()}`}</h1>
+        <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
           type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
@@ -79,7 +88,6 @@ export default function List() {
         <div className={styles.sectionWrapper}>
           {list && list.map((item, index) => {
             const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
-
             return (
               <div className={styles.listWrapper} key={index}>
                 <div className={styles.collapsedContentWrapper}>
