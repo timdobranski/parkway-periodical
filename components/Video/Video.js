@@ -14,7 +14,7 @@ export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEd
     // console.log('isEditable inside video block: ', isEditable)
   useEffect(() => {
     updateVideoUrl && updateVideoUrl(url);
-    console.log('url changed: ', url)
+    // console.log('url changed: ', url)
   }, [url]);
 
   // useEffect(() => {

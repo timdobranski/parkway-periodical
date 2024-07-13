@@ -7,81 +7,41 @@ import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import archiveData from './archiveData';
 
 export default function Archive() {
   const supabase = createClient();
+  const { archivePhotos, newsArticles } = archiveData;
   const [schoolYears, setSchoolYears] = useState([]);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const [photosOrArticles, setPhotosOrArticles] = useState('photos');
-  const archivePhotos = [
-    {
-      src: '/images/archive/1.webp',
-      caption: `Parkway Middle School Construction, 1960s. The office building now at the center of the campus originally marked the front entrance of the school.
-      Other buildings were added over the years, extending the entrance further outward until the office was in the center rather than the front of the school.`
-    },
-    {
-      src: '/images/archive/1.webp',
-      caption: 'Parkway Middle School Construction, 1960s'
-    },
-    {
-      src: '/images/archive/1.webp',
-      caption: 'Parkway Middle School Construction, 1960s'
-    }
 
-  ]
-  const newsArticles = [
-    {
-      src: '/images/articles/article1.webp',
-      title: `Parkway Jr. Hi Start This Year`,
-      caption: `A completion date of April 1961 is hoped for the Parkway Junior High School
-      to be built on Dallas street, adjacent to Fletcher Parkway, in north La Mesa, Dr. Ted Dixon, asspciate superintendent of the
-      La Mesa-Spring Valley School District, said today. Construction may be able to start in July, Dixon said, depending on final approval
-      and apportionment of funds from the state before a contract can be awarded. Archetect for the project is Clyde Hufbauer.
-      Originally the junior high school was not scheduled to be built until 1961 or 1962, Dixon said. Date of construction was moved
-      up because of a tremendous influx of residents, necessitating speeded up planning.`
-    },
-    {
-      src: '/images/articles/article1.webp',
-      title: `Parkway Jr. Hi Start This Year`,
-      caption: `A completion date of April 1961 is hoped for the Parkway Junior High School
-      to be built on Dallas street, adjacent to Fletcher Parkway, in north La Mesa, Dr. Ted Dixon, asspciate superintendent of the
-      La Mesa-Spring Valley School District, said today. Construction may be able to start in July, Dixon said, depending on final approval
-      and apportionment of funds from the state before a contract can be awarded. Archetect for the project is Clyde Hufbauer.
-      Originally the junior high school was not scheduled to be built until 1961 or 1962, Dixon said. Date of construction was moved
-      up because of a tremendous influx of residents, necessitating speeded up planning.`
-    },
-    {
-      src: '/images/articles/article1.webp',
-      title: `Parkway Jr. Hi Start This Year`,
-      caption: `A completion date of April 1961 is hoped for the Parkway Junior High School
-      to be built on Dallas street, adjacent to Fletcher Parkway, in north La Mesa, Dr. Ted Dixon, asspciate superintendent of the
-      La Mesa-Spring Valley School District, said today. Construction may be able to start in July, Dixon said, depending on final approval
-      and apportionment of funds from the state before a contract can be awarded. Archetect for the project is Clyde Hufbauer.
-      Originally the junior high school was not scheduled to be built until 1961 or 1962, Dixon said. Date of construction was moved
-      up because of a tremendous influx of residents, necessitating speeded up planning.`
-    }
-  ]
   const items = photosOrArticles === 'photos' ? archivePhotos : newsArticles;
   const activeIndex = photosOrArticles === 'photos' ? currentPhotoIndex : currentArticleIndex;
 
   useEffect(() => {
-    const getSchoolYears = async () => {
-      const { data, error } = await supabase
-        .from('school_years')
-        .select('*');
-
-      if (error) {
-        console.error('Error fetching school years:', error);
-      }
-
-      if (data) {
-        console.log('school years data:', data)
-        setSchoolYears(data);
-      }
-    }
-    getSchoolYears();
+    console.log('archivePhotos:', JSON.stringify(archivePhotos));
+    console.log('newsArticles:', newsArticles);
   }, []);
+
+  // useEffect(() => {
+  //   const getSchoolYears = async () => {
+  //     const { data, error } = await supabase
+  //       .from('school_years')
+  //       .select('*');
+
+  //     if (error) {
+  //       console.error('Error fetching school years:', error);
+  //     }
+
+  //     if (data) {
+  //       console.log('school years data:', data)
+  //       setSchoolYears(data);
+  //     }
+  //   }
+  //   getSchoolYears();
+  // }, []);
 
   const customPrevArrow = (clickHandler, hasPrev) => {
     return (
@@ -142,7 +102,13 @@ export default function Archive() {
                       className={styles.slideImg}
                       onContextMenu="return false;"
                     />
-                    {items[activeIndex].title && <p className={`centeredWhiteText ${styles.archivePhotoTitle}`}>{items[activeIndex].title}</p>}
+                    {
+                    items[activeIndex].title &&
+                    <>
+                      <p className={`centeredWhiteText ${styles.archivePhotoTitle}`}>{items[activeIndex].title}</p>
+                      <p className={styles.articleMetadata}>{`${items[activeIndex].date} via ${items[activeIndex].source}`}</p>
+                    </>
+                    }
                     <p className={`centeredWhiteText ${styles.archivePhotoCaption}`}>{items[activeIndex].caption}</p>
                   </div>
                 </>

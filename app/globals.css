@@ -546,6 +546,9 @@
   box-sizing: border-box;
   opacity: 0.5;
 }
+.archiveCarouselWrapper .slider-wrapper-axis-horizontal {
+  pointer-events: none;
+}
 
 /* ------------------------------------------MOBILE STYLING---------------------------------------------- */
 /* ------------------------------------------MOBILE STYLING---------------------------------------------- */

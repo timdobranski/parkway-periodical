@@ -1,6 +1,6 @@
 'use client'
 
-import supabase from '../../../utils/supabase.js';
+import { createClient } from '../../../utils/supabase/client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './changePassword.module.css';

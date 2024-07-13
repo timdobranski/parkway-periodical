@@ -40,6 +40,7 @@
 .historicPhotos {
   text-align: left;
   padding-left: 2rem;
+
 }
 .photosOrArticlesWrapper *:hover {
   cursor: pointer;
@@ -82,12 +83,26 @@
 .slideImg {
   max-height: 45vh;
   width: auto;
+  /* max-width: 95%; */
   object-fit: contain;
   pointer-events: none;
-
   border-bottom: none !important;
   background-color: rgba(0, 0, 0, .5);
   padding-top: 2rem !important;
+}
+.slideImg * {
+  /* pointer-events: none; */
+
+}
+.carouselSlide {
+  width: 100%;
+  /* background: rgba(0, 0, 0, .5); */
+  /* border: solid red 2px; */
+}
+.archiveCarouselWrapper {
+  width: 100%;
+  /* pointer-events: none; */
+
 }
 .arrowLeft, .arrowRight {
   background-color: rgba(0, 90, 120, 1);
@@ -121,12 +136,18 @@
 }
 .archivePhotoCaption, .archivePhotoTitle {
   margin: 0;
-  padding: 1.5rem 1.5rem 2.5rem 1.5rem;
-  min-height: 150px;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  min-height: 180px;
+  /* height: 100%; */
+  /* height: auto; */
   background: rgba(0, 0, 0, .5);
   width: 100%;
   transition: height 0.5s ease;
   border-top: none;
+}
+.archivePhotoCaption {
+  /* border: solid blue 12px; */
+  height: auto;
 }
 .archivePhotoTitle {
   /* font-weight: bold; */
@@ -135,6 +156,13 @@
   min-height: unset;
   text-decoration: underline;
   text-decoration-color: rgb(0, 123, 194);
+}
+.articleMetadata {
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  font-size: 1.25rem;
+  margin: 0;
+  padding: .25rem 0;
 }
 .historyCenterLogo {
   position: absolute;

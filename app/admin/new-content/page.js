@@ -8,8 +8,10 @@ import { useRouter } from 'next/navigation';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { useAdmin } from '../../../contexts/AdminContext';
 
 export default function NewContentPage() {
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
   const supabase = createClient();
   const router = useRouter()
   const [photo, setPhoto] = useState('');

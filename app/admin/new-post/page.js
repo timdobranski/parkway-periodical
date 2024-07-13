@@ -15,14 +15,14 @@ import { useAdmin } from '../../../contexts/AdminContext';
 export default function NewPostPage() {
   const supabase = createClient();
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([]);
   const [activeBlock, setActiveBlock] = useState(null);
   const blocksRef = useRef({});
   const searchParams = useSearchParams();
   const postId = searchParams.get('id');
-  const [publishingStatus, setPublishingStatus] = useState(false)
-  const { isLoading, setIsLoading, saving, setSaving } = useAdmin();
+  const [publishingStatus, setPublishingStatus] = useState(false);
+  const { isLoading, setIsLoading, saving, setSaving, user, authUser } = useAdmin();
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
   const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
 
@@ -30,35 +30,36 @@ export default function NewPostPage() {
 
   // fetch user
   useEffect(() => {
-    fetchUser().then(user => {
-      if (!user) {
-        router.push('/auth');
-      } else {
-        setUser(user);
-        initContent(user);
-      }
-    });
-  }, [router]);
+    initContent(authUser);
+  }, [user]);
 
-  async function fetchUser() {
-    const response = await supabase.auth.getSession();
-    if (response.data.session) {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_id', response.data.session.user.id)
-        .single();
+  // async function fetchUser() {
+  //   const response = await supabase.auth.getSession();
+  //   if (response.data.session) {
+  //     const { data, error } = await supabase
+  //       .from('users')
+  //       .select('*')
+  //       .eq('auth_id', response.data.session.user.id)
+  //       .single();
 
-      if (error) {
-        console.error('Error fetching user data:', error);
-        return null;
-      }
+  //     if (error) {
+  //       console.error('Error fetching user data:', error);
+  //       return null;
+  //     }
 
-      return { ...response.data.session.user, supabase_user: data };
-    }
-    return null;
-  }
-  async function initContent(user) {
+  //     return { ...response.data.session.user, supabase_user: data };
+  //   }
+  //   return null;
+  // }
+  useEffect(() => {
+    console.log('USER IN NEW POST PAGE: ', user)
+  }, [user])
+  useEffect(() => {
+    console.log('AUTHUSER IN NEW POST PAGE: ', authUser)
+  }, [authUser])
+
+
+  async function initContent(authUser) {
     if (postId) {
       console.log('post id found: ', postId)
       const { data, error } = await supabase
@@ -79,7 +80,7 @@ export default function NewPostPage() {
       const { data: draft, error } = await supabase
         .from('drafts')
         .select('*')
-        .eq('author', user.supabase_user.id)
+        .eq('author', authUser.id)
         .single();
 
       if (draft) {
@@ -111,12 +112,15 @@ export default function NewPostPage() {
       const { error } = await supabase
         .from('drafts')
         .delete()
-        .match({ author: user.supabase_user.id });
+        .match({ author: user.id });
 
-      if (error) throw error;
-      console.log('Draft deleted');
+      if (error) {
+        console.error('Error deleting draft:', error);
+      } else {
+        console.log('Draft deleted');
+      }
     } catch (error) {
-      console.error('Error deleting draft:', error);
+      console.error('Unexpected error:', error);
     }
   }
   // update the draft when content changes (debounced)

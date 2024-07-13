@@ -15,7 +15,7 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable })
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log('photo passed to PhotoBlock: ', photo)
+    // console.log('photo passed to PhotoBlock: ', photo)
   }, [photo])
 
   const handleTitleChange = (index, newTitle) => {

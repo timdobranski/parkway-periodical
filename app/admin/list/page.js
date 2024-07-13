@@ -20,8 +20,8 @@ export default function List() {
   // types: electives, clubs, posts, staff, links
 
   useEffect(() => {
-    console.log('expanded: ', expanded)
-  }, [expanded])
+    console.log('user in list page, from context api: ', user)
+  }, [user])
 
 
   const getList = async () => {
@@ -29,7 +29,7 @@ export default function List() {
       .from(type)
       .select('*');
 
-    if (!user.admin) {
+    if ( user && !user.admin) {
       query = query.eq('author', user.id);
     }
     const { data, error } = await query

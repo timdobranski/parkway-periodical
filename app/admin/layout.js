@@ -20,7 +20,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <>
-        {pathname !== 'admin/register' && <HeaderAdmin user={user}/>}
+        {pathname !== 'admin/register' && <HeaderAdmin />}
         <div className='adminPageWrapper'>
           <Suspense>
             {children}

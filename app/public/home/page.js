@@ -9,19 +9,21 @@ import PhotoCarousel from '../../../components/PhotoCarousel/PhotoCarousel';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import WelcomeSlideshow from '../../../components/WelcomeSlideshow/WelcomeSlideshow';
 import SearchAndFilterBar from '../../../components/SearchAndFilterBar/SearchAndFilterBar';
-import Intro from '../../../components/Intro/Intro';
+// import Intro from '../../../components/Intro/Intro';
 import PostTitle from '../../../components/PostTitle/PostTitle';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import dateFormatter from '../../../utils/dateFormatter';
 import { useSearchParams } from 'next/navigation';
-import Header from '../../../components/Header/Header';
+// import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays, faPen, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
 import useOnlineStatus from '../../../utils/useOnlineStatus';
+import { useAdmin } from '../../../contexts/AdminContext';
 
 
 export default function Home({ introRunning, setIntroRunning }) {
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
   const supabase = createClient();
   const isOnline = useOnlineStatus();
   const [posts, setPosts] = useState([]);
@@ -34,29 +36,33 @@ export default function Home({ introRunning, setIntroRunning }) {
   const router = useRouter();
   let postId = searchParams.get('postId');
   const pathname = usePathname();
-  const [user, setUser] = useState({});
-  const [userId, setUserId] = useState('');
+  // const [user, setUser] = useState({});
+  // const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    console.log('USER IN *** PUBLIC HOME *** : ', user)
+  }, [user])
 
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
   // get and set user, tags, and posts
   useEffect(() => {
-    const getAndSetUser = async () => {
-      const response = await supabase.auth.getSession();
+    // const getAndSetUser = async () => {
+    //   const response = await supabase.auth.getSession();
 
-      // Check if the session exists
-      if (response.data.session) {
-        // If session exists, set the user
-        console.log('session exists: ', response.data.session.user);
-        setUser(response.data.session.user);
+    //   // Check if the session exists
+    //   if (response.data.session) {
+    //     // If session exists, set the user
+    //     console.log('session exists: ', response.data.session.user);
+    //     setUser(response.data.session.user);
 
-      } else {
-        // If no session, redirect to /auth
-        console.log('no session');
-      }
-    };
-    getAndSetUser();
+    //   } else {
+    //     // If no session, redirect to /auth
+    //     console.log('no session');
+    //   }
+    // };
+    // getAndSetUser();
     getTags();
     getPosts();
   }, []);
@@ -145,27 +151,27 @@ export default function Home({ introRunning, setIntroRunning }) {
     }
   }, [postId]);
 
-  useEffect(() => {
-    const getUserId = async (id) => {
-      console.log('id passed to getUserId: ', id)
-      const { data, error } = await supabase
-        .from('users')
-        .select('id')
-        .eq('auth_id', id)
+  // useEffect(() => {
+  //   const getUserId = async (id) => {
+  //     console.log('id passed to getUserId: ', id)
+  //     const { data, error } = await supabase
+  //       .from('users')
+  //       .select('id')
+  //       .eq('auth_id', id)
 
-      if (error) {
-        console.log('error getting user id from auth id:', error)
-        return;
-      }
-      console.log('data from id fetch: ', data)
-      setUserId(data[0].id)
-    }
-    getUserId(user.id)
-  }, [user])
+  //     if (error) {
+  //       console.log('error getting user id from auth id:', error)
+  //       return;
+  //     }
+  //     console.log('data from id fetch: ', data)
+  //     setUserId(data[0].id)
+  //   }
+  //   getUserId(user.id)
+  // }, [user])
 
-  useEffect(() => {
-    console.log('userId changed: ', userId)
-  }, [userId])
+  // useEffect(() => {
+  //   console.log('userId changed: ', userId)
+  // }, [userId])
 
   const handleFilterChange = (event) => {
     console.log('inside handle filter change')
@@ -248,7 +254,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       {posts &&
     posts.map((post, i) => (
       <div className='post' key={i}>
-        {user && post.author === userId &&
+        {user && post.author === user.id &&
               <button
                 className={styles.editPostButton}
                 onClick={() => router.push(`/admin/new-post/?postId=${post.id}`)}

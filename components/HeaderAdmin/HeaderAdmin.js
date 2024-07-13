@@ -17,7 +17,7 @@ import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell,
   faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
-  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
   const supabase = createClient();
   const [storageUsage, setStorageUsage] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -29,6 +29,13 @@ export default function Header() {
   const userMenuRef = useRef();
   const pathname = usePathname();
   // fetch entries expiring soon
+
+
+
+  useEffect(() => {
+    console.log('User in header: ', user)
+  }, [user])
+
   useEffect(() => {
     async function fetchEntriesExpiringSoon(contentTypes) {
       const nowInPacific = moment().tz('America/Los_Angeles');
@@ -37,17 +44,17 @@ export default function Header() {
       const results = await Promise.all(contentTypes.map(async (tableName) => {
         try {
           let query = supabase
-          .from(tableName)
-          .select('*')
-          .lte('expires', oneWeekFromNowInPacific.toISOString());
+            .from(tableName)
+            .select('*')
+            .lte('expires', oneWeekFromNowInPacific.toISOString());
 
-        // Conditionally add the author filter
-        if (user && !user.admin) {
-          query = query.eq('author', user.id);
-        }
+          // Conditionally add the author filter
+          if (user && !user.admin) {
+            query = query.eq('author', user.id);
+          }
 
-        // Execute the query
-        const { data, error } = await query;
+          // Execute the query
+          const { data, error } = await query;
           if (error) {
             throw error;
           }
@@ -65,7 +72,7 @@ export default function Header() {
       // Flatten the results array and sort by expires value in reverse chronological order
       const allEntries = results.flat().sort((a, b) => moment(b.expires).diff(moment(a.expires)));
 
-      console.log('allEntries:', allEntries);
+      // console.log('allEntries:', allEntries);
       setAlerts(allEntries);
     }
 
@@ -114,7 +121,7 @@ export default function Header() {
         return null;
       }
     }
-    console.log('user: ', user)
+    // console.log('user: ', user)
     checkStorageUsage().then(setStorageUsage);
   }, []);
   // handle click outside menus
@@ -249,7 +256,7 @@ export default function Header() {
         <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
           <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
         </div>
-          <p className={styles.settingsLabel}>SETTINGS</p>
+        <p className={styles.settingsLabel}>SETTINGS</p>
         <button
           className={styles.logout}
           onClick={() => logUserOut(router)}
@@ -265,10 +272,10 @@ export default function Header() {
   )
   const testEmailErrorButton = (
     <button
-    className={styles.testErrorButton}
-  >
+      className={styles.testErrorButton}
+    >
   Test Error Email
-  </button>
+    </button>
   )
   const leftSideNavbar = (
     <div className={styles.leftSideNavbarContent}>
@@ -302,12 +309,16 @@ export default function Header() {
     <div className={styles.rightSideNavbarContent}>
       { user && (user.id === 1 || user.id === 3) &&
         testEmailErrorButton
-        }
+      }
       {alertsMenu}
       {rightNavbarMenu}
       {user && userMenu}
     </div>
   )
+
+  if (!user ) {
+    return null;
+  }
 
   return (
     <div className={styles.headerContainer}>

@@ -10,7 +10,7 @@ import { useAdmin } from '../../../contexts/AdminContext';
 
 
 export default function AdminHomePage() {
-  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
   const supabase = createClient();
   const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events', 'drafts'];
   const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {

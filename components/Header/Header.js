@@ -8,10 +8,12 @@ import { useRouter, usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { useAdmin } from '../../contexts/AdminContext';
 
 export default function Header({ skipAnimation }) {
+  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
   const supabase = createClient();
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [leftNavbarOpen, setLeftNavbarOpen] = useState(false);
   const [rightNavbarOpen, setRightNavbarOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(null);
@@ -32,23 +34,7 @@ export default function Header({ skipAnimation }) {
     console.log('PATHNAME: ', pathname)
   }, [pathname])
 
-  useEffect(() => {
-    const getAndSetUser = async () => {
-      const response = await supabase.auth.getSession();
 
-      // Check if the session exists
-      if (response.data.session) {
-        // If session exists, set the user
-        console.log('session exists: ', response.data.session.user);
-        setUser(response.data.session.user);
-
-      } else {
-        // If no session, redirect to /auth
-        console.log('no session');
-      }
-    };
-    getAndSetUser();
-  }, []);
 
   const isActive = (href) => {
     // console.log('isActive: ', pathname, href)

@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <body>
         <div className='background'>
           <AdminProvider>
-          {children}
+            {children}
           </AdminProvider>
         </div>
       </body>

@@ -3,8 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { createClient } from '../../utils/supabase/client';
+import { useAdmin } from '../../contexts/AdminContext';
 
-export default function PostTitle({ isEditable, src, updateTitle, index, activeBlock, setActiveBlock, date, user, authorId, id, viewContext }) {
+
+export default function PostTitle({ isEditable, src, updateTitle, index, activeBlock, setActiveBlock, date, authorId, id, viewContext }) {
+
+  // const [publishingStatus, setPublishingStatus] = useState(false)
+  const { isLoading, setIsLoading, saving, setSaving, user, authUser } = useAdmin();
   const supabase = createClient();
   const [authorPhoto, setAuthorPhoto] = useState(null)
   const [authorData, setAuthorData] = useState(null)
@@ -13,6 +18,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
 
   const userIcon = <FontAwesomeIcon icon={faUser} className={styles.userIcon} />
 
+  // get users table data using authorId if public, and using user.id if editing post as admin
   useEffect(() => {
     const getAuthorData = async (id) => {
 
@@ -27,9 +33,9 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
       setAuthorData(data)
     }
     if (viewContext === 'view') {
-      getAuthorData(authorId)
+      getAuthorData(authorId) // get author data if viewing post as public
     } else if (viewContext === 'edit') {
-      getAuthorData(user.id)
+      setAuthorData(user) // get USER data if viewing post as admin
     }
   }, [authorId])
 
