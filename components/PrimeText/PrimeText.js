@@ -112,7 +112,7 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
 
           <select className="ql-size">
             <option value="small">Small</option>
-            <option selected ></option>
+            <option default ></option>
             <option value="large">Large</option>
             <option value="huge">Huge</option>
           </select>
@@ -139,8 +139,8 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
           <button className="ql-align" value="right"></button>
         </span>
         <span className='ql-formats'>
-          <button class="ql-list" value="ordered"><i class="your-icon-class">OL</i></button>
-          <button class="ql-list" value="bullet"><i class="your-icon-class">UL</i></button>
+          <button className="ql-list" value="ordered"><i className="your-icon-class">OL</i></button>
+          <button className="ql-list" value="bullet"><i className="your-icon-class">UL</i></button>
         </span>
         {/* <button className="ql-align" value="justify"></button> */}
       </span>

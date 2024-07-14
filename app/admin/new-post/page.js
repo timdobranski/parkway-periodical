@@ -131,7 +131,7 @@ export default function NewPostPage() {
         const post = {
           content: JSON.stringify(contentBlocks),
           'post-type': 'weekly-update', // Example type
-          author: user.supabase_user.id
+          author: user.id
         };
         setSaving(true);
         debouncedUpdateDraftRef.current(post);
