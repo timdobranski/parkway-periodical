@@ -77,6 +77,7 @@ const archiveData = {
       src: `${articleBasePath}2.webp`,
       date: `Feb 1st, 1962`,
       title: `Survival Course Begun at Parkway`,
+      source: `The La Mesa Scout`,
       caption: `A survival course was begun last night and will continue for the next four Wednesday evenings at 7 p.m. This
       course is under the auspices of Civil Defense and the Parkway Jr. High PTA Parent Education Committee and is held in the
       library at the school. Jerry Fitzgibbon, Civil Defense Instructor, is conducting the class which includes information on
