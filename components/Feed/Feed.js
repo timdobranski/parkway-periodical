@@ -14,7 +14,6 @@ import SelectLayoutContent from '../../components/SelectLayoutContent/SelectLayo
 import BlockEditMenu from '../../components/BlockEditMenu/BlockEditMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import Intro from '../../components/Intro/Intro';
 
 
 export default function Feed({ contentBlocks, setContentBlocks, user,
