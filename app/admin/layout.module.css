@@ -1,0 +1,30 @@
+.mobileSupportMessageWrapper {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .mobileSupportMessageWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    background: var(--mobile-background);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    z-index: 1000;
+    /* border: solid red 2px; */
+  }
+  .mobileSupportMessageWrapper p {
+    font-size: 1.75rem;
+  }
+  .logo {
+    height: 200px;
+  }
+}

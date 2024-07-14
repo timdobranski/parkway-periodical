@@ -504,7 +504,7 @@ USER MENU---------------------------------------------
   font-size: 1.25rem;
   margin-top: .25rem;
 }
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .headerContainer {
     position: fixed;
     margin: 0;
@@ -512,7 +512,7 @@ USER MENU---------------------------------------------
     left: 0;
     width: 100vw;
     height:150px;
-    display: flex;
+    display: none;
     flex-direction: row;
     align-items: flex-start;
     background-color: white;
