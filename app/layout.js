@@ -1,4 +1,5 @@
 import './globals.css'
+import { Suspense } from 'react';
 import { AdminProvider } from '../contexts/AdminContext';
 
 
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
       <body>
         <div className='background'>
           <AdminProvider>
-            {children}
+            <Suspense fallback={<div>Loading...</div>}>
+              {children}
+            </Suspense>
           </AdminProvider>
         </div>
       </body>
