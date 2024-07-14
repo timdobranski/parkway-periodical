@@ -1,7 +1,7 @@
 'use client'
 
 import styles from './archive.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { createClient } from '../../../utils/supabase/client';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -20,10 +20,6 @@ export default function Archive() {
   const items = photosOrArticles === 'photos' ? archivePhotos : newsArticles;
   const activeIndex = photosOrArticles === 'photos' ? currentPhotoIndex : currentArticleIndex;
 
-  useEffect(() => {
-    console.log('archivePhotos:', JSON.stringify(archivePhotos));
-    console.log('newsArticles:', newsArticles);
-  }, []);
 
   // useEffect(() => {
   //   const getSchoolYears = async () => {
@@ -94,13 +90,13 @@ export default function Archive() {
             {
 
               items?.map((photo, index) => (
-                <>
-                  <div key={index} className={styles.carouselSlide}>
+                <Fragment key={index}>
+                  <div className={styles.carouselSlide}>
                     <img
                       src={photo.src}
                       alt={`Photo ${index}`}
                       className={styles.slideImg}
-                      onContextMenu="return false;"
+                      onContextMenu={(e) => e.preventDefault()}
                     />
                     {
                     items[activeIndex].title &&
@@ -111,7 +107,7 @@ export default function Archive() {
                     }
                     <p className={`centeredWhiteText ${styles.archivePhotoCaption}`}>{items[activeIndex].caption}</p>
                   </div>
-                </>
+                </Fragment>
               ))}
           </Carousel>
         </div>

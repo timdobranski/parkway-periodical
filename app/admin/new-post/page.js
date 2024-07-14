@@ -156,7 +156,7 @@ export default function NewPostPage() {
     setPublishingStatus(true);
     const post = {
       content: JSON.stringify(contentBlocks),
-      author: JSON.stringify(user.supabase_user.id),
+      author: JSON.stringify(user.id),
       title: contentBlocks[0].content
     };
     try {
@@ -183,7 +183,7 @@ export default function NewPostPage() {
       const { error: draftError } = await supabase
         .from('drafts')
         .delete()
-        .match({ author: user.supabase_user.id });
+        .match({ author: user.id });
 
       if (draftError) throw draftError;
       setPublishingStatus(false);
