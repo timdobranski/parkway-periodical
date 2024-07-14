@@ -15,51 +15,18 @@ import { useAdmin } from '../../../contexts/AdminContext';
 export default function NewPostPage() {
   const supabase = createClient();
   const router = useRouter();
-  // const [user, setUser] = useState(null);
   const [contentBlocks, setContentBlocks] = useState([]);
   const [activeBlock, setActiveBlock] = useState(null);
   const blocksRef = useRef({});
   const searchParams = useSearchParams();
-  const postId = searchParams.get('id');
+  const postId = searchParams.get('postId');
   const [publishingStatus, setPublishingStatus] = useState(false);
   const { isLoading, setIsLoading, saving, setSaving, user, authUser } = useAdmin();
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
   const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
+  const schoolYear = '2024-25';
 
-
-
-  // fetch user
-  useEffect(() => {
-    initContent(authUser);
-  }, [user]);
-
-  // async function fetchUser() {
-  //   const response = await supabase.auth.getSession();
-  //   if (response.data.session) {
-  //     const { data, error } = await supabase
-  //       .from('users')
-  //       .select('*')
-  //       .eq('auth_id', response.data.session.user.id)
-  //       .single();
-
-  //     if (error) {
-  //       console.error('Error fetching user data:', error);
-  //       return null;
-  //     }
-
-  //     return { ...response.data.session.user, supabase_user: data };
-  //   }
-  //   return null;
-  // }
-  useEffect(() => {
-    console.log('USER IN NEW POST PAGE: ', user)
-  }, [user])
-  useEffect(() => {
-    console.log('AUTHUSER IN NEW POST PAGE: ', authUser)
-  }, [authUser])
-
-
-  async function initContent(authUser) {
+  const getPostFromId = async () => {
     if (postId) {
       console.log('post id found: ', postId)
       const { data, error } = await supabase
@@ -69,31 +36,63 @@ export default function NewPostPage() {
         .single();
 
       if (error) {
-        console.error('Error fetching post data:', error);
+        console.error('Error fetching post from post Id in url:', error);
         return;
       }
 
       if (data) {
         setContentBlocks(JSON.parse(data.content));
       }
-    } else {
-      const { data: draft, error } = await supabase
-        .from('drafts')
-        .select('*')
-        .eq('author', authUser.id)
-        .single();
-
-      if (draft) {
-        console.log('existing draft found')
-        setContentBlocks(JSON.parse(draft.content));
-      } else {
-        console.log('no draft found')
-        const emptyPost = [{ type: 'title', content: '', style: { width: '0px', height: '0px', x: 0, y: 0 } }];
-        setContentBlocks(emptyPost);
-        // updateDraft({ author: user.supabase_user.id, content: emptyPost });
-      }
     }
   }
+  const getDraft = async () => {
+    const { data: draft, error } = await supabase
+
+      .from('drafts')
+      .select('*')
+      .eq('author', user.id)
+      .single();
+
+    if (draft) {
+      console.log('existing draft found')
+      setContentBlocks(JSON.parse(draft.content));
+    } else {
+      console.log('no draft found')
+    }
+  }
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      if (postId) {
+        const postContent = await getPostFromId(postId);
+        if (postContent) {
+          setContentBlocks(postContent);
+        }
+      } else if (user?.id) {
+        const draftContent = await getDraft(user.id);
+        if (draftContent) {
+          setContentBlocks(draftContent);
+        } else {
+          setContentBlocks(newPost);
+        }
+      } else {
+        setContentBlocks(newPost);
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [postId, user]);
+
+
+
+  useEffect(() => {
+    console.log('post id: ', postId)
+  }, [postId])
+
+
   async function updateDraft(post) {
     try {
       const { data, error } = await supabase
@@ -125,7 +124,7 @@ export default function NewPostPage() {
   }
   // update the draft when content changes (debounced)
   useEffect(() => {
-    const isNewPost = contentBlocks.length === 1 && contentBlocks[0].content === '';
+    const isNewPost = (contentBlocks.length === 1 && contentBlocks[0].content === '');
     if (contentBlocks.length && user) {
       if (isNewPost) { deleteDraft() } else {
         const post = {
@@ -141,23 +140,45 @@ export default function NewPostPage() {
   useEffect(() => {
     console.log('CONTENT BLOCKS CHANGED: ', contentBlocks)
   }, [contentBlocks])
+  // to remove html from text blocks to facilitate searchable text
+  const stripHTML = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  }
 
   // PUBLISH POST---------------------------------------------
 
   async function publishPost(contentBlocks, postId) {
     const searchableText = contentBlocks.map((block) => {
-      if (block.type === 'text') {
+      if (block.type === 'title') {
+        // Return the text content directly for title blocks
         return block.content;
       }
+
+      if (block.type === 'text') {
+        // Strip HTML tags for text blocks
+        return stripHTML(block.content);
+      }
+
+      if (block.type === 'photo') {
+        // Iterate through the array and concatenate the text content from caption and title properties
+        return block.content.map(item => `${item.caption} ${item.title}`).join(' ');
+      }
+
+      // Return an empty string for unhandled block types
       return '';
     });
-    console.log('searchableText: ', searchableText)
+    const completeSearchableText = searchableText.join(' ');
+
+    console.log('searchableText: ', completeSearchableText)
 
     setPublishingStatus(true);
     const post = {
       content: JSON.stringify(contentBlocks),
       author: JSON.stringify(user.id),
-      title: contentBlocks[0].content
+      title: contentBlocks[0].content,
+      searchableText: completeSearchableText,
+      schoolYear: schoolYear
     };
     try {
       if (postId) {
@@ -217,7 +238,6 @@ export default function NewPostPage() {
     setActiveBlock(contentBlocks.length);
   };
 
-  if (!user || !contentBlocks) { return null; }
 
   return (
     <>

@@ -87,13 +87,13 @@ export const AdminProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log('USER IN ADMIN CONTEXT FILE: ', user);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('USER IN ADMIN CONTEXT FILE: ', user);
+  // }, [user]);
 
-  useEffect(() => {
-    console.log('SESSION IN ADMIN CONTEXT FILE: ', session);
-  }, [session]);
+  // useEffect(() => {
+  //   console.log('SESSION IN ADMIN CONTEXT FILE: ', session);
+  // }, [session]);
 
   return (
     <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, authUser, session }}>

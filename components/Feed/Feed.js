@@ -406,7 +406,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
                 index={index}
                 activeBlock={activeBlock}
                 setActiveBlock={setActiveBlock}
-                user={user.supabase_user}
                 viewContext={viewContext}
               />
               {contentBlocks.length === 1 && <div className={styles.noBlocksMessage}>Add some content from the menu on the right to get started</div>}
@@ -519,8 +518,6 @@ export default function Feed({ contentBlocks, setContentBlocks, user,
       ))}
     </div>
   )
-
-  // if (orientation === 'horizontal') { return (feed)}
 
   return (
     <div className={`adminFeedWrapper`}>
