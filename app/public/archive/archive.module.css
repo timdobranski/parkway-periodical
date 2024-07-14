@@ -86,7 +86,7 @@
   /* max-width: 95%; */
   object-fit: contain;
   pointer-events: none;
-  border-bottom: none !important;
+  border-bottom: solid white 2px;
   background-color: rgba(0, 0, 0, .5);
   padding-top: 2rem !important;
 }
@@ -148,6 +148,7 @@
 .archivePhotoCaption {
   /* border: solid blue 12px; */
   height: auto;
+  /* border-top: solid rgba(255, 255, 255, 0.255) 1px; */
 }
 .archivePhotoTitle {
   /* font-weight: bold; */
