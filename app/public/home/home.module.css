@@ -314,5 +314,6 @@
   .createdAt, .shareLabel, .shareIcon {
     font-size: 1rem;
     margin: .25rem;
+    font-weight: bold;
   }
 }

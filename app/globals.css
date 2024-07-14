@@ -585,7 +585,7 @@
     max-width: none;
     box-shadow: none;
     margin: 0;
-    padding: 0 .5rem;
+    padding: 0 .75rem;
     height: fit-content;
     min-height: 100vh;
     background: var(--mobile-background);
@@ -606,11 +606,14 @@
     height: fit-content !important;
     min-height: none;
     animation: none;
-    border-radius: 15px;
+    border-radius: 5px;
     padding: .5rem;
     padding-bottom: 0;
     margin-top: .5rem;
-    animation: slideUpNoCenter 1s ease
+    margin: 0 0 1rem 0;
+    /* box-shadow: none; */
+    box-shadow: 0 0 5px rgba(0, 0, 0, .8);
+    /* animation: slideUpNoCenter 1s ease */
     /* border: solid red 4px; */
   }
   .blockWrapper {
