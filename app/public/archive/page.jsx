@@ -83,12 +83,12 @@ export default function Archive() {
             dynamicHeight={false}
             autoPlay={false}
             showThumbs={false}
-            showStatus={false}
+            showStatus={true}
+            showIndicators={false}
             selectedItem={activeIndex}
             onChange={handleCarouselChange}
           >
             {
-
               items?.map((photo, index) => (
                 <Fragment key={index}>
                   <div className={styles.carouselSlide}>

@@ -17,6 +17,8 @@ export default function List() {
   const type = searchParams.get('type');
   const router = useRouter();
   const [expanded, setExpanded] = useState('')
+  const [paddingClass, setPaddingClass] = useState('');
+
   // types: electives, clubs, posts, staff, links
 
   useEffect(() => {
@@ -24,21 +26,46 @@ export default function List() {
   }, [user])
 
 
+
   const getList = async () => {
     let query = supabase
       .from(type)
       .select('*');
 
-    if ( user && !user.admin) {
+    if (user && !user.admin) {
       query = query.eq('author', user.id);
     }
-    const { data, error } = await query
+
+    const { data, error } = await query;
 
     if (data) {
       if (data.length === 0) {
         setList([]);
       } else {
-        setList(data);
+        const authorIds = [...new Set(data.map(item => item.author))]; // Get unique author IDs
+
+        const { data: authors, error: authorsError } = await supabase
+          .from('users')
+          .select('id, first_name, last_name')
+          .in('id', authorIds);
+
+        if (authorsError) {
+          console.error('Error fetching authors:', authorsError);
+          setList(data); // if fetching author data fails, at least set the list with the data we have
+          return;
+        }
+
+        const authorsMap = authors.reduce((map, author) => {
+          map[author.id] = author;
+          return map;
+        }, {});
+
+        const updatedData = data.map(item => ({
+          ...item,
+          author: authorsMap[item.author] || { first_name: '', last_name: '' }
+        }));
+
+        setList(updatedData);
       }
     }
 
@@ -75,7 +102,15 @@ export default function List() {
       }
     }
   }
-
+  const handleToggle = (index) => {
+    if (expanded === '') {
+      setExpanded(index);
+    } else if (expanded === index) {
+      setExpanded('');
+    } else {
+      setExpanded(index);
+    }
+  };
   return (
     <div className='adminFeedWrapper'>
       <div className='editablePost'>
@@ -95,19 +130,31 @@ export default function List() {
                     <FontAwesomeIcon
                       icon={expanded === index ? faChevronUp : faChevronDown}
                       className={styles.dropdownIcon}
-                      onClick={() => {expanded === null ? setExpanded(index) : expanded === index ? setExpanded(null) : setExpanded(index)}}
+                      onClick={() => {handleToggle(index)}}
                     />
-                    <h3 className='smallerPostTitle' onClick={() => router.push(`/public/home?postId=${item.id}`)}>{item.title || item.name}</h3>
+                    <h3 className='smallerPostTitle' onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
                   </div>
                   <div className={styles.editControlsWrapper}>
                     <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
                     <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>DELETE</button>
                   </div>
                 </div>
-                <div className={expanded === index ? styles.expandedInfo : styles.expandedInfoHidden}>
-                  {item.when && <p>{`Meets: ${item.when}`}</p>}
+                <div className={`${styles.expandedInfo} ${expanded === index ? styles.expandedInfoVisible : styles.expandedInfoHidden}`}>
+                  {item.author && <p className={styles.author}>{`Created By: ${item.author.first_name} ${item.author.last_name}`}</p>}
+                  {item.when &&
+                  <>
+                    <p className={styles.metadataLabel}>{`MEETS:`}</p>
+                    <p className={styles.metadata}>{`${item.when}`}</p>
+                  </>
+                  }
                   <p>{item.position}</p>
-                  <p>{item.description || item.bio}</p>
+                  {item.description &&
+                  <>
+                    <p className={styles.metadataLabel}>{`DESCRIPTION:`}</p>
+                    <p className={styles.metadata}>{item.description}</p>
+                  </>
+                  }
+                  <p>{item.bio}</p>
                   <p>{item.url}</p>
                   {/* {TODO: ADD ITEM AUTHOR AND DATE FOR POSTS}  */}
                 </div>
