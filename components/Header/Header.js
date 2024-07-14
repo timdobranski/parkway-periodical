@@ -157,7 +157,7 @@ export default function Header({ skipAnimation }) {
       {desktopRightNavbar}
       {/* mobile version of navbar */}
       {mobileRightNavbar}
-      {user && (<Link href='/admin/home'><h2 className={styles.adminHomeLink}>ADMIN HOME</h2></Link>)}
+      {user && (<Link href='/admin/home'><h2 className={styles.adminHomeLink}>STAFF HOME</h2></Link>)}
 
     </div>
 

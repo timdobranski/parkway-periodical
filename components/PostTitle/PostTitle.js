@@ -21,7 +21,6 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
   // get users table data using authorId if public, and using user.id if editing post as admin
   useEffect(() => {
     const getAuthorData = async (id) => {
-
       const { data, error } = await supabase
         .from('users')
         .select('*')
@@ -43,7 +42,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
 
 
   useEffect(() => {
-    console.log('user: ', user)
+    // console.log('user: ', user)
   }, [user])
 
   useEffect(() => {

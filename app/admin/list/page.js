@@ -111,10 +111,18 @@ export default function List() {
       setExpanded(index);
     }
   };
+  const handleViewContent = (id) => {
+    if (type === 'posts') {
+      router.push(`/public/home?postId=${id}`);
+    } else {
+      router.push(`/public/${type}`);
+
+    }
+  }
   return (
     <div className='adminFeedWrapper'>
       <div className='editablePost'>
-        <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
+        <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : item === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
           type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
@@ -135,28 +143,48 @@ export default function List() {
                     <h3 className='smallerPostTitle' onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
                   </div>
                   <div className={styles.editControlsWrapper}>
+                    <button className={styles.editButton}  onClick={() => handleViewContent(item.id)}>VIEW</button>
                     <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
                     <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>DELETE</button>
                   </div>
                 </div>
                 <div className={`${styles.expandedInfo} ${expanded === index ? styles.expandedInfoVisible : styles.expandedInfoHidden}`}>
-                  {item.author && <p className={styles.author}>{`Created By: ${item.author.first_name} ${item.author.last_name}`}</p>}
+                  {item.author &&
+                  <>
+                    <p className={styles.metadataLabel}>{`CREATED BY:`}</p>
+                    <p className={styles.metadata}>{`${item.author.first_name} ${item.author.last_name}`}</p>
+                  </>
+                  }
                   {item.when &&
                   <>
                     <p className={styles.metadataLabel}>{`MEETS:`}</p>
                     <p className={styles.metadata}>{`${item.when}`}</p>
                   </>
                   }
-                  <p>{item.position}</p>
+                  {item.position &&
+                  <>
+                    <p className={styles.metadataLabel}>{`POSITION:`}</p>
+                    <p className={styles.metadata}>{`${item.position}`}</p>
+                  </>
+                  }
                   {item.description &&
                   <>
                     <p className={styles.metadataLabel}>{`DESCRIPTION:`}</p>
                     <p className={styles.metadata}>{item.description}</p>
                   </>
                   }
-                  <p>{item.bio}</p>
-                  <p>{item.url}</p>
-                  {/* {TODO: ADD ITEM AUTHOR AND DATE FOR POSTS}  */}
+                  {item.bio &&
+                  <>
+                    <p className={styles.metadataLabel}>{`ABOUT ME:`}</p>
+                    <p className={styles.metadata}>{item.bio}</p>
+                  </>
+                  }
+                  {item.url &&
+                  <>
+                    <p className={styles.metadataLabel}>{`URL:`}</p>
+                    <p className={styles.metadata}>{item.url}</p>
+                  </>
+                  }
                 </div>
               </div>
             )

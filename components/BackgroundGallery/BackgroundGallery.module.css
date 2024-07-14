@@ -220,12 +220,19 @@ margin: 6px;
   background-size: cover;
   background-position: center;
 }
+.dontFadeIn {
+  animation: none;
+  background-image: url('/images/gradient3small2.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 .credit {
   position: fixed;
   right: 0;
   bottom: 0;
   z-index: 20;
-  background-color: rgba(255, 255, 255, .7);
+  background-color: rgba(255, 255, 255, .8);
 color: black;
   padding: .25rem .5rem;
 }

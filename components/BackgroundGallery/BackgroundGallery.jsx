@@ -1,19 +1,22 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import styles from './Intro.module.css';
+import styles from './BackgroundGallery.module.css';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function Intro({ introRunning, setFinishedLoading }) {
+export default function Intro({ introRunning, setFinishedLoading, loadedImages, setLoadedImages, finishedLoading }) {
   const [rows, setRows] = useState([[], [], []]);
   const imagePath = "/images/intro/";
   const rowsDirectories = ['row1', 'row2', 'row3'];
   const imagesPerRow = 10;
   const router = useRouter();
-  const [loadedImages, setLoadedImages] = useState(0);
+  // const [loadedImages, setLoadedImages] = useState(0);
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const totalImages = imagesPerRow * rowsDirectories.length;
+
+  const progress = (loadedImages / totalImages) * 100;
+
   const imageCaptions = {
     row1: {
       1: 'test',
@@ -94,10 +97,14 @@ export default function Intro({ introRunning, setFinishedLoading }) {
     setLoadedImages(prev => prev + 1);
   };
 
+  useEffect(() => {
+    console.log('INTRO RUNNING VALUE IN BACKGROUND GALLERY: ', introRunning)
+  }, [introRunning])
+
   return (
     <>
       <div
-        className={`${styles.galleryWrapper} ${introRunning ? '' : styles.wrapperAfterIntro} ${allImagesLoaded ? styles.fadeIn : ''}`}
+        className={`${styles.galleryWrapper} ${introRunning ? '' : styles.wrapperAfterIntro} ${allImagesLoaded ? (introRunning ? styles.fadeIn : styles.dontFadeIn) : ''}`}
 
       >
         {rows.map((rowImages, rowIndex) => (
@@ -107,8 +114,9 @@ export default function Intro({ introRunning, setFinishedLoading }) {
           >
             {[...rowImages.slice(-2), ...rowImages, ...rowImages.slice(0, 2)].map((src, index) => (
               <div
-                className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage} ${allImagesLoaded ? styles.fadeIn : styles.hiddenImage}`}
+                className={`${styles.imageContainer} ${introRunning ? '' : styles.dimmedImage} ${allImagesLoaded  ? (introRunning ? styles.fadeIn : styles.dontFadeIn) : styles.hiddenImage}`}
                 key={`${rowIndex}-${index}`}
+
               >
                 {/* <p className={styles.imageCaption}>
                   {imageCaptions['row' + (rowIndex + 1)][((index % rowImages.length) + 1).toString()]}
@@ -130,7 +138,7 @@ export default function Intro({ introRunning, setFinishedLoading }) {
             ))}
           </div>
         ))}
-        <div className={styles.credit}>Designed & Built By <Link href='https://timdobranski.com' className={styles.creditLink}>Tim Dobranski</Link></div>
+        {finishedLoading && <div className={styles.credit}>Designed & Built By <Link href='https://timdobranski.com' className={styles.creditLink}>Tim Dobranski</Link></div>}
       </div>
     </>
   );
