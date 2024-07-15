@@ -1,5 +1,6 @@
 'use client'
 
+import getPosts from '../../../utils/getPosts';
 import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { createClient } from '../../../utils/supabase/client';
 import styles from './home.module.css';
@@ -19,7 +20,6 @@ import useOnlineStatus from '../../../utils/useOnlineStatus';
 import { useAdmin } from '../../../contexts/AdminContext';
 
 
-
 export default function Home({ introRunning, setIntroRunning }) {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
   const supabase = createClient();
@@ -30,6 +30,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const router = useRouter();
   const pathname = usePathname();
   let postId = searchParams.get('postId');
+  const schoolYear = '2024-25';
 
   const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
 
@@ -43,7 +44,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagResultIds, setTagResultIds] = useState([]);
   const [tagResultPosts, setTagResultPosts] = useState([]);
 
-  const LIMIT=2;
+  const postFetchLimit = 1;
 
   // all queries should be for school year 2024-2025
 
@@ -54,19 +55,57 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // get tag results
 
+  useEffect(() => {
+    if (tagResultPosts.length > 0) {
+      console.log('TAG RESULT POSTS: ', tagResultPosts)
+      setPosts(tagResultPosts);
+    }
+  }, [tagResultPosts])
 
 
+  const arrayByIdTagInOneQuery = async (schoolYear, tagId, lastId) => {
+    console.log('inside arrayByIdTagInOneQuery')
+    let query = supabase
+    .from('posts')
+    .select('*, post_tags!inner(post)')
+    .eq('post_tags.tag', tagId)
 
+    .eq('schoolYear', schoolYear)
+    .order('id', { ascending: false })
+    .limit(postFetchLimit)
 
+    // Only apply the 'less than' filter if lastId is provided and not null
+    if (lastId != null) {
+      query = query.lt('id', lastId)
+    }
 
+    const { data, error } = await query
 
+    if (error) {
+      console.error('Error fetching posts:', error)
+      return null
+    }
+    console.log('DATA RETURNED FROM GIVEN POST ID: ', data)
 
+    const parsedData = data.map(post => ({ ...post, content: JSON.parse(post.content) }))
 
+    return parsedData
+  }
+  const setPostsByTagId = async () => {
+    const lastPostId = tagResultPosts.length ? tagResultPosts[tagResultPosts.length - 1].id : null;
+    const taggedPosts = await arrayByIdTagInOneQuery(schoolYear, tagId, lastPostId);
+
+    if (taggedPosts) {
+      setTagResultPosts([...tagResultPosts, ...taggedPosts]);
+    } else {
+      console.log('NO POSTS RETURNED')
+    }
+  }
 
   // get and set user, tags, and posts
   useEffect(() => {
     getTags();
-    getPosts({ tagId, searchQuery, postId });
+    // getPosts({ tagId, searchQuery, postId });
   }, [tagId, searchQuery, postId ]);
 
 
@@ -142,16 +181,25 @@ export default function Home({ introRunning, setIntroRunning }) {
   };
   // get posts with tag id when tag ID changes
   useEffect(() => {
+    // if (tagId) {
+    //   getPosts({ tagId, searchQuery, postId });
+    // } else {
+    //   getPosts({ tagId, searchQuery, postId })
+    // }
     if (tagId) {
-      getPosts({ tagId, searchQuery, postId });
-    } else {
-      getPosts({ tagId, searchQuery, postId })
+      console.log('TAG ID: ', tagId, 'FETCHING ASSOCIATED POSTS...')
+
+      setPostsByTagId();
     }
   }, [tagId]);
+
   // get posts with postId when postId changes
   useEffect(() => {
     if (postId) {
-      getPosts({postId: postId});
+      const setPostsByTagId = async () => {
+        const posts = arrayByIdTagInOneQuery(schoolYear, );
+      }
+      // getPosts({postId: postId});
     }
   }, [postId]);
 
@@ -194,7 +242,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const renderedPosts = (
     <>
-    {/* <div className='slideUp'> */}
+      {/* <div className='slideUp'> */}
 
 
       {searchQuery &&
@@ -297,10 +345,11 @@ export default function Home({ introRunning, setIntroRunning }) {
             <p className={styles.shareLabel}>Share</p>
           </div>
         </div>
+
       </div>
 
     ))}
-    {/* </div> */}
+      {/* </div> */}
     </>
   );
 
@@ -314,17 +363,19 @@ export default function Home({ introRunning, setIntroRunning }) {
   return (
     <div className='feedWrapper' >
       <div className={`slideUp`}>
-      <WelcomeSlideshow />
-      <SearchAndFilterBar
-        postTags={postTags}
-        tagId={tagId}
-        setTagId={setTagId}
-        handleFilterChange={handleFilterChange}
-        searchQuery={searchQuery}
-        setSearch={setSearchQuery}
-        getPosts={getPosts}
-      />
-      { introRunning ? null : renderedPosts}
+        <WelcomeSlideshow />
+        <SearchAndFilterBar
+          postTags={postTags}
+          tagId={tagId}
+          setTagId={setTagId}
+          handleFilterChange={handleFilterChange}
+          searchQuery={searchQuery}
+          setSearch={setSearchQuery}
+          getPosts={getPosts}
+        />
+        { introRunning ? null : renderedPosts}
+        {posts.length && <button className={styles.viewStatusButton} onClick={setPostsByTagId}>Fetch More Posts</button>}
+
       </div>
     </div>
   );
