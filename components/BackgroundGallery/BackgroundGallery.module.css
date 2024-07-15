@@ -17,6 +17,9 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+/* --------------------------------------------------------------------
+MAIN WRAPPER CLASSES
+-------------------------------------------------------------------- */
 
 .galleryWrapper {
   width: 100vw;
@@ -27,9 +30,10 @@
   margin-bottom: 0;
   background: rgba(0, 0, 0, 0);
   animation: none;
-  transition: height 1s ease, margin-top 1s ease; /* Add transition for resize when intro stops running */
-
+  /* transition: height 1s ease, margin-top 1s ease;  */
 }
+
+/* this dims the background image after the intro has finished running */
 .galleryWrapper::before {
   content: '';
   position: absolute;
@@ -46,8 +50,8 @@
   opacity: 0;
   transition: opacity 1s ease; /* Smooth transition for the fade-in effect */
   pointer-events: none; /* Allows clicks to pass through to elements below */
-
 }
+/* the adjusted wrapper after the intro is over */
 .wrapperAfterIntro {
   background-color: rgba(0, 0, 0, 1);
   backdrop-filter: grayscale(1);
@@ -56,9 +60,14 @@
   margin-top: 90px;
 
 }
+/* seems to also make the background image dimmed after intro is over */
 .wrapperAfterIntro::before {
-  opacity: 1; /* Make the pseudo-element fully visible when the class is applied */
+  opacity: 1;
 }
+/* --------------------------------------------------------------------
+ROW RELATED CLASSES
+-------------------------------------------------------------------- */
+
 .imageRow {
   box-sizing: border-box;
   display: flex;
@@ -83,6 +92,10 @@ margin: 6px;
   margin-bottom: 0;
   margin-top: 0;
 }
+
+/* --------------------------------------------------------------------
+IMAGE RELATED CLASSES
+-------------------------------------------------------------------- */
 .imageContainer {
   position: relative;
   box-sizing: border-box;
@@ -247,9 +260,9 @@ color: black;
 @media(max-width: 1400px) {
   .credit, .creditLink {
     font-size: .75rem;
-    width: 100px;
+    width: 200px;
     text-align: center;
-    border-top-left-radius: 10px;
+    /* border-top-left-radius: 10px; */
   }
 
 }

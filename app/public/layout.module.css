@@ -33,8 +33,8 @@
   z-index: 200;
   top: 50%;
   left: 50%;
-  width: 1000px;
-  height: 400px;
+  width: 900px;
+  height: 350px;
   background: rgba(255, 255, 255, .8);
   color: white;
   font: 2rem 'Louis George Cafe';
@@ -227,7 +227,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 200px;;
+    min-width: 275px; /*any less and the logo will move off-center*/
     /* border: solid rgb(255, 0, 0) 4px; */
     padding: 2rem;
     width: 70vw;
