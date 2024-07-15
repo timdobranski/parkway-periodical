@@ -14,7 +14,7 @@ import PostTitle from '../../../components/PostTitle/PostTitle';
 import dateFormatter from '../../../utils/dateFormatter';
 import { useSearchParams } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays, faPen, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faShare, faCalendarDays, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
 import useOnlineStatus from '../../../utils/useOnlineStatus';
 import { useAdmin } from '../../../contexts/AdminContext';
@@ -32,68 +32,105 @@ export default function Home({ introRunning, setIntroRunning }) {
   let postId = searchParams.get('postId');
   const schoolYear = '2024-25';
 
-  const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
+  // FETCHING & RENDERING POSTS
+  const [displayType, setDisplayType] = useState('recent') // options are: recent, id, category, search
+  const [addPostsHandler, setAddPostsHandler] = useState(null);
 
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]); // the array of posts which will be rendered
+
+  const [recentPosts, setRecentPosts] = useState([]); // default array of recent posts if no tag or search query
 
   const [searchQuery, setSearchQuery] = useState(null);
-  const [searchResultIds, setSearchResultIds] = useState([]);
-  const [searchResultPosts, setSearchResultPosts] = useState([]);
+  const [searchResultPosts, setSearchResultPosts] = useState([]); // separate array of posts from search results
 
   const [tagId, setTagId] = useState(null)
-  const [tagResultIds, setTagResultIds] = useState([]);
-  const [tagResultPosts, setTagResultPosts] = useState([]);
+  const [tagResultPosts, setTagResultPosts] = useState([]); // separate array of posts from tag results
 
   const postFetchLimit = 1;
-
-  // all queries should be for school year 2024-2025
-
-
-  // get regular posts, add them to posts array
-
-  // get search results
-
-  // get tag results
+  const [noMorePosts, setNoMorePosts] = useState(false);
 
   useEffect(() => {
+    setNoMorePosts(false);
+    if (displayType === 'recent') {
+      setAddPostsHandler(addToRecentPosts);
+    }
+    if (displayType === 'category') {
+      setAddPostsHandler(addToTagResultPosts);
+    }
+    if (displayType === 'search') {
+      setAddPostsHandler(null);
+    }
+  }, [displayType])
+
+  // if more posts are fetched from a tag, add them to the main posts array
+  useEffect(() => {
     if (tagResultPosts.length > 0) {
-      console.log('TAG RESULT POSTS: ', tagResultPosts)
       setPosts(tagResultPosts);
     }
   }, [tagResultPosts])
+  // if more posts are fetched for the general feed, add them to the main posts array
+  useEffect(() => {
+    if (recentPosts.length > 0) {
+      setPosts(recentPosts);
+    }
+  }, [recentPosts])
+  // on page mount, if there's no postId, add recent posts to the feed
+  useEffect(() => {
+    if (!postId) {
+      addToRecentPosts()
+    }
+  }, [])
+
+  // when user selects post category, get posts with that tag
+  useEffect(() => {
+    if (tagId) {
+      setDisplayType('category')
+      addToTagResultPosts();
+    } else {
+      resetPosts();
+    }
+  }, [tagId]);
+
+  // get posts with postId when postId changes
+  useEffect(() => {
+    if (postId) {
+    }
+  }, [postId]);
 
 
-  const arrayByIdTagInOneQuery = async (schoolYear, tagId, lastId) => {
-    console.log('inside arrayByIdTagInOneQuery')
-    let query = supabase
-    .from('posts')
-    .select('*, post_tags!inner(post)')
-    .eq('post_tags.tag', tagId)
+  // get and set posts from tag ID
+  const addToTagResultPosts = async () => {
+    const getMorePostsByTagId = async (schoolYear, tagId, lastId) => {
+      let query = supabase
+        .from('posts')
+        .select('*, post_tags!inner(post)')
+        .eq('post_tags.tag', tagId)
 
-    .eq('schoolYear', schoolYear)
-    .order('id', { ascending: false })
-    .limit(postFetchLimit)
+        .eq('schoolYear', schoolYear)
+        .order('id', { ascending: false })
+        .limit(postFetchLimit)
 
-    // Only apply the 'less than' filter if lastId is provided and not null
-    if (lastId != null) {
-      query = query.lt('id', lastId)
+      // Only apply the 'less than' filter if lastId is provided and not null
+      if (lastId != null) {
+        query = query.lt('id', lastId)
+      }
+
+      const { data, error } = await query
+
+      if (error) {
+        console.error('Error fetching posts:', error)
+        return null
+      }
+      if (data.length < postFetchLimit) {
+        setNoMorePosts(true);
+      }
+      const parsedData = data.map(post => ({ ...post, content: JSON.parse(post.content) }))
+
+      return parsedData
     }
 
-    const { data, error } = await query
-
-    if (error) {
-      console.error('Error fetching posts:', error)
-      return null
-    }
-    console.log('DATA RETURNED FROM GIVEN POST ID: ', data)
-
-    const parsedData = data.map(post => ({ ...post, content: JSON.parse(post.content) }))
-
-    return parsedData
-  }
-  const setPostsByTagId = async () => {
     const lastPostId = tagResultPosts.length ? tagResultPosts[tagResultPosts.length - 1].id : null;
-    const taggedPosts = await arrayByIdTagInOneQuery(schoolYear, tagId, lastPostId);
+    const taggedPosts = await getMorePostsByTagId(schoolYear, tagId, lastPostId);
 
     if (taggedPosts) {
       setTagResultPosts([...tagResultPosts, ...taggedPosts]);
@@ -101,109 +138,63 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.log('NO POSTS RETURNED')
     }
   }
-
-  // get and set user, tags, and posts
+  // get category tags on page load
   useEffect(() => {
-    getTags();
-    // getPosts({ tagId, searchQuery, postId });
-  }, [tagId, searchQuery, postId ]);
-
-
-  // get and parse post data
-  const getPosts = async ({ tagId, searchQuery, postId } = {}) => {
-    let query = supabase
-      .from('posts')
-      .select('*');
-
-    if (tagId) {
-      console.log('TAG ID: ', tagId)
-      {postId && removeQueryString()}
-      setSearchQuery(null);
-      postId = null;
-      // setDisplayType('tag');
-      // Fetch post IDs from post_tags where tag_id matches
-      const { data, error: postTagError } = await supabase
-        .from('post_tags')
-        .select('post')
-        .eq('tag', tagId);
-
-      if (postTagError) {
-        console.error('Error fetching post tags:', postTagError);
-        return;
+    const getTags = async () => {
+      const { data, error } = await supabase.from('tags').select('*');
+      if (data) {
+        console.log('tags: ', data);
+        setPostTags([{name: 'All Posts', id: 'all'}, ...data]);
       }
-      const postTagData = data;
-      const postIds = postTagData.map(pt => pt.post);
-      query = query.in('id', postIds);
-    } else if (searchQuery) {
-      setTagId(null)
-      setDisplayType('search');
-      query = query.ilike('searchableText', `%${searchQuery}%`);
-    } else if (postId) {
-      console.log('POST ID REGISTERED: ', postId)
-      setDisplayType('id');
-      query = query.eq('id', postId);
+      if (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+    getTags();
+  }, []);
+
+  const addToRecentPosts = async () => {
+    const getRecentPosts = async (schoolYear, lastId) => {
+      let query = supabase
+        .from('posts')
+        .select('*')
+        .eq('schoolYear', schoolYear)
+        .order('id', { ascending: false })
+        .limit(postFetchLimit)
+
+      // Only apply the 'less than' filter if lastId is provided and not null
+      if (lastId != null) {
+        query = query.lt('id', lastId)
+      }
+
+      const { data, error } = await query
+
+      if (error) {
+        console.error('Error fetching posts:', error)
+        return null
+      }
+      if (data.length < postFetchLimit) {
+        setNoMorePosts(true);
+      }
+      const parsedData = data.map(post => ({ ...post, content: JSON.parse(post.content) }))
+
+      return parsedData
+    }
+
+    const lastPostId = recentPosts.length ? recentPosts[recentPosts.length - 1].id : null;
+    const newRecentPosts = await getRecentPosts(schoolYear, lastPostId);
+
+    if (newRecentPosts) {
+      setRecentPosts([...recentPosts, ...newRecentPosts]);
     } else {
-      setDisplayType('all');
-      query = query.order('id', { ascending: false });
+      console.log('NO POSTS RETURNED')
     }
-
-    const { data, error } = await query;
-    if (data) {
-      const parsedData = data.map(post => ({
-        ...post,
-        content: JSON.parse(post.content)
-      }));
-
-      // console.log('new posts state: ', parsedData);
-      setPosts(parsedData);
-    }
-
-    if (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
-
-  // get post tags
-  const getTags = async () => {
-    const { data, error } = await supabase.from('tags').select('*');
-    if (data) {
-      console.log('tags: ', data);
-      setPostTags([{name: 'All Posts', id: 'all'}, ...data]);
-    }
-    if (error) {
-      console.error('Error fetching tags:', error);
-    }
-  };
+  }
   // helper to remove post ID query string from url when navigating away from a single post view
   const removeQueryString = () => {
     postId = null;
     router.push(pathname);
   };
-  // get posts with tag id when tag ID changes
-  useEffect(() => {
-    // if (tagId) {
-    //   getPosts({ tagId, searchQuery, postId });
-    // } else {
-    //   getPosts({ tagId, searchQuery, postId })
-    // }
-    if (tagId) {
-      console.log('TAG ID: ', tagId, 'FETCHING ASSOCIATED POSTS...')
-
-      setPostsByTagId();
-    }
-  }, [tagId]);
-
-  // get posts with postId when postId changes
-  useEffect(() => {
-    if (postId) {
-      const setPostsByTagId = async () => {
-        const posts = arrayByIdTagInOneQuery(schoolYear, );
-      }
-      // getPosts({postId: postId});
-    }
-  }, [postId]);
-
-
   const handleFilterChange = (event) => {
     console.log('inside handle filter change')
     const value = event.target.value;
@@ -213,12 +204,16 @@ export default function Home({ introRunning, setIntroRunning }) {
   const noResultsMessage = (
     <p className={styles.noResultsMessage}>{`It looks like there aren't any posts for this ${displayType === 'search' ? 'search' : 'category'} yet`}</p>
   )
-  // reset posts to all
+  // should run when 'view all posts' button is clicked or when all is selected from the dropdown
   const resetPosts = () => {
-    setTagId(null);
+
+    setDisplayType('recent');
+
+    if (tagId) {setTagId(null);} // if run from the dropdown, will already be null. if run from button, will be set to null
+
     setSearchQuery(null);
-    getPosts();
-    removeQueryString();
+
+    if (postId) {removeQueryString();}
   }
 
   // copy post url to clipboard
@@ -237,9 +232,6 @@ export default function Home({ introRunning, setIntroRunning }) {
         console.error('Failed to copy the link: ', err);
       });
   };
-
-
-
   const renderedPosts = (
     <>
       {/* <div className='slideUp'> */}
@@ -352,7 +344,17 @@ export default function Home({ introRunning, setIntroRunning }) {
       {/* </div> */}
     </>
   );
-
+  const handleAddPosts = () => {
+    if (displayType === 'recent') {
+      addToRecentPosts();
+    }
+    if (displayType === 'category') {
+      addToTagResultPosts();
+    }
+    if (displayType === 'search') {
+      addToSearchResultPosts();
+    }
+  }
 
   if (!isOnline) {
     return (
@@ -374,7 +376,10 @@ export default function Home({ introRunning, setIntroRunning }) {
           getPosts={getPosts}
         />
         { introRunning ? null : renderedPosts}
-        {posts.length && <button className={styles.viewStatusButton} onClick={setPostsByTagId}>Fetch More Posts</button>}
+        {noMorePosts ?
+          <p className='centeredWhiteText'>{`You've reached the end! No more posts to display.`}</p>
+          :
+          <button className={styles.viewStatusButton} onClick={handleAddPosts}>Fetch More Posts</button>}
 
       </div>
     </div>
