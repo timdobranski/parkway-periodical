@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { createClient } from '../../utils/supabase/client';
 import dateFormatter from '../../utils/dateFormatter';
@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 
 export default function WelcomeSlideshow() {
   const supabase = createClient();
+  const [autoplay, setAutoplay] = useState(true);
   const [events, setEvents] = useState([]);
   const router = useRouter();
 
@@ -111,12 +112,17 @@ export default function WelcomeSlideshow() {
     </div>
   );
 
-  const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
+  const slides= [welcomeImage, familyResourceCenter, archiveSlide, storeLink, upcomingEvents];
 
   // const slides= [welcomeImage];
 
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-
+  const toggleAutoplay = () => {
+    if (!autoplay) {
+      setCurrentPhotoIndex((prev) => prev === 4 ? 0 : prev + 1);
+    }
+    setAutoplay(!autoplay);
+  }
 
 
   const handleCarouselChange = (index) => {
@@ -128,22 +134,26 @@ export default function WelcomeSlideshow() {
   );
 
   const customNextArrow = (clickHandler, hasNext) => (
-    <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled} />
+    <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : () => handleCarouselChange(0)} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled} />
   );
 
   return (
     <>
       <div className={styles.slideshowWrapper} >
+        <div className={styles.autoplayWrapper}>
+          <FontAwesomeIcon icon={autoplay ? faPause : faPlay} onClick={toggleAutoplay} className={styles.pauseButton} />
+          <p>{autoplay ? '' : 'Autoplay off'}</p>
+          </div>
         <Carousel
-          // autoFocus={true}
-          // autoPlay={true}
-          // interval={6000}
+          autoPlay={autoplay}
+          interval={5000}
           autoFocus={false}
           renderArrowPrev={customPrevArrow}
           renderArrowNext={customNextArrow}
           preventMovementUntilSwipeScrollTolerance={true}
           swipeScrollTolerance={50}
           emulateTouch={true}
+          infiniteLoop={true}
           // dynamicHeight={false}
           showThumbs={false}
           showStatus={false}

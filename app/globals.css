@@ -95,8 +95,8 @@
   display: none !important;
 }
 .slideUp {
-  /* -webkit-animation: slideUpNoCenter .5s ease-out forwards;
-  animation: slideUpNoCenter .5s ease-out forwards; */
+  -webkit-animation: slideUpNoCenter .5s ease-out forwards;
+  animation: slideUpNoCenter .5s ease-out forwards;
   display: flex;
   flex-direction: column;
   margin-bottom: 5rem;
@@ -162,7 +162,7 @@
   z-index: 0;
   background-color: rgba(0, 89, 124, 0.7);
   backdrop-filter: blur(10px) grayscale(1);
-  animation: slideUp .75s ease-out forwards;
+  /* animation: slideUp .75s ease-out forwards; */
   overflow-y: auto;
   overflow-x: visible !important;
   height: calc(100vh - 100px);

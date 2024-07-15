@@ -32,7 +32,7 @@ export const AdminProvider = ({ children }) => {
     setSession(data.session);
 
     // if the session doesn't have an associated user, return
-    if (!data.session.user) {
+    if (!data?.session?.user) {
       return
     }
     setAuthUser(data.session.user);
