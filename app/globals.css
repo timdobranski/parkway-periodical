@@ -114,6 +114,7 @@
   background-color: black;
   overflow: hidden;
   background-color: white;
+  background: var(--mobile-background);
 }
 .slide-wrapper-axis-horizontal {
   z-index: -1 !important;
