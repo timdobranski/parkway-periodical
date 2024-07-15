@@ -6,6 +6,7 @@ import { createClient } from '../../../utils/supabase/client';
 import styles from './events.module.css';
 import dateFormatter from '../../../utils/dateFormatter';
 import timeFormatter from '../../../utils/timeFormatter';
+import WelcomeSlideshow from '../../../components/WelcomeSlideshow/WelcomeSlideshow';
 
 export default function EventsPage() {
   const supabase = createClient();
@@ -31,6 +32,12 @@ export default function EventsPage() {
     getData();
   }, [])
 
+
+  // return (
+  //   <div className='feedWrapper'>
+  //   <WelcomeSlideshow/>
+  //   </div>
+  // )
 
   return (
     <div className='feedWrapper'>

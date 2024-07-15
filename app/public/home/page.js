@@ -289,6 +289,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   return (
     <div className='feedWrapper' >
+      <div className={`slideUp`}>
       <WelcomeSlideshow />
       <SearchAndFilterBar
         postTags={postTags}
@@ -300,6 +301,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         getPosts={getPosts}
       />
       { introRunning ? null : renderedPosts}
+      </div>
     </div>
   );
 }

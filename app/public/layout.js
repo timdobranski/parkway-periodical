@@ -88,7 +88,9 @@ export default function Home({ children }) {
       />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null : <Header introRunning={introRunning}/> }
-      { introRunning ? null : children }
+      { <div style={{ display: introRunning ? 'none' : 'block' }}>
+        {children}
+      </div> }
     </div>
   );
 }

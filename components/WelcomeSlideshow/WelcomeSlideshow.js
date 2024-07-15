@@ -16,23 +16,23 @@ export default function WelcomeSlideshow() {
   const [events, setEvents] = useState([]);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .gt('date', new Date().toISOString()) // Ensure dates are in the future
-        .order('date', { ascending: true })  // Sort by event_date in ascending order
-        .limit(5);
-      if (error) {
-        console.error('Error fetching events: ', error);
-      } else {
-        console.log('data: ', data)
-        setEvents(data);
-      }
-    }
-    fetchEvents();
-  }, []);
+  // useEffect(() => {
+  //   const fetchEvents = async () => {
+  //     const { data, error } = await supabase
+  //       .from('events')
+  //       .select('*')
+  //       .gt('date', new Date().toISOString()) // Ensure dates are in the future
+  //       .order('date', { ascending: true })  // Sort by event_date in ascending order
+  //       .limit(5);
+  //     if (error) {
+  //       console.error('Error fetching events: ', error);
+  //     } else {
+  //       console.log('data: ', data)
+  //       setEvents(data);
+  //     }
+  //   }
+  //   fetchEvents();
+  // }, []);
 
   const welcomeImage = (
     <div className={styles.welcomeSlide}>
@@ -89,31 +89,31 @@ export default function WelcomeSlideshow() {
       </div>
     </div>
   );
-  const upcomingEvents = (
-    <div className={styles.upcomingEventsSlide}>
-      <a className={styles.viewAllEvents}>View All Events</a>
-      <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-      {events.length ?
-        <table className={styles.eventsTable}>
-          <tbody className={styles.eventsTableBody}>
-            {events.map((event, index) => (
-              <tr key={index} className={styles.eventsItem}>
-                <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
-                <td className={styles.eventTitle}>{event.title}</td>
-                <td className={styles.eventDescription}>{event.description}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table> :
-        <p>No upcoming events to show yet</p>
+  // const upcomingEvents = (
+  //   <div className={styles.upcomingEventsSlide}>
+  //     <a className={styles.viewAllEvents}>View All Events</a>
+  //     <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
+  //     {events.length ?
+  //       <table className={styles.eventsTable}>
+  //         <tbody className={styles.eventsTableBody}>
+  //           {events.map((event, index) => (
+  //             <tr key={index} className={styles.eventsItem}>
+  //               <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
+  //               <td className={styles.eventTitle}>{event.title}</td>
+  //               <td className={styles.eventDescription}>{event.description}</td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table> :
+  //       <p>No upcoming events to show yet</p>
 
-      }
-    </div>
-  );
+  //     }
+  //   </div>
+  // );
 
-  const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
+  // const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
 
-  // const slides= [];
+  const slides= [welcomeImage];
 
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
@@ -133,11 +133,12 @@ export default function WelcomeSlideshow() {
 
   return (
     <>
-      <div className={styles.slideshowWrapper} style={{height: '250px'}}>
+      <div className={styles.slideshowWrapper} >
         <Carousel
           // autoFocus={true}
           // autoPlay={true}
           // interval={6000}
+          autoFocus={false}
           renderArrowPrev={customPrevArrow}
           renderArrowNext={customNextArrow}
           preventMovementUntilSwipeScrollTolerance={true}
