@@ -7,6 +7,7 @@ import AnimatedShield from '../../components/AnimatedShield/AnimatedShield';
 import { useSearchParams } from 'next/navigation'
 import Header from '../../components/Header/Header';
 import { usePathname } from 'next/navigation'
+import { useAdmin } from '../../contexts/AdminContext';
 
 
 export default function Home({ children }) {
@@ -18,6 +19,8 @@ export default function Home({ children }) {
   const playIntro = searchParams.get('intro');
   const [progress, setProgress] = useState(0);
 
+  // global state for intro status to start slideshow
+  const { setIntroOver } = useAdmin();
 
   useEffect(() => {
     const newProgress = Math.floor((loadedImages / 72) * 100);
@@ -32,8 +35,12 @@ export default function Home({ children }) {
   }, [playIntro])
 
   useEffect(() => {
-    console.log('introRunning is... ',  introRunning)
+    console.log('INTRO RUNNING in layout: ', introRunning)
+    if (introRunning === false) {
+      setIntroOver(true)
+    }
   }, [introRunning])
+
 
 
   const loadingBar = (

@@ -10,30 +10,39 @@ import Image from 'next/image';
 import { createClient } from '../../utils/supabase/client';
 import dateFormatter from '../../utils/dateFormatter';
 import { useRouter } from 'next/navigation';
+import { useAdmin } from '../../contexts/AdminContext';
 
 export default function WelcomeSlideshow() {
   const supabase = createClient();
-  const [autoplay, setAutoplay] = useState(true);
+  const [autoplay, setAutoplay] = useState(false);
   const [events, setEvents] = useState([]);
   const router = useRouter();
+  const { introOver } = useAdmin();
 
-  // useEffect(() => {
-  //   const fetchEvents = async () => {
-  //     const { data, error } = await supabase
-  //       .from('events')
-  //       .select('*')
-  //       .gt('date', new Date().toISOString()) // Ensure dates are in the future
-  //       .order('date', { ascending: true })  // Sort by event_date in ascending order
-  //       .limit(5);
-  //     if (error) {
-  //       console.error('Error fetching events: ', error);
-  //     } else {
-  //       console.log('data: ', data)
-  //       setEvents(data);
-  //     }
-  //   }
-  //   fetchEvents();
-  // }, []);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .gt('date', new Date().toISOString()) // Ensure dates are in the future
+        .order('date', { ascending: true })  // Sort by event_date in ascending order
+        .limit(5);
+      if (error) {
+        console.error('Error fetching events: ', error);
+      } else {
+        console.log('data: ', data)
+        setEvents(data);
+      }
+    }
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    console.log('INTRO OVER: ', introOver)
+    if (introOver === true) {
+      setAutoplay(true);
+    }
+  }, [introOver])
 
   const welcomeImage = (
     <div className={styles.welcomeSlide}>
@@ -119,7 +128,7 @@ export default function WelcomeSlideshow() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const toggleAutoplay = () => {
     if (!autoplay) {
-      setCurrentPhotoIndex((prev) => prev === 4 ? 0 : prev + 1);
+      setCurrentPhotoIndex((prev) => prev === 4 ? 0 : (prev + 1));
     }
     setAutoplay(!autoplay);
   }
