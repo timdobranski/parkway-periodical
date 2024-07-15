@@ -23,6 +23,7 @@ export default function Home({ children }) {
   const { setIntroOver } = useAdmin();
 
   useEffect(() => {
+    console.log('Images loaded: ', loadedImages)
     const newProgress = Math.floor((loadedImages / 72) * 100);
     setProgress(newProgress);
   }, [loadedImages]);

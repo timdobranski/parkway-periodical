@@ -138,13 +138,13 @@
 }
 @keyframes continuous-3d-rotation {
   0% {
-    transform:  rotateZ(0deg) rotateX(0deg) rotateY(0deg);
+    transform:  rotateZ(0deg) rotateX(0deg) rotateY(0deg) scale(1);
   }
   50% {
-    transform:   rotateZ(180deg) rotateX(30deg) rotateY(30deg);
+    transform:   rotateZ(180deg) rotateX(-30deg) rotateY(-30deg) scale(.9);
   }
   100% {
-    transform:   rotateZ(360deg) rotateX(0deg) rotateY(0deg);
+    transform:   rotateZ(360deg) rotateX(0deg) rotateY(0deg) scale(1);
   }
 }
 
