@@ -65,7 +65,7 @@ export default function Home({ children }) {
       {finishedLoading && <div className={styles.desktopLogoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
         <img
-          src={'/images/logos/titledLogoNoShieldWhiteTextBW.webp'}
+          src={'/images/logos/titledLogoNoShieldWhiteTextBWCropped.webp'}
           alt='Intro Image'
           className={styles.logo}
         />
