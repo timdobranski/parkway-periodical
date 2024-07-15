@@ -57,15 +57,15 @@ export default function Home({ children }) {
       {finishedLoading && <div className={styles.desktopLogoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
         <img
-          src={'/images/logos/titledLogoNoShield.webp'}
+          src={'/images/logos/titledLogoNoShieldWhiteText.webp'}
           alt='Intro Image'
           className={styles.logo}
         />
       </div>
       }
-      <h1 className={`${finishedLoading ? styles.enterButtonBlack : styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : 'LOADING' }</h1>
+      <h1 className={`${styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : 'LOADING' }</h1>
       {!finishedLoading && loadingBar}
-      {/* {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>} */}
+      {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
     </div>
   )
 

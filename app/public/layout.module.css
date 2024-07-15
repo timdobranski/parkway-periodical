@@ -35,7 +35,8 @@
   left: 50%;
   width: 900px;
   height: 350px;
-  background: rgba(255, 255, 255, .8);
+  /* background: rgba(255, 255, 255, .8); */
+  /* background: var(--mobile-background); */
   color: white;
   font: 2rem 'Louis George Cafe';
   font-weight: normal;
@@ -50,11 +51,18 @@
   padding: 2rem 0 0 2rem;
   /* box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5); */
 }
-.introContainer * {
-  /* transform: skew(10deg); */
-}
 .introContainer:hover {
   cursor: pointer;
+}
+.introContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(0, 129, 181, .85) 0%, rgba(0, 78, 109, .85) 100%);
+  transition: background 2s ease;
 }
 .animationPlaceholder {
   width: 150px;
@@ -73,12 +81,20 @@
   display: none;
 }
 .whiteBackground {
-  background-color: rgb(202, 202, 202);
-  background: var(--mobile-background);
+  /* background-color: rgb(202, 202, 202); */
+  /* background: linear-gradient(to left, rgb(0, 129, 181), rgb(0, 78, 109)); */
+
+  transition: background 2s ease;
   overflow: hidden; /* Ensures the pseudo-element does not extend outside */
   color: white;
   box-shadow: none;
 }
+.fadeInFromWhite {
+  transition: background 2s ease;
+  /* background: linear-gradient(to left, rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)); */
+
+}
+
 .loadingBarContainer {
   width: 400px;
   height: 8px;
@@ -87,7 +103,6 @@
 .loadingBar {
   height: 100%;
   max-width: 100%;
-  background-color: #4caf50;
   background-color: red;
   border-radius: 2px;
   /* transition: width 0.3s ease; */
@@ -126,14 +141,15 @@
   font-size: 2rem;
   font-weight: 200;
   color: rgb(255, 255, 255);
+  z-index: 10;
 }
 .enterButtonBlack {
   color: black;
 }
 .enterButton:hover {
   cursor: pointer;
-  background-color: rgb(0, 97, 145);
-  color: white;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   border-radius: 4px;
 }
 .clickToSkip {
@@ -211,6 +227,8 @@
   margin-left:2rem;
   margin-top: 0;
   padding: 0;
+  filter: drop-shadow(1px 1px 1px rgba(255, 255, 255, .7));
+
 }
 .mobileLogo{
   display: none;

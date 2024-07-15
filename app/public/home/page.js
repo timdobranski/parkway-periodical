@@ -24,20 +24,44 @@ export default function Home({ introRunning, setIntroRunning }) {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
   const supabase = createClient();
   const isOnline = useOnlineStatus();
-  const [posts, setPosts] = useState([]);
   const searchParams = useSearchParams();
-  const [tagId, setTagId] = useState(null)
-  const [searchQuery, setSearchQuery] = useState(null);
-  const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
   const [postTags, setPostTags]  = useState([]);
   const [showLinkCopied, setShowLinkCopied] = useState(false);
   const router = useRouter();
-  let postId = searchParams.get('postId');
   const pathname = usePathname();
+  let postId = searchParams.get('postId');
+
+  const [displayType, setDisplayType] = useState('all') // options are: all, id, tag, search
+
+  const [posts, setPosts] = useState([]);
+
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [searchResultIds, setSearchResultIds] = useState([]);
+  const [searchResultPosts, setSearchResultPosts] = useState([]);
+
+  const [tagId, setTagId] = useState(null)
+  const [tagResultIds, setTagResultIds] = useState([]);
+  const [tagResultPosts, setTagResultPosts] = useState([]);
+
+  const LIMIT=2;
+
+  // all queries should be for school year 2024-2025
 
 
-  // const skipIntro = useSearchParams('skipIntro');
-  // const [introRunning, setIntroRunning] = useState(true);
+  // get regular posts, add them to posts array
+
+  // get search results
+
+  // get tag results
+
+
+
+
+
+
+
+
+
 
   // get and set user, tags, and posts
   useEffect(() => {
@@ -111,7 +135,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching tags:', error);
     }
   };
-  // helper to remove post ID query string
+  // helper to remove post ID query string from url when navigating away from a single post view
   const removeQueryString = () => {
     postId = null;
     router.push(pathname);

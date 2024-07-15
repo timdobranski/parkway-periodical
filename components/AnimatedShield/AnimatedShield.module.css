@@ -54,6 +54,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  perspective: 1000px;
 }
 
 /* Individual item backgrounds */
@@ -135,8 +136,18 @@
     transform: scale(1) rotate(36deg);
   }
 }
+@keyframes continuous-3d-rotation {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
 
 .atom {
+  perspective: 1000px;
   animation: swirl-in-from-left-desktop 1.5s linear forwards,
              pop-and-rotate 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
              continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
