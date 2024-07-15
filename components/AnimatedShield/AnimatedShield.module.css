@@ -89,18 +89,18 @@
 }
 @keyframes swirl-in-from-left-desktop {
   0% { transform: translateX(-1000%) rotate(0deg) scale(10); }
-  50% { transform: translate(-500%, 150px) rotate(270deg) scale(5); }
+  50% { transform: translate(-500%, 150px) rotate(270deg)  scale(5); }
   100% { transform: translateX(0) rotate(540deg) scale(1); }
 }
 @keyframes swirl-in-from-right-desktop {
   0% { transform: translateX(1000%) rotate(0deg) scale(10); }
-  50% { transform: translate(500%, 50%) rotate(180deg) scale(5); }
+  50% { transform: translate(500%, 50%) rotate(180deg)  scale(5); }
   100% { transform: translateX(0) rotate(360deg) scale(1); }
 }
 @keyframes swirl-in-from-top-desktop {
   0% { transform: translate(-100%, -20%) rotate(0deg) scale(10); }
   50% { transform: translate(500%, 200%) rotate(180deg) scale(5); }
-  100% { transform: translate(0) rotate(360deg) scale(1); }
+  100% { transform: translate(0) rotate(360deg)  scale(1); }
 }
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -127,30 +127,32 @@
 }
 @keyframes pop-and-rotate {
   0% {
-    transform: scale(1) rotate(0deg);
+    transform: scale(1) rotateX(0deg);
   }
   50% {
-    transform: scale(1.1) rotate(18deg); /* Adjust the rotation degrees as needed */
+    transform: scale(1.1) rotateX(18deg); /* Adjust the rotation degrees as needed */
   }
   100% {
-    transform: scale(1) rotate(36deg);
+    transform: scale(1) rotateX(36deg);
   }
 }
 @keyframes continuous-3d-rotation {
   0% {
-    transform: rotateY(0deg);
+    transform:  rotateZ(0deg) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform:   rotateZ(180deg) rotateX(30deg) rotateY(30deg);
   }
   100% {
-    transform: rotateY(360deg);
+    transform:   rotateZ(360deg) rotateX(0deg) rotateY(0deg);
   }
 }
 
 
 .atom {
-  perspective: 1000px;
   animation: swirl-in-from-left-desktop 1.5s linear forwards,
-             pop-and-rotate 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
-             continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
+  pop-and-rotate 0.5s ease-out 1.5s forwards,
+  continuous-3d-rotation 4s linear 2s infinite;
   transform-origin: center;
 }
 .soccer {

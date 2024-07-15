@@ -227,7 +227,7 @@
   margin-left:2rem;
   margin-top: 0;
   padding: 0;
-  filter: drop-shadow(1px 1px 1px rgba(255, 255, 255, .7));
+  filter: brightness(1.2);
 
 }
 .mobileLogo{
