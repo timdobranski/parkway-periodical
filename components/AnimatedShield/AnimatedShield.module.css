@@ -69,7 +69,7 @@
 
   /* filter: blur(.25px); */
 }
-.soccer { background-image: url('/images/animatedShield/soccer.png'); }
+.soccer { background-image: url('/images/animatedShield/soccerRecolored.webp'); }
 .skateboard { background-image: url('/images/animatedShield/skateboard3.webp'); }
 
 @keyframes swirl-in-from-left {

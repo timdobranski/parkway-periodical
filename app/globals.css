@@ -95,8 +95,8 @@
   display: none !important;
 }
 .slideUp {
-  -webkit-animation: slideUpNoCenter .5s ease-out forwards; /* For Safari and older WebKit browsers */
-  animation: slideUpNoCenter .5s ease-out forwards;
+  /* -webkit-animation: slideUpNoCenter .5s ease-out forwards;
+  animation: slideUpNoCenter .5s ease-out forwards; */
   display: flex;
   flex-direction: column;
   margin-bottom: 5rem;
@@ -336,7 +336,7 @@
   min-width: 500px;
   z-index: 2000;
   backdrop-filter: blur(8px);
-  animation: slideUpNoCenter .5s ease-out forwards;
+  /* animation: slideUpNoCenter .5s ease-out forwards; */
   margin: 1rem 0rem;
   padding: .5rem 1rem .5rem 1rem;
   overflow: visible;

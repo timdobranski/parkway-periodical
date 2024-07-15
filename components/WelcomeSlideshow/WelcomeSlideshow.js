@@ -89,31 +89,31 @@ export default function WelcomeSlideshow() {
       </div>
     </div>
   );
-  // const upcomingEvents = (
-  //   <div className={styles.upcomingEventsSlide}>
-  //     <a className={styles.viewAllEvents}>View All Events</a>
-  //     <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-  //     {events.length ?
-  //       <table className={styles.eventsTable}>
-  //         <tbody className={styles.eventsTableBody}>
-  //           {events.map((event, index) => (
-  //             <tr key={index} className={styles.eventsItem}>
-  //               <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
-  //               <td className={styles.eventTitle}>{event.title}</td>
-  //               <td className={styles.eventDescription}>{event.description}</td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table> :
-  //       <p>No upcoming events to show yet</p>
+  const upcomingEvents = (
+    <div className={styles.upcomingEventsSlide}>
+      <a className={styles.viewAllEvents}>View All Events</a>
+      <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
+      {events.length ?
+        <table className={styles.eventsTable}>
+          <tbody className={styles.eventsTableBody}>
+            {events.map((event, index) => (
+              <tr key={index} className={styles.eventsItem}>
+                <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
+                <td className={styles.eventTitle}>{event.title}</td>
+                <td className={styles.eventDescription}>{event.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table> :
+        <p>No upcoming events to show yet</p>
 
-  //     }
-  //   </div>
-  // );
+      }
+    </div>
+  );
 
-  // const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
+  const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
 
-  const slides= [welcomeImage];
+  // const slides= [welcomeImage];
 
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
