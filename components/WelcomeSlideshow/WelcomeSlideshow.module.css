@@ -3,18 +3,20 @@
   width: 100%;
   max-width: 850px;
   height: 250px !important; /* to override default react carousel component styling */
+  min-height:250px;
   padding: 0;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  /* overflow: hidden !important; */
   overflow: visible;
   margin-bottom: 2rem;
   text-align: center;
   font-family: Louis George Cafe;
   border: solid white 2px;
   box-shadow: 0 0 25px rgba(0, 0, 0, .7);
+  /* background-color: red; */
 }
 .slideshowWrapper:hover {
   cursor: grab;
@@ -24,7 +26,7 @@
   -webkit-user-select: none;  /* Safari */
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE10+ and Edge */
-  user-select: none;
+  /* user-select: none; */
 }
 .welcomeSlide, .storeSlide, .upcomingEventsSlide, .archiveSlide, .familyResourceCenter {
   position: relative;

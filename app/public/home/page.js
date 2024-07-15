@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { createClient } from '../../../utils/supabase/client';
 import styles from './home.module.css';
 import Video from '../../../components/Video/Video';
@@ -9,17 +9,15 @@ import PhotoCarousel from '../../../components/PhotoCarousel/PhotoCarousel';
 import PrimeText from '../../../components/PrimeText/PrimeText';
 import WelcomeSlideshow from '../../../components/WelcomeSlideshow/WelcomeSlideshow';
 import SearchAndFilterBar from '../../../components/SearchAndFilterBar/SearchAndFilterBar';
-// import Intro from '../../../components/Intro/Intro';
 import PostTitle from '../../../components/PostTitle/PostTitle';
-// import { format } from 'date-fns';
 import dateFormatter from '../../../utils/dateFormatter';
 import { useSearchParams } from 'next/navigation';
-// import Header from '../../../components/Header/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faChevronLeft, faShare, faCalendarDays, faPen, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
 import useOnlineStatus from '../../../utils/useOnlineStatus';
 import { useAdmin } from '../../../contexts/AdminContext';
+
 
 
 export default function Home({ introRunning, setIntroRunning }) {
@@ -36,36 +34,17 @@ export default function Home({ introRunning, setIntroRunning }) {
   const router = useRouter();
   let postId = searchParams.get('postId');
   const pathname = usePathname();
-  // const [user, setUser] = useState({});
-  // const [userId, setUserId] = useState('');
 
-  useEffect(() => {
-    console.log('USER IN *** PUBLIC HOME *** : ', user)
-  }, [user])
 
   // const skipIntro = useSearchParams('skipIntro');
   // const [introRunning, setIntroRunning] = useState(true);
 
   // get and set user, tags, and posts
   useEffect(() => {
-    // const getAndSetUser = async () => {
-    //   const response = await supabase.auth.getSession();
-
-    //   // Check if the session exists
-    //   if (response.data.session) {
-    //     // If session exists, set the user
-    //     console.log('session exists: ', response.data.session.user);
-    //     setUser(response.data.session.user);
-
-    //   } else {
-    //     // If no session, redirect to /auth
-    //     console.log('no session');
-    //   }
-    // };
-    // getAndSetUser();
     getTags();
-    getPosts();
-  }, []);
+    getPosts({ tagId, searchQuery, postId });
+  }, [tagId, searchQuery, postId ]);
+
 
   // get and parse post data
   const getPosts = async ({ tagId, searchQuery, postId } = {}) => {
@@ -120,6 +99,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       console.error('Error fetching posts:', error);
     }
   };
+
   // get post tags
   const getTags = async () => {
     const { data, error } = await supabase.from('tags').select('*');
@@ -151,27 +131,6 @@ export default function Home({ introRunning, setIntroRunning }) {
     }
   }, [postId]);
 
-  // useEffect(() => {
-  //   const getUserId = async (id) => {
-  //     console.log('id passed to getUserId: ', id)
-  //     const { data, error } = await supabase
-  //       .from('users')
-  //       .select('id')
-  //       .eq('auth_id', id)
-
-  //     if (error) {
-  //       console.log('error getting user id from auth id:', error)
-  //       return;
-  //     }
-  //     console.log('data from id fetch: ', data)
-  //     setUserId(data[0].id)
-  //   }
-  //   getUserId(user.id)
-  // }, [user])
-
-  // useEffect(() => {
-  //   console.log('userId changed: ', userId)
-  // }, [userId])
 
   const handleFilterChange = (event) => {
     console.log('inside handle filter change')
@@ -207,20 +166,12 @@ export default function Home({ introRunning, setIntroRunning }) {
       });
   };
 
-  const renderedPosts =
-  // <div className={styles.feedWrapperContainer}>
-  <div className='feedWrapper'>
-    <WelcomeSlideshow />
-    <div className='slideUp'>
-      <SearchAndFilterBar
-        postTags={postTags}
-        tagId={tagId}
-        setTagId={setTagId}
-        handleFilterChange={handleFilterChange}
-        searchQuery={searchQuery}
-        setSearch={setSearchQuery}
-        getPosts={getPosts}
-      />
+
+
+  const renderedPosts = (
+    <>
+    {/* <div className='slideUp'> */}
+
 
       {searchQuery &&
         <>
@@ -325,8 +276,10 @@ export default function Home({ introRunning, setIntroRunning }) {
       </div>
 
     ))}
-    </div>
-  </div>
+    {/* </div> */}
+    </>
+  );
+
 
   if (!isOnline) {
     return (
@@ -335,8 +288,18 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
 
   return (
-    <>
+    <div className='feedWrapper' >
+      <WelcomeSlideshow />
+      <SearchAndFilterBar
+        postTags={postTags}
+        tagId={tagId}
+        setTagId={setTagId}
+        handleFilterChange={handleFilterChange}
+        searchQuery={searchQuery}
+        setSearch={setSearchQuery}
+        getPosts={getPosts}
+      />
       { introRunning ? null : renderedPosts}
-    </>
+    </div>
   );
 }

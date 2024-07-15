@@ -228,6 +228,11 @@
 .editPostButton:hover .editPostIcon {
   color: black;
 }
+.slideshowWrapper {
+  height: 250px;
+  width: 800px;
+  background-color: red;
+}
 
 @media(max-width: 768px) {
   .mobileHeaderWrapper {

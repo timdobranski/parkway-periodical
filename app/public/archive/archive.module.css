@@ -148,12 +148,14 @@
 .archivePhotoCaption {
   height: 150px;
   margin-bottom: 0;
+  max-height: 500px;
+  transition: max-height 0.5s ease;
   /* border: solid blue 12px; */
   /* height: auto; */
   /* border-top: solid rgba(255, 255, 255, 0.255) 1px; */
 }
 .archivePhotoTitle {
-  /* font-weight: bold; */
+  height: auto;
   font-size: 1.5rem;
   padding: 2rem 0 0 0;
   min-height: unset;

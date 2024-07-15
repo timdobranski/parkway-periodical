@@ -89,37 +89,35 @@ export default function WelcomeSlideshow() {
       </div>
     </div>
   );
+  const upcomingEvents = (
+    <div className={styles.upcomingEventsSlide}>
+      <a className={styles.viewAllEvents}>View All Events</a>
+      <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
+      {events.length ?
+        <table className={styles.eventsTable}>
+          <tbody className={styles.eventsTableBody}>
+            {events.map((event, index) => (
+              <tr key={index} className={styles.eventsItem}>
+                <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
+                <td className={styles.eventTitle}>{event.title}</td>
+                <td className={styles.eventDescription}>{event.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table> :
+        <p>No upcoming events to show yet</p>
 
+      }
+    </div>
+  );
 
+  const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
 
-  const [slides, setSlides] = useState([welcomeImage, familyResourceCenter, storeLink, archiveSlide]);
+  // const slides= [];
+
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
-  useEffect(() => {
-    const upcomingEvents = (
-      <div className={styles.upcomingEventsSlide}>
-        <a className={styles.viewAllEvents}>View All Events</a>
-        <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-        {events.length ?
-          <table className={styles.eventsTable}>
-            <tbody className={styles.eventsTableBody}>
-              {events.map((event, index) => (
-                <tr key={index} className={styles.eventsItem}>
-                  <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
-                  <td className={styles.eventTitle}>{event.title}</td>
-                  <td className={styles.eventDescription}>{event.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table> :
-          <p>No upcoming events to show yet</p>
 
-        }
-      </div>
-    );
-
-    setSlides([welcomeImage, familyResourceCenter, archiveSlide, storeLink, upcomingEvents]);
-  }, [events]);
 
   const handleCarouselChange = (index) => {
     setCurrentPhotoIndex(index);
@@ -135,15 +133,17 @@ export default function WelcomeSlideshow() {
 
   return (
     <>
-      <div className={styles.slideshowWrapper}>
+      <div className={styles.slideshowWrapper} style={{height: '250px'}}>
         <Carousel
+          // autoFocus={true}
+          // autoPlay={true}
+          // interval={6000}
           renderArrowPrev={customPrevArrow}
           renderArrowNext={customNextArrow}
           preventMovementUntilSwipeScrollTolerance={true}
           swipeScrollTolerance={50}
           emulateTouch={true}
-          dynamicHeight={false}
-          autoPlay={false}
+          // dynamicHeight={false}
           showThumbs={false}
           showStatus={false}
           selectedItem={currentPhotoIndex}

@@ -83,7 +83,7 @@ export default function Archive() {
             dynamicHeight={false}
             autoPlay={false}
             showThumbs={false}
-            showStatus={true}
+            showStatus={false}
             showIndicators={false}
             selectedItem={activeIndex}
             onChange={handleCarouselChange}

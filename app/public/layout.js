@@ -16,9 +16,13 @@ export default function Home({ children }) {
   const pathname = usePathname()
   const searchParams = useSearchParams();
   const playIntro = searchParams.get('intro');
-  const progress = (loadedImages / 30) * 100;
+  const [progress, setProgress] = useState(0);
 
 
+  useEffect(() => {
+    const newProgress = Math.floor((loadedImages / 72) * 100);
+    setProgress(newProgress);
+  }, [loadedImages]);
 
   useEffect(() => {
     console.log('PLAY INTRO: ', playIntro)
@@ -34,8 +38,8 @@ export default function Home({ children }) {
 
   const loadingBar = (
     <div className={styles.loadingBarContainer}>
-      <div className={styles.loadingBar} style={{width: `${(loadedImages / 72) * 100}%` }}></div>
-      <p>{(loadedImages / 72) * 100}%</p>
+      <div className={styles.loadingBar} style={{width: `${progress}%` }}></div>
+      <p>{progress}%</p>
     </div>
   )
 
@@ -82,13 +86,9 @@ export default function Home({ children }) {
         setLoadedImages={setLoadedImages}
 
       />
-      { introRunning ?
-      (welcomeModal)
-       : null }
-      { introRunning ? null : <Header introRunning={introRunning}/>}
-      { introRunning ? null :
-        children
-      }
+      { introRunning ? (welcomeModal) : null }
+      { introRunning ? null : <Header introRunning={introRunning}/> }
+      { introRunning ? null : children }
     </div>
   );
 }
