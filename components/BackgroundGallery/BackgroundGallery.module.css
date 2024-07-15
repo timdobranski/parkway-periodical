@@ -30,7 +30,7 @@ MAIN WRAPPER CLASSES
   margin-bottom: 0;
   background: rgba(0, 0, 0, 0);
   animation: none;
-  /* transition: height 1s ease, margin-top 1s ease;  */
+  transition: height 1s ease, margin-top 1s ease;
 }
 
 /* this dims the background image after the intro has finished running */

@@ -5,34 +5,44 @@ import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { createClient } from '../../utils/supabase/client';
 import dateFormatter from '../../utils/dateFormatter';
 import { useRouter } from 'next/navigation';
+import { useAdmin } from '../../contexts/AdminContext';
 
 export default function WelcomeSlideshow() {
   const supabase = createClient();
+  const [autoplay, setAutoplay] = useState(false);
   const [events, setEvents] = useState([]);
   const router = useRouter();
+  const { introOver } = useAdmin();
 
-  // useEffect(() => {
-  //   const fetchEvents = async () => {
-  //     const { data, error } = await supabase
-  //       .from('events')
-  //       .select('*')
-  //       .gt('date', new Date().toISOString()) // Ensure dates are in the future
-  //       .order('date', { ascending: true })  // Sort by event_date in ascending order
-  //       .limit(5);
-  //     if (error) {
-  //       console.error('Error fetching events: ', error);
-  //     } else {
-  //       console.log('data: ', data)
-  //       setEvents(data);
-  //     }
-  //   }
-  //   fetchEvents();
-  // }, []);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .gt('date', new Date().toISOString()) // Ensure dates are in the future
+        .order('date', { ascending: true })  // Sort by event_date in ascending order
+        .limit(5);
+      if (error) {
+        console.error('Error fetching events: ', error);
+      } else {
+        console.log('data: ', data)
+        setEvents(data);
+      }
+    }
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    console.log('INTRO OVER: ', introOver)
+    if (introOver === true) {
+      setAutoplay(true);
+    }
+  }, [introOver])
 
   const welcomeImage = (
     <div className={styles.welcomeSlide}>
@@ -89,34 +99,39 @@ export default function WelcomeSlideshow() {
       </div>
     </div>
   );
-  // const upcomingEvents = (
-  //   <div className={styles.upcomingEventsSlide}>
-  //     <a className={styles.viewAllEvents}>View All Events</a>
-  //     <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
-  //     {events.length ?
-  //       <table className={styles.eventsTable}>
-  //         <tbody className={styles.eventsTableBody}>
-  //           {events.map((event, index) => (
-  //             <tr key={index} className={styles.eventsItem}>
-  //               <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
-  //               <td className={styles.eventTitle}>{event.title}</td>
-  //               <td className={styles.eventDescription}>{event.description}</td>
-  //             </tr>
-  //           ))}
-  //         </tbody>
-  //       </table> :
-  //       <p>No upcoming events to show yet</p>
+  const upcomingEvents = (
+    <div className={styles.upcomingEventsSlide}>
+      <a className={styles.viewAllEvents}>View All Events</a>
+      <h2 className={`whiteSubTitle ${styles.upcomingEventsHeader}`}>Upcoming Events</h2>
+      {events.length ?
+        <table className={styles.eventsTable}>
+          <tbody className={styles.eventsTableBody}>
+            {events.map((event, index) => (
+              <tr key={index} className={styles.eventsItem}>
+                <td className={styles.eventDate}>{dateFormatter(event.date)} </td>
+                <td className={styles.eventTitle}>{event.title}</td>
+                <td className={styles.eventDescription}>{event.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table> :
+        <p>No upcoming events to show yet</p>
 
-  //     }
-  //   </div>
-  // );
+      }
+    </div>
+  );
 
-  // const slides= [welcomeImage, familyResourceCenter, storeLink, archiveSlide, upcomingEvents];
+  const slides= [welcomeImage, familyResourceCenter, archiveSlide, storeLink, upcomingEvents];
 
-  const slides= [welcomeImage];
+  // const slides= [welcomeImage];
 
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-
+  const toggleAutoplay = () => {
+    if (!autoplay) {
+      setCurrentPhotoIndex((prev) => prev === 4 ? 0 : (prev + 1));
+    }
+    setAutoplay(!autoplay);
+  }
 
 
   const handleCarouselChange = (index) => {
@@ -128,22 +143,26 @@ export default function WelcomeSlideshow() {
   );
 
   const customNextArrow = (clickHandler, hasNext) => (
-    <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled} />
+    <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : () => handleCarouselChange(0)} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled} />
   );
 
   return (
     <>
       <div className={styles.slideshowWrapper} >
+        <div className={styles.autoplayWrapper}>
+          <FontAwesomeIcon icon={autoplay ? faPause : faPlay} onClick={toggleAutoplay} className={styles.pauseButton} />
+          <p>{autoplay ? '' : 'Autoplay off'}</p>
+          </div>
         <Carousel
-          // autoFocus={true}
-          // autoPlay={true}
-          // interval={6000}
+          autoPlay={autoplay}
+          interval={5000}
           autoFocus={false}
           renderArrowPrev={customPrevArrow}
           renderArrowNext={customNextArrow}
           preventMovementUntilSwipeScrollTolerance={true}
           swipeScrollTolerance={50}
           emulateTouch={true}
+          infiniteLoop={true}
           // dynamicHeight={false}
           showThumbs={false}
           showStatus={false}

@@ -95,7 +95,7 @@
   display: none !important;
 }
 .slideUp {
-  -webkit-animation: slideUpNoCenter .5s ease-out forwards; /* For Safari and older WebKit browsers */
+  -webkit-animation: slideUpNoCenter .5s ease-out forwards;
   animation: slideUpNoCenter .5s ease-out forwards;
   display: flex;
   flex-direction: column;
@@ -114,6 +114,7 @@
   background-color: black;
   overflow: hidden;
   background-color: white;
+  background: var(--mobile-background);
 }
 .slide-wrapper-axis-horizontal {
   z-index: -1 !important;
@@ -336,7 +337,7 @@
   min-width: 500px;
   z-index: 2000;
   backdrop-filter: blur(8px);
-  animation: slideUpNoCenter .5s ease-out forwards;
+  /* animation: slideUpNoCenter .5s ease-out forwards; */
   margin: 1rem 0rem;
   padding: .5rem 1rem .5rem 1rem;
   overflow: visible;

@@ -7,6 +7,7 @@ import AnimatedShield from '../../components/AnimatedShield/AnimatedShield';
 import { useSearchParams } from 'next/navigation'
 import Header from '../../components/Header/Header';
 import { usePathname } from 'next/navigation'
+import { useAdmin } from '../../contexts/AdminContext';
 
 
 export default function Home({ children }) {
@@ -18,8 +19,11 @@ export default function Home({ children }) {
   const playIntro = searchParams.get('intro');
   const [progress, setProgress] = useState(0);
 
+  // global state for intro status to start slideshow
+  const { setIntroOver } = useAdmin();
 
   useEffect(() => {
+    console.log('Images loaded: ', loadedImages)
     const newProgress = Math.floor((loadedImages / 72) * 100);
     setProgress(newProgress);
   }, [loadedImages]);
@@ -32,8 +36,12 @@ export default function Home({ children }) {
   }, [playIntro])
 
   useEffect(() => {
-    console.log('introRunning is... ',  introRunning)
+    console.log('INTRO RUNNING in layout: ', introRunning)
+    if (introRunning === false) {
+      setIntroOver(true)
+    }
   }, [introRunning])
+
 
 
   const loadingBar = (
@@ -57,7 +65,7 @@ export default function Home({ children }) {
       {finishedLoading && <div className={styles.desktopLogoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
         <img
-          src={'/images/logos/titledLogoNoShieldWhiteText.webp'}
+          src={'/images/logos/titledLogoNoShieldWhiteTextBWCropped.webp'}
           alt='Intro Image'
           className={styles.logo}
         />

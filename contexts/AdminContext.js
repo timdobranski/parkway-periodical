@@ -19,6 +19,7 @@ export const AdminProvider = ({ children }) => {
   const [session, setSession] = useState(null);
   const [user, setUser] = useState(null);
   const [authUser, setAuthUser] = useState(null);
+  const [introOver, setIntroOver] = useState(false);
 
   const router = useRouter();
   const isMounted = useRef(false);
@@ -32,7 +33,7 @@ export const AdminProvider = ({ children }) => {
     setSession(data.session);
 
     // if the session doesn't have an associated user, return
-    if (!data.session.user) {
+    if (!data?.session?.user) {
       return
     }
     setAuthUser(data.session.user);
@@ -96,7 +97,7 @@ export const AdminProvider = ({ children }) => {
   // }, [session]);
 
   return (
-    <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, authUser, session }}>
+    <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, authUser, session, introOver, setIntroOver }}>
       {children}
     </AdminContext.Provider>
   );
