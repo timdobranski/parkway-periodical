@@ -52,9 +52,6 @@ export default function Home({ children }) {
       {/* <p>{progress}%</p> */}
     </div>
   )
-
-
-
   const welcomeModal = (
     <div
       className={`${styles.introContainer} ${introRunning ? styles.fadeInFromWhite : ''}`}
@@ -74,14 +71,9 @@ export default function Home({ children }) {
 
       <h1 className={`${styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : `LOADING` }</h1>
       {loadingBar}
-      {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
+      {/* {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>} */}
     </div>
   )
-
-
-  // return (
-  //   welcomeModal
-  // )
 
 
 
@@ -100,7 +92,7 @@ export default function Home({ children }) {
 
       {
         finishedLoading &&
-        <div className='feedWrapper' style={{ display: introRunning ? 'none' : 'block', animation: 'none' }}>
+        <div style={{ display: introRunning ? 'none' : 'block'}}>
           {children}
         </div>
       }

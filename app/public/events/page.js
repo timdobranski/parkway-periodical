@@ -40,7 +40,7 @@ export default function EventsPage() {
   // )
 
   return (
-    // <div className='feedWrapper'>
+    <div className='feedWrapper'>
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>EVENTS</h1>
         {data.length ? <p className='centeredWhiteText marginBelow'>{`Check out everything going on at Parkway!`}</p> : null}
@@ -62,6 +62,6 @@ export default function EventsPage() {
         }) :
           <div className={'centeredWhiteText'}>{`It looks like there aren't currently any events scheduled.`}</div>}
       </div>
-    // </div>
+    </div>
   )
 }

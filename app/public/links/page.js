@@ -30,7 +30,7 @@ export default function LinksPage() {
 
 
   return (
-    // <div className='feedWrapper'>
+    <div className='feedWrapper'>
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>LINKS</h1>
         <p className='centeredWhiteText marginBelow'>{`Below you'll find links to helpful resources for Parkway families:`}</p>
@@ -52,7 +52,7 @@ export default function LinksPage() {
         }) :
           <div className='centeredWhiteText'>{`It looks like there aren't currently any links available.`}</div>}
       </div>
-    // </div>
+    </div>
   )
 
 }

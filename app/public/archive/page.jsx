@@ -55,7 +55,7 @@ export default function Archive() {
 
 
   return (
-    // <div className='feedWrapper'>
+    <div className='feedWrapper'>
       <div className='slideUp'>
         <h1 className='whiteTitle'>ARCHIVE</h1>
 
@@ -121,7 +121,7 @@ export default function Archive() {
         </select>
         {!schoolYears.length && <p className={'centeredWhiteText'}>{`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!`}</p>}
       </div>
-    // </div>
+    </div>
 
   )
 

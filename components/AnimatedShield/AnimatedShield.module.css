@@ -6,21 +6,12 @@
     transform: rotateY(360deg);
   }
 }
-
-
 .loadingPlaceholder {
   position: relative;
   width: 150px; /* Set to your image size */
   height: 150px; /* Set to your image size */
-  background-image: url('/images/animatedShield/shield2.webp');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
   overflow: visible;
   opacity: 0;
-  animation: fadeIn 2s ease-out forwards;
-  perspective: 1000px;
-  transform-style: preserve-3d;
   display: block;
 }
 .wrapper {
@@ -32,13 +23,14 @@
   background-repeat: no-repeat;
   background-position: center;
   overflow: visible;
-  opacity: 1;
+  animation: fadeIn 2s linear forwards;
+  opacity: 0;
   margin: 0;
   perspective: 1000px;
   max-height: 150px;
   max-width: none;
   filter: drop-shadow(-5px 5px 5px rgba(0, 0, 0, 0.5));
-  z-index: 3;
+  z-index: 3 ;
   /* overflow: hidden; */
 }
 .finalShield {
@@ -52,12 +44,12 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0; /* Start fully transparent */
-  animation: fadeIn 0.2s ease forwards, pop .5s linear forwards;
-  animation-delay: 1.5s;
+  animation: fadeIn 0.2s ease 1.5s forwards, pop .5s linear forwards;
   z-index: 2;
   max-height: 150px;
   min-width: 0;
   height: auto;
+  /* border: solid red 2px; */
 }
 /* Common styles for each item */
 .item {
