@@ -12,7 +12,7 @@ import { useAdmin } from '../../contexts/AdminContext';
 
 export default function Home({ children }) {
   const [introRunning, setIntroRunning] = useState(true);
-  const [finishedLoading, setFinishedLoading] = useState(false);
+  const [finishedLoading, setFinishedLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState(0);
   const pathname = usePathname()
   const searchParams = useSearchParams();

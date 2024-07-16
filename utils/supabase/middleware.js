@@ -37,6 +37,16 @@ export async function updateSession(request) {
 
   console.log('pathname: ', request.nextUrl.pathname)
 
+  if (request.nextUrl.pathname === ('/')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/public/home'
+
+    const params = new URLSearchParams(url.search);
+    params.set('intro', 't');
+    url.search = params.toString();
+
+    return NextResponse.redirect(url)
+  }
 
   // protect pages in admin directory
   if (!user && request.nextUrl.pathname.startsWith('/admin')) {

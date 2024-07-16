@@ -15,7 +15,6 @@ export default function Intro({ introRunning, setFinishedLoading, loadedImages, 
   const [allImagesLoaded, setAllImagesLoaded] = useState(false);
   const totalImages = imagesPerRow * rowsDirectories.length;
 
-  const progress = (loadedImages / totalImages) * 100;
 
   const imageCaptions = {
     row1: {
@@ -103,10 +102,8 @@ export default function Intro({ introRunning, setFinishedLoading, loadedImages, 
 
   return (
     <>
-      <div
-        className={`${styles.galleryWrapper} ${introRunning ? '' : styles.wrapperAfterIntro} ${allImagesLoaded ? (introRunning ? styles.fadeIn : styles.dontFadeIn) : ''}`}
+      <div className={`${styles.galleryWrapper} ${introRunning ? '' : styles.wrapperAfterIntro} ${allImagesLoaded ? (introRunning ? styles.fadeIn : styles.dontFadeIn) : ''}`}>
 
-      >
         {rows.map((rowImages, rowIndex) => (
           <div
             key={rowIndex}
@@ -133,6 +130,7 @@ export default function Intro({ introRunning, setFinishedLoading, loadedImages, 
                   alt={`Image in row ${rowIndex + 1}, number ${index - 2 + 1}`}
                   className={styles.image}
                   onLoad={handleImageLoad}
+                  loading='lazy'
                 />
               </div>
             ))}

@@ -55,12 +55,12 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  perspective: 1000px;
+  /* perspective: 1000px; */
 }
 
 /* Individual item backgrounds */
 .atom {
-  background-image: url('/images/animatedShield/atomIcon.png');
+  background-image: url('/images/animatedShield/atomIcon.webp');
   top: 45%;
   left: 54%;
   z-index: 2;
@@ -73,31 +73,37 @@
 .soccer { background-image: url('/images/animatedShield/soccerRecolored.webp'); }
 .skateboard { background-image: url('/images/animatedShield/skateboard3.webp'); }
 
+/* atom */
 @keyframes swirl-in-from-left {
   0% { transform: translateX(-200%) rotate(0deg) scale(3); }
   50% { transform: translate(-50px, 50px) rotate(270deg) scale(2); }
   100% { transform: translateX(0) rotate(540deg) scale(1); }
 }
+/* soccer */
 @keyframes swirl-in-from-right {
   0% { transform: translateX(100%) rotate(0deg) scale(3); }
   50% { transform: translate(50px, -50px) rotate(180deg) scale(2); }
   100% { transform: translateX(0) rotate(360deg) scale(1); }
 }
+/* skateboard */
 @keyframes swirl-in-from-top {
   0% { transform: translateY(-100%) rotate(0deg) scale(3); }
   50% { transform: translate(-50px, -50px) rotate(180deg) scale(2); }
   100% { transform: translateY(0) rotate(360deg) scale(1); }
 }
+/* atom */
 @keyframes swirl-in-from-left-desktop {
-  0% { transform: translateX(-1000%) rotate(0deg) scale(10); }
+  0% { transform: translateX(-1000%, ) rotate(0deg) scale(10); }
   50% { transform: translate(-500%, 150px) rotate(270deg)  scale(5); }
   100% { transform: translateX(0) rotate(540deg) scale(1); }
 }
+/* soccer */
 @keyframes swirl-in-from-right-desktop {
   0% { transform: translateX(1000%) rotate(0deg) scale(10); }
   50% { transform: translate(500%, 50%) rotate(180deg)  scale(5); }
   100% { transform: translateX(0) rotate(360deg) scale(1); }
 }
+/* skateboard */
 @keyframes swirl-in-from-top-desktop {
   0% { transform: translate(-100%, -20%) rotate(0deg) scale(10); }
   50% { transform: translate(500%, 200%) rotate(180deg) scale(5); }
@@ -151,7 +157,8 @@
 
 
 .atom {
-  animation: swirl-in-from-left-desktop 1.5s linear forwards,
+  animation:
+  swirl-in-from-left-desktop 1.5s linear forwards,
   pop-and-rotate 0.5s ease-out 1.5s forwards,
   continuous-3d-rotation 4s linear 2s infinite;
   transform-origin: center;
@@ -162,11 +169,14 @@
 .skateboard {
   animation: swirl-in-from-top-desktop 1.5s linear forwards;
 }
+
+
 @media(max-width: 768px) {
   .atom {
-    animation: swirl-in-from-left 1.5s linear forwards,
+    animation:
+    swirl-in-from-left 1.5s linear forwards,
     pop 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
-    continuous-rotation 5s linear 1.99s infinite; /* Adding a delay equal to the duration of the first two animations */
+    continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
 transform-origin: center;
   }
   .soccer {

@@ -46,7 +46,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagId, setTagId] = useState(null)
   const [tagResultPosts, setTagResultPosts] = useState([]); // separate array of posts from tag results
 
-  const postFetchLimit = 1;
+  const postFetchLimit = 5;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
   useEffect(() => {
