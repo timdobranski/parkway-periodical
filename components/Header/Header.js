@@ -30,9 +30,9 @@ export default function Header({ skipAnimation }) {
     }
   }, [leftNavbarOpen, rightNavbarOpen]);
 
-  useEffect(() => {
-    console.log('PATHNAME: ', pathname)
-  }, [pathname])
+  // useEffect(() => {
+  //   console.log('PATHNAME: ', pathname)
+  // }, [pathname])
 
 
 

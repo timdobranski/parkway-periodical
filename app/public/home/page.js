@@ -363,7 +363,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
 
   return (
-    <div className='feedWrapper' >
+    // <div className='feedWrapper' >
       <div className={`slideUp`}>
         <WelcomeSlideshow />
         <SearchAndFilterBar
@@ -382,6 +382,6 @@ export default function Home({ introRunning, setIntroRunning }) {
           <button className={styles.viewStatusButton} onClick={handleAddPosts}>Fetch More Posts</button>}
 
       </div>
-    </div>
+    // </div>
   );
 }

@@ -34,9 +34,7 @@
   top: 50%;
   left: 50%;
   width: 900px;
-  height: 350px;
-  /* background: rgba(255, 255, 255, .8); */
-  /* background: var(--mobile-background); */
+  height: 350px !important;
   color: white;
   font: 2rem 'Louis George Cafe';
   font-weight: normal;
@@ -48,7 +46,8 @@
   transform: translate(-50%, -50%);
   border: solid 6px rgb(255, 255, 255);
   backdrop-filter: blur(10px) grayscale(100%);
-  padding: 2rem 0 0 2rem;
+  padding: 0 0 0 1rem;
+  box-sizing: border-box;
   box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
 }
 .introContainer:hover {

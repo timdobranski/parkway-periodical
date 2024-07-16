@@ -38,7 +38,7 @@ export default function Home({ children }) {
   }, [playIntro])
 
   useEffect(() => {
-    // console.log('INTRO RUNNING in layout: ', introRunning)
+    console.log('INTRO RUNNING in layout: ', introRunning)
     if (introRunning === false) {
       setIntroOver(true)
     }
@@ -74,7 +74,7 @@ export default function Home({ children }) {
 
       <h1 className={`${styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : `LOADING` }</h1>
       {loadingBar}
-      {/* {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>} */}
+      {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
     </div>
   )
 
@@ -99,9 +99,8 @@ export default function Home({ children }) {
       { introRunning ? null : <Header introRunning={introRunning}/> }
 
       {
-        // load the accompanying page after all images have finished loading
         finishedLoading &&
-        <div style={{ display: introRunning ? 'none' : 'block' }}>
+        <div className='feedWrapper' style={{ display: introRunning ? 'none' : 'block', animation: 'none' }}>
           {children}
         </div>
       }

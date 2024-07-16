@@ -1,3 +1,13 @@
+@keyframes spin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+
 .loadingPlaceholder {
   position: relative;
   width: 150px; /* Set to your image size */
@@ -6,9 +16,12 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  animation: spin 1s linear infinite;
   overflow: visible;
   opacity: 0;
+  animation: fadeIn 2s ease-out forwards;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  display: block;
 }
 .wrapper {
   position: relative;
@@ -18,13 +31,14 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  animation: fadeIn 2s ease forwards;
   overflow: visible;
-  opacity: 0;
+  opacity: 1;
   margin: 0;
+  perspective: 1000px;
   max-height: 150px;
   max-width: none;
   filter: drop-shadow(-5px 5px 5px rgba(0, 0, 0, 0.5));
+  z-index: 3;
   /* overflow: hidden; */
 }
 .finalShield {

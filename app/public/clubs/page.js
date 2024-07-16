@@ -34,7 +34,7 @@ export default function ClubsPage() {
   // }
 
   return (
-    <div className='feedWrapper'>
+    // <div className='feedWrapper'>
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>SCHOOL CLUBS</h1>
 
@@ -57,6 +57,6 @@ export default function ClubsPage() {
           }) :
           <div>{`It looks like there aren't any clubs added yet.`}</div>}
       </div>
-    </div>
+    // </div>
   )
 }
