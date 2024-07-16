@@ -100,12 +100,16 @@
 .loadingBarContainer {
   width: 400px;
   height: 8px;
-  border: solid white 1px;
+  /* border: solid rgb(82, 82, 82) 1px; */
+  z-index: 10;
+}
+.invisible {
+  display: none;
 }
 .loadingBar {
   height: 100%;
   max-width: 100%;
-  background-color: red;
+  background-color: rgb(255, 255, 255);
   border-radius: 2px;
   /* transition: width 0.3s ease; */
 }

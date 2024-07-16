@@ -12,7 +12,7 @@ import { useAdmin } from '../../contexts/AdminContext';
 
 export default function Home({ children }) {
   const [introRunning, setIntroRunning] = useState(true);
-  const [finishedLoading, setFinishedLoading] = useState(true);
+  const [finishedLoading, setFinishedLoading] = useState(false);
   const [loadedImages, setLoadedImages] = useState(0);
   const pathname = usePathname()
   const searchParams = useSearchParams();
@@ -23,20 +23,20 @@ export default function Home({ children }) {
   const { setIntroOver } = useAdmin();
 
   useEffect(() => {
-    console.log('Images loaded: ', loadedImages)
+    // console.log('Images loaded: ', loadedImages)
     const newProgress = Math.floor((loadedImages / 72) * 100);
     setProgress(newProgress);
   }, [loadedImages]);
 
   useEffect(() => {
-    console.log('PLAY INTRO: ', playIntro)
+    // console.log('PLAY INTRO: ', playIntro)
     if (!playIntro || playIntro && playIntro !== 't') {
       setIntroRunning(false)
     }
   }, [playIntro])
 
   useEffect(() => {
-    console.log('INTRO RUNNING in layout: ', introRunning)
+    // console.log('INTRO RUNNING in layout: ', introRunning)
     if (introRunning === false) {
       setIntroOver(true)
     }
@@ -46,8 +46,8 @@ export default function Home({ children }) {
 
   const loadingBar = (
     <div className={styles.loadingBarContainer}>
-      <div className={styles.loadingBar} style={{width: `${progress}%` }}></div>
-      <p>{progress}%</p>
+      <div className={styles.loadingBar} style={{width: `${progress}%`, display: finishedLoading ? 'none' : 'block' }}></div>
+      {/* <p>{progress}%</p> */}
     </div>
   )
 
@@ -55,14 +55,14 @@ export default function Home({ children }) {
 
   const welcomeModal = (
     <div
-      className={`${styles.introContainer} ${finishedLoading ? (introRunning ? styles.fadeInFromWhite : '') : styles.whiteBackground}`}
+      className={`${styles.introContainer} ${introRunning ? styles.fadeInFromWhite : ''}`}
       onClick={() => setIntroRunning(false)}>
       {/* mobile logo */}
       <div className={styles.mobileLogo}>
-        {finishedLoading && <AnimatedShield finishedLoading={finishedLoading}/>}
+        {<AnimatedShield finishedLoading={finishedLoading}/>}
       </div>
       {/* desktop logo */}
-      {finishedLoading && <div className={styles.desktopLogoContainer}>
+      {<div className={styles.desktopLogoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
         <img
           src={'/images/logos/titledLogoNoShieldWhiteTextBWCropped.webp'}
@@ -71,9 +71,9 @@ export default function Home({ children }) {
         />
       </div>
       }
-      <h1 className={`${styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : 'LOADING' }</h1>
-      {!finishedLoading && loadingBar}
-      {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>}
+      <h1 className={`${styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : `LOADING` }</h1>
+      {loadingBar}
+      {/* {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>} */}
     </div>
   )
 
@@ -96,9 +96,14 @@ export default function Home({ children }) {
       />
       { introRunning ? (welcomeModal) : null }
       { introRunning ? null : <Header introRunning={introRunning}/> }
-      { <div style={{ display: introRunning ? 'none' : 'block' }}>
-        {children}
-      </div> }
+
+      {
+        // load the accompanying page after all images have finished loading
+        finishedLoading &&
+        <div style={{ display: introRunning ? 'none' : 'block' }}>
+          {children}
+        </div>
+      }
     </div>
   );
 }
