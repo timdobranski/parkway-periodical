@@ -8,6 +8,8 @@ import { useSearchParams } from 'next/navigation'
 import Header from '../../components/Header/Header';
 import { usePathname } from 'next/navigation'
 import { useAdmin } from '../../contexts/AdminContext';
+import { useMediaQuery } from 'react-responsive'
+
 
 
 export default function Home({ children }) {
@@ -57,20 +59,19 @@ export default function Home({ children }) {
     <div
       className={`${styles.introContainer} ${introRunning ? styles.fadeInFromWhite : ''}`}
       onClick={() => setIntroRunning(false)}>
-      {/* mobile logo */}
-      <div className={styles.mobileLogo}>
-        {<AnimatedShield finishedLoading={finishedLoading}/>}
-      </div>
-      {/* desktop logo */}
-      {<div className={styles.desktopLogoContainer}>
+
+      <div className={styles.logoContainer}>
         <AnimatedShield finishedLoading={finishedLoading}/>
+
         <img
           src={'/images/logos/titledLogoNoShieldWhiteTextBWCropped.webp'}
           alt='Intro Image'
-          className={styles.logo}
+          className={styles.LMSVtitle}
         />
       </div>
-      }
+
+
+
       <h1 className={`${styles.enterButton}`}>{finishedLoading ? 'WELCOME!' : `LOADING` }</h1>
       {loadingBar}
       {/* {finishedLoading ? null : <p className={styles.clickToSkip}> {`(click to skip)`}</p>} */}

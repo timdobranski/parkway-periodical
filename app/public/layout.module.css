@@ -70,7 +70,7 @@
   width: 150px;
   height: 150px;
 }
-.desktopLogoContainer {
+.logoContainer {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -79,9 +79,7 @@
   height: auto;
 
 }
-.mobileLogo {
-  display: none;
-}
+
 .whiteBackground {
   /* background-color: rgb(202, 202, 202); */
   /* background: linear-gradient(to left, rgb(0, 129, 181), rgb(0, 78, 109)); */
@@ -132,7 +130,7 @@
   filter: blur(2px);
   opacity: 0.2;
 } */
-.logo {
+.LMSVtitle {
   position: relative;
   width: 75%;
   /* margin: 4rem 2rem 0 0; */
@@ -249,6 +247,8 @@
     /* border: solid rgb(255, 0, 0) 4px; */
     padding: 2rem;
     width: 70vw;
+    height:60%;
+    max-height: 450px;
   }
   .loadingBarContainer {
     width: 80%;
@@ -259,17 +259,11 @@
   .mobileLogo {
     display: inline-block;
   }
-  .desktopLogoContainer {
+
+  .LMSVtitle {
     display: none;
   }
-  .logo {
-    display: none;
-  }
-  .mobileLogo{
-    display: block;
-    width: 80%;
-    max-width: 150px;
-  }
+
   .introImage {
     width: 90%;
     margin: 0;
