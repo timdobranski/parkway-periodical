@@ -1,14 +1,71 @@
 'use client'
 
 import styles from './PostNavbarLeft.module.css';
+import { createClient } from '../../utils/supabase/client';
 import { useState, useEffect } from 'react';
 import  { RichUtils,  } from 'draft-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faVideo, faFont, faBars, faTv, faTableCells } from '@fortawesome/free-solid-svg-icons';
 
-export default function PostNavbarLeft() {
-  const options = ['Sports', 'Science', 'Music', 'English', 'Math', 'Social Science', 'Extracurriculars', '2024/25 School Year'];
-  const [newOption, setNewOption] = useState('');
+export default function PostNavbarLeft({ categoryTags, setCategoryTags }) {
+  const supabase = createClient();
+  const [options, setOptions] = useState([]);
+  // const [newOption, setNewOption] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  // Handle checkbox change
+  const handleCheckOption = (option) => {
+    let updatedTags;
+    if (selectedTags.includes(option.id)) {
+      // Remove the tag if it is already selected
+      updatedTags = selectedTags.filter(tag => tag !== option.id);
+    } else {
+      // Add the tag if it is not selected
+      updatedTags = [...selectedTags, option.id];
+    }
+    setSelectedTags(updatedTags);
+    setCategoryTags(updatedTags);
+  };
+  useEffect(() => {
+    const getTags = async () => {
+      const { data, error } = await supabase
+        .from('tags')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching tags:', error);
+      }
+
+      if (data) {
+        console.log('tags data:', data)
+        setOptions(data);
+      }
+    }
+    getTags();
+  }, [])
+  useEffect(() => {
+    const getTags = async () => {
+      const { data, error } = await supabase
+        .from('tags')
+        .select('*');
+
+      if (error) {
+        console.error('Error fetching tags:', error);
+      }
+
+      if (data) {
+        console.log('tags data:', data)
+        setOptions(data);
+
+        // Ensure the selectedTags state is correctly initialized based on categoryTags
+        const initialSelectedTags = data
+          .filter(tag => categoryTags.includes(tag.id))
+          .map(tag => tag.id);
+        setSelectedTags(initialSelectedTags);
+      }
+    }
+    getTags();
+  }, [categoryTags]);
 
 
   return (
@@ -29,15 +86,15 @@ export default function PostNavbarLeft() {
       </form> */}
       <ul className={styles.optionsList}>
         {options.map(option => (
-          <li key={option}>
+          <li key={option.id}>
             <label>
               <input
                 type="checkbox"
-                checked={option.checked}
+                checked={selectedTags.includes(option.id)}
                 onChange={() => handleCheckOption(option)}
                 className={styles.checkbox}
               />
-              {option}
+              {option.name}
             </label>
           </li>
         ))}

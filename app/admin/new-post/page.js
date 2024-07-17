@@ -25,6 +25,8 @@ export default function NewPostPage() {
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
   const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
   const schoolYear = '2024-25';
+  const [categoryTags, setCategoryTags] = useState([]);
+  const [existingPostOldCategoryTags, setExistingPostOldCategoryTags] = useState([]);
 
   const getPostFromId = async () => {
     if (postId) {
@@ -40,9 +42,9 @@ export default function NewPostPage() {
         return;
       }
 
-      if (data) {
-        setContentBlocks(JSON.parse(data.content));
-      }
+
+      return JSON.parse(data.content);
+
     }
   }
   const getDraft = async () => {
@@ -61,14 +63,36 @@ export default function NewPostPage() {
     }
   }
   useEffect(() => {
+    console.log('category tags: ', categoryTags)
+  }, [categoryTags])
+
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-
+      // if we're editing an existing post, fetch the post content
       if (postId) {
+        console.log('postId found in post editor page: ', postId)
         const postContent = await getPostFromId(postId);
+        console.log('postContent: ', postContent)
         if (postContent) {
+          console.log('post content loaded')
           setContentBlocks(postContent);
+
+          // get the existing post's category tags
+          const { data, error } = await supabase
+            .from('post_tags')
+            .select('tag')
+            .eq('post', postId);
+
+          if (error) {
+            console.error('Error fetching post tags:', error);
+          }
+          console.log('existing category tags data:', data)
+          const tags = data.map(tag => tag.tag);
+          setExistingPostOldCategoryTags(tags);
+          setCategoryTags(tags);
         }
+        // not an existing post, check for a draft
       } else if (user?.id) {
         const draftContent = await getDraft(user.id);
         if (draftContent) {
@@ -79,7 +103,6 @@ export default function NewPostPage() {
       } else {
         setContentBlocks(newPost);
       }
-
       setIsLoading(false);
     };
 
@@ -88,9 +111,8 @@ export default function NewPostPage() {
 
 
 
-  useEffect(() => {
-    console.log('post id: ', postId)
-  }, [postId])
+
+
 
 
   async function updateDraft(post) {
@@ -149,6 +171,7 @@ export default function NewPostPage() {
   // PUBLISH POST---------------------------------------------
 
   async function publishPost(contentBlocks, postId) {
+    // STEP 1: generate a string of searchable text from the content blocks
     const searchableText = contentBlocks.map((block) => {
       if (block.type === 'title') {
         // Return the text content directly for title blocks
@@ -170,8 +193,7 @@ export default function NewPostPage() {
     });
     const completeSearchableText = searchableText.join(' ');
 
-    console.log('searchableText: ', completeSearchableText)
-
+    // STEP 2: set the post object with the content, author, title, and searchable text
     setPublishingStatus(true);
     const post = {
       content: JSON.stringify(contentBlocks),
@@ -180,35 +202,87 @@ export default function NewPostPage() {
       searchableText: completeSearchableText,
       schoolYear: schoolYear
     };
+    // STEP 3: insert or update the post in the posts table
     try {
+      let postData;
+
       if (postId) {
         // Update existing post
         const { data, error } = await supabase
           .from('posts')
           .update(post)
-          .match({ id: postId}); // Assuming 'id' is the primary key
+          .match({ id: postId});
 
         if (error) throw error;
-        console.log('Post updated:', data);
+
+        // iterate through category tags. if any are not in the existing tags, insert them. if any existing tags are not in the new tags, delete them
+        const addedTags = categoryTags.filter(tag => !existingPostOldCategoryTags.includes(tag));
+        const removedTags = existingPostOldCategoryTags.filter(tag => !categoryTags.includes(tag));
+
+        if (addedTags.length) {
+          const postTags = addedTags.map(tag => {
+            return {
+              post: postId,
+              tag: tag
+            }
+          });
+          const { error: postTagsError } = await supabase
+            .from('post_tags')
+            .insert(postTags);
+
+          if (postTagsError) throw postTagsError;
+        }
+        if (removedTags.length) {
+          const { error: postTagsError } = await supabase
+            .from('post_tags')
+            .delete()
+            .eq('post', postId)
+            .in('tag', removedTags);
+
+          if (postTagsError) throw postTagsError;
+        }
+
+
       } else {
         // Insert new post
         const { data, error } = await supabase
           .from('posts')
-          .insert([post]);
+          .insert([post])
+          .select();
 
         if (error) throw error;
-        console.log('Post published:', data);
+        postData = data;
+      }
+      // STEP 4: insert into the post_tags table if there are category tags
+      if (categoryTags.length) {
+        const postTags = categoryTags.map(tag => {
+          return {
+            post: postId || postData[0].id,
+            tag: tag
+          }
+        });
+        const { error: postTagsError } = await supabase
+          .from('post_tags')
+          .insert(postTags);
+
+        if (postTagsError) throw postTagsError;
       }
 
-      // Optionally, delete the draft
+
+      // STEP 5: delete the draft
       const { error: draftError } = await supabase
         .from('drafts')
         .delete()
         .match({ author: user.id });
 
       if (draftError) throw draftError;
+
+      // STEP 6: redirect to the home page
       setPublishingStatus(false);
       router.push('/public/home');
+
+
+
     } catch (error) {
       console.error('Error publishing post:', error);
     }
@@ -241,7 +315,10 @@ export default function NewPostPage() {
 
   return (
     <>
-      <PostNavbarLeft/>
+      <PostNavbarLeft
+        categoryTags={categoryTags}
+        setCategoryTags={setCategoryTags}
+      />
       <PostEditor
         viewContext='edit'
         orientation='vertical'

@@ -65,27 +65,26 @@ export const AdminProvider = ({ children }) => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log('AUTH EVENT: ', event);
+
         if (event === 'SIGNED_OUT' || !session) {
           setUser(null);
-          // router.push('/login');
+          setAuthUser(null);
+          setSession(null);
         }
-
         if (event === 'PASSWORD_RECOVERY') {
           // router.push('/admin/changePassword');
         }
 
         if (event === 'INITIAL_SESSION') {
-          getSessionAndUsersTableData();
         } else {
-          getSessionAndUsersTableData();
         }
       }
     );
 
     // Cleanup subscription on unmount
-    return () => {
-      authListener.unsubscribe();
-    };
+    // return () => {
+    //   authListener.unsubscribe();
+    // };
 
 
   }, []);
