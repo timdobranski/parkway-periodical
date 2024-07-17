@@ -1,12 +1,12 @@
 'use client'
 
 import styles from './staff.module.css'
-import { useClient } from '../../../utils/supabase/client';
+import { createClient } from '../../../utils/supabase/client';
 import { useState, useEffect } from 'react';
 import StaffBlock from '../../../components/StaffBlock/StaffBlock';
 
 export default function StaffPage() {
-  const supabase = useClient();
+  const supabase = createClient();
   const [staffData, setStaffData] = useState([]);
   const departments = ['Administration', 'Counseling', 'English', 'Fine Arts', 'Foreign Language', 'Math', 'Physical Education', 'Science', 'Social Studies', 'Special Education', 'Technology', 'Other'];
   const [selectedDepartment, setSelectedDepartment] = useState('All');
