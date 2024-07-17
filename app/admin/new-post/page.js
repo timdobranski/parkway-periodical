@@ -242,7 +242,7 @@ export default function NewPostPage() {
   return (
     <>
       <PostNavbarLeft/>
-      <Feed
+      <PostEditor
         viewContext='edit'
         orientation='vertical'
         contentBlocks={contentBlocks}
