@@ -26,20 +26,23 @@ export default function Settings () {
 
 
   useEffect(() => {
-    if (user && user.email) {
-      // const cacheBustedUrl = `${user.photo}?t=${Date.now()}`;
-      const getInitialPhoto = async () => {
-        const { success, error, value } = await userPhotos.getProfilePhoto(user.email, 'cropped');
-        if (error) {
-          console.log('error retreiving user photo on mount: ', error)
-          return
-        }
-        if (success) {
-          setPhoto(value);
-        }
-      }
-      getInitialPhoto();
-      // setPhoto(cacheBustedUrl);
+    // if (user && user.email) {
+    //   // const cacheBustedUrl = `${user.photo}?t=${Date.now()}`;
+    //   const getInitialPhoto = async () => {
+    //     const { success, error, value } = await userPhotos.getProfilePhoto(user.email, 'cropped');
+    //     if (error) {
+    //       console.log('error retreiving user photo on mount: ', error)
+    //       return
+    //     }
+    //     if (success) {
+    //       setPhoto(value);
+    //     }
+    //   }
+    //   getInitialPhoto();
+    //   // setPhoto(cacheBustedUrl);
+    // }
+    if (user) {
+      setPhoto(user.photo);
     }
     if (user && user.admin) {
       const fetchUsers = async () => {

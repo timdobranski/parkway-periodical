@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '../../utils/supabase/client';
-import styles from './Feed.module.css';
+import styles from './PostEditor.module.css';
 import PrimeText from '../../components/PrimeText/PrimeText';
 import Video from '../../components/Video/Video';
 import PostTitle from '../../components/PostTitle/PostTitle';
@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Feed({ contentBlocks, setContentBlocks, user,
+export default function PostEditor({ contentBlocks, setContentBlocks, user,
   activeBlock, setActiveBlock, viewContext, orientation, addBlock }) {
 
   const supabase = createClient();

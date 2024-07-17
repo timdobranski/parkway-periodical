@@ -1,11 +1,9 @@
 import styles from './AnimatedShield.module.css'
 
 export default function AnimatedShield({ finishedLoading }) {
+
   if (!finishedLoading) {
-    return (
-        <div className={styles.loadingPlaceholder}>
-        </div>
-    )
+    return ( <div className={styles.loadingPlaceholder}></div> )
   }
 
   return(

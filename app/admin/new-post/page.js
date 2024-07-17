@@ -6,7 +6,7 @@ import {createClient } from '../../../utils/supabase/client';
 import styles from './new-post.module.css';
 import PostNavbarLeft from '../../../components/PostNavbarLeft/PostNavbarLeft';
 import PostNavbarRight from '../../../components/PostNavbarRight/PostNavbarRight'
-import Feed from '../../../components/Feed/Feed';
+import PostEditor from '../../../components/PostEditor/PostEditor';
 import { useSearchParams } from 'next/navigation';
 import { debounce } from '../../../utils/debounce';
 import { useAdmin } from '../../../contexts/AdminContext';
