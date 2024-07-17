@@ -30,7 +30,8 @@ export default function List() {
   const getList = async () => {
     let query = supabase
       .from(type)
-      .select('*');
+      .select('*')
+      .order('id', { ascending: false });
 
     if (user && !user.admin) {
       query = query.eq('author', user.id);
@@ -140,7 +141,7 @@ export default function List() {
                       className={styles.dropdownIcon}
                       onClick={() => {handleToggle(index)}}
                     />
-                    <h3 className='smallerPostTitle' onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
+                    <h3 className={`smallerPostTitle ${styles.truncate} `} onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
                   </div>
                   <div className={styles.editControlsWrapper}>
                     <button className={styles.editButton}  onClick={() => handleViewContent(item.id)}>VIEW</button>

@@ -52,13 +52,22 @@
 .titleWrapper {
   display: flex;
   flex-direction: row;
+  width: 70%;
   /* border: solid red 2px; */
+  overflow: hidden;
 }
 .title {
+  text-align: left;
   font-weight: 200;
   margin: 0;
 }
+.truncate {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
+}
 .expandedInfo {
   display: block;
   position: relative;

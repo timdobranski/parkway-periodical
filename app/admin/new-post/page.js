@@ -19,7 +19,7 @@ export default function NewPostPage() {
   const [activeBlock, setActiveBlock] = useState(null);
   const blocksRef = useRef({});
   const searchParams = useSearchParams();
-  const postId = searchParams.get('postId');
+  const postId = searchParams.get('id');
   const [publishingStatus, setPublishingStatus] = useState(false);
   const { isLoading, setIsLoading, saving, setSaving, user, authUser } = useAdmin();
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
@@ -41,7 +41,7 @@ export default function NewPostPage() {
         console.error('Error fetching post from post Id in url:', error);
         return;
       }
-
+      console.log('post data from id: ', data)
 
       return JSON.parse(data.content);
 
