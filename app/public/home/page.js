@@ -38,10 +38,12 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const [posts, setPosts] = useState([]); // the array of posts which will be rendered
 
+  const [selectedPost, setSelectedPost] = useState(null);
+
   const [recentPosts, setRecentPosts] = useState([]); // default array of recent posts if no tag or search query
 
-  const [searchQuery, setSearchQuery] = useState(null);
-  const [searchResultPosts, setSearchResultPosts] = useState([]); // separate array of posts from search results
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResultPosts, setSearchResultPosts] = useState({}); // separate array of posts from search results
 
   const [tagId, setTagId] = useState('')
   const [tagResultPosts, setTagResultPosts] = useState({}); // separate array of posts from tag results
@@ -49,9 +51,76 @@ export default function Home({ introRunning, setIntroRunning }) {
   const postFetchLimit = 1;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
+  // ON PAGE MOUNT
+  // if there's no postId, add recent posts to the feed
+  // if there is a postId, get that post
+
+
+  // get category tags
+  useEffect(() => {
+    const getTags = async () => {
+      const { data, error } = await supabase.from('tags').select('*');
+      if (data) {
+        // console.log('tags: ', data);
+        setPostTags([{name: 'All Posts', id: 'all'}, ...data]);
+      }
+      if (error) {
+        console.error('Error fetching tags:', error);
+      }
+    };
+    getTags();
+  }, [])
+
+
+  // USER INPUT TO TRIGGER POST FETCHING
+  // when user selects post category, get posts with that tag and add to the category's post array
+  useEffect(() => {
+    // console.log('CATEGORY TAG CHANGED: ', tagId)
+    if (tagId) {
+      addToTagResultPosts();
+    } else {
+      resetPosts();
+    }
+  }, [tagId]);
+
+  // when user enters a search query, get posts with that query and add to the search result array
+  useEffect(() => {
+    // console.log('SEARCH QUERY CHANGED: ', searchQuery)
+    if (searchQuery && searchQuery !== null) {
+      setDisplayType('search')
+      addToSearchResultPosts();
+    } else {
+      resetPosts();
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    if (postId) {
+      setDisplayType('id')
+      const postIdNumber = parseInt(postId);
+      const getPostById = async () => {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('id, content, author, created_at')
+          .eq('id', postIdNumber)
+          .single()
+
+        if (error) {
+          console.error('Error fetching post:', error)
+          return null
+        }
+        const parsedData = { ...data, content: JSON.parse(data.content) }
+        console.log('PARSED POST DATA: ', parsedData)
+        setSelectedPost([parsedData])
+      }
+      getPostById(postId)
+    }
+
+  }, [postId])
+
+  // when the type of post view changes, remove the 'no more posts' message and reset the addPosts handler to the appropriate function
   useEffect(() => {
     setNoMorePosts(false);  // reset noMorePosts when displayType changes
-    // setPosts([]); // clear existing posts
 
     // on page load or user select, render recent unfiltered posts
     if (displayType === 'recent') {
@@ -62,54 +131,56 @@ export default function Home({ introRunning, setIntroRunning }) {
       setAddPostsHandler(addToTagResultPosts);
     }
     if (displayType === 'search') {
-      setAddPostsHandler(null);
+      setAddPostsHandler(addToSearchResultPosts);
     }
   }, [displayType])
 
-  useEffect(() => {
-    console.log('Actual rendered posts array: ', posts)
-  }, [posts])
 
-  // if more posts are fetched from a tag, add them to the main posts array
+  // WHEN NEW POSTS ARE DETECTED
+  // if more posts are added to a category tag array, switch to rendering them
   useEffect(() => {
-    console.log('TAG RESULT POSTS CHANGED: ', tagResultPosts)
     if (tagResultPosts[tagId]) {
-
       setPosts(tagResultPosts[tagId]);
+      setDisplayType('category')
     }
   }, [tagResultPosts])
-  // if more posts are fetched for the general feed, add them to the main posts array
+
+  // if more posts are added to a search result array, switch to rendering them
+  useEffect(() => {
+    if (searchResultPosts[searchQuery]) {
+      setPosts(searchResultPosts[searchQuery]);
+    }
+  }, [searchResultPosts])
+
+  // if more posts are added to the general feed, switch to rendering them
   useEffect(() => {
     if (recentPosts.length > 0) {
-      setPosts(recentPosts);
+      if (displayType === 'recent' && !postId) {
+        setPosts(recentPosts);
+      }
     }
   }, [recentPosts])
-  // on page mount, if there's no postId, add recent posts to the feed
+
   useEffect(() => {
-    if (!postId) {
-      addToRecentPosts()
-    }
-  }, [])
+    setPosts(selectedPost);
+  }, [selectedPost])
 
-  // when user selects post category, get posts with that tag
+  // HELPER EFFECTS TO LOG VALUES
   useEffect(() => {
-    console.log('CATEGORY TAG CHANGED: ', tagId)
-    if (tagId) {
-      setDisplayType('category')
-      addToTagResultPosts();
-    } else {
-      resetPosts();
-    }
-  }, [tagId]);
-
-  // get posts with postId when postId changes
+    console.log('POSTS CHANGED: ', posts)
+  }, [posts])
   useEffect(() => {
-    if (postId) {
-    }
-  }, [postId]);
+    console.log('CATEGORY POSTS CHANGED: ', tagResultPosts)
+  }, [tagResultPosts])
 
-
-  // get and set posts from tag ID
+  const removeDuplicates = (arr, key) => {
+    const seen = new Set();
+    return arr.filter(item => {
+      const k = key(item);
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+  // get and set posts from category tag ID
   const addToTagResultPosts = async () => {
     const getMorePostsByTagId = async (schoolYear, tagId, lastId) => {
       let query = supabase
@@ -148,40 +219,80 @@ export default function Home({ introRunning, setIntroRunning }) {
 
     // const lastPostId = tagResultPosts[tagId] && tagResultPosts[tagId].length ? tagResultPosts[tagId][tagResultPosts.length - 1].id : null;
     const taggedPosts = await getMorePostsByTagId(schoolYear, tagId, lastPostId);
-
-    // if (taggedPosts.length === 0 && taggedPosts[tagId] && taggedPosts[tagId].length === 0) {
-
-    //   setNoMorePosts(true);
-    // }
+    // utility to remove duplicate posts from the array, if any
 
     if (taggedPosts) {
       setTagResultPosts(prevTagResultPosts => {
-        // Spread the previous state to create a new object
-        // Use the existing array for the tagId and append new posts
+        const newTaggedPosts = removeDuplicates(taggedPosts, post => post.id); // Assuming each post has a unique 'id'
+        const newPosts = prevTagResultPosts[tagId]
+          ? removeDuplicates([...prevTagResultPosts[tagId], ...newTaggedPosts], post => post.id)
+          : newTaggedPosts;
 
         return {
           ...prevTagResultPosts,
-          [tagId]: [...(prevTagResultPosts[tagId] || []), ...taggedPosts]
+          [tagId]: newPosts,
         };
       });
     } else {
       console.log('NO POSTS RETURNED')
     }
   }
-  // get category tags on page load
-  useEffect(() => {
-    const getTags = async () => {
-      const { data, error } = await supabase.from('tags').select('*');
-      if (data) {
-        console.log('tags: ', data);
-        setPostTags([{name: 'All Posts', id: 'all'}, ...data]);
+  // get and set posts from search query
+  const addToSearchResultPosts = async () => {
+    const getMorePostsBySearch = async (schoolYear, searchQuery, lastId) => {
+      let query = supabase
+        .from('posts')
+        .select('*')
+        .ilike('searchableText', `%${searchQuery}%`)
+
+        .eq('schoolYear', schoolYear)
+        .order('id', { ascending: false })
+        .limit(postFetchLimit)
+
+      // Only apply the 'less than' filter if lastId is provided and not null
+      if (lastId != null) {
+        query = query.lt('id', lastId)
       }
+
+      const { data, error } = await query
+
       if (error) {
-        console.error('Error fetching tags:', error);
+        console.error('Error fetching posts:', error)
+        return null
       }
-    };
-    getTags();
-  }, []);
+      if (data.length < postFetchLimit) {
+        setNoMorePosts(true);
+      } else {
+        setNoMorePosts(false);
+      }
+      const parsedData = data.map(post => ({ ...post, content: JSON.parse(post.content) }))
+
+      return parsedData
+    }
+    // get the array of posts for the current category tag
+    const searchQueryArray = searchResultPosts[searchQuery] || [];
+    // get the id to start from when fetching new posts by id
+    const lastPostId = searchQueryArray.length > 0 ? searchQueryArray[searchQueryArray.length - 1].id : null;
+
+    // const lastPostId = tagResultPosts[tagId] && tagResultPosts[tagId].length ? tagResultPosts[tagId][tagResultPosts.length - 1].id : null;
+    const matchingPosts = await getMorePostsBySearch(schoolYear, searchQuery, lastPostId);
+
+    if (matchingPosts) {
+      setSearchResultPosts(prevSearchResultPosts => {
+      const newMatchingPosts = removeDuplicates(matchingPosts, post => post.id); // Assuming each post has a unique 'id'
+      const newPosts = prevSearchResultPosts[searchQuery]
+        ? removeDuplicates([...prevSearchResultPosts[searchQuery], ...newMatchingPosts], post => post.id)
+        : newMatchingPosts;
+
+      return {
+        ...prevSearchResultPosts,
+        [searchQuery]: newPosts,
+      };
+    });
+    } else {
+      console.log('NO POSTS RETURNED')
+    }
+  }
 
   const addToRecentPosts = async () => {
     const getRecentPosts = async (schoolYear, lastId) => {
@@ -237,14 +348,13 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // should run when 'view all posts' button is clicked or when all is selected from the dropdown
   const resetPosts = () => {
-
+    console.log('resetting posts')
     setDisplayType('recent');
 
-    if (tagId) {setTagId(null);} // if run from the dropdown, will already be null. if run from button, will be set to null
+    if (tagId) {setTagId('');} // if run from the dropdown, will already be null. if run from button, will be set to null
 
-    setSearchQuery(null);
+    if (searchQuery) {setSearchQuery('')};
 
-    if (postId) {removeQueryString();}
   }
 
   // copy post url to clipboard
@@ -400,14 +510,12 @@ export default function Home({ introRunning, setIntroRunning }) {
         <SearchAndFilterBar
           postTags={postTags}
           tagId={tagId}
-          setTagId={setTagId}
+          // setTagId={setTagId}
           handleFilterChange={handleFilterChange}
           searchQuery={searchQuery}
           setSearch={setSearchQuery}
-          getPosts={getPosts}
+          // getPosts={getPosts}
         />
-        <p className={'centeredWhiteText'}>{`Viewing Mode: ${displayType}`}</p>
-        <p className='centeredWhiteText'>{`Category tag: ${postTags.find(tag => tag.id === tagId)?.name}`}</p>
 
         {renderedPosts}
 

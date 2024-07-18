@@ -42,7 +42,7 @@ export default function SearchAndFilterBar ({ setSearch, postTags, tagId, setTag
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
               setSearch(searchQuery)
-              getPosts({searchQuery});
+
             }
           }}
         />
