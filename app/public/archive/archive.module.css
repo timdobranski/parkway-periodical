@@ -73,7 +73,7 @@
   height: 30px;
   width: 30px;
   position: absolute;
-  top: calc(50% - 15px);
+  top: 200px;;
   /* transform: translate(0, -50%); */
   /* transition: transform 0.5s ease; */
   border-radius: 50%;
@@ -81,14 +81,16 @@
   z-index: 10;
 }
 .slideImg {
+  height: 400px;
   max-height: 45vh;
   width: auto;
   /* max-width: 95%; */
   object-fit: contain;
   pointer-events: none;
-  border-bottom: solid white 2px;
-  background-color: rgba(0, 0, 0, .5);
-  padding-top: 2rem !important;
+  border-bottom: solid rgb(255, 0, 0) 2px;
+  /* background-color: rgba(0, 0, 0, .5); */
+  padding: 2rem !important;
+
 }
 .slideImg * {
   /* pointer-events: none; */
@@ -97,12 +99,17 @@
 .carouselSlide {
   width: 100%;
   /* background: rgba(0, 0, 0, .5); */
+  padding-bottom: 0;
+  margin-bottom: 0;
   /* border: solid red 2px; */
 }
 .archiveCarouselWrapper {
   width: 100%;
   /* pointer-events: none; */
 
+}
+.archiveCarouselWrapper :global(.slide) {
+  background-color: rgba(0, 0, 0, .5);
 }
 .arrowLeft, .arrowRight {
   background-color: rgba(0, 90, 120, 1);
@@ -134,25 +141,34 @@
 .endOfIntroParagraph {
   margin-bottom: 2rem;
 }
+.captionAndTitleWrapper {
+  /* border: solid red 2px; */
+  border-top: solid 1px rgba(255, 255, 255, .2);
+  height: content-fit;
+  max-height: 200px;
+}
+.captionAndTitleWrapper:hover {
+  cursor: pointer;
+}
 .archivePhotoCaption, .archivePhotoTitle {
   margin: 0;
   padding: 1.5rem 1.5rem 2rem 1.5rem;
-  height: 180px;
-  /* height: 100%; */
-  /* height: auto; */
-  background: rgba(0, 0, 0, .5);
-  width: 100%;
-  transition: height 0.5s ease;
-  border-top: none;
 }
+
 .archivePhotoCaption {
-  height: 150px;
+  height: 100%;
+  max-height: 150px;
   margin-bottom: 0;
-  max-height: 500px;
-  transition: max-height 0.5s ease;
-  /* border: solid blue 12px; */
-  /* height: auto; */
-  /* border-top: solid rgba(255, 255, 255, 0.255) 1px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-height 5s ease;
+}
+.expandedCaption {
+  height: fit-content;
+  max-height: 1000px;
+  white-space: normal;
+  transition: max-height 5s ease;
 }
 .archivePhotoTitle {
   height: auto;
@@ -163,7 +179,6 @@
   text-decoration-color: rgb(0, 123, 194);
 }
 .articleMetadata {
-  background-color: rgba(0, 0, 0, .5);
   color: white;
   font-size: 1.25rem;
   margin: 0;

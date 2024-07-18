@@ -10,53 +10,67 @@ const archiveData = {
     },
     {
       src: `${photoBasePath}2.webp`,
-      caption: null
+      caption: 'Parkway Construction, 1960s'
     },
     {
       src: `${photoBasePath}3.webp`,
-      caption: null
+      caption: 'Parkway Construction, 1960s'
     },
     {
       src: `${photoBasePath}4.webp`,
-      caption: null
+      caption: 'Parkway Construction, 1960s'
     },
     {
       src: `${photoBasePath}5.webp`,
-      caption: null
+      caption: 'Parkway Construction, 1960s'
     },
     {
       src: `${photoBasePath}6.webp`,
+      caption: 'Parkway Construction, 1960s'
+
     },
     {
       src: `${photoBasePath}7.webp`,
+      caption: 'Parkway Construction, 1960s'
+
     },
     {
       src: `${photoBasePath}8.webp`,
+      caption: 'Parkway Construction, 1960s'
+
     },
     {
       src: `${photoBasePath}9.webp`,
+      caption: 'Parkway Track Meet, 1960s'
+
     },
     {
       src: `${photoBasePath}10.webp`,
+      caption: 'Parkway Staff Photo, 1963'
+
     },
     {
       src: `${photoBasePath}11.webp`,
+      caption: 'Parkway Staff Photo, 1971'
+
     },
     {
       src: `${photoBasePath}12.webp`,
-    },
-    {
-      src: `${photoBasePath}13.webp`,
-    },
-    {
-      src: `${photoBasePath}14.webp`,
-    },
-    {
-      src: `${photoBasePath}15.webp`,
-    },
-    {
-      src: `${photoBasePath}16.webp`,
+      caption: 'Parkway Staff Photo, 1970s'
+
     }
+    // {
+    //   src: `${photoBasePath}13.webp`,
+    // },
+    // {
+    //   src: `${photoBasePath}14.webp`,
+    // },
+    // {
+    //   src: `${photoBasePath}15.webp`,
+    // },
+    // {
+    //   src: `${photoBasePath}16.webp`,
+    // }
 
 
   ],
@@ -106,13 +120,31 @@ const archiveData = {
     },
     {
       src: `${articleBasePath}5.webp`,
+      date: `Sept 13th, 1962`,
+      source: `The La Mesa Scout`,
+      title: `Parkway Jr. Hi Trys New System`,
+      caption: `This year Parkway Junior High School will have a modification in its organization which will result, it is hoped,
+      in a more efficient use of pupil time and should bring about more instructional learning, according to Dr. David Pascoe, assistant
+      superintendent-instruction of the La Mesa-Spring Valley School District. Dr Pascoe told the Board of Trustees Tuesday night that for years schools
+      have stressed the need to introduce flexibility in class scheduling. Parkway Pupils will take a block of two periods in certain subjects every other day.
+      Thus, time will be equalized over a two-week period, but this will permit a longer instructional time for courses, such as: industrial arts, homemaking,
+      music, art, and physical education. In order to activate this program, it was necessary to review the District's plans with certain departments in
+      Sacramento for approval.`,
     },
     {
       src: `${articleBasePath}6.webp`,
+      date: `Feb 21st, 1963`,
+      source: `The La Mesa Scout`,
+      title: `Science Fair At Parkway Jr. High`,
+      caption: `The second annual Parkway Junior High School Science Fair is being held Feb. 28 in the school library between the hours of 7 and 9:30 p.m. Roger Miller,
+      science teacher at the school, is serving as chairman. The fair will be in conjunction with a PTA Parent-Education Night. The students participating are
+      from the enture student body and are doing this on a voluntary basis. The fields of physics, chemistry, biology and medicine will be represented in the exhibition.
+       Mayor Ray Fellows of La Mesa will present the awards to the winners that same evening. Last years's sweepstakes winner at Parkway, Melinda Polset, went on to
+       win the sweepstakes in the girls division at the Greater San Diego Science Fair.`,
     },
-    {
-      src: `${articleBasePath}7.webp`,
-    }
+    // {
+    //   src: `${articleBasePath}7.webp`,
+    // }
   ]
 }
 

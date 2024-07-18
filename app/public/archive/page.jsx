@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import styles from './archive.module.css';
@@ -16,6 +17,8 @@ export default function Archive() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const [photosOrArticles, setPhotosOrArticles] = useState('photos');
+  const [expandedPhotoCaption, setExpandedPhotoCaption] = useState(false);
+  const [expandedArticleCaption, setExpandedArticleCaption] = useState(false);
 
   const items = photosOrArticles === 'photos' ? archivePhotos : newsArticles;
   const activeIndex = photosOrArticles === 'photos' ? currentPhotoIndex : currentArticleIndex;
@@ -50,6 +53,8 @@ export default function Archive() {
     );
   }
   const handleCarouselChange = (index) => {
+    photosOrArticles === 'photos' ? setCurrentPhotoIndex(false) : setCurrentArticleIndex(false);
+
     photosOrArticles === 'photos' ? setCurrentPhotoIndex(index) : setCurrentArticleIndex(index);
   };
 
@@ -98,14 +103,43 @@ export default function Archive() {
                       className={styles.slideImg}
                       onContextMenu={(e) => e.preventDefault()}
                     />
-                    {
-                    items[activeIndex].title &&
-                    <>
-                      <p className={`centeredWhiteText ${styles.archivePhotoTitle}`}>{items[activeIndex].title}</p>
-                      <p className={styles.articleMetadata}>{`${items[activeIndex].date} via ${items[activeIndex].source}`}</p>
-                    </>
-                    }
-                    <p className={`centeredWhiteText ${styles.archivePhotoCaption}`}>{items[activeIndex].caption}</p>
+
+                    {(items[activeIndex].title || items[activeIndex].caption) &&
+
+                    <div className={`${styles.captionAndTitleWrapper} ${
+                      photosOrArticles === 'photos'
+                        ? expandedPhotoCaption === index
+                          ? styles.expandedCaption
+                          : ''
+                        : expandedArticleCaption === index
+                          ? styles.expandedCaption
+                          : ''
+                    }`}
+                    onClick={photosOrArticles === 'photos' ?
+                      () => setExpandedPhotoCaption(expandedPhotoCaption === index ? false : index) :
+                      () => setExpandedArticleCaption(expandedArticleCaption === index ? false : index)}
+                    >
+                      {items[activeIndex].title &&
+                      <>
+                        <p className={`centeredWhiteText ${styles.archivePhotoTitle}`}>{items[activeIndex].title}</p>
+                        <p className={styles.articleMetadata}>{`${items[activeIndex].date} via ${items[activeIndex].source}`}</p>
+                      </>
+                      }
+                      <p
+                        className={`centeredWhiteText ${styles.archivePhotoCaption}
+                           ${
+                photosOrArticles === 'photos'
+                  ? expandedPhotoCaption === index
+                    ? styles.expandedCaption
+                    : ''
+                  : expandedArticleCaption === index
+                    ? styles.expandedCaption
+                    : ''
+                }`
+
+                        }>{items[activeIndex].caption}</p>
+                    </div>}
+
                   </div>
                 </Fragment>
               ))}
