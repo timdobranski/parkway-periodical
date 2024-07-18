@@ -65,8 +65,21 @@ export default function NewContentPage() {
     electives: `Use this form to add or update an elective on the website. To help keep the electives up to date, you can set an expiration date for your elective. Once the date
     is reached, you can set your elective to either delete automatically, or to remind you to update it.`,
     clubs: `Use this form to add or update a school club on the website. To help keep the clubs up to date, you can set an expiration date for your club. Once the date
-    is reached, you can set your club to either delete automatically, or to remind you to update it.`
+    is reached, you can set your club to either delete automatically, or to remind you to update it.`,
+    events: `Use this form to add or update an event on the website. To help keep the events up to date, you can set an expiration date for your event. Once the date
+    is reached, you can set your event to either delete automatically, or to remind you to update it.`
   }
+  const eventFormData = {
+    title: '',
+    description: '',
+    expires: '',
+    deleteOnExpire: false,
+    author: '',
+    image: '',
+    date: '',
+    startTime: '',
+    endTime: ''
+  };
   // initialize form data state
   const [formData, setFormData] = useState({});
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -101,6 +114,7 @@ export default function NewContentPage() {
           .single();
 
         if (data) {
+          // values in the database can be null, but we need them to be empty strings for the form
           const sanitizedData = Object.entries(data).reduce((acc, [key, value]) => {
             if (value === null) {
               acc[key] = key === 'deleteOnExpire' ? false : '';
@@ -115,6 +129,7 @@ export default function NewContentPage() {
           console.error('Error fetching link data:', error);
         }
       } else {
+        // no existing data, so set form data to initial values defined above
         switch (type) {
           case 'links':
             setFormData(linkFormData);
@@ -127,6 +142,9 @@ export default function NewContentPage() {
             break;
           case 'staff':
             setFormData(staffFormData);
+            break;
+          case 'events':
+            setFormData(eventFormData);
             break;
           default:
             console.error(`Unsupported type: ${type}`);
@@ -279,19 +297,22 @@ export default function NewContentPage() {
       }
       <div className={styles.groupedFormSections}>
         {formData.startTime !== undefined &&
-      <div className={styles.formSection}>
-        <label htmlFor='description' className={styles.label}>Start Time</label>
-        <input type='time' name='startTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
+      <div className={styles.halfFormSection}>
+        <label htmlFor='description' className={styles.label}>Starts At:</label>
+        <input type='text' name='startTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.startTime} onChange={handleChange} />
+        <p className={styles.optional}>optional</p>
+
       </div>
         }
         {formData.endTime !== undefined &&
-        <div className={styles.formSection}>
-          <label htmlFor='description' className={styles.label}>End Time</label>
-          <input type='time' name='endTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
+        <div className={styles.halfFormSection}>
+          <label htmlFor='description' className={styles.label}>Ends At:</label>
+          <input type='text' name='endTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.endTime} onChange={handleChange} />
+          <p className={styles.optional}>optional</p>
         </div>
         }
       </div>
-      {formData.when !== undefined &&
+     {formData.when !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>When We Meet</label>
           <textarea name='when' className={styles.input} value={formData.when} onChange={handleChange} />
@@ -315,7 +336,7 @@ export default function NewContentPage() {
         </select>
       </div>
       }
-      {formData.duration !== undefined &&
+      {formData.pathway !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>Pathway</label>
         <select  name='pathway' className={styles.onExpire} value={formData.pathway} onChange={handleChange}>

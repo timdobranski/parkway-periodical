@@ -43,17 +43,21 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchResultPosts, setSearchResultPosts] = useState([]); // separate array of posts from search results
 
-  const [tagId, setTagId] = useState(null)
-  const [tagResultPosts, setTagResultPosts] = useState([]); // separate array of posts from tag results
+  const [tagId, setTagId] = useState('')
+  const [tagResultPosts, setTagResultPosts] = useState({}); // separate array of posts from tag results
 
   const postFetchLimit = 1;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
   useEffect(() => {
-    setNoMorePosts(false);
+    setNoMorePosts(false);  // reset noMorePosts when displayType changes
+    // setPosts([]); // clear existing posts
+
+    // on page load or user select, render recent unfiltered posts
     if (displayType === 'recent') {
       setAddPostsHandler(addToRecentPosts);
     }
+    // if category tag is selected, render posts with that tag
     if (displayType === 'category') {
       setAddPostsHandler(addToTagResultPosts);
     }
@@ -62,10 +66,16 @@ export default function Home({ introRunning, setIntroRunning }) {
     }
   }, [displayType])
 
+  useEffect(() => {
+    console.log('Actual rendered posts array: ', posts)
+  }, [posts])
+
   // if more posts are fetched from a tag, add them to the main posts array
   useEffect(() => {
-    if (tagResultPosts.length > 0) {
-      setPosts(tagResultPosts);
+    console.log('TAG RESULT POSTS CHANGED: ', tagResultPosts)
+    if (tagResultPosts[tagId]) {
+
+      setPosts(tagResultPosts[tagId]);
     }
   }, [tagResultPosts])
   // if more posts are fetched for the general feed, add them to the main posts array
@@ -83,6 +93,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // when user selects post category, get posts with that tag
   useEffect(() => {
+    console.log('CATEGORY TAG CHANGED: ', tagId)
     if (tagId) {
       setDisplayType('category')
       addToTagResultPosts();
@@ -123,17 +134,36 @@ export default function Home({ introRunning, setIntroRunning }) {
       }
       if (data.length < postFetchLimit) {
         setNoMorePosts(true);
+      } else {
+        setNoMorePosts(false);
       }
       const parsedData = data.map(post => ({ ...post, content: JSON.parse(post.content) }))
 
       return parsedData
     }
+    // get the array of posts for the current category tag
+    const tagArray = tagResultPosts[tagId] || [];
+    // get the id to start from when fetching new posts by id
+    const lastPostId = tagArray.length > 0 ? tagArray[tagArray.length - 1].id : null;
 
-    const lastPostId = tagResultPosts.length ? tagResultPosts[tagResultPosts.length - 1].id : null;
+    // const lastPostId = tagResultPosts[tagId] && tagResultPosts[tagId].length ? tagResultPosts[tagId][tagResultPosts.length - 1].id : null;
     const taggedPosts = await getMorePostsByTagId(schoolYear, tagId, lastPostId);
 
+    // if (taggedPosts.length === 0 && taggedPosts[tagId] && taggedPosts[tagId].length === 0) {
+
+    //   setNoMorePosts(true);
+    // }
+
     if (taggedPosts) {
-      setTagResultPosts([...tagResultPosts, ...taggedPosts]);
+      setTagResultPosts(prevTagResultPosts => {
+        // Spread the previous state to create a new object
+        // Use the existing array for the tagId and append new posts
+
+        return {
+          ...prevTagResultPosts,
+          [tagId]: [...(prevTagResultPosts[tagId] || []), ...taggedPosts]
+        };
+      });
     } else {
       console.log('NO POSTS RETURNED')
     }
@@ -204,6 +234,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const noResultsMessage = (
     <p className={styles.noResultsMessage}>{`It looks like there aren't any posts for this ${displayType === 'search' ? 'search' : 'category'} yet`}</p>
   )
+
   // should run when 'view all posts' button is clicked or when all is selected from the dropdown
   const resetPosts = () => {
 
@@ -272,7 +303,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         {user && post.author === user.id &&
               <button
                 className={styles.editPostButton}
-                onClick={() => router.push(`/admin/new-post/?postId=${post.id}`)}
+                onClick={() => router.push(`/admin/new-post/?id=${post.id}`)}
               >
                 <FontAwesomeIcon icon={faGear} className={styles.editPostIcon}/>
               </button>
@@ -375,7 +406,11 @@ export default function Home({ introRunning, setIntroRunning }) {
           setSearch={setSearchQuery}
           getPosts={getPosts}
         />
-        { introRunning ? null : renderedPosts}
+        <p className={'centeredWhiteText'}>{`Viewing Mode: ${displayType}`}</p>
+        <p className='centeredWhiteText'>{`Category tag: ${postTags.find(tag => tag.id === tagId)?.name}`}</p>
+
+        {renderedPosts}
+
         {noMorePosts ?
           <p className='centeredWhiteText'>{`You've reached the end! No more posts to display.`}</p>
           :
