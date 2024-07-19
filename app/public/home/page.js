@@ -552,7 +552,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
         {renderedPosts}
 
-        {noMorePosts && posts.length ?
+        {noMorePosts && posts?.length ?
           <p className='centeredWhiteText'>{`You've reached the end! No more posts to display.`}</p> :
           null
         }
