@@ -114,9 +114,9 @@ export default function List() {
   };
   const handleViewContent = (id) => {
     if (type === 'posts') {
-      router.push(`/public/home?postId=${id}`);
+      router.push(`/home?postId=${id}`);
     } else {
-      router.push(`/public/${type}`);
+      router.push(`/${type}`);
 
     }
   }

@@ -38,7 +38,7 @@ export async function updateSession(request) {
 
   if (request.nextUrl.pathname === ('/')) {
     const url = request.nextUrl.clone()
-    url.pathname = '/public/home'
+    url.pathname = '/home'
 
     const params = new URLSearchParams(url.search);
     params.set('intro', 't');

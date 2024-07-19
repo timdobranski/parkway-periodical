@@ -40,7 +40,7 @@ export default function Register() {
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       // If no session, redirect user to public home
       if (sessionError || !sessionData.session) {
-        router.push('/public/home');
+        // router.push('/home');
         return;
       }
       if (sessionData) {setSession(sessionData.session)};
@@ -64,7 +64,7 @@ export default function Register() {
 
       // If the user has a profile, redirect to admin home
       if (userData) {
-        router.push('/admin/home');
+        // router.push('/admin/home');
       }
     };
 

@@ -1,6 +1,6 @@
 import { mockRouter } from '../__mocks__/mocks.js';
 import { render, screen, cleanup } from '@testing-library/react';
-import Home from '../app/public/home/page.js';
+import Home from '../app/home/page.js';
 // import mockRouter from 'next-router-mock';
 
 // // Mock next/navigation to use next-router-mock

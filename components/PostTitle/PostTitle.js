@@ -53,7 +53,7 @@ export default function PostTitle({ isEditable, src, updateTitle, index, activeB
 
   const generateUrl = () => {
     const baseUrl = `${window.location.protocol}//${window.location.host}`;
-    const path = `/public/home`;
+    const path = `/home`;
     const query = `?id=${encodeURIComponent(id)}`; // Properly encoding the query parameter
     return `${baseUrl}${path}${query}`;
 };

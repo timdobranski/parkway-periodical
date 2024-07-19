@@ -295,9 +295,9 @@ export default function Header() {
         </div>
 
         <div className={menuOpen === 'left' ? styles.navContainerLeft : styles.navContainerHidden}>
-          <Link href='/public/home'><h2>HOME</h2></Link>
-          <Link href='/public/archive'><h2>ARCHIVE</h2></Link>
-          <Link href='/public/info'><h2>INFO</h2></Link>
+          <Link href='/home'><h2>HOME</h2></Link>
+          <Link href='/archive'><h2>ARCHIVE</h2></Link>
+          <Link href='/info'><h2>INFO</h2></Link>
         </div>
       </div>
       {storageStatus}

@@ -39,13 +39,13 @@ export default function Header({ skipAnimation }) {
   const isActive = (href) => {
     // console.log('isActive: ', pathname, href)
     // Check for exact match or specific condition
-    return pathname === href || router.pathname === '/public/home' && href === '/public/home' || router.pathname === '/public/archive' && href === '/public/archive' || router.pathname === '/public/about' && href === '/public/about';
+    return pathname === href || router.pathname === '/home' && href === '/home' || router.pathname === '/archive' && href === '/archive' || router.pathname === '/about' && href === '/about';
   };
 
   const desktopLeftNavbar = (
     <div className={styles.desktopLeftNavbarWrapper}>
       <div className={styles.socialWrapper}>
-        <img src={'/images/logos/parkway.webp'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/public/home')}/>
+        <img src={'/images/logos/parkway.webp'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/home')}/>
         <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link>
         <Link href='https://www.instagram.com/parkwaypatriots/'><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} /></Link>
         <Link href='https://x.com/pkmspatriots?s=20'><FontAwesomeIcon icon={faXTwitter} className={styles.socialIcon} /></Link>
@@ -76,21 +76,21 @@ export default function Header({ skipAnimation }) {
         </Link> */}
         {/* <Link href='/public/electives'> */}
         <h2
-          className={isActive('/public/electives') ? `${styles.navLink} ${styles.underline}` : styles.navLink}
-          onClick={() => {router.push('/public/electives')}}
+          className={isActive('/electives') ? `${styles.navLink} ${styles.underline}` : styles.navLink}
+          onClick={() => {router.push('/electives')}}
         >ELECTIVES</h2>
         {/* </Link> */}
-        <Link href='/public/clubs'>
-          <h2 className={isActive('/public/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
+        <Link href='/clubs'>
+          <h2 className={isActive('/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
         </Link>
-        <Link href='/public/events'>
-          <h2 className={isActive('/public/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
+        <Link href='/events'>
+          <h2 className={isActive('/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
         </Link>
-        <Link href='/public/links'>
-          <h2 className={isActive('/public/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
+        <Link href='/links'>
+          <h2 className={isActive('/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
         </Link>
-        <Link href='/public/archive'>
-          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
+        <Link href='/archive'>
+          <h2 className={isActive('/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </Link>
       </div>
     </div>
@@ -100,28 +100,28 @@ export default function Header({ skipAnimation }) {
       <div className={`${styles.navContainer}`}>
         <FontAwesomeIcon icon={faChevronRight} className={styles.closeIconRight}  onClick={ () => setRightNavbarOpen(!rightNavbarOpen)}/>
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/home')}}>
-          <h2 className={isActive('/public/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('home')}}>
+          <h2 className={isActive('/home') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>HOME</h2>
         </div>
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/electives')}}>
-          <h2 className={isActive('/public/electives') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ELECTIVES</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('/electives')}}>
+          <h2 className={isActive('/electives') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ELECTIVES</h2>
         </div>
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/clubs')}}>
-          <h2 className={isActive('/public/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('/clubs')}}>
+          <h2 className={isActive('/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
         </div>
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/events')}}>
-          <h2 className={isActive('/public/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('/events')}}>
+          <h2 className={isActive('/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
         </div>
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/links')}}>
-          <h2 className={isActive('/public/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('/links')}}>
+          <h2 className={isActive('/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
         </div>
         <div
-          onClick={() => {setRightNavbarOpen(false); router.push('/public/archive')}}>
-          <h2 className={isActive('/public/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
+          onClick={() => {setRightNavbarOpen(false); router.push('/archive')}}>
+          <h2 className={isActive('/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </div>
         <hr className={styles.navDivider}></hr>
         <div

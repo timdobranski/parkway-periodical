@@ -85,7 +85,7 @@ export default function WelcomeSlideshow() {
       <div className={styles.archiveTextWrapper}>
         <h3
           className={`whiteSubTitle ${styles.archiveTitle}`}
-          onClick={() => {router.push('/public/archive')}}
+          onClick={() => {router.push('/archive')}}
         >
           {`Parkway Archive`}
         </h3>
@@ -93,7 +93,7 @@ export default function WelcomeSlideshow() {
       </div>
       <div className={styles.archiveImageSectionWrapper}>
         <div className={styles.archiveImageWrapper}>
-          <img src='/images/archive/photos/1.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/public/archive')}}/>
+          <img src='/images/archive/photos/1.webp' alt='Parkway Historical' className={styles.archiveImage} onClick={() => {router.push('/archive')}}/>
           {/* <p className={styles.archiveImageCaption}>Parkway Circa 1963</p> */}
         </div>
       </div>

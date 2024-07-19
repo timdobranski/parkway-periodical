@@ -279,7 +279,7 @@ export default function NewPostPage() {
 
       // STEP 6: redirect to the home page
       setPublishingStatus(false);
-      router.push('/public/home');
+      router.push('/home');
 
 
 
