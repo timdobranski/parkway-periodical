@@ -15,6 +15,10 @@ export default function AdminLayout({ children }) {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
 
 
+  if (!user) {
+    return <div className='loadingMessage'>Loading...</div>
+  }
+
   const mobileSupportMessage = (
     <div className={styles.mobileSupportMessageWrapper}>
       <img src='/images/logos/parkway.webp' alt='Parkway Academy Logo' className={styles.logo} />
@@ -24,7 +28,7 @@ export default function AdminLayout({ children }) {
 
   return (
     <>
-      {pathname !== 'admin/register' && <HeaderAdmin />}
+      <HeaderAdmin />
       <div className='adminPageWrapper'>
         {mobileSupportMessage}
         <Suspense>

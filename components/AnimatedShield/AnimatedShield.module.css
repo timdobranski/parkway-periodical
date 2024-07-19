@@ -30,8 +30,9 @@
   max-height: 150px;
   max-width: none;
   filter: drop-shadow(-5px 5px 5px rgba(0, 0, 0, 0.5));
-  z-index: 3 ;
+  z-index: 1 ;
   /* overflow: hidden; */
+  /* border: solid red 2px; */
 }
 .finalShield {
   position: absolute;
@@ -44,12 +45,12 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0; /* Start fully transparent */
-  animation: fadeIn 0.2s ease 1.5s forwards, pop .5s linear forwards;
+  animation: fadeIn 0s linear 1.5s forwards, pop .5s linear 1.5s;
   z-index: 2;
   max-height: 150px;
   min-width: 0;
   height: auto;
-  /* border: solid red 2px; */
+  /* border: solid rgb(255, 251, 0) 4px; */
 }
 /* Common styles for each item */
 .item {
@@ -140,24 +141,24 @@
 }
 @keyframes pop-and-rotate {
   0% {
-    transform: scale(1) rotateX(0deg);
+    transform: scale(1) rotateZ(0deg);
   }
   50% {
-    transform: scale(1.1) rotateX(18deg); /* Adjust the rotation degrees as needed */
+    transform: scale(1.4) rotateZ(18deg); /* Adjust the rotation degrees as needed */
   }
   100% {
-    transform: scale(1) rotateX(36deg);
+    transform: scale(1) rotateZ(36deg);
   }
 }
 @keyframes continuous-3d-rotation {
   0% {
-    transform:  rotateZ(0deg) rotateX(0deg) rotateY(0deg) scale(1);
+    transform:  rotateZ(36deg) rotateX(0deg) rotateY(0deg) scale(1);
   }
   50% {
-    transform:   rotateZ(180deg) rotateX(-30deg) rotateY(-30deg) scale(.9);
+    transform:   rotateZ(216deg) rotateX(-30deg) rotateY(-30deg) scale(.9);
   }
   100% {
-    transform:   rotateZ(360deg) rotateX(0deg) rotateY(0deg) scale(1);
+    transform:   rotateZ(396deg) rotateX(0deg) rotateY(0deg) scale(1);
   }
 }
 
@@ -165,7 +166,7 @@
 .atom {
   animation:
   swirl-in-from-left-desktop 1.5s linear forwards,
-  pop-and-rotate 0.5s ease-out 1.5s forwards,
+  pop-and-rotate 0.5s linear 1.5s,
   continuous-3d-rotation 4s linear 2s infinite;
   transform-origin: center;
 }
