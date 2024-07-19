@@ -30,6 +30,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const router = useRouter();
   const pathname = usePathname();
   let postId = searchParams.get('postId');
+  const feedWrapperRef = useRef(null);
   const schoolYear = '2024-25';
 
   // FETCHING & RENDERING POSTS
@@ -48,7 +49,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagId, setTagId] = useState('')
   const [tagResultPosts, setTagResultPosts] = useState({}); // separate array of posts from tag results
 
-  const postFetchLimit = 1;
+  const postFetchLimit = 2;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
   // ON PAGE MOUNT
@@ -70,6 +71,47 @@ export default function Home({ introRunning, setIntroRunning }) {
     };
     getTags();
   }, [])
+
+  const handleAddPosts = () => {
+    if (displayType === 'recent') {
+      addToRecentPosts();
+    }
+    if (displayType === 'category') {
+      addToTagResultPosts();
+    }
+    if (displayType === 'search') {
+      addToSearchResultPosts();
+    }
+  }
+
+  // detect user reaching the bottom of the feed and trigger fetching more posts
+  useEffect(() => {
+    // console.log('scroll useEffect ran');
+    const feedWrapper = feedWrapperRef.current;
+
+    const handleScroll = () => {
+      const isBottom = feedWrapper.scrollHeight - feedWrapper.scrollTop <= feedWrapper.clientHeight + 1;
+      // console.log(`scrollTop: ${feedWrapper.scrollTop}, scrollHeight: ${feedWrapper.scrollHeight}, clientHeight: ${feedWrapper.clientHeight}`);
+      if (isBottom) {
+        // console.log('scroll condition met, fetching more posts');
+        handleAddPosts();
+      }
+    };
+
+    if (feedWrapper) {
+      // console.log('feedWrapper found');
+      feedWrapper.addEventListener('scroll', handleScroll);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      if (feedWrapper) {
+        feedWrapper.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [handleAddPosts]);
+
+
 
 
   // USER INPUT TO TRIGGER POST FETCHING
@@ -485,17 +527,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       {/* </div> */}
     </>
   );
-  const handleAddPosts = () => {
-    if (displayType === 'recent') {
-      addToRecentPosts();
-    }
-    if (displayType === 'category') {
-      addToTagResultPosts();
-    }
-    if (displayType === 'search') {
-      addToSearchResultPosts();
-    }
-  }
+
 
   if (!isOnline) {
     return (
@@ -504,7 +536,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
 
   return (
-    <div className='feedWrapper' >
+    <div className='feedWrapper' ref={feedWrapperRef}>
       <div className={`slideUp`}>
         <WelcomeSlideshow />
         <SearchAndFilterBar
