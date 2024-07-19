@@ -12,7 +12,7 @@
   resize: none;
   font-size: 2rem;
   display: block;
-  color: #0068a8;
+  color: var(--titleBlue);
   width: 100%;
   height: fit-content;
   text-align: left;
