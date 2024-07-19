@@ -34,7 +34,7 @@ export default function Home({ children }) {
     console.log('PLAY INTRO: ', playIntro)
     console.log('TYPE: ', typeof playIntro)
 
-    if (playIntro === null) {
+    if (playIntro !== 't') {
       setIntroRunning(false)
     }
   }, [playIntro])

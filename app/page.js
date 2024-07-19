@@ -9,7 +9,7 @@ export default function Home() {
 
 
   useEffect(() => {
-    router.push('/home?intro')
+    router.push('/home?intro=t')
   }, [])
 
   // const welcomeModal = (
