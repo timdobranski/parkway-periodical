@@ -55,7 +55,7 @@
   perspective: 1000px;
   max-height: 150px;
   max-width: none;
-  filter: drop-shadow(-5px 5px 5px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, .5));
   z-index: 1 ;
   /* overflow: hidden; */
   /* border: solid red 2px; */
@@ -76,6 +76,7 @@
   max-height: 150px;
   min-width: 0;
   height: auto;
+  /* filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2)); */
   /* border: solid rgb(255, 251, 0) 4px; */
 }
 /* Common styles for each item */

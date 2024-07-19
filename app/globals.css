@@ -169,7 +169,6 @@
   height: calc(100vh - 100px);
   border: solid rgb(255, 255, 255) 4px;
   border-bottom: 0;
-  border-bottom: dashed red 4px;
   padding: 2rem 1.5rem 4rem calc(1.5rem + 8px);
   display: flex;
   flex-direction: column;
