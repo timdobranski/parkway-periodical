@@ -119,6 +119,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   useEffect(() => {
     // console.log('CATEGORY TAG CHANGED: ', tagId)
     if (tagId) {
+      removeQueryString();
       addToTagResultPosts();
     } else {
       resetPosts();
@@ -420,14 +421,14 @@ export default function Home({ introRunning, setIntroRunning }) {
       {/* <div className='slideUp'> */}
 
 
-      {searchQuery &&
+      {displayType === 'search' &&
         <>
           <p className={styles.searchStatus} style={ searchQuery ? {display: 'inline-block'} : {display: 'none'}}>
             {`Search results for "${searchQuery}"`}
           </p>
         </>
       }
-      {tagId &&
+      {displayType === 'category' &&
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
             <span className={styles.tagLabel}>
@@ -551,10 +552,10 @@ export default function Home({ introRunning, setIntroRunning }) {
 
         {renderedPosts}
 
-        {noMorePosts ?
-          <p className='centeredWhiteText'>{`You've reached the end! No more posts to display.`}</p>
-          :
-          <button className={styles.viewStatusButton} onClick={handleAddPosts}>Fetch More Posts</button>}
+        {noMorePosts && posts.length ?
+          <p className='centeredWhiteText'>{`You've reached the end! No more posts to display.`}</p> :
+          null
+        }
 
       </div>
     </div>

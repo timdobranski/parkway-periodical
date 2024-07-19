@@ -123,7 +123,7 @@ export default function List() {
   return (
     <div className='adminFeedWrapper'>
       <div className='editablePost'>
-        <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : item === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
+        <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : type === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
         <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
           const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
           type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)

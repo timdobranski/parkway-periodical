@@ -244,10 +244,13 @@ IMAGE RELATED CLASSES
   position: fixed;
   right: 0;
   bottom: 0;
+  margin: 0;
   z-index: 20;
-  background-color: rgba(255, 255, 255, .8);
-color: black;
+  background-color: rgba(255, 255, 255, .6);
+  backdrop-filter: blur(5px);
+  color: black;
   padding: .25rem .5rem;
+  border: none;
 }
 .creditLink {
   /* color: white; */
@@ -283,6 +286,6 @@ color: black;
     font-size: 1rem;
     width: 100%;
     text-align: center;
-    border-top-left-radius: 10px;
+    /* border-top-left-radius: 10px; */
   }
 }
