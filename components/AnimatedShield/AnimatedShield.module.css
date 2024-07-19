@@ -1,19 +1,45 @@
 @keyframes spin {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 .loadingPlaceholder {
   position: relative;
   width: 150px; /* Set to your image size */
   height: 150px; /* Set to your image size */
   overflow: visible;
-  opacity: 0;
   display: block;
 }
+
+.loadingPlaceholder .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/animatedShield/shield2.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(0) invert(.1) drop-shadow(0 0 7px rgba(255, 255, 255, 1));
+
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.loadingPlaceholder .loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0 auto;
+  transform: translate(-50%, -50%);
+  height: 30%;
+  width: 30%;
+  z-index: 10;
+  color: white;
+  animation: spin 1.5s linear infinite;
+  transform-origin: center;
+}
+
 .wrapper {
   position: relative;
   width: 150px;
@@ -182,9 +208,9 @@
   .atom {
     animation:
     swirl-in-from-left 1.5s linear forwards,
-    pop 0.5s ease-out 1.5s forwards, /* Assuming you want the pop to happen right after the initial animation */
-    continuous-rotation 5s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
-transform-origin: center;
+    pop-and-rotate 0.5s linear 1.5s, /* Assuming you want the pop to happen right after the initial animation */
+    continuous-3d-rotation 4s linear 2s infinite; /* Adding a delay equal to the duration of the first two animations */
+    transform-origin: center;
   }
   .soccer {
     animation: swirl-in-from-right 1.5s linear forwards;

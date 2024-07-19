@@ -85,31 +85,58 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
 
   // detect user reaching the bottom of the feed and trigger fetching more posts
+  // useEffect(() => {
+  //   // console.log('scroll useEffect ran');
+  //   const feedWrapper = feedWrapperRef.current;
+
+  //   const handleScroll = () => {
+  //     const isBottom = feedWrapper.scrollHeight - feedWrapper.scrollTop <= feedWrapper.clientHeight + 1;
+  //     console.log(`scrollTop: ${feedWrapper.scrollTop}, scrollHeight: ${feedWrapper.scrollHeight}, clientHeight: ${feedWrapper.clientHeight}`);
+  //     if (isBottom) {
+  //       console.log('scroll condition met, fetching more posts');
+  //       handleAddPosts();
+  //     }
+  //   };
+
+  //   if (feedWrapper) {
+  //     // console.log('feedWrapper found');
+  //     feedWrapper.addEventListener('scroll', handleScroll);
+  //   }
+
+  //   // Cleanup the event listener
+  //   return () => {
+  //     if (feedWrapper) {
+  //       feedWrapper.removeEventListener('scroll', handleScroll);
+  //     }
+  //   };
+  // }, [handleAddPosts]);
+
   useEffect(() => {
-    // console.log('scroll useEffect ran');
     const feedWrapper = feedWrapperRef.current;
 
     const handleScroll = () => {
+      console.log(`how far scrolled: ${feedWrapper.scrollTop}, height of post content: ${feedWrapper.scrollHeight}, feedwrapper height: ${feedWrapper.clientHeight}`);
       const isBottom = feedWrapper.scrollHeight - feedWrapper.scrollTop <= feedWrapper.clientHeight + 1;
-      // console.log(`scrollTop: ${feedWrapper.scrollTop}, scrollHeight: ${feedWrapper.scrollHeight}, clientHeight: ${feedWrapper.clientHeight}`);
       if (isBottom) {
-        // console.log('scroll condition met, fetching more posts');
+        console.log('scroll condition met, fetching more posts');
         handleAddPosts();
       }
     };
 
     if (feedWrapper) {
-      // console.log('feedWrapper found');
       feedWrapper.addEventListener('scroll', handleScroll);
+      feedWrapper.addEventListener('touchmove', handleScroll); // Add touchmove listener for mobile devices
     }
 
-    // Cleanup the event listener
+    // Cleanup the event listeners
     return () => {
       if (feedWrapper) {
         feedWrapper.removeEventListener('scroll', handleScroll);
+        feedWrapper.removeEventListener('touchmove', handleScroll); // Remove touchmove listener
       }
     };
   }, [handleAddPosts]);
+
 
 
 
@@ -432,7 +459,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         <>
           <p className={styles.viewingPostsMessage}>{`Viewing posts tagged as `}
             <span className={styles.tagLabel}>
-              {postTags.find(tag => tag.id === tagId).name}
+              {postTags.find(tag => tag.id === tagId)?.name}
             </span>
           </p>
         </>
