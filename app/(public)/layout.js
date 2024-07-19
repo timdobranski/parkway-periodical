@@ -31,8 +31,10 @@ export default function Home({ children }) {
   }, [loadedImages]);
 
   useEffect(() => {
-    // console.log('PLAY INTRO: ', playIntro)
-    if (!playIntro || playIntro && playIntro !== 't') {
+    console.log('PLAY INTRO: ', playIntro)
+    console.log('TYPE: ', typeof playIntro)
+
+    if (playIntro === null) {
       setIntroRunning(false)
     }
   }, [playIntro])

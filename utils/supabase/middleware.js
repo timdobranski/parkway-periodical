@@ -41,7 +41,8 @@ export async function updateSession(request) {
     url.pathname = '/home'
 
     const params = new URLSearchParams(url.search);
-    params.set('intro', 't');
+    params.append('intro', '');
+    // params.set('intro', 't');
     url.search = params.toString();
 
     return NextResponse.redirect(url)

@@ -49,7 +49,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagId, setTagId] = useState('')
   const [tagResultPosts, setTagResultPosts] = useState({}); // separate array of posts from tag results
 
-  const postFetchLimit = 2;
+  const postFetchLimit = 5;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
   // ON PAGE MOUNT
@@ -117,9 +117,17 @@ export default function Home({ introRunning, setIntroRunning }) {
     const handleScroll = () => {
       console.log(`how far scrolled: ${feedWrapper.scrollTop}, height of post content: ${feedWrapper.scrollHeight}, feedwrapper height: ${feedWrapper.clientHeight}`);
       const isBottom = feedWrapper.scrollHeight - feedWrapper.scrollTop <= feedWrapper.clientHeight + 1;
-      if (isBottom) {
+      if (isBottom && !noMorePosts) {
         console.log('scroll condition met, fetching more posts');
-        handleAddPosts();
+        if (displayType === 'recent') {
+          addToRecentPosts();
+        }
+        if (displayType === 'category') {
+          addToTagResultPosts();
+        }
+        if (displayType === 'search') {
+          addToSearchResultPosts();
+        }
       }
     };
 
@@ -136,10 +144,6 @@ export default function Home({ introRunning, setIntroRunning }) {
       }
     };
   }, [handleAddPosts]);
-
-
-
-
 
   // USER INPUT TO TRIGGER POST FETCHING
   // when user selects post category, get posts with that tag and add to the category's post array
