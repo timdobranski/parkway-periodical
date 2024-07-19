@@ -270,19 +270,8 @@
     padding: 0;
     border: solid red 2px;
   }
-  .enter {
-    padding: 1rem;
-    margin: 1rem;
-    font-size: 1.5rem;
-    font-weight: normal;
-    color: black;
-    /* border: solid white 2px; */
-  }
-  .enter:hover {
-    cursor: pointer;
-    background-color: rgb(34, 171, 240);
-    padding: 1rem;
-    border-radius: 10px;
+  .enterButton {
+    margin-top: 2rem;
   }
   .homeWrapper {
     position: absolute;
