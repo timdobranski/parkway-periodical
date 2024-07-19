@@ -48,7 +48,7 @@
   background-repeat: no-repeat;
   background-position: center;
   overflow: visible;
-  animation: fadeIn 2s linear forwards;
+  animation: fadeIn 1s linear forwards;
   opacity: 0;
   margin: 0;
   perspective: 1000px;
@@ -70,7 +70,7 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0; /* Start fully transparent */
-  animation: fadeIn 0s linear 1.5s forwards, pop .5s linear 1.5s;
+  animation: fadeIn 0s linear 1.125s forwards, pop .375s linear 1.125s;
   z-index: 2;
   max-height: 150px;
   min-width: 0;
@@ -191,16 +191,16 @@
 
 .atom {
   animation:
-  swirl-in-from-left-desktop 1.5s linear forwards,
-  pop-and-rotate 0.5s linear 1.5s,
-  continuous-3d-rotation 4s linear 2s infinite;
+  swirl-in-from-left-desktop 1.125s linear forwards,
+  pop-and-rotate 0.375s linear 1.125s,
+  continuous-3d-rotation 4s linear 1.5s infinite;
   transform-origin: center;
 }
 .soccer {
-  animation: swirl-in-from-right-desktop 1.5s linear forwards;
+  animation: swirl-in-from-right-desktop 1.125s linear forwards;
 }
 .skateboard {
-  animation: swirl-in-from-top-desktop 1.5s linear forwards;
+  animation: swirl-in-from-top-desktop 1.125s linear forwards;
 }
 
 
