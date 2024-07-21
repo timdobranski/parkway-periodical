@@ -96,9 +96,9 @@ export default function Intro({ introRunning, setFinishedLoading, loadedImages, 
     setLoadedImages(prev => prev + 1);
   };
 
-  useEffect(() => {
-    console.log('INTRO RUNNING VALUE IN BACKGROUND GALLERY: ', introRunning)
-  }, [introRunning])
+  // useEffect(() => {
+  //   console.log('INTRO RUNNING VALUE IN BACKGROUND GALLERY: ', introRunning)
+  // }, [introRunning])
 
   return (
     <>

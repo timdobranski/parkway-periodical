@@ -115,10 +115,8 @@ export default function Home({ introRunning, setIntroRunning }) {
     const feedWrapper = feedWrapperRef.current;
 
     const handleScroll = () => {
-      console.log(`how far scrolled: ${feedWrapper.scrollTop}, height of post content: ${feedWrapper.scrollHeight}, feedwrapper height: ${feedWrapper.clientHeight}`);
       const isBottom = feedWrapper.scrollHeight - feedWrapper.scrollTop <= feedWrapper.clientHeight + 1;
       if (isBottom && !noMorePosts) {
-        console.log('scroll condition met, fetching more posts');
         if (displayType === 'recent') {
           addToRecentPosts();
         }
@@ -241,10 +239,10 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // HELPER EFFECTS TO LOG VALUES
   useEffect(() => {
-    console.log('POSTS CHANGED: ', posts)
+    // console.log('POSTS CHANGED: ', posts)
   }, [posts])
   useEffect(() => {
-    console.log('CATEGORY POSTS CHANGED: ', tagResultPosts)
+    // console.log('CATEGORY POSTS CHANGED: ', tagResultPosts)
   }, [tagResultPosts])
 
   const removeDuplicates = (arr, key) => {
@@ -422,7 +420,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // should run when 'view all posts' button is clicked or when all is selected from the dropdown
   const resetPosts = () => {
-    console.log('resetting posts')
+    // console.log('resetting posts')
     setDisplayType('recent');
 
     if (tagId) {setTagId('');} // if run from the dropdown, will already be null. if run from button, will be set to null

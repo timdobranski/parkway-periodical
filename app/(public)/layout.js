@@ -31,16 +31,12 @@ export default function Home({ children }) {
   }, [loadedImages]);
 
   useEffect(() => {
-    console.log('PLAY INTRO: ', playIntro)
-    console.log('TYPE: ', typeof playIntro)
-
     if (playIntro !== 't') {
       setIntroRunning(false)
     }
   }, [playIntro])
 
   useEffect(() => {
-    console.log('INTRO RUNNING in layout: ', introRunning)
     if (introRunning === false) {
       setIntroOver(true)
     }

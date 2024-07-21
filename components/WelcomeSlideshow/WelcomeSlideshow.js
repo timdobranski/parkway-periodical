@@ -19,26 +19,25 @@ export default function WelcomeSlideshow() {
   const router = useRouter();
   const { introOver } = useAdmin();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .gt('date', new Date().toISOString()) // Ensure dates are in the future
-        .order('date', { ascending: true })  // Sort by event_date in ascending order
-        .limit(5);
-      if (error) {
-        console.error('Error fetching events: ', error);
-      } else {
-        console.log('data: ', data)
-        setEvents(data);
-      }
-    }
-    fetchEvents();
-  }, []);
+  // useEffect(() => {
+  //   const fetchEvents = async () => {
+  //     const { data, error } = await supabase
+  //       .from('events')
+  //       .select('*')
+  //       .gt('date', new Date().toISOString()) // Ensure dates are in the future
+  //       .order('date', { ascending: true })  // Sort by event_date in ascending order
+  //       .limit(5);
+  //     if (error) {
+  //       console.error('Error fetching events: ', error);
+  //     } else {
+  //       setEvents(data);
+  //     }
+  //   }
+  //   fetchEvents();
+  // }, []);
 
   useEffect(() => {
-    console.log('INTRO OVER: ', introOver)
+    // console.log('INTRO OVER: ', introOver)
     if (introOver === true) {
       setAutoplay(true);
     }
