@@ -29,10 +29,10 @@ const formDataAndIntroText = {
       description: '',
       expires: '',
       deleteOnExpire: false,
-      duration: '',
+      duration: 'Year Long',
       cte: false,
       image: '',
-      pathway: ''
+      pathway: 'Traditional Electives'
     },
     introText: `Use this form to add or update an elective on the website. To help keep the electives up to date, you can set an expiration date for your elective. Once the date
     is reached, you can set your elective to either delete automatically, or to remind you to update it.`

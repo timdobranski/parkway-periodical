@@ -109,6 +109,12 @@ export default function NewContentPage() {
     }
   }, [croppedPhoto])
 
+  useEffect(() => {
+    if (croppedPhotoUrl) {
+      formData.image = croppedPhotoUrl;
+    }
+  }, [croppedPhotoUrl])
+
 
   // update whichever field is being edited
   const handleChange = (e) => {
@@ -131,15 +137,65 @@ export default function NewContentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+
+
+    for (const key in formData) {
+      if (
+        key !== 'expires' &&
+        key !== 'author' &&
+        key !== 'deleteOnExpire' &&
+        key !== 'image' &&
+        key !== 'cte' && // Add 'cte' to the exceptions
+        !formData[key] &&
+        formData[key] !== false // Allow false as a valid value
+      ) {
+        alert(`${key} is blank. Please fill in all inputs before adding this ${singularType}.`);
+        return;
+      }
+    }
+
+
+
     // if there's an id, we're updating an existing item, so we need to include it in the form data
     if (id) formData.id = id;
 
     // sanitize date field for database if empty
-    formData.expires = expires || null
+    if (formData.expires === '') {
+      formData.expires = null;
+    }
+
+    // if there's a cropped photo, upload it, then include the url in the form data
+    // if a user is editing an existing item, the photo will not be replaced unless they upload a new one and crop it
+
+    if (croppedPhoto) {
+      const filepath = `${type}/${formData.title || formData.name}/cropped`;
+
+      const { data, error } = await supabase.storage
+        .from('contentTypes')
+        .upload(filepath, croppedPhoto, { upsert: true });
+
+        if (error) {
+          console.error('Error uploading photo:', error);
+          return;
+        }
+
+      const { data: publicUrlData, error: publicUrlError } = supabase.storage
+        .from('contentTypes')
+        .getPublicUrl(filepath);
+
+      if (publicUrlError) {
+        console.error('Error getting public URL:', publicUrlError);
+        return;
+      }
+
+      formData.image = publicUrlData.publicUrl;
+    }
+
+    formData.author = user.id;
 
     // Determine the operation based on linkId's presence
     const operation = id ? 'update' : 'insert';
-
+    console.log('formData before upload: ', formData);
     const { data, error } = await supabase
       .from(type)
       .upsert(formData);
@@ -179,8 +235,6 @@ export default function NewContentPage() {
         <h1 className={styles.label}>Choose Photo</h1>
         <p>Choose a photo to represent your {singularType}. If you skip this step, a placeholder photo will be added.</p>
 
-
-
         {/* // if the photo is not the default placeholder */}
 
         {cropActive ?
@@ -200,15 +254,15 @@ export default function NewContentPage() {
             <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
 
             {photo && photo !== `/images/${type}/${singularType}Placeholder.webp` ?
-            <div className={styles.cropControlsWrapper}>
-              <div className={styles.cropLabelWrapper} onClick={() => setCropActive(true)} >
-                <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} />
-                <p className={styles.cropLabel}>Crop Photo</p>
-              </div>
-              <div className={styles.removePhotoWrapper} onClick={() => setCropActive(true)} >
-                <FontAwesomeIcon icon={faX} className={styles.cropIcon} />
-                <p className={styles.cropLabel}>Remove Photo</p>
-              </div>
+              <div className={styles.cropControlsWrapper}>
+                <div className={styles.cropLabelWrapper} onClick={() => setCropActive(true)} >
+                  <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} />
+                  <p className={styles.cropLabel}>Crop Photo</p>
+                </div>
+                <div className={styles.removePhotoWrapper} onClick={() => setCropActive(true)} >
+                  <FontAwesomeIcon icon={faX} className={styles.cropIcon} />
+                  <p className={styles.cropLabel}>Remove Photo</p>
+                </div>
               </div>
               :
               <p className={styles.placeholderImageLabel}>Placeholder image set</p>
