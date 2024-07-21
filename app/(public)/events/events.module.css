@@ -4,6 +4,8 @@
   flex-direction: row;
   background-color: rgba(0, 0, 0, .5);
   border: solid white 2px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .infoWrapper, .contentWrapper {
   padding: .75rem;
