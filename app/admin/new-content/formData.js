@@ -56,8 +56,6 @@ const formDataAndIntroText = {
     formData: {
       title: '',
       description: '',
-      expires: '',
-      deleteOnExpire: false,
       author: '',
       image: '',
       date: '',

@@ -8,6 +8,7 @@ import { faAdd, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-i
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useAdmin } from '../../../contexts/AdminContext';
+import dateFormatter from '../../../utils/dateFormatter';
 
 export default function List() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
@@ -137,8 +138,8 @@ export default function List() {
                 <div className={styles.collapsedContentWrapper}>
                   <div className={styles.titleWrapper}>
                     <FontAwesomeIcon
-                      icon={expanded === index ? faChevronUp : faChevronDown}
-                      className={styles.dropdownIcon}
+                      icon={faChevronDown}
+                      className={`${styles.dropdownIcon} ${expanded === index ? styles.collapseIcon : ''}`}
                       onClick={() => {handleToggle(index)}}
                     />
                     <h3 className={`smallerPostTitle ${styles.truncate} `} onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
@@ -166,6 +167,12 @@ export default function List() {
                   <>
                     <p className={styles.metadataLabel}>{`POSITION:`}</p>
                     <p className={styles.metadata}>{`${item.position}`}</p>
+                  </>
+                  }
+                 {item.date &&
+                  <>
+                    <p className={styles.metadataLabel}>{`DATE:`}</p>
+                    <p className={styles.metadata}>{dateFormatter(item.date)}</p>
                   </>
                   }
                   {item.description &&

@@ -142,6 +142,8 @@ export default function NewContentPage() {
     for (const key in formData) {
       if (
         key !== 'expires' &&
+        key !== 'startTime' &&
+        key !== 'endTime' &&
         key !== 'author' &&
         key !== 'deleteOnExpire' &&
         key !== 'image' &&
