@@ -121,7 +121,7 @@ export default function WelcomeSlideshow() {
     </div>
   );
 
-  const slides= [welcomeImage, familyResourceCenter, archiveSlide, storeLink, upcomingEvents];
+  const slides= [welcomeImage, familyResourceCenter, archiveSlide, storeLink];
 
   // const slides= [welcomeImage];
 

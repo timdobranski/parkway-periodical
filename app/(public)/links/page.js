@@ -34,8 +34,8 @@ export default function LinksPage() {
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>LINKS</h1>
         <p className='centeredWhiteText marginBelow'>{`Below you'll find links to helpful resources for Parkway families:`}</p>
-        <div className={styles.selectCategoryWrapper}>
-        <select className={styles.selectCategory}>
+        <div className='selectWrapper'>
+        <select className='selectContent'>
           <option value="default">All Resources</option>
           <option value="default">ESS</option>
           <option value="default">Library</option>
