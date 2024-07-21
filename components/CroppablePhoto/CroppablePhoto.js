@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCrop, faPencil } from '@fortawesome/free-solid-svg-icons'
 import userPhotos from '../../utils/userPhotos';
 
-
-export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, afterUpload }) {
+// uploadOrSet prop determines whether to upload photo immediately after crop, or just set it in the parent component's state using setCroppedPhoto
+export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, setCropActive, afterUpload, uploadOrSet, setCroppedPhoto }) {
   const supabase = createClient();
   const [crop, setCrop] = useState(
     {
@@ -42,6 +42,19 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
     console.log('crop state: ', completedCrop)
   }, [completedCrop])
 
+  useEffect(() => {
+    const width = 400; // Set your desired default width here
+    const height = width / ratio;
+
+    setCrop({
+      unit: 'px',
+      width: width,
+      height: height,
+      x: 0,
+      y: 0,
+      aspect: ratio
+    });
+  }, [ratio]);
 
 
   const uploadCroppedPhoto = async (e) => {
@@ -82,21 +95,28 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp'));
     const file = new File([blob], 'cropped.webp', { type: 'image/webp' });
     const url = `${filePath}/cropped?t=${Date.now()}`
-    try {
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .upload(`${url}`, file, { upsert: true });
 
-      if (error) {
-        console.error('Error uploading file:', error);
-        return;
+    if (uploadOrSet === 'set') {
+      // Use setCroppedPhoto to assign the URL to the cropped image
+      setCroppedPhoto(file);
+
+    } else {
+      try {
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(`${url}`, file, { upsert: true });
+
+        if (error) {
+          console.error('Error uploading file:', error);
+          return;
+        }
+        // const { success, error, value } = await userPhotos.setProfilePhoto(email, 'cropped', file)
+
+        // console.log('Uploaded file path:', `${filePath}/cropped`);
+        await afterUpload();
+      } catch (error) {
+        console.error('Error during upload or fetching cropped photo:', error);
       }
-      // const { success, error, value } = await userPhotos.setProfilePhoto(email, 'cropped', file)
-
-      // console.log('Uploaded file path:', `${filePath}/cropped`);
-      await afterUpload();
-    } catch (error) {
-      console.error('Error during upload or fetching cropped photo:', error);
     }
   };
 

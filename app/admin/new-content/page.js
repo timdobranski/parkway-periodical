@@ -7,80 +7,20 @@ import styles from './new-content.module.css';
 import { useRouter } from 'next/navigation';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPencil, faCrop, faX } from '@fortawesome/free-solid-svg-icons';
 import { useAdmin } from '../../../contexts/AdminContext';
+import formDataAndIntroText from './formData';
 
 export default function NewContentPage() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
+  const { linkFormData, clubFormData, electiveFormData, staffFormData, eventFormData } = formDataAndIntroText;
   const supabase = createClient();
   const router = useRouter()
-  const [photo, setPhoto] = useState('');
   const [croppedPhoto, setCroppedPhoto] = useState('');
+  const [croppedPhotoUrl, setCroppedPhotoUrl] = useState('');
   const [cropActive, setCropActive] = useState(false);
-  // const [step, setStep] = useState(1); // step 1: add info, step 2: add/crop photo
   const [mode, setMode] = useState('');
 
-  // define which values should be collected for each content type
-  const linkFormData = {
-    title: '',
-    url: '',
-    description: '',
-    category: '',
-    expires: '',
-    deleteOnExpire: false
-  };
-  const clubFormData = {
-    title: '',
-    when: '',
-    image: '',
-    description: '',
-    expires: '',
-    deleteOnExpire: false
-  };
-  const electiveFormData = {
-    title: '',
-    description: '',
-    expires: '',
-    deleteOnExpire: false,
-    duration: '',
-    cte: false,
-    image: '',
-    pathway: ''
-  };
-  const staffFormData = {
-    name: '',
-    position: '',
-    image: '',
-    email: '',
-    phone: '',
-    bio: '',
-    department: '',
-    expires: '',
-    deleteOnExpire: false
-  };
-  const eventFormData = {
-    title: '',
-    description: '',
-    expires: '',
-    deleteOnExpire: false,
-    author: '',
-    image: '',
-    date: '',
-    startTime: '',
-    endTime: ''
-  };
-  const introText = {
-    links: `Use this form to add or update a link on the website. Links must have a title and a URL.
-    Links often change, especially at the start of each new school year. You can set an expiration date for your links if you like.`,
-    staff: `Use this form to add or update a new staff member's information and photo on the staff section of the website. This won't invite that member to join the app.
-    If your account supports that feature, you can invite new staff to the app via the Settings page.`,
-    electives: `Use this form to add or update an elective on the website. To help keep the electives up to date, you can set an expiration date for your elective. Once the date
-    is reached, you can set your elective to either delete automatically, or to remind you to update it.`,
-    clubs: `Use this form to add or update a school club on the website. To help keep the clubs up to date, you can set an expiration date for your club. Once the date
-    is reached, you can set your club to either delete automatically, or to remind you to update it.`,
-    events: `Use this form to add or update an event on the website. To help keep the events up to date, you can set an expiration date for your event. Once the date
-    is reached, you can set your event to either delete automatically, or to remind you to update it.`
-  }
   // initialize form data state
   const [formData, setFormData] = useState({});
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -90,6 +30,12 @@ export default function NewContentPage() {
   const id = searchParams.get('id');
   const type = searchParams.get('type');
 
+
+  // convenience variable for singular content type
+  const singularType = type.slice(-1) === 's' ? type.slice(0, -1) : type;
+  const [photo, setPhoto] = useState(`/images/${type}/${singularType}Placeholder.webp`);
+  const introText = formDataAndIntroText[`${singularType}FormData`].introText;
+
   useEffect(() => {
     if (id) {
       setMode('edit');
@@ -97,8 +43,6 @@ export default function NewContentPage() {
       setMode('create');
     }
   }, [id])
-  // convenience variable for singular content type
-  const singularType = type.slice(-1) === 's' ? type.slice(0, -1) : type;
 
   useEffect(() => {
     console.log('Form data changed: ', formData);
@@ -133,19 +77,19 @@ export default function NewContentPage() {
         // no existing data, so set form data to initial values defined above
         switch (type) {
           case 'links':
-            setFormData(linkFormData);
+            setFormData(linkFormData.formData);
             break;
           case 'clubs':
-            setFormData(clubFormData);
+            setFormData(clubFormData.formData);
             break;
           case 'electives':
-            setFormData(electiveFormData);
+            setFormData(electiveFormData.formData);
             break;
           case 'staff':
-            setFormData(staffFormData);
+            setFormData(staffFormData.formData);
             break;
           case 'events':
-            setFormData(eventFormData);
+            setFormData(eventFormData.formData);
             break;
           default:
             console.error(`Unsupported type: ${type}`);
@@ -155,6 +99,15 @@ export default function NewContentPage() {
     };
     fetchLinkData();
   }, [id, type]);
+
+  useEffect(() => {
+    setCropActive(false);
+    if (croppedPhoto) {
+      const url = URL.createObjectURL(croppedPhoto);
+      setCroppedPhotoUrl(url);
+      return () => URL.revokeObjectURL(url); // Cleanup URL object when component unmounts or URL changes
+    }
+  }, [croppedPhoto])
 
 
   // update whichever field is being edited
@@ -171,6 +124,7 @@ export default function NewContentPage() {
     if (file) {
       const photoUrl = URL.createObjectURL(file);
       setPhoto(photoUrl);
+      setCropActive(true);
     }
   };
   // submit the form data to the database
@@ -219,33 +173,50 @@ export default function NewContentPage() {
   }
 
   const editPhoto = (
-    <div className={styles.photoUploadWrapper}>
-      {mode === 'edit' ?
-        <label className={styles.label}>Photo</label> :
-        <>
-          <h1 className='pageTitle'>CHOOSE PHOTO</h1>
-          <p>Choose a photo to represent your {singularType}. If you skip this step, a placeholder photo will be added.</p>
-        </>
-      }
-      <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
+    <div className={styles.formSection}>
+      <div className={styles.photoUploadWrapper}>
 
-      {photo && photo !== `/images/${type}/${singularType}Placeholder.webp` &&
-      cropActive ?
-        <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.cropIcon} onClick={() => setCropActive(true)} /> :
-        <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} onClick={() => setCropActive(true)} />}
+        <h1 className={styles.label}>Choose Photo</h1>
+        <p>Choose a photo to represent your {singularType}. If you skip this step, a placeholder photo will be added.</p>
 
-      {cropActive ?
-        <CroppablePhoto
-          photo={photo}
-          ratio={2.6}
-          bucket={'contentTypes'}
-          filePath={`${type}/${formData.title || formData.name}`}
-          setCropActive={setCropActive}
-          afterUpload={afterPhotoUpload}
-        />
-        :
-        <img src={photo} className={styles.existingImagePreview}/>
-      }
+
+
+        {/* // if the photo is not the default placeholder */}
+
+        {cropActive ?
+          <CroppablePhoto
+            photo={photo}
+            ratio={2.6}
+            bucket={'contentTypes'}
+            filePath={`${type}/${formData.title || formData.name}`}
+            setCropActive={setCropActive}
+            afterUpload={afterPhotoUpload}
+            uploadOrSet='set'
+            setCroppedPhoto={setCroppedPhoto}
+          />
+          :
+          <>
+
+            <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
+
+            {photo && photo !== `/images/${type}/${singularType}Placeholder.webp` ?
+            <div className={styles.cropControlsWrapper}>
+              <div className={styles.cropLabelWrapper} onClick={() => setCropActive(true)} >
+                <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} />
+                <p className={styles.cropLabel}>Crop Photo</p>
+              </div>
+              <div className={styles.removePhotoWrapper} onClick={() => setCropActive(true)} >
+                <FontAwesomeIcon icon={faX} className={styles.cropIcon} />
+                <p className={styles.cropLabel}>Remove Photo</p>
+              </div>
+              </div>
+              :
+              <p className={styles.placeholderImageLabel}>Placeholder image set</p>
+            }
+            <img src={croppedPhotoUrl !== '' ? croppedPhotoUrl : photo} className={styles.existingImagePreview}/>
+          </>
+        }
+      </div>
     </div>
   )
 
@@ -292,23 +263,22 @@ export default function NewContentPage() {
         <input type='date' name='date' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
       </div>
       }
+      {formData.startTime !== undefined &&
       <div className={styles.groupedFormSections}>
-        {formData.startTime !== undefined &&
-      <div className={styles.halfFormSection}>
-        <label htmlFor='description' className={styles.label}>Starts At:</label>
-        <input type='text' name='startTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.startTime} onChange={handleChange} />
-        <p className={styles.optional}>optional</p>
+        <div className={styles.halfFormSection}>
+          <label htmlFor='description' className={styles.label}>Starts At:</label>
+          <input type='text' name='startTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.startTime} onChange={handleChange} />
+          <p className={styles.optional}>optional</p>
 
-      </div>
-        }
-        {formData.endTime !== undefined &&
+        </div>
+
         <div className={styles.halfFormSection}>
           <label htmlFor='description' className={styles.label}>Ends At:</label>
           <input type='text' name='endTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.endTime} onChange={handleChange} />
           <p className={styles.optional}>optional</p>
         </div>
-        }
       </div>
+      }
       {formData.when !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>When We Meet</label>
@@ -345,7 +315,7 @@ export default function NewContentPage() {
       </div>
       }
 
-      {formData.image && editPhoto}
+      {formData.image !== undefined && editPhoto}
 
       {formData.expires !== undefined &&
       <div className={styles.formSection}>
@@ -378,7 +348,7 @@ export default function NewContentPage() {
 
         {/* page title & intro paragraph */ }
         <h1 className='pageTitle'>{mode === 'edit' ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
-        <p>{introText[type]}</p>
+        <p>{introText}</p>
 
         {formData && form}
 

@@ -68,12 +68,25 @@
   min-width: 0;
 }
 .existingImagePreview {
-  height: 250px;
-  width: 650px;
+  /* height: 250px; */
+  width: 100%;
   margin: 1rem 0;
   object-fit: cover;
   object-position: center;
-  padding-left: 2rem
+}
+.cropControlsWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+.photoUploadWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 .photoInput {
   color: var(--primary-blue);
@@ -95,4 +108,39 @@
 }
 .optional {
   margin: 0;
+}
+.cropLabelWrapper, .removePhotoWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem .5rem .5rem .5rem;
+  background-color: rgb(255, 255, 255);
+  padding: .5rem 1rem;
+  border: solid rgb(152, 152, 152) 1px;
+  border-radius: 5px;
+}
+.removePhotoWrapper {
+  background-color: rgb(255, 150, 150);
+  border: solid black 1px;
+
+}
+.cropLabelWrapper:hover {
+  cursor: pointer;
+  background-color: rgb(235, 235, 235);
+
+}
+.cropLabel {
+  margin: 0 .5rem;
+  font-size: 1rem;
+}
+.cropIcon {
+  color: rgb(0, 0, 0);
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0 .5rem;
+}
+.placeholderImageLabel {
+  font-size: 1rem;
+  margin: .25rem;
 }
