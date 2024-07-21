@@ -227,7 +227,7 @@ IMAGE RELATED CLASSES
 }
 /* used for the entire component wrapper after all images loaded */
 .fadeIn {
-  animation: fadeInAnimation 2s ease-out;
+  animation: fadeInAnimation 2s linear;
   background-image: url('/images/gradient3small2.webp');
   background-repeat: no-repeat;
   background-size: cover;

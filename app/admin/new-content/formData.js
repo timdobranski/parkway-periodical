@@ -4,7 +4,7 @@ const formDataAndIntroText = {
       title: '',
       url: '',
       description: '',
-      category: '',
+      category: 'All Resources',
       expires: '',
       deleteOnExpire: false
     },

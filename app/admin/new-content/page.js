@@ -137,7 +137,12 @@ export default function NewContentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
+    const ensureExternalUrl = (url) => {
+      if (!/^https?:\/\//i.test(url)) {
+        return `http://${url}`;
+      }
+      return url;
+    }
 
     for (const key in formData) {
       if (
@@ -156,8 +161,10 @@ export default function NewContentPage() {
       }
     }
 
-
-
+    //if the user has provided a url, make sure it starts with http to prevent local links
+    if (formData.url) {
+      formData.url = ensureExternalUrl(formData.url);
+    }
     // if there's an id, we're updating an existing item, so we need to include it in the form data
     if (id) formData.id = id;
 
@@ -176,10 +183,10 @@ export default function NewContentPage() {
         .from('contentTypes')
         .upload(filepath, croppedPhoto, { upsert: true });
 
-        if (error) {
-          console.error('Error uploading photo:', error);
-          return;
-        }
+      if (error) {
+        console.error('Error uploading photo:', error);
+        return;
+      }
 
       const { data: publicUrlData, error: publicUrlError } = supabase.storage
         .from('contentTypes')
@@ -367,6 +374,19 @@ export default function NewContentPage() {
           <option value="Medical Pathway">Medical Pathway</option>
           <option value="Engineering & Design Pathway">Engineering & Design Pathway</option>
           <option value="Business Technology & Design Pathway">Business Technology & Design Pathway</option>
+        </select>
+      </div>
+      }
+      {formData.category !== undefined &&
+      <div className={styles.formSection}>
+        <label htmlFor='reminder' className={styles.label}>Category</label>
+        <select  name='category' className={styles.onExpire} value={formData.category} onChange={handleChange}>
+          <option value="All Resources">No Category</option>
+          <option value="ESS">ESS</option>
+          <option value="Library">Library</option>
+          <option value="Cafeteria">Cafeteria</option>
+          <option value="PE">PE</option>
+          <option value="Counciling & Wellness">Counciling & Wellness</option>
         </select>
       </div>
       }

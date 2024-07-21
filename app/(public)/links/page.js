@@ -9,6 +9,8 @@ import Link from 'next/link';
 export default function LinksPage() {
   const supabase = createClient();
   const [linksData, setLinksData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All Resources');
+
 
   useEffect(() => {
     const getLinks = async () => {
@@ -28,6 +30,17 @@ export default function LinksPage() {
     getLinks();
   }, [])
 
+  useEffect(() => {
+
+  }, [])
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const filteredLinks = selectedCategory === 'All Resources'
+    ? linksData
+    : linksData.filter(link => link.category === selectedCategory);
 
   return (
     <div className='feedWrapper'>
@@ -35,14 +48,17 @@ export default function LinksPage() {
         <h1 className='whiteTitle'>LINKS</h1>
         <p className='centeredWhiteText marginBelow'>{`Below you'll find links to helpful resources for Parkway families:`}</p>
         <div className='selectWrapper'>
-        <select className='selectContent'>
-          <option value="default">All Resources</option>
-          <option value="default">ESS</option>
-          <option value="default">Library</option>
-          <option value="default">PE</option>
-        </select>
+          <select className='selectContent' onChange={handleCategoryChange} value={selectedCategory}>
+            <option value="All Resources">All Resources</option>
+            <option value="ESS">ESS</option>
+            <option value="Library">Library</option>
+            <option value="PE">PE</option>
+            <option value="Cafeteria">Cafeteria</option>
+            <option value="Counciling & Wellness">Counciling & Wellness</option>
+
+          </select>
         </div>
-        {linksData.length ? linksData.map((link, index) => {
+        {filteredLinks.length ? filteredLinks.map((link, index) => {
           return (
             <div className={styles.linkWrapper} key={index}>
               <Link href={link.url} className='whiteSubTitle centeredText'>{link.title}</Link>

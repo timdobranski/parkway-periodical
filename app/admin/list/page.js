@@ -181,6 +181,12 @@ export default function List() {
                     <p className={styles.metadata}>{item.description}</p>
                   </>
                   }
+                  {item.category &&
+                  <>
+                    <p className={styles.metadataLabel}>{`CATEGORY:`}</p>
+                    <p className={styles.metadata}>{item.category}</p>
+                  </>
+                  }
                   {item.bio &&
                   <>
                     <p className={styles.metadataLabel}>{`ABOUT ME:`}</p>
