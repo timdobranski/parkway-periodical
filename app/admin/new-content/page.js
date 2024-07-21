@@ -15,8 +15,9 @@ export default function NewContentPage() {
   const supabase = createClient();
   const router = useRouter()
   const [photo, setPhoto] = useState('');
+  const [croppedPhoto, setCroppedPhoto] = useState('');
   const [cropActive, setCropActive] = useState(false);
-  const [step, setStep] = useState(1); // step 1: add info, step 2: add/crop photo
+  // const [step, setStep] = useState(1); // step 1: add info, step 2: add/crop photo
   const [mode, setMode] = useState('');
 
   // define which values should be collected for each content type
@@ -57,6 +58,17 @@ export default function NewContentPage() {
     expires: '',
     deleteOnExpire: false
   };
+  const eventFormData = {
+    title: '',
+    description: '',
+    expires: '',
+    deleteOnExpire: false,
+    author: '',
+    image: '',
+    date: '',
+    startTime: '',
+    endTime: ''
+  };
   const introText = {
     links: `Use this form to add or update a link on the website. Links must have a title and a URL.
     Links often change, especially at the start of each new school year. You can set an expiration date for your links if you like.`,
@@ -69,17 +81,6 @@ export default function NewContentPage() {
     events: `Use this form to add or update an event on the website. To help keep the events up to date, you can set an expiration date for your event. Once the date
     is reached, you can set your event to either delete automatically, or to remind you to update it.`
   }
-  const eventFormData = {
-    title: '',
-    description: '',
-    expires: '',
-    deleteOnExpire: false,
-    author: '',
-    image: '',
-    date: '',
-    startTime: '',
-    endTime: ''
-  };
   // initialize form data state
   const [formData, setFormData] = useState({});
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -155,11 +156,7 @@ export default function NewContentPage() {
     fetchLinkData();
   }, [id, type]);
 
-  useEffect(() => {
-    if (step === 2) {
-      setPhoto(`/images/${type}/${singularType}Placeholder.webp`)
-    }
-  }, [step])
+
   // update whichever field is being edited
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -198,11 +195,8 @@ export default function NewContentPage() {
       alert(`There was an error creating your new ${singularType}. Please try again. If the issue persists, please contact support.`)
     } else {
       console.log(`Successfully ${operation}ed database:`, data);
-      if (mode === 'create') {
-        setStep(2)
-      } else {
-        router.push(`/admin/list?type=${type}`);
-      }
+      router.push(`/admin/list?type=${type}`);
+
     }
   };
   const afterPhotoUpload = async() => {
@@ -233,10 +227,13 @@ export default function NewContentPage() {
           <p>Choose a photo to represent your {singularType}. If you skip this step, a placeholder photo will be added.</p>
         </>
       }
-       <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
+      <input type='file' name='image' className={styles.photoInput} onChange={handlePhotoChange} />
+
       {photo && photo !== `/images/${type}/${singularType}Placeholder.webp` &&
-    cropActive ?  <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.cropIcon} onClick={() => setCropActive(true)} /> :
-    <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} onClick={() => setCropActive(true)} />}
+      cropActive ?
+        <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.cropIcon} onClick={() => setCropActive(true)} /> :
+        <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} onClick={() => setCropActive(true)} />}
+
       {cropActive ?
         <CroppablePhoto
           photo={photo}
@@ -312,7 +309,7 @@ export default function NewContentPage() {
         </div>
         }
       </div>
-     {formData.when !== undefined &&
+      {formData.when !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>When We Meet</label>
           <textarea name='when' className={styles.input} value={formData.when} onChange={handleChange} />
@@ -348,7 +345,7 @@ export default function NewContentPage() {
       </div>
       }
 
-      {mode === 'edit' && editPhoto}
+      {formData.image && editPhoto}
 
       {formData.expires !== undefined &&
       <div className={styles.formSection}>
@@ -379,18 +376,11 @@ export default function NewContentPage() {
     <div className='adminFeedWrapper'>
       <div className='post' style={{boxShadow: '0 0 5px rgba(0, 0, 0, .5)'}}>
 
-        {/* page title & intro paragraph */
-          step === 1 &&
-          <>
-            <h1 className='pageTitle'>{mode === 'edit' ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
-            <p>{introText[type]}</p>
-          </>
-        }
+        {/* page title & intro paragraph */ }
+        <h1 className='pageTitle'>{mode === 'edit' ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
+        <p>{introText[type]}</p>
 
-
-        {/* { render form if step 1, or render photo upload if BOTH (step 2 and in create mode). step 2 in edit mode should never happen */
-          step === 1 ? formData && form : mode === 'create' ? editPhoto : null
-        }
+        {formData && form}
 
       </div>
     </div>
