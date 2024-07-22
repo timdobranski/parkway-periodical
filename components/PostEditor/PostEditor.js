@@ -201,20 +201,21 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   const addFlexibleLayout = (columns) => {
     // Create an array with 'columns' number of empty objects
     const placeholders = Array.from({ length: columns }, () => ({
-      type: null, // No type initially
-      content: null, // No content initially
-      style: {}    // Empty style object, can be populated later based on type
+      type: 'undecided'
     }));
 
     const newBlock = {
       type: 'flexibleLayout',
-      contentBlocks: placeholders,
-      columns: columns
+      content: placeholders, // an array of objects with type: 'undecided'; replaced with actual content when the user selects the type of content to add
+      style: {}
     };
 
     setContentBlocks([...contentBlocks, newBlock]); // Append new block to the existing blocks
     setActiveBlock(contentBlocks.length); // Set active block to the newly added block
   };
+  const updateFlexibleLayout = (index, layoutIndex) => {
+
+  }
   const removeBlock = (index) => {
     // if the block has images in supabase, delete them
     if (contentBlocks[index].type === 'photo' || contentBlocks[index].type === 'carousel') {
@@ -414,26 +415,26 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
             <div
               key={index}
-              ref={el => blocksRef.current[index] = el}
-              className={`${orientation === 'vertical' ? 'blockWrapper' : 'columnBlockWrapper'} ${index === activeBlock ? 'outlined' : ''}`}
-              // style={{height: parseInt(block.style.height, 10) + block.style.y}}
+              // ref={el => blocksRef.current[index] = el}
+              className={`${'blockWrapper'} ${index === activeBlock ? 'outlined' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
                 if (index !== activeBlock) {setActiveBlock(index)}
               }}
             >
+              {/* any blocks that aren't of type 'title' will have an edit menu below them */}
               {activeBlock === index && block.type !== 'title' &&
-                  <BlockEditMenu
-                    setStatus={() => { toggleEditable(index)}}
-                    {...(block.type !== 'title' ? { removeBlock: () => removeBlock(index) } : {})}
-                    {...(index !== 1 ? { moveBlockUp: () => moveBlockUp(index) } : {})}
-                    {...(contentBlocks[index + 1] ? { moveBlockDown: () => moveBlockDown(index) } : {})}
+                <BlockEditMenu
+                  setStatus={() => { toggleEditable(index)}}
+                  {...(block.type !== 'title' ? { removeBlock: () => removeBlock(index) } : {})}
+                  {...(index !== 1 ? { moveBlockUp: () => moveBlockUp(index) } : {})}
+                  {...(contentBlocks[index + 1] ? { moveBlockDown: () => moveBlockDown(index) } : {})}
+                />}
 
-                  />}
               {block.type === 'flexibleLayout' && (
                 <ContentLayout
                   parentContentBlocks={contentBlocks}
-                  src={block.nestedBlocks}
+                  block={block}
                   setActiveBlock={setActiveBlock}
                   viewContext={viewContext}
                   orientation='horizontal'
@@ -442,6 +443,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
                   parentIndex={index}
                   parentActiveBlock={activeBlock}
+                  isEditable={index === activeBlock}
                 />
               )}
               {/* {block.type === 'undecided' && (
@@ -523,5 +525,4 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
       {feed}
     </div>
   )
-
 }

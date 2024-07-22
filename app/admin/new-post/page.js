@@ -67,6 +67,10 @@ export default function NewPostPage() {
   }, [categoryTags])
 
   useEffect(() => {
+    console.log('ACTIVE BLOCK CHANGED: ', activeBlock)
+  }, [activeBlock])
+
+  useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       // if we're editing an existing post, fetch the post content
@@ -116,7 +120,7 @@ export default function NewPostPage() {
         .upsert([post], { onConflict: 'author' });
 
       if (error) throw error;
-      console.log('Draft saved:', data);
+      // console.log('Draft saved:', data);
       setSaving(false);
     } catch (error) {
       console.error('Error updating draft:', error);
@@ -132,7 +136,7 @@ export default function NewPostPage() {
       if (error) {
         console.error('Error deleting draft:', error);
       } else {
-        console.log('Draft deleted');
+        // console.log('Draft deleted');
       }
     } catch (error) {
       console.error('Unexpected error:', error);
@@ -287,20 +291,21 @@ export default function NewPostPage() {
       console.error('Error publishing post:', error);
     }
   }
+  // adds a new block. if nestedIndex is provided, adds a block to an existing flexible layout block
   const addBlock = (newBlock, parentIndex = null, nestedIndex = null) => {
     // console.log('INSIDE ADDBLOCK: ', 'newBlock: ', newBlock, 'parentIndex: ', parentIndex, 'nested index: ', nestedIndex);
     if (parentIndex !== null && nestedIndex !== null) {
       const updatedBlocks = contentBlocks.map((block, idx) => {
         if (idx === parentIndex) {
           if (block.type === 'flexibleLayout') {
-            const updatedNestedBlocks = block.nestedBlocks.map((nestedBlock, nestedIdx) => {
+            const updatedNestedBlocks = block.content.map((nestedBlock, nestedIdx) => {
               if (nestedIdx === nestedIndex) {
                 return newBlock; // Explicit replacement, no merging
               }
               return nestedBlock;
             });
             // Explicitly define what gets returned to avoid unintentional key additions
-            return { type: block.type, nestedBlocks: updatedNestedBlocks };
+            return { type: block.type, content: updatedNestedBlocks };
           }
         }
         return block;
@@ -309,7 +314,9 @@ export default function NewPostPage() {
     } else {
       setContentBlocks([...contentBlocks, newBlock]);
     }
-    setActiveBlock(contentBlocks.length);
+    console.log('NESTED INDEX INSIDE ADDBLOCK: ', nestedIndex)
+    // only set the new block as active if it's not inside a nested layout
+    if (nestedIndex === null) {console.log('setting active block from inside addBlock'); setActiveBlock(contentBlocks.length);}
   };
 
 

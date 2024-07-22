@@ -24,7 +24,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Flexible Layouts</h3>
-        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', nestedBlocks: [ {type: 'undecided'}, {type: 'undecided'}]})}>
+        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [ {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
               <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
@@ -39,7 +39,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
           <h3>2 Column</h3>
         </div>
 
-        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', contentBlocks: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
+        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
               <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
@@ -59,9 +59,8 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       </div>
 
-      <div className={styles.navbarSection}>
+      {/* <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Specific Layouts</h3>
-        {/* <div className={styles.navbarSectionRow}> */}
 
         <div className={styles.navbarSectionItem} onClick={() => addBlock(singlePhotoCaptionRight)}>
           <div className={styles.iconWrapper}>
@@ -127,14 +126,10 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
           </div>
           <h3>3 Column Photo</h3>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Text</h3>
-        {/* <div onClick={onAddText} className={styles.navbarSectionItem}>
-          <FontAwesomeIcon icon={faFont} className={styles.icon} />
-          <h3>Header</h3>
-        </div> */}
         <div onClick={() => addBlock({ type: 'text', content: ''})} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faFont} className={styles.icon} />
           <h3>Text</h3>
