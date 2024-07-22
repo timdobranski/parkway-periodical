@@ -344,6 +344,7 @@ export default function NewPostPage() {
         handleSubmit={() => publishPost(contentBlocks, postId)}
         addBlock={addBlock}
         publishingStatus={publishingStatus}
+        updateMode={postId ? true : false}
       />
     </>
   );
