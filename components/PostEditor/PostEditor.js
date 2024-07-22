@@ -435,7 +435,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                 <ContentLayout
                   parentContentBlocks={contentBlocks}
                   block={block}
-                  setActiveBlock={setActiveBlock}
+                  setActiveOuterBlock={setActiveBlock}
                   viewContext={viewContext}
                   orientation='horizontal'
                   user={user}
@@ -444,7 +444,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   setContentBlocks={setContentBlocks}
                   parentIndex={index}
                   parentActiveBlock={activeBlock}
-                  isEditable={index === activeBlock}
+                  layoutIsEditable={index === activeBlock}
                   // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
 
                 />

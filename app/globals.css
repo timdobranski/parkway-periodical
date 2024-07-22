@@ -474,6 +474,7 @@
 .p-editor-toolbar {
   top: -52px;
   left: 52px;
+
   z-index: 1;
   border-radius: 2px !important;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);

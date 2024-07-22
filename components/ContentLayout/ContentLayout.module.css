@@ -6,6 +6,7 @@
   width: 100%;
 }
 .layoutColumn {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -27,4 +28,29 @@
 .selectChoicesWrapper {
   display: flex;
   flex-direction: row;
+}
+.layoutColumn :global(.p-editor-toolbar) {
+
+  left: -50%;
+  width: 550px;
+  z-index: 100;
+  border-radius: 2px !important;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);
+  /* position: absolute !important; */
+  transform: scale(1.2)
+}
+.resetBlockIcon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 3px;
+  margin: 2px;
+  background: rgba(0, 0, 0, .3);
+  color: rgb(255, 56, 56);
+  width: 20px;
+  height: 20px;
+  z-index: 100;
+}
+.resetBlockIcon:hover {
+  cursor: pointer;
 }
