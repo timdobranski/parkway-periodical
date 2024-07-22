@@ -1,7 +1,3 @@
-/* @font-face {
-  font-family: 'Nadall';
-  src: url('../public/fonts/NADALL.TTF') format('truetype');
-} */
 @font-face {
   font-family: 'Louis George Cafe';
   src: url('../public/fonts/Louis George Cafe Light.ttf') format('truetype');
@@ -41,9 +37,10 @@
   --galleryMargin: 6px;
   --mobile-background: linear-gradient(to left, rgb(0, 129, 181) 0%, rgb(0, 78, 109) 100%);
   --titleBlue: #0068a8;
-  font-weight: 200;
-  /* --gallery-photo-margin: 1rem; */
+    font-weight: 200;
+
 }
+
 /* WEBKIT SCROLLBAR */
 
 /* The entire scrollbar */
@@ -52,10 +49,9 @@
 }
 /* The track (progress bar) of the scrollbar */
 ::-webkit-scrollbar-track {
-  background: #ffffff;  /* or any color */
+  background: #ffffff;
   background: rgba(0, 0, 0, 0);
-  /* padding-top: 5px; */
-  /* margin-top: 20px; */
+
 }
 /* The handle (thumb) of the scrollbar */
 ::-webkit-scrollbar-thumb {
@@ -470,8 +466,10 @@
 /* --------------PRIME TEXT EDITOR STYLES---------------- */
 .p-editor-container {
   background-color: rgba(0, 0, 0, 0) !important;
-  flex-grow: 1 !important;
+  /* flex-grow: 1 !important; */
   outline: none !important;
+  /* border: solid blue 4px !important; */
+  width: 100% !important;
 }
 .p-editor-toolbar {
   top: -52px;

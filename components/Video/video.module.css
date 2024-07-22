@@ -57,7 +57,7 @@
 .emptyVideoInputMessage{
   width: 100%;
   height: 100%;
-  /* border: dashed black 2px; */
+  border: dashed black 1px;
   text-align: center;
   /* padding-top: 30px; */
   display: flex;

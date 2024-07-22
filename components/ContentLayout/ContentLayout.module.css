@@ -13,6 +13,7 @@
   flex: 1 1 0px; /* shorthand for flex-grow, flex-shrink, and flex-basis */
   align-items: center; /*layout items are centered by default*/
   justify-content: center;
+  /* border: solid red 2px; */
 }
 .selectHandle {
   width: 40px;

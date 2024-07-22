@@ -70,6 +70,13 @@ export default function Layout({ block, isEditable, updateBlockContent, updateBl
               updateVideoUrl={(url) => updateVideoUrl(index, url)}
             />
           )}
+            {contentBlock.type === 'text' && (
+            <PrimeText
+              src={contentBlock}
+              isEditable={index === activeBlock}
+              setTextState={(url) => updateVideoUrl(index, url)}
+            />
+          )}
         </div>
       ))}
     </div>
