@@ -13,7 +13,7 @@ import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
   // style is an object that determines the style of the overall layout
   // content is an array of objects that determine the content of the block
 
-export default function Layout({ block, isEditable, updateBlockContent, updateBlock, addBlock, parentIndex }) {
+export default function Layout({ block, isEditable, updateBlockContent, updateBlock, addBlock, parentIndex, setContentBlocks }) {
   const content = block.content;
 
   const [isEmpty, setIsEmpty] = useState(true);
@@ -26,10 +26,26 @@ export default function Layout({ block, isEditable, updateBlockContent, updateBl
     setIsEmpty(!hasTruthyContent);
   }, [content]);
 
+  const updateVideoOrientation = (layoutIndex, orientation) => {
+    setContentBlocks(prev => {
+      const newContent = [...prev];
+      console.log('newContent: ', newContent[parentIndex].content[layoutIndex])
+      newContent[parentIndex].content[layoutIndex].orientation = orientation;
+      return newContent;
+    })
+  }
+  const updateVideoUrl = (layoutIndex, url) => {
+    setContentBlocks(prev => {
+      const newContent = [...prev];
+      console.log('newContent: ', newContent[parentIndex].content[layoutIndex])
+      newContent[parentIndex].content[layoutIndex].content = url;
+      return newContent;
+    })
+  }
+
   return (
-    <div
-      className={`${styles.layoutGrid} ${isEmpty || isEditable ? 'outlined' : ''}`}
-      >
+    <div className={`${styles.layoutGrid} ${isEmpty || isEditable ? 'outlined' : ''}`} >
+
       {content.map((contentBlock, index) => (
         <div
           key={index}
@@ -39,6 +55,7 @@ export default function Layout({ block, isEditable, updateBlockContent, updateBl
             if (index !== activeBlock) {setActiveBlock(index)}
           }}
         >
+
           {contentBlock.type === 'undecided' && (
             <SelectLayoutContent
               isEditable={isEditable}
@@ -49,6 +66,8 @@ export default function Layout({ block, isEditable, updateBlockContent, updateBl
             <Video
               src={contentBlock}
               isEditable={index === activeBlock}
+              updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
+              updateVideoUrl={(url) => updateVideoUrl(index, url)}
             />
           )}
         </div>

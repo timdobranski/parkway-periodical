@@ -440,10 +440,13 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   orientation='horizontal'
                   user={user}
                   addBlock={addBlock}
-                  setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
+                  // setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
+                  setContentBlocks={setContentBlocks}
                   parentIndex={index}
                   parentActiveBlock={activeBlock}
                   isEditable={index === activeBlock}
+                  // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
+
                 />
               )}
               {/* {block.type === 'undecided' && (
