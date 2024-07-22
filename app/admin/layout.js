@@ -16,7 +16,8 @@ export default function AdminLayout({ children }) {
 
 
   if (!user) {
-    return <div className='loadingMessage'>Loading...</div>
+    // return <div className='loadingMessage'>Loading...</div>
+    router.push('/login');
   }
 
   const mobileSupportMessage = (

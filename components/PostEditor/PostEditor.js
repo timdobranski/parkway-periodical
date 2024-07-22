@@ -24,21 +24,21 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   const blocksRef = useRef({});
 
   // content blocks helpers - being phased out for universal addBlock helper
-  const addPrimeTextBlock = () => {
-    const newBlock = { type: 'text', content: ''};
-    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    setActiveBlock(contentBlocks.length);
-  }
-  const addVideoBlock = () => {
-    const newBlock = { type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' } };
-    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    setActiveBlock(contentBlocks.length); // New block's index
-  };
-  const addPhotoBlock = (format) => {
-    const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: 0 }};
-    setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-    setActiveBlock(contentBlocks.length); // New block's index
-  };
+  // const addPrimeTextBlock = () => {
+  //   const newBlock = { type: 'text', content: ''};
+  //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
+  //   setActiveBlock(contentBlocks.length);
+  // }
+  // const addVideoBlock = () => {
+  //   const newBlock = { type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' } };
+  //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
+  //   setActiveBlock(contentBlocks.length); // New block's index
+  // };
+  // const addPhotoBlock = (format) => {
+  //   const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: 0 }};
+  //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
+  //   setActiveBlock(contentBlocks.length); // New block's index
+  // };
   const addPhoto = async (event) => {
     setLoading(true);
     const files = event.target.files;

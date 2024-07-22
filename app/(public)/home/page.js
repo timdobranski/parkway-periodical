@@ -29,7 +29,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [showLinkCopied, setShowLinkCopied] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  let postId = searchParams.get('postId');
+  const [postId, setPostId] = useState(searchParams.get('postId'));
   const feedWrapperRef = useRef(null);
   const schoolYear = '2024-25';
 
@@ -39,7 +39,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const [posts, setPosts] = useState([]); // the array of posts which will be rendered
 
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null); // state to hold the post selected by ID
 
   const [recentPosts, setRecentPosts] = useState([]); // default array of recent posts if no tag or search query
 
@@ -52,10 +52,18 @@ export default function Home({ introRunning, setIntroRunning }) {
   const postFetchLimit = 5;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
-  // ON PAGE MOUNT
-  // if there's no postId, add recent posts to the feed
-  // if there is a postId, get that post
+  // useEffect(() => {
+  //   const handleRouteChange = () => {
+  //     // Custom scroll behavior: do nothing
+  //     window.scrollTo(0, 0); // or any custom behavior
+  //   };
 
+  //   router.events.on('routeChangeComplete', handleRouteChange);
+
+  //   return () => {
+  //     router.events.off('routeChangeComplete', handleRouteChange);
+  //   };
+  // }, [router]);
 
   // get category tags
   useEffect(() => {
@@ -72,6 +80,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     getTags();
   }, [])
 
+  // fetches new posts based on the current displayType state
   const handleAddPosts = () => {
     if (displayType === 'recent') {
       addToRecentPosts();
@@ -85,32 +94,6 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
 
   // detect user reaching the bottom of the feed and trigger fetching more posts
-  // useEffect(() => {
-  //   // console.log('scroll useEffect ran');
-  //   const feedWrapper = feedWrapperRef.current;
-
-  //   const handleScroll = () => {
-  //     const isBottom = feedWrapper.scrollHeight - feedWrapper.scrollTop <= feedWrapper.clientHeight + 1;
-  //     console.log(`scrollTop: ${feedWrapper.scrollTop}, scrollHeight: ${feedWrapper.scrollHeight}, clientHeight: ${feedWrapper.clientHeight}`);
-  //     if (isBottom) {
-  //       console.log('scroll condition met, fetching more posts');
-  //       handleAddPosts();
-  //     }
-  //   };
-
-  //   if (feedWrapper) {
-  //     // console.log('feedWrapper found');
-  //     feedWrapper.addEventListener('scroll', handleScroll);
-  //   }
-
-  //   // Cleanup the event listener
-  //   return () => {
-  //     if (feedWrapper) {
-  //       feedWrapper.removeEventListener('scroll', handleScroll);
-  //     }
-  //   };
-  // }, [handleAddPosts]);
-
   useEffect(() => {
     const feedWrapper = feedWrapperRef.current;
 
@@ -150,7 +133,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     if (tagId) {
       removeQueryString();
       addToTagResultPosts();
-    } else {
+    } else if (tagId !== '') {
       resetPosts();
     }
   }, [tagId]);
@@ -161,12 +144,14 @@ export default function Home({ introRunning, setIntroRunning }) {
     if (searchQuery && searchQuery !== null) {
       setDisplayType('search')
       addToSearchResultPosts();
-    } else {
+    } else if (searchQuery !== '') {
       resetPosts();
     }
   }, [searchQuery]);
 
+
   useEffect(() => {
+    console.log('Post ID: ', postId)
     if (postId) {
       setDisplayType('id')
       const postIdNumber = parseInt(postId);
@@ -192,6 +177,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // when the type of post view changes, remove the 'no more posts' message and reset the addPosts handler to the appropriate function
   useEffect(() => {
+    console.log('DISPLAY TYPE CHANGED: ', displayType)
     setNoMorePosts(false);  // reset noMorePosts when displayType changes
 
     // on page load or user select, render recent unfiltered posts
@@ -351,21 +337,21 @@ export default function Home({ introRunning, setIntroRunning }) {
 
     if (matchingPosts) {
       setSearchResultPosts(prevSearchResultPosts => {
-      const newMatchingPosts = removeDuplicates(matchingPosts, post => post.id); // Assuming each post has a unique 'id'
-      const newPosts = prevSearchResultPosts[searchQuery]
-        ? removeDuplicates([...prevSearchResultPosts[searchQuery], ...newMatchingPosts], post => post.id)
-        : newMatchingPosts;
+        const newMatchingPosts = removeDuplicates(matchingPosts, post => post.id); // Assuming each post has a unique 'id'
+        const newPosts = prevSearchResultPosts[searchQuery]
+          ? removeDuplicates([...prevSearchResultPosts[searchQuery], ...newMatchingPosts], post => post.id)
+          : newMatchingPosts;
 
-      return {
-        ...prevSearchResultPosts,
-        [searchQuery]: newPosts,
-      };
-    });
+        return {
+          ...prevSearchResultPosts,
+          [searchQuery]: newPosts,
+        };
+      });
     } else {
       console.log('NO POSTS RETURNED')
     }
   }
-
+  // get and set general list of posts
   const addToRecentPosts = async () => {
     const getRecentPosts = async (schoolYear, lastId) => {
       let query = supabase
@@ -405,8 +391,8 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
   // helper to remove post ID query string from url when navigating away from a single post view
   const removeQueryString = () => {
-    postId = null;
-    router.push(pathname);
+    setPostId(null);
+    router.replace(pathname);
   };
   const handleFilterChange = (event) => {
     console.log('inside handle filter change')
@@ -420,19 +406,23 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // should run when 'view all posts' button is clicked or when all is selected from the dropdown
   const resetPosts = () => {
-    // console.log('resetting posts')
+    console.log('resetting posts')
     setDisplayType('recent');
 
     if (tagId) {setTagId('');} // if run from the dropdown, will already be null. if run from button, will be set to null
 
     if (searchQuery) {setSearchQuery('')};
 
+    if (postId) {
+      removeQueryString();
+    }
+
   }
 
   // copy post url to clipboard
   const handleShareClick = (id) => {
     const baseUrl = window.location.origin;
-    const shareUrl = `${baseUrl}/public/home/?postId=${id}`;
+    const shareUrl = `${baseUrl}/home/?postId=${id}`;
 
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
@@ -448,7 +438,6 @@ export default function Home({ introRunning, setIntroRunning }) {
   const renderedPosts = (
     <>
       {/* <div className='slideUp'> */}
-
 
       {displayType === 'search' &&
         <>
@@ -473,8 +462,15 @@ export default function Home({ introRunning, setIntroRunning }) {
         </>
       } */}
       {posts && posts.length === 0 && noResultsMessage}
-      {postId || tagId || searchQuery ?
-        <button className={styles.viewStatusButton} onClick={resetPosts}>View All Posts
+      {displayType !== 'recent' ?
+        <button className={styles.viewStatusButton}
+          onClick={() => {
+            resetPosts();
+            if (postId) {
+              // setPostId(null);
+              removeQueryString();}
+          }}>
+          View All Posts
         </button> : null
       }
 

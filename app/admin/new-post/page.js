@@ -109,12 +109,6 @@ export default function NewPostPage() {
     fetchData();
   }, [postId, user]);
 
-
-
-
-
-
-
   async function updateDraft(post) {
     try {
       const { data, error } = await supabase
@@ -171,6 +165,7 @@ export default function NewPostPage() {
   // PUBLISH POST---------------------------------------------
 
   async function publishPost(contentBlocks, postId) {
+
     // STEP 1: generate a string of searchable text from the content blocks
     const searchableText = contentBlocks.map((block) => {
       if (block.type === 'title') {
@@ -220,15 +215,20 @@ export default function NewPostPage() {
         const removedTags = existingPostOldCategoryTags.filter(tag => !categoryTags.includes(tag));
 
         if (addedTags.length) {
+          console.log('added tags: ', addedTags)
+          const postNumber = parseInt(postId, 10);
           const postTags = addedTags.map(tag => {
             return {
-              post: postId,
+              post: postNumber,
               tag: tag
             }
           });
+          console.log('post tags in insert query: ', postTags)
           const { error: postTagsError } = await supabase
             .from('post_tags')
             .insert(postTags);
+
+          console.log('post tags error: ', postTagsError)
 
           if (postTagsError) throw postTagsError;
         }
@@ -252,22 +252,22 @@ export default function NewPostPage() {
 
         if (error) throw error;
         postData = data;
-      }
-      // STEP 4: insert into the post_tags table if there are category tags
-      if (categoryTags.length) {
-        const postTags = categoryTags.map(tag => {
-          return {
-            post: postId || postData[0].id,
-            tag: tag
-          }
-        });
-        const { error: postTagsError } = await supabase
-          .from('post_tags')
-          .insert(postTags);
 
-        if (postTagsError) throw postTagsError;
-      }
+        // STEP 4: insert into the post_tags table if there are category tags
+        if (categoryTags.length) {
+          const postTags = categoryTags.map(tag => {
+            return {
+              post: postId || postData[0].id,
+              tag: tag
+            }
+          });
+          const { error: postTagsError } = await supabase
+            .from('post_tags')
+            .insert(postTags);
 
+          if (postTagsError) throw postTagsError;
+        }
+      }
 
       // STEP 5: delete the draft
       const { error: draftError } = await supabase

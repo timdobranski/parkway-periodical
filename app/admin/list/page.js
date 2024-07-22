@@ -115,7 +115,7 @@ export default function List() {
   };
   const handleViewContent = (id) => {
     if (type === 'posts') {
-      router.push(`/home?postId=${id}`);
+      router.push(`/home?postId=${id}`, {scroll: false});
     } else {
       router.push(`/${type}`);
 
@@ -169,7 +169,7 @@ export default function List() {
                     <p className={styles.metadata}>{`${item.position}`}</p>
                   </>
                   }
-                 {item.date &&
+                  {item.date &&
                   <>
                     <p className={styles.metadataLabel}>{`DATE:`}</p>
                     <p className={styles.metadata}>{dateFormatter(item.date)}</p>
