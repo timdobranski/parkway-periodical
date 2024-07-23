@@ -19,7 +19,6 @@ export default function EditablePhoto({
   const [crop, setCrop] = useState({ x: 0, y: 0, width: 100, height: 100, aspect: 16 / 9, unit: '%'});
   const [completedCrop, setCompletedCrop] = useState(null);
   const [cropActive, setCropActive] = useState(false);
-  const [lockAspectRatio, setLockAspectRatio] = useState(true);
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [imageVersion, setImageVersion] = useState(0);
   const [loadingMessage, setLoadingMessage] = useState('Loading Image...')
@@ -27,31 +26,46 @@ export default function EditablePhoto({
   useEffect(() => {
     setLoadingMessage('Loading...');
   }, [photo.src, imageVersion]);
-  // useEffect(() => { console.log('fileObj changed. fileObj: ', fileObj)}, [fileObj])
+
   // Handle image loaded
   const onImageLoaded = useCallback((img) => {
     imageRef.current = img;
   }, []);
 
+  useEffect(() => {
+    if (!isEditable) {setCropActive(false)}
+  }, [isEditable])
+
   // Update crop
   const onCropChange = (newCrop) => {
     setCrop(newCrop);
   };
+
   const updatePhotoInSupabase = async (file) => {
-    const { data, error } = await supabase
-      .storage
-      .from('posts')
-      .update(`photos/${photo.fileName}`, file, {
-        cacheControl: '3600',
-        upsert: true
-      })
+    console.log('photo passed to editablePhoto component:', photo);
+    console.log('file passed to updatePhotoInSupabase:', file);
+    try {
+      // Try updating the file first
+      const { data: updateData, error: updateError } = await supabase
+        .storage
+        .from('posts')
+        .update(`photos/${photo.fileName}`, file, {
+          cacheControl: '3600', upsert: true
+        });
 
-    if (error) {throw error}
+      // If the file does not exist, upload it
+      if (updateError) {
+        console.log('Error updating file in editablePhoto crop: ', updateError.message);
+        return;
+      }
 
-    if (data) {
-      // Successfully updated the image, increment the image version to force re-render
+      // Successfully uploaded the image, increment the image version to force re-render
       setImageVersion(prev => prev + 1);
       setCropActive(false);  // Disable crop mode
+
+
+    } catch (error) {
+      console.error('Error updating/uploading file:', error);
     }
   };
 
@@ -63,8 +77,8 @@ export default function EditablePhoto({
       const canvas = document.createElement('canvas');
       const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
       const scaleY = imageRef.current.naturalHeight / imageRef.current.height;
-      canvas.width = width;
-      canvas.height = height;
+      canvas.width = width * scaleX;
+      canvas.height = height * scaleY;
       const ctx = canvas.getContext('2d');
 
       ctx.drawImage(
@@ -75,23 +89,20 @@ export default function EditablePhoto({
         height * scaleY,
         0,
         0,
-        width,
-        height
+        width * scaleX,
+        height * scaleY
       );
 
       canvas.toBlob(blob => {
-        updatePhotoInSupabase(blob)
+        updatePhotoInSupabase(blob);
       });
     }
   };
 
   const toggleCrop = () => setCropActive(!cropActive);
+
   const cropControls = (
     <div className={styles.cropControlsWrapper}>
-      <span className={styles.lockWrapper}>
-        <p>Aspect Ratio Lock:</p>
-        <FontAwesomeIcon icon={lockAspectRatio ? faLock : faLockOpen} onClick={() => setLockAspectRatio(!lockAspectRatio)} className={styles.lockIcon} />
-      </span>
       <button onClick={finalizeCrop}>Confirm Crop</button>
     </div>
   )

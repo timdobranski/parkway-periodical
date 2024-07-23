@@ -11,11 +11,11 @@ import {faCircleUp, faPlus} from '@fortawesome/free-solid-svg-icons';
 import { Rnd } from 'react-rnd';
 
 // src is photo block parent state; selectedPhotos is photo block child state before saving
-export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable }) {
+export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, nestedIndex }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // console.log('photo passed to PhotoBlock: ', photo)
+    console.log('photo passed to PhotoBlock: ', photo)
   }, [photo])
 
   const handleTitleChange = (index, newTitle) => {
@@ -57,7 +57,7 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable })
         <input
           type="file"
           accept="image/*"
-          onChange={addPhoto}
+          onChange={(e) => {addPhoto(e, nestedIndex)}}
           className={styles.photoInput}
         />}
 

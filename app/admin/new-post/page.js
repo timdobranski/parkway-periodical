@@ -169,7 +169,10 @@ export default function NewPostPage() {
   // PUBLISH POST---------------------------------------------
 
   async function publishPost(contentBlocks, postId) {
-
+    if (!contentBlocks[0].content) {
+      alert(`It looks like this post doesn't have a title. Please add a title before publishing.`);
+      return;
+    }
     // STEP 1: generate a string of searchable text from the content blocks
     const searchableText = contentBlocks.map((block) => {
       if (block.type === 'title') {

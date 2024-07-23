@@ -14,6 +14,8 @@ export default function SelectLayoutContent ({ addBlock, isEditable, index }) {
 
   const defaultVideoBlock = { type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' }}
   const defaultTextBlock = { type: 'text', content: ''}
+  const defaultPhotoBlock = { type: 'photo', content: '', style: { width: '100%', height: 'auto', x: 0, y: 0, maxHeight: '50vh' }, format: 'single-photo-no-caption' }
+
   const toggleExpand = () => setExpanded(prev => !prev);
 
   const addButton = (
@@ -22,9 +24,9 @@ export default function SelectLayoutContent ({ addBlock, isEditable, index }) {
   const choices = (
     <div className={styles.selectChoicesWrapper}>
       <FontAwesomeIcon icon={faChevronLeft} className={styles.icon} onClick={toggleExpand}/>
-      <FontAwesomeIcon icon={faFont} className={styles.icon} onClick={() => addBlock(defaultTextBlock, index)}/>
-      <FontAwesomeIcon icon={faImage} className={styles.icon}/>
-      <FontAwesomeIcon icon={faYoutube} className={styles.icon} onClick={() => addBlock(defaultVideoBlock)}/>
+      <FontAwesomeIcon icon={faFont} className={styles.icon} onClick={() => addBlock(defaultTextBlock, index)} />
+      <FontAwesomeIcon icon={faImage} className={styles.icon} onClick={() => addBlock(defaultPhotoBlock, index)} />
+      <FontAwesomeIcon icon={faYoutube} className={styles.icon} onClick={() => addBlock(defaultVideoBlock)} />
     </div>
   )
 

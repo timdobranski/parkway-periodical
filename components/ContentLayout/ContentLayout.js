@@ -9,11 +9,11 @@ import Video from '../Video/Video';
 import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
 
 // block is an object with type, style, and content properties
-  // type is a string that determines the type of block
-  // style is an object that determines the style of the overall layout
-  // content is an array of objects that determine the content of the block
+// type is a string that determines the type of block
+// style is an object that determines the style of the overall layout
+// content is an array of objects that determine the content of the block
 
-export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock, addBlock, parentIndex, setContentBlocks, setActiveOuterBlock }) {
+export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock, addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock }) {
   const content = block.content;
 
   const [isEmpty, setIsEmpty] = useState(true);
@@ -96,16 +96,32 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
               viewContext={'edit'}
             />
           )}
-            {contentBlock.type === 'text' && (
+          {contentBlock.type === 'text' && (
             <PrimeText
               src={contentBlock}
               isEditable={index === activeBlock}
               setTextState={(url) => updateVideoUrl(index, url)}
             />
           )}
+          {contentBlock.type === 'photo' && (
+            <PhotoBlock
+              photo={contentBlock.content[0]}
+              isEditable={index === activeBlock}
+              nestedIndex={index}
+              addPhoto={addPhoto}
+            />
+          )}
         </div>
       ))}
     </div>
   );
-
 }
+
+// key={index}
+// addPhoto={addPhoto}
+// deletePhoto={(fileName) => deletePhoto(index, fileName)}
+// blockIndex={index}
+// isEditable={index === activeBlock}
+// photo={block.content?.length ? block.content[0] : null}
+// setActiveBlock={setActiveBlock}
+// removeBlock={() => removeBlock(index)}

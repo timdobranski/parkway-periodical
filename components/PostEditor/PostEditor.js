@@ -39,7 +39,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
   //   setActiveBlock(contentBlocks.length); // New block's index
   // };
-  const addPhoto = async (event) => {
+  const addPhoto = async (event, nestedIndex) => {
     setLoading(true);
     const files = event.target.files;
     console.log('FILES: ', files)
@@ -52,7 +52,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     newPhotosArr = await Promise.all(uploadPromises);
 
     // Update content once all photos are processed
-    updatePhotoContent(activeBlock, newPhotosArr);
+    updatePhotoContent(activeBlock, newPhotosArr, nestedIndex);
     fileInput.value = ''; // Clear the input after processing all files
     setLoading(false);
   };
@@ -76,7 +76,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
         const ctx = canvas.getContext('2d');
 
         // Calculate resizing
-        const maxSize = 1000; // Max size for width or height
+        const maxSize = 1500; // Max size for width or height
         const ratio = Math.min(maxSize / img.width, maxSize / img.height);
         const width = img.width * ratio;
         const height = img.height * ratio;
@@ -307,26 +307,40 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
       return block;
     }));
   };
+
+
+
+
+
+
+
   // adds new photos to the photo block or carousel block
-  const updatePhotoContent = (index, newPhotos) => {
+  const updatePhotoContent = (index, newPhotos, nestedIndex) => {
     // Update state with a function to ensure access to the most current state
     setContentBlocks(prevContentBlocks => {
       // Copy the array to avoid direct mutation
       const updatedContentBlocks = [...prevContentBlocks];
 
-      // Safely read the existing content from the specific block
-      const existingPhotos = updatedContentBlocks[index].content;
-
-      // Combine the existing photos with the new photos array
-      updatedContentBlocks[index] = {
-        ...updatedContentBlocks[index],
-        content: [...existingPhotos, ...newPhotos]
-      };
+      if (nestedIndex !== undefined) {
+        // If nestedIndex is provided, update the specific nested array
+        updatedContentBlocks[index].content[nestedIndex] = {
+          ...updatedContentBlocks[index].content[nestedIndex],
+          content: newPhotos
+        };
+      } else {
+        // If no nestedIndex is provided, update the content array directly
+        updatedContentBlocks[index] = {
+          ...updatedContentBlocks[index],
+          content: newPhotos
+        };
+      }
 
       // Return the newly formed array which triggers the update
       return updatedContentBlocks;
     });
   };
+
+
   // updates the order of the photos in the carousel block
   const reorderPhotos = (startIndex, endIndex) => {
     // First, we need to operate on the correct block within contentBlocks
@@ -440,6 +454,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   orientation='horizontal'
                   user={user}
                   addBlock={addBlock}
+                  addPhoto={addPhoto}
                   // setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
                   setContentBlocks={setContentBlocks}
                   parentIndex={index}
