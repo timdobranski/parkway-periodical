@@ -3,7 +3,7 @@
   box-sizing: border-box;
   top: 50px;
   right: 0;
-  width: 230px;
+  width: 200px;
   height: calc(100vh - 50px);
   background-color: rgb(255, 255, 255);
   background-color: rgb(254, 254, 254);
@@ -106,6 +106,7 @@
   padding: 0;
   font-size: 1rem;
   font-weight: normal;
+  text-align: center;
 }
 .icon, .closeIcon, .infoIcon {
   height: 25px;

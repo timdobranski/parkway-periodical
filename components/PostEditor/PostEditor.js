@@ -405,7 +405,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
   if (!user) { return <h1>Loading...</h1>}
 
-  const feed = (
+  const post = (
     <div className={`editablePost ${styles.adminPost}`}
     >
       {contentBlocks.map((block, index) => (
@@ -540,7 +540,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
   return (
     <div className={`adminFeedWrapper`}>
-      {feed}
+      {post}
     </div>
   )
 }

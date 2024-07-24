@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShare, faCalendarDays, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useRouter, usePathname } from 'next/navigation';
 import useOnlineStatus from '../../../utils/useOnlineStatus';
+import ContentLayout from '../../../components/ContentLayout/ContentLayout';
 import { useAdmin } from '../../../contexts/AdminContext';
 
 
@@ -52,18 +53,6 @@ export default function Home({ introRunning, setIntroRunning }) {
   const postFetchLimit = 5;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
-  // useEffect(() => {
-  //   const handleRouteChange = () => {
-  //     // Custom scroll behavior: do nothing
-  //     window.scrollTo(0, 0); // or any custom behavior
-  //   };
-
-  //   router.events.on('routeChangeComplete', handleRouteChange);
-
-  //   return () => {
-  //     router.events.off('routeChangeComplete', handleRouteChange);
-  //   };
-  // }, [router]);
 
   // get category tags
   useEffect(() => {
@@ -531,6 +520,27 @@ export default function Home({ introRunning, setIntroRunning }) {
                 />
               </div>
             )}
+
+            {block.type === 'flexibleLayout' && (
+              <ContentLayout
+                // parentContentBlocks={contentBlocks}
+                block={block}
+                // setActiveOuterBlock={setActiveBlock}
+                // viewContext={viewContext}
+                orientation='horizontal'
+                user={user}
+                // addBlock={addBlock}
+                // addPhoto={addPhoto}
+                // setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
+                // setContentBlocks={setContentBlocks}
+                // parentIndex={index}
+                // parentActiveBlock={activeBlock}
+                // layoutIsEditable={index === activeBlock}
+                // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
+
+              />
+            )}
+
           </React.Fragment>
         ))}
         <div className={styles.postFooter}>

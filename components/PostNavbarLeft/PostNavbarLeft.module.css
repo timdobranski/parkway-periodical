@@ -3,7 +3,7 @@
   box-sizing: border-box;
   top: 80;
   left: 0;
-  width: 250px;
+  width: 200px;
   height: calc(100vh - 40px);
   background-color: rgb(255, 255, 255);
   margin: 0;
@@ -14,7 +14,7 @@
   z-index: 2;
   overflow-y: auto;
   padding: .5rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   text-align: center;
 }
 .optionsList {
@@ -24,14 +24,15 @@
   padding: .5rem 0;
   background-color: rgb(213, 231, 255);
   width: 100%;
+  font-size: 1rem;
   /* border: solid red 2px; */
 }
 .optionsList * {
-  margin: .5rem .25rem;
+  margin: .25rem .25rem;
 }
 .checkbox {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
 }
 
 .addNewOptionWrapper {

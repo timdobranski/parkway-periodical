@@ -34,8 +34,8 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Flexible Layouts </h3>
-        <FontAwesomeIcon icon={modalIsOpen ? faX : faCircleQuestion} className={`${modalIsOpen ? styles.closeIcon : styles.infoIcon}`} onClick={() => setModalIsOpen(!modalIsOpen)} />
-          {modalIsOpen && layoutsModal}
+        {/* <FontAwesomeIcon icon={modalIsOpen ? faX : faCircleQuestion} className={`${modalIsOpen ? styles.closeIcon : styles.infoIcon}`} onClick={() => setModalIsOpen(!modalIsOpen)} />
+          {modalIsOpen && layoutsModal} */}
         <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [ {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
@@ -48,7 +48,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
               <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
             </div>
           </div>
-          <h3>2 Column</h3>
+          <h3 className={styles.layoutLabel}>2x</h3>
         </div>
 
         <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
@@ -65,7 +65,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
               <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
             </div>
           </div>
-          <h3>3 Column</h3>
+          <h3 className={styles.layoutLabel}>3x</h3>
         </div>
         <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
@@ -83,7 +83,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
               <FontAwesomeIcon icon={faBars} className={styles.layoutIcon} />
             </div>
           </div>
-          <h3>4 Column</h3>
+          <h3 className={styles.layoutLabel}>4x</h3>
         </div>
 
       </div>

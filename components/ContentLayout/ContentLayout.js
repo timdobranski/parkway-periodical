@@ -47,12 +47,15 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
     })
   }
   const updateVideoUrl = (layoutIndex, url) => {
+    if (typeof setContentBlocks === 'function') {
+
     setContentBlocks(prev => {
       const newContent = [...prev];
       console.log('newContent: ', newContent[parentIndex].content[layoutIndex])
       newContent[parentIndex].content[layoutIndex].content = url;
       return newContent;
     })
+  }
   }
   const resetBlock = () => {
     setContentBlocks(prev => {
