@@ -2,42 +2,97 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './photoBlock.module.css';
-import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
+// import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
-import { createClient } from '../../utils/supabase/client';
-import PhotoGrid from '../PhotoGrid/PhotoGrid';
+// import { createClient } from '../../utils/supabase/client';
+// import PhotoGrid from '../PhotoGrid/PhotoGrid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleUp, faPlus} from '@fortawesome/free-solid-svg-icons';
-import { Rnd } from 'react-rnd';
-import PrimeText from '../PrimeText/PrimeText';
+// import { Rnd } from 'react-rnd';
 
 // src is photo block parent state; selectedPhotos is photo block child state before saving
-export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, setPhotoStyle, viewContext, setContentBlocks, index, nestedIndex, }) {
+export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, setPhotoStyle, viewContext, setContentBlocks, index, nestedIndex, isLayout }) {
   const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState(photo?.title || '');
-  const [caption, setCaption] = useState(photo?.caption || '');
+  const [title, setTitle] = useState(photo?.title || false);
+  const [caption, setCaption] = useState(photo?.caption || false);
+
+  const [showTitle, setShowTitle] = useState(false);
+  const [showCaption, setShowCaption] = useState(false);
+
   const hasMounted = useRef(false);
+
+  // if the title or caption are not false, show them. empty strings will still be shown
+  useEffect(() => {
+    if (title !== false) {
+      console.log('title is not false, setting showTitle to true')
+      setShowTitle(true);
+    } else {
+      console.log('title is false, setting showTitle to false')
+      setShowTitle(false);
+    }
+  }, [title])
+
+  useEffect(() => {
+    if (caption !== false) {
+      setShowCaption(true);
+    }
+  }, [caption])
+
+  useEffect(() => {
+    console.log('showTitle changed: ', showTitle)
+    if (hasMounted.current && showTitle === false) {
+      setTitle(false);
+    }
+  }, [showTitle])
+
+  useEffect(() => {
+
+  }, [showCaption])
+
+  // toggles the title or caption between false and an empty string. false prevents render, empty string allows for input
+  const toggleText = (captionOrTitle) => {
+    console.log('inside toggle text')
+    if (captionOrTitle === 'caption') {
+      if (caption === false) {
+        setCaption('');
+      } else {
+        setCaption(false);
+      }
+    } else {
+      console.log('')
+      if (title === false) {
+        console.log('title is false, resetting it to an empty string')
+        setTitle('');
+      } else {
+        console.log('title is not false, setting it to false')
+        setTitle(false);
+      }
+    }
+  }
 
 
   useEffect(() => {
     console.log('photo passed to PhotoBlock: ', photo)
   }, [photo])
 
+  const updateTitleAndCaption = () => {
+    setContentBlocks(prev => {
+      const newContent = [...prev];
+
+      if (nestedIndex) {
+        newContent[index].content[nestedIndex].content[0].title = title || ''; // if title is false, set to an empty string
+        newContent[index].content[nestedIndex].content[0].caption = caption || '';
+      } else {
+        newContent[index].content[0].title = title;
+        newContent[index].content[0].caption = caption;
+      }
+      return newContent;
+    })
+  }
 
   useEffect(() => {
     if (!isEditable && hasMounted.current && setContentBlocks) {
-      setContentBlocks(prev => {
-        const newContent = [...prev];
-
-        if (nestedIndex) {
-          newContent[index].content[nestedIndex].content[0].title = title;
-          newContent[index].content[nestedIndex].content[0].caption = caption;
-        } else {
-          newContent[index].content[0].title = title;
-          newContent[index].content[0].caption = caption;
-        }
-        return newContent;
-      })
+      updateTitleAndCaption();
     } else {
       hasMounted.current = true;
     }
@@ -73,43 +128,37 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, s
       handleTitleChange={(title) => handleTitleChange(index, title)}
       handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
       setPhotoStyle={setPhotoStyle}
+      isLayout={isLayout}
+      toggleText={toggleText}
     />
   )
 
   const titleAndCaptionInputs = (
     <div className={styles.titleAndCaption}>
+      { showTitle !== false &&
       <input
         type="text"
-        placeholder="Add Title (optional)"
+        placeholder="Add Title"
         className={styles.titleInput}
         value={isEditable ? title : photo?.title}
         onChange={(e) => setTitle(e.target.value)}
-      />
-      {/* <textarea
-        type="text"
-        placeholder="Add Caption (optional)"
-        className={styles.captionInput}
-        value={isEditable ? caption : photo?.caption}
-        onChange={(e) => setCaption(e.target.value)}
-      /> */}
-      <PrimeText
-        isEditable={isEditable}
-        setTextState={setCaption}
-        src={{content: caption}}
+      />}
 
-      />
+      { showCaption !== false &&
+        <textarea
+          type="text"
+          placeholder="Add Caption"
+          className={styles.captionInput}
+          value={isEditable ? caption : photo?.caption}
+          onChange={(e) => setCaption(e.target.value)}
+        />}
     </div>
   )
 
   const titleAndCaption = (
     <div className={styles.titleAndCaption}>
       <p className={styles.title}>{photo?.title}</p>
-      <PrimeText
-        isEditable={isEditable}
-        setTextState={setCaption}
-        src={{content: caption}}
-
-      />
+      <p className={styles.caption}>{photo?.caption}</p>
     </div>
   )
 

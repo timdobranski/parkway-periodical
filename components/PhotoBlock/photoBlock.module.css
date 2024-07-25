@@ -97,9 +97,10 @@
 }
 .captionInput {
   height: fit-content;
+  border-radius: 4px;
   min-height: 80px;
   resize: vertical;
-  /* border: solid red 1px; */
+  border: dashed rgb(170, 170, 170) 2px;
 }
 .icon {
   padding: .5rem;

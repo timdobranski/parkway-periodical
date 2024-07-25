@@ -72,7 +72,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
       {content.map((contentBlock, index) => (
         <div
           key={index}
-          style={{justifyContent: 'space-around'}}
+          style={{justifyContent: ''}}
           className={`${styles.layoutColumn} ${layoutIsEditable ? 'outlined' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
@@ -116,7 +116,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
               addPhoto={addPhoto}
               setPhotoStyle={(style) => setPhotoStyle(style, index)}
               deletePhoto={(fileName, index) => deletePhoto(index, fileName)}
-
+              isLayout={true}
               // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
 
             />

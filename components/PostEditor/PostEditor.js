@@ -42,7 +42,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   const addPhoto = async (event, nestedIndex) => {
     setLoading(true);
     const files = event.target.files;
-    console.log('FILES: ', files)
+    // console.log('FILES: ', files)
     const fileInput = event.target;
     let newPhotosArr = [];
 
@@ -122,7 +122,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     });
   };
   const deletePhoto = async (blockIndex, filename, nestedIndex) => {
-    console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename, nestedIndex);
+    // console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename, nestedIndex);
     // Attempt to remove the photo from storage
     const { data, error } = await supabase
       .storage

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCropSimple, faUpRightAndDownLeftFromCenter, faPen, faAlignJustify, faAlignLeft, faAlignCenter, faAlignRight, faUpDown, faGripLines, faChevronUp, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCropSimple, faUpRightAndDownLeftFromCenter,faFont, faAlignJustify, faAlignLeft, faAlignCenter, faAlignRight, faUpDown, faGripLines, faChevronUp, faChevronDown, faImage } from '@fortawesome/free-solid-svg-icons';
 import styles from './editablePhoto.module.css';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -11,7 +11,8 @@ import PrimeText from '../PrimeText/PrimeText';
 import { createClient } from '../../utils/supabase/client';
 
 export default function EditablePhoto({
-  photo, isEditable, updatePhotoContent, deletePhoto, containerClassName, index, setSelectedPhotos, handleTitleChange, handleCaptionChange, photoIndex, photoContext, setPhotoStyle}) {
+  photo, isEditable, updatePhotoContent, deletePhoto, containerClassName, index, setSelectedPhotos,
+  handleTitleChange, handleCaptionChange, photoIndex, photoContext, setPhotoStyle, isLayout, toggleText }) {
   const supabase = createClient()
   const imageRef = useRef(null);
   const wrapperRef = useRef(null); // Ref for the photo wrapper to enable dynamic height resizing when photo is resized
@@ -33,7 +34,7 @@ export default function EditablePhoto({
   const onImageLoaded = useCallback(() => {
     if (imageRef.current) {
       const { width, height } = imageRef.current.getBoundingClientRect();
-      console.log('width and height in ONLOAD function:', width, height);
+      // console.log('width and height in ONLOAD function:', width, height);
       setSize({ width, height });
     }
   }, []);
@@ -167,24 +168,28 @@ export default function EditablePhoto({
       <button onClick={finalizeCrop}>Confirm Crop</button>
     </div>
   )
-  const selectPhotoAndCrop = (
-    <>
-      <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
-        <FontAwesomeIcon icon={faImage} className={styles.cropIcon} />
-      </div>
+
+  const editMenu = (
+    <div className={`${isLayout ? styles.layoutPhotoEditMenu : styles.photoEditMenu}`}>
       <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
         <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
-      </div>
-    </>
-  )
-  const editMenu = (
-    <div className={styles.photoEditMenu}>
-      {selectPhotoAndCrop}
-      <div className={styles.photoEditMenuIconWrapper}>
-        <FontAwesomeIcon icon={faPen} className={styles.captionIcon} />
+        <p>Crop</p>
       </div>
       <div className={styles.photoEditMenuIconWrapper} onClick={toggleResize}>
         <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.captionIcon} />
+        <p>Resize</p>
+      </div>
+      <div className={styles.photoEditMenuIconWrapper} onClick={() => toggleText('title')}>
+        <FontAwesomeIcon icon={faFont} className={styles.captionIcon} />
+        <p>Title</p>
+      </div>
+      <div className={styles.photoEditMenuIconWrapper} onClick={() => toggleText('caption')}>
+        <FontAwesomeIcon icon={faFont} className={styles.captionIcon} />
+        <p>Caption</p>
+      </div>
+      <div className={styles.photoEditMenuIconWrapper} onClick={() => deletePhoto(photo.fileName)}>
+        <FontAwesomeIcon icon={faTrash} className={styles.removePhotoIcon}  />
+        <p>Remove</p>
       </div>
       {/* <div className={styles.photoEditMenuIconWrapper}>
         <FontAwesomeIcon icon={faAlignJustify}
@@ -195,8 +200,8 @@ export default function EditablePhoto({
           <FontAwesomeIcon icon={faAlignCenter} className={styles.expandedIcon} />
           <FontAwesomeIcon icon={faAlignRight} className={styles.expandedIcon} />
         </div>
-      </div>
-      <div className={styles.photoEditMenuIconWrapper}>
+      </div> */}
+      {/* <div className={styles.photoEditMenuIconWrapper}>
         <FontAwesomeIcon icon={faUpDown}
           className={styles.captionIcon}
           onClick={() => menuExpanded !== 'verticalAlignment' ? setMenuExpanded('verticalAlignment') : setMenuExpanded(false)} />
@@ -206,10 +211,6 @@ export default function EditablePhoto({
           <FontAwesomeIcon icon={faChevronDown} className={styles.expandedIcon} />
         </div>
       </div> */}
-
-      <div className={styles.photoEditMenuIconWrapper} onClick={() => deletePhoto(photo.fileName)}>
-        <FontAwesomeIcon icon={faTrash} className={styles.removePhotoIcon}  />
-      </div>
     </div>
   )
   const imageElement = (

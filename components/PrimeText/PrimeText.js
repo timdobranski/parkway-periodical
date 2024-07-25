@@ -9,7 +9,7 @@ import "primeicons/primeicons.css";
 import { Editor } from 'primereact/editor';
 
 export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
-  updateBlockStyle, setTextState, setActiveBlock, onClick, removeBlock, viewContext
+  updateBlockStyle, setTextState, setActiveBlock, onClick, removeBlock, viewContext, caption
 }) {
 
   const colorPickerOptions = (
@@ -153,7 +153,7 @@ export default function PrimeText({ isEditable, toggleEditable, src, blockIndex,
     <Editor
       key={isEditable ? 'editable' : 'readonly'}
       value={src.content}
-      placeholder='No text added yet. Click to add some text'
+      placeholder={caption ? 'add caption' : 'No text added yet. Click to add some text'}
       {...(!isEditable && { readOnly: true })}
       {...(!isEditable && { showHeader: false })}
       {...(isEditable && { onTextChange: (e) => setTextState(e.htmlValue) })}
