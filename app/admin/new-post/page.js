@@ -66,9 +66,9 @@ export default function NewPostPage() {
     console.log('category tags: ', categoryTags)
   }, [categoryTags])
 
-  useEffect(() => {
-    console.log('ACTIVE BLOCK CHANGED: ', activeBlock)
-  }, [activeBlock])
+  // useEffect(() => {
+  //   console.log('ACTIVE BLOCK CHANGED: ', activeBlock)
+  // }, [activeBlock])
 
   useEffect(() => {
     const fetchData = async () => {

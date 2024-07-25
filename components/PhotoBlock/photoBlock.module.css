@@ -40,11 +40,10 @@
 }
 .photoInput {
   margin: 1rem;
-  position: absolute;
-  top: -3rem;
-  left: 50%;
-  transform: translateX(-50%);
-  /* background: linear-gradient(90deg, rgb(255, 184, 184), rgb(2, 196, 255)); */
+  border: solid rgb(205, 205, 205) 1px;
+  padding: .25rem;
+  background-color: rgb(239, 239, 239);
+  border-radius: 4px;
 }
 .photoPreview {
   /* width: 100%;
@@ -60,45 +59,47 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 1rem;
 }
-.photoTitle {
-  font-weight: bold;
+.titleAndCaption {
+  position: relative;
+  font-size: 1.25rem;
+  padding: .5rem 1rem;
+  margin: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  width: 100%;
+  text-align: center;
+}
+.titleInput, .captionInput, .title, .caption {
+  text-align: center;
+  font-size: 1.25rem;
+  padding: .25rem;
+  border: none;
+  width: 100%;
+  font-weight: normal;
+  /* border: solid red 1px; */
+  margin: 2px;
+  max-width: 100%; /* Ensure the container doesn't exceed its parent's width */
+  word-wrap: break-word; /* Break words at the container boundary */
+  overflow-wrap: break-word; /* Break long words */
+  box-sizing: border-box;
+}
+.titleAndCaption :global(.p-editor-toolbar) {
+  position: relative;
+}
+.title, .titleInput {
+  font-weight: normal;
+  text-decoration: underline;
+  text-decoration-color: red;
   font-size: 1.75rem;
   color: rgb(0, 95, 168);
 }
-.photosGrid {
-  display: grid;
-  gap: 10px; /* Adjust as needed */
-  justify-content: center;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.photosGridSingle {
-  grid-template-columns: repeat(1, 1fr);
-}
-
-.photosGridTwoColumns {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.photosGridThreeColumns {
-  grid-template-columns: repeat(3, minmax(0, 1fr)); /* Using minmax for more flexibility */
-}
-
-.gridPhotoContainer {
-  /* margin: 1rem; */
-  box-sizing: border-box;
-}
-
-.carouselWrapper {
-  margin: 4rem;
-}
-.gridPhoto {
-  width: 100%;
-  height: auto;
-  /* border-radius: 10px; */
-  box-sizing: border-box;
-
+.captionInput {
+  height: fit-content;
+  min-height: 80px;
+  resize: vertical;
+  /* border: solid red 1px; */
 }
 .icon {
   padding: .5rem;

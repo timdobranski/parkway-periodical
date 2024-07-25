@@ -13,7 +13,8 @@ import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
 // style is an object that determines the style of the overall layout
 // content is an array of objects that determine the content of the block
 
-export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock, addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock }) {
+export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock,
+  addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock, setPhotoStyle, deletePhoto }) {
   const content = block.content;
 
   const [isEmpty, setIsEmpty] = useState(true);
@@ -49,13 +50,13 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
   const updateVideoUrl = (layoutIndex, url) => {
     if (typeof setContentBlocks === 'function') {
 
-    setContentBlocks(prev => {
-      const newContent = [...prev];
-      console.log('newContent: ', newContent[parentIndex].content[layoutIndex])
-      newContent[parentIndex].content[layoutIndex].content = url;
-      return newContent;
-    })
-  }
+      setContentBlocks(prev => {
+        const newContent = [...prev];
+        console.log('newContent: ', newContent[parentIndex].content[layoutIndex])
+        newContent[parentIndex].content[layoutIndex].content = url;
+        return newContent;
+      })
+    }
   }
   const resetBlock = () => {
     setContentBlocks(prev => {
@@ -71,6 +72,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
       {content.map((contentBlock, index) => (
         <div
           key={index}
+          style={{justifyContent: 'space-around'}}
           className={`${styles.layoutColumn} ${layoutIsEditable ? 'outlined' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
@@ -112,6 +114,11 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
               isEditable={index === activeBlock}
               nestedIndex={index}
               addPhoto={addPhoto}
+              setPhotoStyle={(style) => setPhotoStyle(style, index)}
+              deletePhoto={(fileName, index) => deletePhoto(index, fileName)}
+
+              // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
+
             />
           )}
         </div>

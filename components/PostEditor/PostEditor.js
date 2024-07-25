@@ -121,8 +121,8 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
       img.src = dataURL;
     });
   };
-  const deletePhoto = async (blockIndex, filename) => {
-    console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename);
+  const deletePhoto = async (blockIndex, filename, nestedIndex) => {
+    console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename, nestedIndex);
     // Attempt to remove the photo from storage
     const { data, error } = await supabase
       .storage
@@ -136,7 +136,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     } else {
       console.log('Photo deleted successfully from storage, now updating UI');
       // Successfully deleted, now update the content blocks by removing the photo
-      removePhotoFromBlock(blockIndex, filename);
+      removePhotoFromBlock(blockIndex, filename, nestedIndex);
     }
   };
   // sets new properties on the block. works on layouts if passed the nestedIndex  // requires block index, new properties at the root of the block, and, if a layout, the index of the column being updated.
@@ -198,24 +198,6 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
       return newContentBlocks;
     });
   };
-  const addFlexibleLayout = (columns) => {
-    // Create an array with 'columns' number of empty objects
-    const placeholders = Array.from({ length: columns }, () => ({
-      type: 'undecided'
-    }));
-
-    const newBlock = {
-      type: 'flexibleLayout',
-      content: placeholders, // an array of objects with type: 'undecided'; replaced with actual content when the user selects the type of content to add
-      style: {}
-    };
-
-    setContentBlocks([...contentBlocks, newBlock]); // Append new block to the existing blocks
-    setActiveBlock(contentBlocks.length); // Set active block to the newly added block
-  };
-  const updateFlexibleLayout = (index, layoutIndex) => {
-
-  }
   const removeBlock = (index) => {
     // if the block has images in supabase, delete them
     if (contentBlocks[index].type === 'photo' || contentBlocks[index].type === 'carousel') {
@@ -340,7 +322,6 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     });
   };
 
-
   // updates the order of the photos in the carousel block
   const reorderPhotos = (startIndex, endIndex) => {
     // First, we need to operate on the correct block within contentBlocks
@@ -366,20 +347,28 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     });
   };
   // removes the specified photo from the photo block
-  const removePhotoFromBlock = (blockIndex, filename) => {
-  // Update the contentBlocks state to remove the specified photo
+  const removePhotoFromBlock = (blockIndex, filename, nestedIndex) => {
+    // Update the contentBlocks state to remove the specified photo
     setContentBlocks(prevContentBlocks => {
-    // Copy the array to avoid direct mutation
+      // Copy the array to avoid direct mutation
       const updatedContentBlocks = [...prevContentBlocks];
 
-      // Filter out the photo with the specified filename from the specific block
-      const filteredPhotos = updatedContentBlocks[blockIndex].content.filter(photo => photo.fileName !== filename);
+      if (nestedIndex !== undefined) {
+        // Handle case with nestedIndex
+        const nestedContent = updatedContentBlocks[blockIndex].content[nestedIndex].content;
 
-      // Update the block with the new array of photos
-      updatedContentBlocks[blockIndex] = {
-        ...updatedContentBlocks[blockIndex],
-        content: filteredPhotos
-      };
+        // Filter out the photo with the specified filename
+        const filteredPhotos = nestedContent.filter(photo => photo.fileName !== filename);
+
+        // Update the nested content array
+        updatedContentBlocks[blockIndex].content[nestedIndex].content = filteredPhotos;
+      } else {
+        // Handle case without nestedIndex
+        const filteredPhotos = updatedContentBlocks[blockIndex].content.filter(photo => photo.fileName !== filename);
+
+        // Update the block's content array
+        updatedContentBlocks[blockIndex].content = filteredPhotos;
+      }
 
       // Return the newly formed array which triggers the update
       return updatedContentBlocks;
@@ -397,11 +386,44 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     setContentBlocks(newContentBlocks);
   }
   // style should be an object with height, width, top, and left values set to numbers
-  const updateBlockStyle = (index, style) => {
+  const updateBlockStyle = (index, style, nestedIndex = null) => {
     const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], style: style };
+
+    if (nestedIndex !== null) {
+      // If nestedIndex is provided, update the style at the nested position
+      newContentBlocks[index] = {
+        ...newContentBlocks[index],
+        content: newContentBlocks[index].content.map((contentItem, i) =>
+          i === nestedIndex
+            ? {
+              ...contentItem,
+              content: [
+                {
+                  ...contentItem.content[0],
+                  style: style,
+                },
+                ...contentItem.content.slice(1),
+              ],
+            }
+            : contentItem
+        ),
+      };
+    } else {
+      // If no nestedIndex is provided, update the style at the top level
+      newContentBlocks[index] = {
+        ...newContentBlocks[index],
+        content: [
+          {
+            ...newContentBlocks[index].content[0],
+            style: style,
+          },
+          ...newContentBlocks[index].content.slice(1),
+        ],
+      };
+    }
+
     setContentBlocks(newContentBlocks);
-  }
+  };
 
   if (!user) { return <h1>Loading...</h1>}
 
@@ -460,6 +482,8 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   parentIndex={index}
                   parentActiveBlock={activeBlock}
                   layoutIsEditable={index === activeBlock}
+                  setPhotoStyle={(style, nestedIndex) => updateBlockStyle(index, style, nestedIndex)}
+                  deletePhoto={(fileName, nestedIndex) => deletePhoto(index, nestedIndex, fileName)}
                   // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
 
                 />
@@ -487,6 +511,8 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
               {block.type === 'photo' &&
                 <PhotoBlock
                   key={index}
+                  index={index}
+                  setContentBlocks={setContentBlocks}
                   addPhoto={addPhoto}
                   deletePhoto={(fileName) => deletePhoto(index, fileName)}
                   blockIndex={index}
@@ -494,6 +520,8 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   photo={block.content?.length ? block.content[0] : null}
                   setActiveBlock={setActiveBlock}
                   removeBlock={() => removeBlock(index)}
+                  setPhotoStyle={(style) => updateBlockStyle(index, style)}
+                  viewContext={viewContext}
                 />
               }
               {block.type === 'carousel' &&
