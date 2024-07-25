@@ -14,7 +14,7 @@ import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
 // content is an array of objects that determine the content of the block
 
 export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock,
-  addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock, setPhotoStyle, deletePhoto }) {
+  addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock, setPhotoStyle, deletePhoto, viewContext }) {
   const content = block.content;
 
   const [isEmpty, setIsEmpty] = useState(true);
@@ -67,63 +67,67 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
   }
 
   return (
-    <div className={`${styles.layoutGrid} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`} >
+    // <div className={`${styles.layoutWrapper} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`}>
+      <div className={`${styles.layoutGrid} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`} >
 
-      {content.map((contentBlock, index) => (
-        <div
-          key={index}
-          style={{justifyContent: ''}}
-          className={`${styles.layoutColumn} ${layoutIsEditable ? 'outlined' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
-          }}
-        >
-          {layoutIsEditable && contentBlock.type !== 'undecided' &&
+        {content.map((contentBlock, index) => (
+          <div
+            key={index}
+            style={{justifyContent: ''}}
+            className={`${styles.layoutColumn} ${layoutIsEditable ? 'outlined' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
+            }}
+          >
+            {layoutIsEditable && contentBlock.type !== 'undecided' &&
           <FontAwesomeIcon
             icon={faX}
             className={styles.resetBlockIcon}
             onClick={resetBlock}
           />}
 
-          {contentBlock.type === 'undecided' && (
-            <SelectLayoutContent
-              isEditable={layoutIsEditable}
-              addBlock={(newBlock) => addBlock(newBlock, parentIndex, index)}
-            />
-          )}
-          {contentBlock.type === 'video' && (
-            <Video
-              src={contentBlock}
-              isEditable={index === activeBlock}
-              updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
-              updateVideoUrl={(url) => updateVideoUrl(index, url)}
-              viewContext={'edit'}
-            />
-          )}
-          {contentBlock.type === 'text' && (
-            <PrimeText
-              src={contentBlock}
-              isEditable={index === activeBlock}
-              setTextState={(url) => updateVideoUrl(index, url)}
-            />
-          )}
-          {contentBlock.type === 'photo' && (
-            <PhotoBlock
-              photo={contentBlock.content[0]}
-              isEditable={index === activeBlock}
-              nestedIndex={index}
-              addPhoto={addPhoto}
-              setPhotoStyle={(style) => setPhotoStyle(style, index)}
-              deletePhoto={(fileName, index) => deletePhoto(index, fileName)}
-              isLayout={true}
-              // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
+            {contentBlock.type === 'undecided' && (
+              <SelectLayoutContent
+                isEditable={layoutIsEditable}
+                addBlock={(newBlock) => addBlock(newBlock, parentIndex, index)}
+                viewContext={viewContext}
+              />
+            )}
+            {contentBlock.type === 'video' && (
+              <Video
+                src={contentBlock}
+                isEditable={index === activeBlock}
+                updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
+                updateVideoUrl={(url) => updateVideoUrl(index, url)}
+                viewContext={'edit'}
+              />
+            )}
+            {contentBlock.type === 'text' && (
+              <PrimeText
+                src={contentBlock}
+                isEditable={index === activeBlock}
+                setTextState={(url) => updateVideoUrl(index, url)}
+              />
+            )}
+            {contentBlock.type === 'photo' && (
+              <PhotoBlock
+                photo={contentBlock.content[0]}
+                isEditable={index === activeBlock}
+                nestedIndex={index}
+                addPhoto={addPhoto}
+                setPhotoStyle={(style) => setPhotoStyle(style, index)}
+                deletePhoto={(fileName, index) => deletePhoto(index, fileName)}
+                isLayout={true}
+                // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
 
-            />
-          )}
-        </div>
-      ))}
-    </div>
+              />
+            )}
+          </div>
+        ))}
+      </div>
+
+    // </div>
   );
 }
 

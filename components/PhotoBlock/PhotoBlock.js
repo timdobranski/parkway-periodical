@@ -2,13 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './photoBlock.module.css';
-// import PhotoCarousel from '../PhotoCarousel/PhotoCarousel'
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
-// import { createClient } from '../../utils/supabase/client';
-// import PhotoGrid from '../PhotoGrid/PhotoGrid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCircleUp, faPlus} from '@fortawesome/free-solid-svg-icons';
-// import { Rnd } from 'react-rnd';
+import ContentBlockTitleAndCaption from '../ContentBlockTitleAndCaption/ContentBlockTitleAndCaption';
+
 
 // src is photo block parent state; selectedPhotos is photo block child state before saving
 export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, setPhotoStyle, viewContext, setContentBlocks, index, nestedIndex, isLayout }) {
@@ -101,26 +99,21 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, s
     }
   }, [isEditable])
 
-  const handleTitleChange = (index, newTitle) => {
-    console.log('new title: ', newTitle);
-    setSelectedPhotos(files =>
-      files.map((fileObj, idx) => idx === index ? { ...fileObj, title: newTitle } : fileObj)
-    );
-  };
-  const handleCaptionChange = (index, newCaption) => {
-    setSelectedPhotos(files =>
-      files.map((fileObj, idx) => { return idx === index ? { ...fileObj, caption: newCaption } : fileObj})
-    );
-  };
+  // const handleTitleChange = (index, newTitle) => {
+  //   console.log('new title: ', newTitle);
+  //   setSelectedPhotos(files =>
+  //     files.map((fileObj, idx) => idx === index ? { ...fileObj, title: newTitle } : fileObj)
+  //   );
+  // };
+  // const handleCaptionChange = (index, newCaption) => {
+  //   setSelectedPhotos(files =>
+  //     files.map((fileObj, idx) => { return idx === index ? { ...fileObj, caption: newCaption } : fileObj})
+  //   );
+  // };
   const noPhotosMessage = (
     <p className={styles.noPhotoMessage}>No photo provided</p>
   )
-  const loadingMessage = (
-    <div className={styles.loadingMessage}>
-      <FontAwesomeIcon icon={faCircleUp} className={styles.loadingIcon} />
-      <p>Uploading Photo...</p>
-    </div>
-  )
+
   const photoComponent = (
     <EditablePhoto
       photo={photo}
@@ -128,8 +121,8 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, s
       updatePhotoContent={addPhoto}
       deletePhoto={deletePhoto}
       containerClassName={styles.photoContainer}
-      handleTitleChange={(title) => handleTitleChange(index, title)}
-      handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
+      // handleTitleChange={(title) => handleTitleChange(index, title)}
+      // handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
       setPhotoStyle={setPhotoStyle}
       isLayout={isLayout}
       toggleText={toggleText}
@@ -186,6 +179,16 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, s
       {photo && photoComponent}
       {photo && isEditable && titleAndCaptionInputs }
       {photo && !isEditable && (photo.title || photo.caption) && titleAndCaption}
+      {/* <ContentBlockTitleAndCaption
+        toggleText={toggleText} // needs to be passed in rather than local to enable edit menu buttons to toggle text
+        showTitle={showTitle} // needs to be passed in rather than local to enable edit menu buttons to toggle text
+        showCaption={showCaption} // needs to be passed in rather than local to enable edit menu buttons to toggle text
+        setShowTitle={setShowTitle}
+        setShowCaption={setShowCaption}
+        isEditable={isEditable}
+        content={photo}
+
+      /> */}
     </div>
   )
 }

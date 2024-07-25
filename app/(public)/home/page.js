@@ -525,6 +525,7 @@ export default function Home({ introRunning, setIntroRunning }) {
               <ContentLayout
                 // parentContentBlocks={contentBlocks}
                 block={block}
+                viewContext='view'
                 // setActiveOuterBlock={setActiveBlock}
                 // viewContext={viewContext}
                 orientation='horizontal'

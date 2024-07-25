@@ -53,7 +53,7 @@ export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEd
 
     </div>
   )
-  const videoOptions = (
+  const videoEditMenu = (
     <div className={styles.blockControls}>
       <input
         type="text"
@@ -79,7 +79,7 @@ export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEd
 
   return (
     <>
-      {isEditable && videoOptions}
+      {isEditable && videoEditMenu}
       {(url !== '' || src.content !== '') ? (
         <div className={videoContainerClass}>
           {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}

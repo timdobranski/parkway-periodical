@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faImage, faFont, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 
-export default function SelectLayoutContent ({ addBlock, isEditable, index }) {
+export default function SelectLayoutContent ({ addBlock, isEditable, index, viewContext }) {
   const [expanded, setExpanded] = useState(false)
   useEffect(() => {
     if (!isEditable) {setExpanded(false)}
@@ -29,6 +29,13 @@ export default function SelectLayoutContent ({ addBlock, isEditable, index }) {
       <FontAwesomeIcon icon={faYoutube} className={styles.icon} onClick={() => addBlock(defaultVideoBlock)} />
     </div>
   )
+
+  // if (viewContext === 'view') {
+  //   return (
+  //     null
+  //   )
+  // }
+
 
   return (
     expanded ? choices : addButton
