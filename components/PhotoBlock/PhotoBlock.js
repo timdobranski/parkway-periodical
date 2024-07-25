@@ -35,6 +35,9 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, s
   useEffect(() => {
     if (caption !== false) {
       setShowCaption(true);
+    } else {
+      console.log('title is false, setting showTitle to false')
+      setShowCaption(false);
     }
   }, [caption])
 
@@ -130,6 +133,8 @@ export default function PhotoBlock({ photo, addPhoto, deletePhoto, isEditable, s
       setPhotoStyle={setPhotoStyle}
       isLayout={isLayout}
       toggleText={toggleText}
+      showTitle={showTitle} // to determine styling for title and caption buttons in edit controls
+      showCaption={showCaption}
     />
   )
 
