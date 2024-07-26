@@ -130,7 +130,7 @@ export default function Intro({ introRunning, setFinishedLoading, loadedImages, 
                   alt={`Image in row ${rowIndex + 1}, number ${index - 2 + 1}`}
                   className={styles.image}
                   onLoad={handleImageLoad}
-                  // loading='lazy'
+                  loading='lazy'
                 />
               </div>
             ))}
