@@ -118,7 +118,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
                 nestedIndex={index}
                 addPhoto={addPhoto}
                 setPhotoStyle={(style) => setPhotoStyle(style, index)}
-                deletePhoto={(fileName, index) => deletePhoto(index, fileName)}
+                deletePhoto={(fileName) => deletePhoto(index, fileName)}
                 isLayout={true}
                 setContentBlocks={setContentBlocks}
                 toggleTitleOrCaption={toggleTitleOrCaption}

@@ -70,6 +70,7 @@
   padding: .25rem;
   margin: 0;
   border-radius: 4px;
+  width: 55px;
 }
 .activeIconWrapper {
   background: rgb(0, 144, 221);
@@ -157,12 +158,15 @@
 }
 
 .cropControlsWrapper {
+  position: absolute;
+  bottom: -40px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   width: 100%;
   margin: 1rem;
+  z-index: 100;
 }
 .photoWithNoCaption {
   width: 100%;
