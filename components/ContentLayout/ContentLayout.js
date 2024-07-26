@@ -74,7 +74,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
           <div
             key={index}
             style={{justifyContent: ''}}
-            className={`${styles.layoutColumn} ${layoutIsEditable ? 'outlined' : ''}`}
+            className={`${styles.layoutColumn}`}
             onClick={(e) => {
               e.stopPropagation();
               if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
@@ -134,19 +134,19 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
         {content.map((contentBlock, index) => {
           if (contentBlock.type === 'photo' || contentBlock.type === 'video') {
             return (
-              <div className={styles.layoutColumn} key={index} >
-              <ContentBlockTitleAndCaption
-                 // Ensure each component in the list has a unique key prop
-                index={parentIndex}
-                nestedIndex={index}
-                content={contentBlock.content[0]}
-                isEditable={index === activeBlock}
-                setContentBlocks={setContentBlocks}
-                updateBlockContent={(newContent) => updateBlockContent(newContent, parentIndex, index)}
-                updateBlock={(newBlock) => updateBlock(newBlock, parentIndex, index)}
-                removeBlock={() => removeBlock(index)}
-                setActiveBlock={setActiveBlock}
-              />
+              <div className={styles.captionColumn} key={index} >
+                <ContentBlockTitleAndCaption
+                  // Ensure each component in the list has a unique key prop
+                  index={parentIndex}
+                  nestedIndex={index}
+                  content={contentBlock.content[0]}
+                  isEditable={index === activeBlock}
+                  setContentBlocks={setContentBlocks}
+                  updateBlockContent={(newContent) => updateBlockContent(newContent, parentIndex, index)}
+                  updateBlock={(newBlock) => updateBlock(newBlock, parentIndex, index)}
+                  removeBlock={() => removeBlock(index)}
+                  setActiveBlock={setActiveBlock}
+                />
               </div>
             );
           }

@@ -10,17 +10,19 @@
   min-height: 10px;
   width: 100%;
 }
-.layoutColumn {
+.layoutColumn, .captionColumn {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-
-  /* background: rgb(255, 255, 255); */
+  padding: 10px;
   flex: 1;
-  align-items: center; /*layout items are centered by default*/
+  align-items: center;
   justify-content: center;
   /* border: solid rgb(0, 255, 8) 2px; */
+}
+.captionColumn {
+  padding-top: 0;
+  justify-content: flex-start;
 }
 .selectHandle {
   width: 40px;

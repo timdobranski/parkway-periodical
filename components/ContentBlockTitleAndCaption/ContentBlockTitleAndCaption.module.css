@@ -3,11 +3,12 @@
   width: 100%;
   box-sizing: border-box;
   min-height: 0px;
+  margin-top: 0;
 }
 .titleAndCaption {
   position: relative;
   font-size: 1.25rem;
-  padding: .5rem 1rem;
+  padding: 0 1rem .5rem 1rem;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -40,6 +41,7 @@
   text-decoration-color: red;
   font-size: 1.75rem;
   color: rgb(0, 95, 168);
+  /* border: solid red 2px; */
 }
 .captionInput {
   height: fit-content;
