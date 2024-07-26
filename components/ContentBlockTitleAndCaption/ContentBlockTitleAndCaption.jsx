@@ -4,81 +4,48 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './ContentBlockTitleAndCaption.module.css';
 
 // content will be either a photo or video object with title and caption properties
-export default function ContentBlockTitleAndCaption({ content, isEditable, showTitle, showCaption, setShowTitle, setShowCaption }) {
-  const [title, setTitle] = useState(content?.title || false);
-  const [caption, setCaption] = useState(content?.caption || false);
+export default function ContentBlockTitleAndCaption({ content, isEditable, setContentBlocks, index, nestedIndex }) {
 
-  // const [showTitle, setShowTitle] = useState(false);
-  // const [showCaption, setShowCaption] = useState(false);
+  // set title and caption to the content passed in, or false if they are an empty string
+  const [title, setTitle] = useState(content?.title);
+  const [caption, setCaption] = useState(content?.caption);
 
   const hasMounted = useRef(false);
 
-  // if the title or caption are not false, show them. empty strings will still be shown
+  // if content is changed by another component, like the edit menu buttons, update the title and caption
+  // if it turns to false, set the title to false
+  // if it turns to an empty string, set it to
   useEffect(() => {
-    if (title !== false) {
-      console.log('title is not false, setting showTitle to true')
-      setShowTitle(true);
-    } else {
-      console.log('title is false, setting showTitle to false')
-      setShowTitle(false);
+    console.log('TITLEANDCAPTION TITLE CHANGE: ', content?.title)
+
+    if (content) {
+      setTitle(content.title);
     }
-  }, [title])
+  }, [content?.title])
 
   useEffect(() => {
-    if (caption !== false) {
-      setShowCaption(true);
-    } else {
-      console.log('title is false, setting showTitle to false')
-      setShowCaption(false);
+    console.log('TITLEANDCAPTION CAPTION CHANGE: ', content?.caption)
+
+    if (content) {
+      setCaption(content.caption);
     }
-  }, [caption])
-
-
+  }, [content?.caption])
 
   useEffect(() => {
-    console.log('showTitle changed: ', showTitle)
-    if (hasMounted.current && showTitle === false) {
-      setTitle(false);
-    }
-  }, [showTitle])
-
-  useEffect(() => {
-
-  }, [showCaption])
-
-  // toggles the title or caption between false and an empty string. false prevents render, empty string allows for input
-  // const toggleText = (captionOrTitle) => {
-  //   console.log('inside toggle text')
-  //   if (captionOrTitle === 'caption') {
-  //     if (caption === false) {
-  //       setCaption('');
-  //     } else {
-  //       setCaption(false);
-  //     }
-  //   } else {
-  //     console.log('')
-  //     if (title === false) {
-  //       console.log('title is false, resetting it to an empty string')
-  //       setTitle('');
-  //     } else {
-  //       console.log('title is not false, setting it to false')
-  //       setTitle(false);
-  //     }
-  //   }
-  // }
-
-
-  useEffect(() => {
-    console.log('content passed to TitleAndCaption: ', content)
+    console.log('CONTENT CHANGE: ', content)
   }, [content])
 
+
+
+
+  // updates the title and caption in the content block when isEditable changes
   const updateTitleAndCaption = () => {
     setContentBlocks(prev => {
       const newContent = [...prev];
 
-      if (nestedIndex) {
-        newContent[index].content[nestedIndex].content[0].title = title || ''; // if title is false, set to an empty string
-        newContent[index].content[nestedIndex].content[0].caption = caption || '';
+      if (nestedIndex || nestedIndex === 0) {
+        newContent[index].content[nestedIndex].content[0].title = title; // if title is false, set to an empty string
+        newContent[index].content[nestedIndex].content[0].caption = caption;
       } else {
         newContent[index].content[0].title = title;
         newContent[index].content[0].caption = caption;
@@ -86,7 +53,7 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, showT
       return newContent;
     })
   }
-
+  // if the component has mounted, is not editable, and the content blocks are set, update the title and caption
   useEffect(() => {
     if (!isEditable && hasMounted.current && setContentBlocks) {
       updateTitleAndCaption();
@@ -97,38 +64,46 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, showT
 
 
   const titleAndCaptionInputs = (
-    <div className={styles.titleAndCaption}>
-      { showTitle !== false &&
-      <input
-        type="text"
-        placeholder="Add Title"
-        className={styles.titleInput}
-        value={isEditable ? title : content?.title}
-        onChange={(e) => setTitle(e.target.value)}
-      />}
+    (typeof title === 'string' || typeof caption === 'string') && (
+      <div className={styles.titleAndCaption}>
+        {typeof title === 'string' && (
+          <input
+            type="text"
+            placeholder="Add Title"
+            className={styles.titleInput}
+            value={isEditable ? title : content?.title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        )}
+        {typeof caption === 'string' && (
+          <textarea
+            placeholder="Add Caption"
+            className={styles.captionInput}
+            value={isEditable ? caption : content?.caption}
+            onChange={(e) => setCaption(e.target.value)}
+          />
+        )}
+      </div>
+    )
+  );
 
-      { showCaption !== false &&
-        <textarea
-          type="text"
-          placeholder="Add Caption"
-          className={styles.captionInput}
-          value={isEditable ? caption : content?.caption}
-          onChange={(e) => setCaption(e.target.value)}
-        />}
-    </div>
-  )
-
-  const titleAndCaption = (
-    <div className={styles.titleAndCaption}>
-      <p className={styles.title}>{content?.title}</p>
-      <p className={styles.caption}>{content?.caption}</p>
-    </div>
-  )
+  const titleAndCaption = () => {
+    if (content?.title || content?.caption) {
+      return (
+        <div className={styles.titleAndCaption}>
+          <p className={styles.title}>{content?.title}</p>
+          <p className={styles.caption}>{content?.caption}</p>
+        </div>
+      )
+    }
+  }
 
 
   return (
     <div className={styles.titleAndCaptionWrapper}>
-      {isEditable ? titleAndCaptionInputs : titleAndCaption}
+      {/* <p>Title and Caption</p> */}
+      {isEditable ? titleAndCaptionInputs : titleAndCaption()}
+
     </div>
   )
 

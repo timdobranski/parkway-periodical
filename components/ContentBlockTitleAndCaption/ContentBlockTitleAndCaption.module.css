@@ -1,3 +1,51 @@
 .titleAndCaptionWrapper {
-  border: solid red 2px;
+  /* border: solid red 2px; */
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 0px;
+}
+.titleAndCaption {
+  position: relative;
+  font-size: 1.25rem;
+  padding: .5rem 1rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+}
+.titleInput, .captionInput, .title, .caption {
+  text-align: center;
+  font-size: 1.25rem;
+  padding: .25rem;
+  border: none;
+  width: 100%;
+  font-weight: normal;
+  /* border: solid red 1px; */
+  margin: 2px;
+  max-width: 100%; /* Ensure the container doesn't exceed its parent's width */
+  word-wrap: break-word; /* Break words at the container boundary */
+  overflow-wrap: break-word; /* Break long words */
+  box-sizing: border-box;
+}
+.titleAndCaption :global(.p-editor-toolbar) {
+  position: relative;
+}
+.title, .titleInput {
+  font-weight: normal;
+  text-decoration: underline;
+  text-decoration-color: red;
+  font-size: 1.75rem;
+  color: rgb(0, 95, 168);
+}
+.captionInput {
+  height: fit-content;
+  border-radius: 4px;
+  min-height: 80px;
+  resize: vertical;
+  border: dashed rgb(170, 170, 170) 2px;
+  box-sizing: border-box;
 }

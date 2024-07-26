@@ -109,7 +109,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
             if (urlError) throw new Error(urlError.message);
 
-            resolve({src: publicURL.publicUrl, caption: '', title: '', fileName: fileName}); // Resolve the photo object with the new data
+            resolve({src: publicURL.publicUrl, caption: false, title: false, fileName: fileName}); // Resolve the photo object with the new data
           } catch (uploadError) {
             reject(uploadError);
           }
@@ -424,6 +424,29 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
     setContentBlocks(newContentBlocks);
   };
+  const toggleTitleOrCaption = (titleOrCaption, index, nestedIndex) => {
+    setContentBlocks(prev => {
+      const newContent = [...prev];
+      console.log('newContent: ', newContent)
+      console.log('index and nested index: ' , index, nestedIndex)
+      if (nestedIndex !== undefined && nestedIndex !== null) {
+        // Ensure nested structure exists
+        if (newContent[index] && newContent[index].content[nestedIndex] && newContent[index].content[nestedIndex].content[0]) {
+          const currentValue = newContent[index].content[nestedIndex].content[0][titleOrCaption];
+          console.log('currentValue: ', currentValue)
+          newContent[index].content[nestedIndex].content[0][titleOrCaption] = (typeof currentValue === 'string') ? false : '';
+        }
+      } else {
+        // Ensure structure exists
+        if (newContent[index] && newContent[index].content[0]) {
+          const currentValue = newContent[index].content[0][titleOrCaption];
+          newContent[index].content[0][titleOrCaption] = (typeof currentValue === 'string') ? false : '';
+        }
+      }
+
+      return newContent;
+    });
+  };
 
   if (!user) { return <h1>Loading...</h1>}
 
@@ -477,13 +500,13 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   user={user}
                   addBlock={addBlock}
                   addPhoto={addPhoto}
-                  // setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
                   setContentBlocks={setContentBlocks}
                   parentIndex={index}
                   parentActiveBlock={activeBlock}
                   layoutIsEditable={index === activeBlock}
                   setPhotoStyle={(style, nestedIndex) => updateBlockStyle(index, style, nestedIndex)}
                   deletePhoto={(fileName, nestedIndex) => deletePhoto(index, nestedIndex, fileName)}
+                  toggleTitleOrCaption={toggleTitleOrCaption}
                   // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
 
                 />
@@ -522,6 +545,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   removeBlock={() => removeBlock(index)}
                   setPhotoStyle={(style) => updateBlockStyle(index, style)}
                   viewContext={viewContext}
+                  toggleTitleOrCaption={toggleTitleOrCaption}
                 />
               }
               {block.type === 'carousel' &&

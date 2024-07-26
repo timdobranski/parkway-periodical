@@ -12,7 +12,7 @@ import { createClient } from '../../utils/supabase/client';
 
 export default function EditablePhoto({
   photo, isEditable, updatePhotoContent, deletePhoto, containerClassName, index, setSelectedPhotos,
-  handleTitleChange, handleCaptionChange, photoIndex, photoContext, setPhotoStyle, isLayout, toggleText, showTitle, showCaption }) {
+  handleTitleChange, handleCaptionChange, photoIndex, photoContext, setPhotoStyle, isLayout, toggleTitleOrCaption }) {
   const supabase = createClient()
   const imageRef = useRef(null);
   const wrapperRef = useRef(null); // Ref for the photo wrapper to enable dynamic height resizing when photo is resized
@@ -179,11 +179,11 @@ export default function EditablePhoto({
         <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.captionIcon} />
         <p>Resize</p>
       </div>
-      <div className={`${showTitle ? styles.activeIconWrapper : styles.photoEditMenuIconWrapper}`} onClick={() => toggleText('title')}>
+      <div className={`${photo.title !== false ? styles.activeIconWrapper : styles.photoEditMenuIconWrapper}`} onClick={() => toggleTitleOrCaption('title')}>
         <FontAwesomeIcon icon={faFont} className={styles.captionIcon} />
         <p>Title</p>
       </div>
-      <div className={`${showCaption ? styles.activeIconWrapper : styles.photoEditMenuIconWrapper}`} onClick={() => toggleText('caption')}>
+      <div className={`${photo.caption !== false ? styles.activeIconWrapper : styles.photoEditMenuIconWrapper}`} onClick={() => toggleTitleOrCaption('caption')}>
         <FontAwesomeIcon icon={faFont} className={styles.captionIcon} />
         <p>Caption</p>
       </div>

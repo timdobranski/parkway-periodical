@@ -35,7 +35,7 @@
 }
 .photoEditMenu, .layoutPhotoEditMenu {
   position: absolute;
-  top: -75px;
+  top: -65px;
   left: 50%;
   transform: translateX(-50%);
   width: 500px;
@@ -163,42 +163,6 @@
   justify-content: space-around;
   width: 100%;
   margin: 1rem;
-}
-.cropManualDimensions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-}
-.cropManualDimensions * {
-  margin: .25rem;
-}
-.cropManualDimensions input {
-  width: 50px;
-  text-align: center;
-}
-.manualCropLabels, .manualCropInputs {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.cropManualDimensions p {
-  margin: 0;
-  padding: 0;
-  font-size: 1rem;
-}
-.lockWrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-}
-.lockWrapper * {
-  margin: .25rem;
-  font-size: 1rem;
 }
 .photoWithNoCaption {
   width: 100%;

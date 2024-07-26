@@ -7,6 +7,7 @@ import PhotoBlock from '../PhotoBlock/PhotoBlock';
 import PrimeText from '../PrimeText/PrimeText';
 import Video from '../Video/Video';
 import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
+import ContentBlockTitleAndCaption from '../ContentBlockTitleAndCaption/ContentBlockTitleAndCaption';
 
 // block is an object with type, style, and content properties
 // type is a string that determines the type of block
@@ -14,7 +15,7 @@ import SelectLayoutContent from '../SelectLayoutContent/SelectLayoutContent';
 // content is an array of objects that determine the content of the block
 
 export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock,
-  addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock, setPhotoStyle, deletePhoto, viewContext }) {
+  addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock, setPhotoStyle, deletePhoto, viewContext, toggleTitleOrCaption }) {
   const content = block.content;
 
   const [isEmpty, setIsEmpty] = useState(true);
@@ -67,9 +68,8 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
   }
 
   return (
-    // <div className={`${styles.layoutWrapper} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`}>
-      <div className={`${styles.layoutGrid} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`} >
-
+    <div className={`${styles.layoutWrapper} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`}>
+      <div className={`${styles.layoutGrid}`} >
         {content.map((contentBlock, index) => (
           <div
             key={index}
@@ -114,20 +114,47 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
               <PhotoBlock
                 photo={contentBlock.content[0]}
                 isEditable={index === activeBlock}
+                index={parentIndex}
                 nestedIndex={index}
                 addPhoto={addPhoto}
                 setPhotoStyle={(style) => setPhotoStyle(style, index)}
                 deletePhoto={(fileName, index) => deletePhoto(index, fileName)}
                 isLayout={true}
+                setContentBlocks={setContentBlocks}
+                toggleTitleOrCaption={toggleTitleOrCaption}
                 // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
-
               />
             )}
           </div>
         ))}
       </div>
+      <div className={`${styles.layoutGrid}`} >
 
-    // </div>
+        {/* render a separate row of title/captions here */}
+        {content.map((contentBlock, index) => {
+          if (contentBlock.type === 'photo' || contentBlock.type === 'video') {
+            return (
+              <div className={styles.layoutColumn} key={index} >
+              <ContentBlockTitleAndCaption
+                 // Ensure each component in the list has a unique key prop
+                index={parentIndex}
+                nestedIndex={index}
+                content={contentBlock.content[0]}
+                isEditable={index === activeBlock}
+                setContentBlocks={setContentBlocks}
+                updateBlockContent={(newContent) => updateBlockContent(newContent, parentIndex, index)}
+                updateBlock={(newBlock) => updateBlock(newBlock, parentIndex, index)}
+                removeBlock={() => removeBlock(index)}
+                setActiveBlock={setActiveBlock}
+              />
+              </div>
+            );
+          }
+          // Optional: If you want to render something for other content types, handle it here or return null
+          return (<div key={index} className={styles.layoutColumn}></div>);
+        })}
+      </div>
+    </div>
   );
 }
 
