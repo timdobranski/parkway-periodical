@@ -50,7 +50,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagId, setTagId] = useState('')
   const [tagResultPosts, setTagResultPosts] = useState({}); // separate array of posts from tag results
 
-  const postFetchLimit = 5;
+  const postFetchLimit = 2;
   const [noMorePosts, setNoMorePosts] = useState(false);
 
 
@@ -214,7 +214,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // HELPER EFFECTS TO LOG VALUES
   useEffect(() => {
-    // console.log('POSTS CHANGED: ', posts)
+    console.log('POSTS CHANGED: ', posts)
   }, [posts])
   useEffect(() => {
     // console.log('CATEGORY POSTS CHANGED: ', tagResultPosts)

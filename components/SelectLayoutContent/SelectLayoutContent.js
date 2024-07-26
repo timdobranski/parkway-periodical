@@ -19,14 +19,28 @@ export default function SelectLayoutContent ({ addBlock, isEditable, index, view
   const toggleExpand = () => setExpanded(prev => !prev);
 
   const addButton = (
-    <FontAwesomeIcon icon={faPlus} className={styles.addIcon} onClick={toggleExpand}/>
+    <div className={styles.addIconWrapper}>
+      <FontAwesomeIcon icon={faPlus} className={styles.addIcon} onClick={toggleExpand}/>
+    </div>
   )
   const choices = (
     <div className={styles.selectChoicesWrapper}>
-      <FontAwesomeIcon icon={faChevronLeft} className={styles.icon} onClick={toggleExpand}/>
-      <FontAwesomeIcon icon={faFont} className={styles.icon} onClick={() => addBlock(defaultTextBlock, index)} />
-      <FontAwesomeIcon icon={faImage} className={styles.icon} onClick={() => addBlock(defaultPhotoBlock, index)} />
-      <FontAwesomeIcon icon={faYoutube} className={styles.icon} onClick={() => addBlock(defaultVideoBlock)} />
+      <div className={styles.selectChoice} onClick={toggleExpand}>
+        <FontAwesomeIcon icon={faChevronLeft} className={styles.icon} />
+        <p>Back</p>
+      </div>
+      <div className={styles.selectChoice} onClick={() => addBlock(defaultTextBlock, index)}>
+        <FontAwesomeIcon icon={faFont} className={`${styles.icon} ${styles.textIcon}`} />
+        <p>Text</p>
+      </div>
+      <div className={styles.selectChoice} onClick={() => addBlock(defaultPhotoBlock, index)} >
+        <FontAwesomeIcon icon={faImage} className={`${styles.icon} ${styles.photoIcon}`} />
+        <p>Photo</p>
+      </div>
+      <div className={styles.selectChoice} onClick={() => addBlock(defaultVideoBlock)}>
+        <FontAwesomeIcon icon={faYoutube} className={`${styles.icon} ${styles.youtubeIcon}`}  />
+        <p>Video</p>
+      </div>
     </div>
   )
 

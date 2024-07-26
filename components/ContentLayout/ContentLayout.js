@@ -1,7 +1,7 @@
 import styles from './ContentLayout.module.css'
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faImage, faTex, faX } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faImage, faTex, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import PhotoBlock from '../PhotoBlock/PhotoBlock';
 import PrimeText from '../PrimeText/PrimeText';
@@ -74,18 +74,24 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
           <div
             key={index}
             style={{justifyContent: ''}}
-            className={`${styles.layoutColumn}`}
+            className={`${styles.layoutColumn} ${activeBlock === index ? 'outlined' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
             }}
           >
-            {layoutIsEditable && contentBlock.type !== 'undecided' &&
-          <FontAwesomeIcon
-            icon={faX}
-            className={styles.resetBlockIcon}
-            onClick={resetBlock}
-          />}
+            {/* {layoutIsEditable && contentBlock.type !== 'undecided' &&
+            <div className={styles.layoutColumnEditMenu} onClick={resetBlock}>
+              <div className={styles.resetColumnWrapper}>
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  className={styles.resetBlockIcon}
+                  onClick={resetBlock}
+                />
+                <p>Reset</p>
+              </div>
+            </div>
+            } */}
 
             {contentBlock.type === 'undecided' && (
               <SelectLayoutContent
@@ -128,7 +134,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
           </div>
         ))}
       </div>
-      <div className={`${styles.layoutGrid}`} >
+      <div className={`${styles.captionGrid}`} >
 
         {/* render a separate row of title/captions here */}
         {content.map((contentBlock, index) => {
@@ -147,11 +153,25 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
                   removeBlock={() => removeBlock(index)}
                   setActiveBlock={setActiveBlock}
                 />
+
+                {layoutIsEditable && index === activeBlock &&
+            <div className={styles.layoutColumnEditMenu} onClick={resetBlock}>
+              <div className={styles.resetColumnWrapper}>
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  className={styles.resetBlockIcon}
+                  onClick={resetBlock}
+                />
+                <p>Reset</p>
+              </div>
+            </div>
+                }
               </div>
             );
           }
+
           // Optional: If you want to render something for other content types, handle it here or return null
-          return (<div key={index} className={styles.layoutColumn}></div>);
+          return (<div key={index} className={styles.layoutColumnCollapsed}></div>);
         })}
       </div>
     </div>

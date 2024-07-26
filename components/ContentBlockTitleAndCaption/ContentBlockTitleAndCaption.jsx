@@ -80,7 +80,11 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
             placeholder="Add Caption"
             className={styles.captionInput}
             value={isEditable ? caption : content?.caption}
-            onChange={(e) => setCaption(e.target.value)}
+            onChange={(e) => {
+              // autoResize(e);
+              setCaption(e.target.value)
+            }}
+            // style={{ overflow: 'hidden', resize: 'none' }}
           />
         )}
       </div>

@@ -46,8 +46,15 @@
 .captionInput {
   height: fit-content;
   border-radius: 4px;
-  min-height: 80px;
+  min-height: 2rem;
   resize: vertical;
   border: dashed rgb(170, 170, 170) 2px;
   box-sizing: border-box;
+  overflow-y:visible;
 }
+/* .caption {
+  border: solid rgb(170, 170, 170) 2px;
+  width: 50px;
+  white-space: normal;
+  word-wrap: break-word;
+} */
