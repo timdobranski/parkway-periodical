@@ -1,12 +1,15 @@
-.blockEditMenu {
+.blockEditMenu, .blockControlsRight {
   position: absolute;
   color: black;
-  height: 50px;
-  width: 100%;
-  bottom: -82px;
-  left: 0px;
+  top:0;
+  height: fit-content;
+  /* width: auto;
+  height: 50px; */
+  /* width: 100%; */
+  /* bottom: -82px; */
+  left: -75px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   background-color: rgb(243, 243, 243);
@@ -14,21 +17,31 @@
   margin: 0;
   padding: 0;
   z-index: 0;
-  outline: solid rgb(177, 177, 177) 2px;
-  transform: translateY(-50%);
+  outline: solid rgb(177, 177, 177) 1px;
+  /* transform: translateY(-50%); */
   /* border-radius: 5px; */
-  box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, .3);
 }
-.blockEditMenu button {
+.blockEditMenu button, .blockControlsRight button {
   background-color: rgba(0, 0, 0, 0);
   border: none;
 }
+.moveBlockWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 .25rem 0;
+  padding: 0;
+  /* border: solid blue 2px; */
+}
+
 .icon {
   height: 20px;
   width: 20px;
   color: rgb(105, 105, 105);
   background-color: rgba(91, 91, 91, 0);
-  margin: .5rem 0;
+  margin: .25rem 0;
   padding: .5rem;
 }
 .icon:hover {
@@ -42,12 +55,8 @@
   cursor: pointer;
 }
 .delete {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  margin: 0 .5rem;
-
-  transform: translateY(-50%);
+  margin: .25rem 0;
+  padding: .5rem;
   color: rgb(255, 94, 94);
   /* margin-left: 2rem; */
   /* margin-left: 2rem; */
@@ -64,6 +73,19 @@
   color: rgb(202, 202, 202);
   background-color: rgba(91, 91, 91, 0);
 }
+.iconUp, .iconDown {
+  margin:0;
+  height: 14px;
+  width: 14px;
+  padding: 5px;
+}
+.iconUp:hover, .iconDown:hover {
+  cursor: pointer;
+  background-color: rgb(239, 239, 239);
+  background-color: rgb(114, 114, 114);
+  color: white;
+  border-radius: 50%;
+}
 /* .iconTrash, .iconSave, .iconMove, .iconYoutube{
   margin-top: .5rem;
   margin-bottom: .5rem;
@@ -75,3 +97,10 @@
   margin: .35rem;
   color: rgb(255, 255, 255);
 } */
+
+.blockControlsRight {
+  position: absolute;
+  left: unset;
+  right: -75px;
+  /* width: 50px; */
+}

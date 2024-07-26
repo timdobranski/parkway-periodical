@@ -23,22 +23,30 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   const [loading, setLoading] = useState(false);
   const blocksRef = useRef({});
 
-  // content blocks helpers - being phased out for universal addBlock helper
-  // const addPrimeTextBlock = () => {
-  //   const newBlock = { type: 'text', content: ''};
-  //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-  //   setActiveBlock(contentBlocks.length);
-  // }
-  // const addVideoBlock = () => {
-  //   const newBlock = { type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' } };
-  //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-  //   setActiveBlock(contentBlocks.length); // New block's index
-  // };
-  // const addPhotoBlock = (format) => {
-  //   const newBlock = { type: 'photo', content: null, format: format || 'grid', style: { width: '100%', height: 'auto' , x: 325, y: 0 }};
-  //   setContentBlocks([...contentBlocks.map(block => ({ ...block })), newBlock]);
-  //   setActiveBlock(contentBlocks.length); // New block's index
-  // };
+
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      // Get the adminPageWrapper element
+      const adminPageWrapper = document.querySelector('.adminPageWrapper');
+
+      // Check if the clicked element is the adminPageWrapper itself
+      if (adminPageWrapper && event.target === adminPageWrapper) {
+        // Set activeBlock to null if adminPageWrapper is clicked
+        setActiveBlock(null);
+      }
+    };
+
+    // Add event listener on mount
+    document.addEventListener('click', handleClick);
+
+    // Clean up event listener on unmount
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, [setActiveBlock]);
+
+
   const addPhoto = async (event, nestedIndex) => {
     setLoading(true);
     const files = event.target.files;
@@ -482,8 +490,9 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
               }}
             >
               {/* any blocks that aren't of type 'title' will have an edit menu below them */}
-              {activeBlock === index && block.type !== 'title' &&
+              {block.type !== 'title' &&
                 <BlockEditMenu
+                  isEditable={index === activeBlock}
                   setStatus={() => { toggleEditable(index)}}
                   {...(block.type !== 'title' ? { removeBlock: () => removeBlock(index) } : {})}
                   {...(index !== 1 ? { moveBlockUp: () => moveBlockUp(index) } : {})}
