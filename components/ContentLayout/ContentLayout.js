@@ -1,5 +1,5 @@
 import styles from './ContentLayout.module.css'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faImage, faTex, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
@@ -67,94 +67,97 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
     })
   }
 
+  let columnsClass;
+  switch (content.length) {
+    case 1:
+    case 2:
+      columnsClass = 'twoColumnGrid';
+      break;
+    case 3:
+      columnsClass = 'threeColumnGrid';
+      break;
+    default:
+      columnsClass = 'fourColumnGrid';
+      break;
+  }
+
+  if (!content || !content.length) { return null;};
+
   return (
     <div className={`${styles.layoutWrapper} ${isEmpty || layoutIsEditable ? 'outlined' : ''}`}>
-      <div className={`${styles.layoutGrid}`} >
+      <div className={`${styles.layoutGrid} ${styles[columnsClass]}`} >
         {content.map((contentBlock, index) => (
-          <div
-            key={index}
-            style={{justifyContent: ''}}
-            className={`${styles.layoutColumn}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
-            }}
-          >
-            {/* {layoutIsEditable && contentBlock.type !== 'undecided' &&
-            <div className={styles.layoutColumnEditMenu} onClick={resetBlock}>
-              <div className={styles.resetColumnWrapper}>
-                <FontAwesomeIcon
-                  icon={faChevronLeft}
-                  className={styles.resetBlockIcon}
-                  onClick={resetBlock}
+          <Fragment key={index}>
+            <div
+              // style={{justifyContent: ''}}
+              // grid item for all grid children, mainContent to signify type and mainContentIndex to signify which block it is
+              className={`${styles.gridItem} ${styles.mainContent} ${styles[`mainContent${index}`]}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
+              }}
+            >
+
+              {contentBlock.type === 'undecided' && (
+                <SelectLayoutContent
+                  isEditable={layoutIsEditable}
+                  addBlock={(newBlock) => addBlock(newBlock, parentIndex, index)}
+                  viewContext={viewContext}
                 />
-                <p>Reset</p>
-              </div>
-            </div>
-            } */}
-
-            {contentBlock.type === 'undecided' && (
-              <SelectLayoutContent
-                isEditable={layoutIsEditable}
-                addBlock={(newBlock) => addBlock(newBlock, parentIndex, index)}
-                viewContext={viewContext}
-              />
-            )}
-            {contentBlock.type === 'video' && (
-              <Video
-                src={contentBlock}
-                isEditable={index === activeBlock}
-                updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
-                updateVideoUrl={(url) => updateVideoUrl(index, url)}
-                viewContext={'edit'}
-              />
-            )}
-            {contentBlock.type === 'text' && (
-              <PrimeText
-                src={contentBlock}
-                isEditable={index === activeBlock}
-                setTextState={(url) => updateVideoUrl(index, url)}
-              />
-            )}
-            {contentBlock.type === 'photo' && (
-              <PhotoBlock
-                photo={contentBlock.content[0]}
-                isEditable={index === activeBlock}
-                index={parentIndex}
-                nestedIndex={index}
-                addPhoto={addPhoto}
-                setPhotoStyle={(style) => setPhotoStyle(style, index)}
-                deletePhoto={(fileName) => deletePhoto(index, fileName)}
-                isLayout={true}
-                setContentBlocks={setContentBlocks}
-                toggleTitleOrCaption={toggleTitleOrCaption}
-                // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
-              />
-            )}
-          </div>
-        ))}
-      </div>
-      <div className={`${styles.captionGrid}`} >
-
-        {/* render a separate row of title/captions here */}
-        {content.map((contentBlock, index) => {
-          if (contentBlock.type === 'photo' || contentBlock.type === 'video') {
-            return (
-              <div className={styles.captionColumn} key={index} >
-                <ContentBlockTitleAndCaption
-                  // Ensure each component in the list has a unique key prop
+              )}
+              {contentBlock.type === 'video' && (
+                <Video
+                  src={contentBlock}
+                  isEditable={index === activeBlock}
+                  updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
+                  updateVideoUrl={(url) => updateVideoUrl(index, url)}
+                  viewContext={'edit'}
+                />
+              )}
+              {contentBlock.type === 'text' && (
+                <PrimeText
+                  src={contentBlock}
+                  isEditable={index === activeBlock}
+                  setTextState={(url) => updateVideoUrl(index, url)}
+                />
+              )}
+              {contentBlock.type === 'photo' && (
+                <PhotoBlock
+                  photo={contentBlock.content[0]}
+                  isEditable={index === activeBlock}
                   index={parentIndex}
                   nestedIndex={index}
-                  content={contentBlock.content[0]}
-                  isEditable={index === activeBlock}
+                  addPhoto={addPhoto}
+                  setPhotoStyle={(style) => setPhotoStyle(style, index)}
+                  deletePhoto={(fileName) => deletePhoto(index, fileName)}
+                  isLayout={true}
                   setContentBlocks={setContentBlocks}
-                  updateBlockContent={(newContent) => updateBlockContent(newContent, parentIndex, index)}
-                  updateBlock={(newBlock) => updateBlock(newBlock, parentIndex, index)}
-                  removeBlock={() => removeBlock(index)}
-                  setActiveBlock={setActiveBlock}
+                  toggleTitleOrCaption={toggleTitleOrCaption}
+                // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
                 />
+              )}
+            </div>
 
-                {layoutIsEditable && index === activeBlock &&
+            {/* render a caption and title component no matter what */}
+            <div className={`${styles.gridItem} ${styles.captionContent} ${styles[`captionContent${index}`]}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
+              }}
+            >
+              <ContentBlockTitleAndCaption
+                index={parentIndex}
+                nestedIndex={index}
+                content={contentBlock.content && contentBlock.content.length > 0 ? contentBlock.content[0] : null}
+                isEditable={index === activeBlock}
+                setContentBlocks={setContentBlocks}
+                updateBlockContent={(newContent) => updateBlockContent(newContent, parentIndex, index)}
+                updateBlock={(newBlock) => updateBlock(newBlock, parentIndex, index)}
+                removeBlock={() => removeBlock(index)}
+                setActiveBlock={setActiveBlock}
+              />
+
+              {layoutIsEditable && index === activeBlock &&
             <div className={styles.layoutColumnEditMenu} onClick={resetBlock}>
               <div className={styles.resetColumnWrapper}>
                 <FontAwesomeIcon
@@ -165,14 +168,10 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
                 <p>Reset</p>
               </div>
             </div>
-                }
-              </div>
-            );
-          }
-
-          // Optional: If you want to render something for other content types, handle it here or return null
-          return (<div key={index} className={styles.layoutColumnCollapsed}></div>);
-        })}
+              }
+            </div>
+          </Fragment>
+        ))}
       </div>
     </div>
   );

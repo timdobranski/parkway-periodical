@@ -3,25 +3,52 @@
   width: 100%;
   padding-bottom: 0;
 }
+/* grid child classes:
+  gridItem, mainContent, mainContent{index},
+  gridItem, captionContent, captionContent{index}
+ */
 
-.layoutGrid, .captionGrid {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-
-  /* border: solid red 2px; */
-  min-height: 0;
+.layoutGrid  {
+  display: grid;
+  /* min-height: 0; */
   width: 100%;
+  /* border: solid red 2px; */
+}
 
-  /* height: 100% !important; */
+/* define names for grid areas */
+.twoColumnGrid {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(auto-fill, minmax(100px, auto));
+  grid-template-areas:
+    "mainContent0 mainContent1"
+    "captionContent0 captionContent1";
 }
-.layoutGrid {
- align-items: center;
+.threeColumnGrid {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fill, minmax(100px, auto));
+  grid-template-areas:
+    "mainContent0 mainContent1 mainContent2"
+    "captionContent0 captionContent1 captionContent2";
 }
-.captionGrid {
- align-items: flex-start;
+.fourColumnGrid {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(auto-fill, minmax(100px, auto));
+  grid-template-areas:
+    "mainContent0 mainContent1 mainContent2 mainContent3"
+    "captionContent0 captionContent1 captionContent2 captionContent3";
 }
-.layoutColumn, .captionColumn, .layoutColumnCollapsed {
+/* assign content to named grid areas */
+.mainContent0 { grid-area: mainContent0; }
+.captionContent0 { grid-area: captionContent0; }
+.mainContent1 { grid-area: mainContent1; }
+.captionContent1 { grid-area: captionContent1; }
+.mainContent2 { grid-area: mainContent2; }
+.captionContent2 { grid-area: captionContent2; }
+.mainContent3 { grid-area: mainContent3; }
+.captionContent3 { grid-area: captionContent3; }
+
+/* styling for all grid items */
+.gridItem {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -32,9 +59,27 @@
   height: 100%;
   /* border: solid rgb(0, 255, 8) 2px; */
 }
-.layoutColumnCollapsed {
-  margin: 0;
+.mainContent {
+
 }
+.captionContent {
+    justify-content: flex-start;
+}
+.mainContent0 {
+
+}
+.captionContent0 {
+
+}
+.mainContent1 {
+
+}
+.captionContent1 {
+
+}
+
+
+
 .layoutColumnEditMenu {
   position: absolute;
   bottom: -60px;
@@ -50,10 +95,7 @@
   border-radius: 2px;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);
 }
-.captionColumn {
-  padding-top: 0;
-  justify-content: flex-start;
-}
+
 .selectHandle {
   width: 40px;
   height: 40px;
@@ -104,4 +146,23 @@
 }
 .resetBlockIcon:hover {
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .layoutGrid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "mainContent0"
+      "captionContent0"
+      "mainContent1"
+      "captionContent1"
+      "mainContent2"
+      "captionContent2"
+      "mainContent3"
+      "captionContent3";
+  }
+  .twoColumnGrid, .threeColumnGrid, .fourColumnGrid {
+    grid-template-columns: 1fr;
+  }
+
 }
