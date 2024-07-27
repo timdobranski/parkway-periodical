@@ -485,6 +485,13 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
               // ref={el => blocksRef.current[index] = el}
               className={`${'blockWrapper'} ${index === activeBlock ? 'outlined' : ''}`}
               onClick={(e) => {
+                const excludedClasses = ['arrowLeft', 'arrowLeftDisabled', 'arrowRight', 'arrowRightDisabled'];
+
+                // Check if the event target has any of the excluded classes
+                if (excludedClasses.some(cls => e.target.classList.contains(cls))) {
+                  return; // Do nothing if the element has any of the excluded classes
+                }
+
                 e.stopPropagation();
                 if (index !== activeBlock) {setActiveBlock(index)}
               }}

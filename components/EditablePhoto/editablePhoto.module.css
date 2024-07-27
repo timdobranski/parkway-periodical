@@ -19,7 +19,7 @@
 .rndElement {
   left: 50% !important;
   transform: translateX(-50%) !important;
-  border: solid red 2px;
+  /* border: solid red 2px; */
   display: block;
   /* top: 4px; */
   max-height: 60vh !important;
@@ -131,6 +131,10 @@
   font-size: 1rem;
   margin: 0;
   padding: 0;
+}
+.bottomRightResizeHandle {
+  color: red !important;
+  z-index: 1000 !important;
 }
 
 .photoNumber {

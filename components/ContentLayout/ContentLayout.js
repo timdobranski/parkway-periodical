@@ -74,7 +74,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
           <div
             key={index}
             style={{justifyContent: ''}}
-            className={`${styles.layoutColumn} ${activeBlock === index ? 'outlined' : ''}`}
+            className={`${styles.layoutColumn}`}
             onClick={(e) => {
               e.stopPropagation();
               if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}

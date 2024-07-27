@@ -58,12 +58,12 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
   };
   const customPrevArrow = (clickHandler, hasPrev) => {
     return (
-      <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null} className={hasPrev ? styles.arrowLeft : styles.arrowLeftDisabled}/>
+      <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null} className={hasPrev ? 'arrowLeft' : 'arrowLeftDisabled'}/>
     );
   }
   const customNextArrow = (clickHandler, hasNext) => {
     return (
-      <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? styles.arrowRight : styles.arrowRightDisabled}/>
+      <FontAwesomeIcon icon={faChevronRight} onClick={hasNext ? clickHandler : null} className={hasNext ? 'arrowRight' : 'arrowRightDisabled'}/>
     );
   }
   const noPhotosMessage = (

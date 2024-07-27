@@ -7,7 +7,7 @@ export default function logUserOut(router) {
     if (error) {
       console.log('Error logging out:', error.message)
     } else {
-      router.push('/public/home');
+      router.push('/home');
     }
   };
   handleLogout();

@@ -221,6 +221,11 @@ export default function EditablePhoto({
       ref={imageRef}
       crossOrigin="anonymous"
       onLoad={onImageLoaded}
+      onClick={() => {
+        if (isEditable && !cropActive && !resizeActive) {
+          setResizeActive(true);
+        }
+      }}
       style={photo.style}
     />
   )
@@ -256,13 +261,26 @@ export default function EditablePhoto({
         onResize={onResize}
         onResizeStop={onResizeStop}
         disableDragging
-        // bounds="parent"
         lockAspectRatio
         minHeight="100px"
         minWidth="100px"
         maxWidth="100%"
         maxHeight='100vh'
         className={styles.rndElement}
+        resizeHandleStyles={{
+          bottomRight: {
+            width: '30px',
+            height: '30px',
+            bottom: '2px',
+            right: '2px',
+            backgroundColor: 'white',
+            outline: 'solid red 2px;',
+            clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' /* Define the triangle shape */
+
+          },
+        }}
+        resizeHandleClasses={{bottomRight: styles.bottomRightResizeHandle}}
+        // bounds="parent"
       >
         {imageElement}
       </Rnd>
