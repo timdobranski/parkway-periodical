@@ -487,14 +487,17 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
               onClick={(e) => {
                 const excludedClasses = ['arrowLeft', 'arrowLeftDisabled', 'arrowRight', 'arrowRightDisabled'];
 
-                // Check if the event target has any of the excluded classes
-                if (excludedClasses.some(cls => e.target.classList.contains(cls))) {
-                  return; // Do nothing if the element has any of the excluded classes
+                // Check if the event target or any of its ancestors has any of the excluded classes
+                if (excludedClasses.some(cls => e.target.closest(`.${cls}`))) {
+                  return; // Do nothing if the element or its ancestors have any of the excluded classes
                 }
 
                 e.stopPropagation();
-                if (index !== activeBlock) {setActiveBlock(index)}
+                if (index !== activeBlock) {
+                  setActiveBlock(index);
+                }
               }}
+
             >
               {/* any blocks that aren't of type 'title' will have an edit menu below them */}
               {block.type !== 'title' &&
