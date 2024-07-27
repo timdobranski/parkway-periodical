@@ -383,11 +383,31 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     });
   };
   // video block helpers
-  const updateVideoUrl = (index, url) => {
+  const updateVideoUrl = (index, url, nestedIndex = null) => {
     const newContentBlocks = [...contentBlocks];
-    newContentBlocks[index] = { ...newContentBlocks[index], content: url };
+
+    if (nestedIndex !== null) {
+      newContentBlocks[index] = {
+        ...newContentBlocks[index],
+        content: newContentBlocks[index].content.map((item, i) =>
+          i === nestedIndex
+            ? {
+              ...item,
+              content: [{ ...item.content[0], url }],
+            }
+            : item
+        ),
+      };
+    } else {
+      newContentBlocks[index] = {
+        ...newContentBlocks[index],
+        content: [{ ...newContentBlocks[index].content[0], url }],
+      };
+    }
+
     setContentBlocks(newContentBlocks);
-  }
+  };
+
   const updateVideoOrientation = (index, orientation) => {
     const newContentBlocks = [...contentBlocks];
     newContentBlocks[index] = { ...newContentBlocks[index], orientation: orientation };
@@ -590,8 +610,10 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                     //  (index=== activeBlock && parentIndex === parentActiveBlock)
                       true
                     }
+                    toggleTitleOrCaption={(type) => {toggleTitleOrCaption(type, index)}}
+                    setContentBlocks={setContentBlocks}
                     toggleEditable={toggleEditable}
-                    src={block}
+                    video={block.content?.length ? block.content[0] : null}
                     blockIndex={index}
                     removeBlock={() => removeBlock(index)}
                     updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}

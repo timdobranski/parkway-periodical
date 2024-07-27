@@ -173,7 +173,7 @@
   margin: 1rem;
   z-index: 100;
 }
-.photoWithNoCaption {
+/* .photoWithNoCaption {
   width: 100%;
 }
 .photoWithCaptionRight {
@@ -193,7 +193,7 @@
   display: flex;
   flex-direction: column;
   width: 50%;
-}
+} */
 .resizeControls {
   position: absolute;
   top: -40px;

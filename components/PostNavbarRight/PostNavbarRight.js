@@ -9,23 +9,9 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 export default function PostNavbarRight({ handleSubmit, addBlock, publishingStatus, updateMode
 }) {
 
-  // const isTextBlockActive = activeBlock !== null && activeBlockType === 'text';
-  // const singlePhotoCaptionRight = { type: 'photo', content: null, format: 'single-photo-caption-right' };
-  // const singlePhotoCaptionLeft = { type: 'photo', content: null, format: 'single-photo-caption-left' };
-  // const singlePhotoCaptionAbove = { type: 'photo', content: null, format: 'single-photo-caption-above' };
-  // const singlePhotoCaptionBelow = { type: 'photo', content: [], format: 'single-photo-caption-below' };
   const singlePhotoNoCaption = { type: 'photo', content: [], format: 'single-photo-no-caption' };
   const photoCarousel = { type: 'carousel', content: [], format: 'carousel' };
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-
-    const layoutsModal = (
-
-      <div className={styles.infoBox}>
-        <p>Flexible layouts allow you to add content in several columns. In each column, you can add a photo, video, or text.</p>
-      </div>
-      )
 
 
   return (
@@ -34,8 +20,6 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Flexible Layouts </h3>
-        {/* <FontAwesomeIcon icon={modalIsOpen ? faX : faCircleQuestion} className={`${modalIsOpen ? styles.closeIcon : styles.infoIcon}`} onClick={() => setModalIsOpen(!modalIsOpen)} />
-          {modalIsOpen && layoutsModal} */}
         <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [ {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
@@ -110,7 +94,22 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Videos</h3>
-        <div onClick={() => addBlock({ type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' }})} className={styles.navbarSectionItem}>
+        <div onClick={() =>
+          addBlock({ type: 'video', content: [{
+            url: '',
+            title: false,
+            caption: false,
+            orientation: 'landscape',
+            style: {
+              width: '100%',
+              height: 'auto' ,
+              x: 325,
+              y: 0,
+              maxHeight:'50vh'
+            }
+          }],
+          })}
+        className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faYoutube} className={`${styles.icon} ${styles.youtubeIcon}`} />
           <h3>Youtube</h3>
         </div>

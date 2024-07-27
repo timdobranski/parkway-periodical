@@ -3,23 +3,36 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './video.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan, faRotateRight, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faRotateRight, faRotateLeft, faFont, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+import ContentBlockTitleAndCaption from '../ContentBlockTitleAndCaption/ContentBlockTitleAndCaption';
 
+// src is the full video object with type, content, title, caption, styles, and orientation properties
 // update video style takes in an object with width, height, top, and left values set to numbers
-export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEditable,
-  setActiveBlock, blockIndex, removeBlock, toggleEditable, updateVideoOrientation, viewContext }) {
-  const [url, setUrl] = useState(src.content);
+export default function VideoBlock({
+  video,
+  isEditable,
+  updateVideoUrl,
+  blockIndex,
+  updateVideoOrientation,
+  viewContext,
+  isLayout,
+  setContentBlocks,
+  nestedIndex,
+  toggleTitleOrCaption
+}) {
 
-    // console.log('isEditable inside video block: ', isEditable)
+  const [url, setUrl] = useState(video?.url);
+
+  // console.log('isEditable inside video block: ', isEditable)
   useEffect(() => {
     updateVideoUrl && updateVideoUrl(url);
     // console.log('url changed: ', url)
   }, [url]);
 
-  // useEffect(() => {
-  //   console.log('src changed: ', src)
-  // }, [src]);
+  useEffect(() => {
+    console.log('video prop changed: ', video)
+  }, [video]);
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;
@@ -50,11 +63,6 @@ export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEd
     <div className={`${styles.emptyVideoInputMessage} ${isEditable ? '' : 'outlined'}`}>
       <FontAwesomeIcon icon={faYoutube} className={styles.iconYoutube}/>
       <p>Paste a URL from Youtube to preview the video.</p>
-
-    </div>
-  )
-  const videoEditMenu = (
-    <div className={styles.blockControls}>
       <input
         type="text"
         value={url}
@@ -64,29 +72,55 @@ export default function VideoBlock({ updateVideoUrl, updateBlockStyle, src, isEd
         onMouseDown={(e) => e.stopPropagation()}
         onKeyDown={(e) => { if (e.key === 'Enter') { handleInputChange(e) } }}
       />
-      {url !== '' && (
-        <>
-          {/* <FontAwesomeIcon icon={src.orientation === 'landscape' ? faRotateRight : faRotateLeft} className={styles.icon} onClick={toggleOrientation}/> */}
-          <FontAwesomeIcon icon={faTrashCan} className={`${styles.icon} ${styles.trashIcon}`} onClick={() => setUrl('')}/>
-        </>
-      )}
+
+    </div>
+  )
+  const videoEditMenu = (
+    <div className={styles.videoEditMenu}>
+      <div className={styles.videoEditMenuIconWrapper}>
+        <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.captionIcon} />
+        <p>Resize</p>
+      </div>
+      <div className={`${video?.title !== false ? styles.activeIconWrapper : styles.videoEditMenuIconWrapper}`} onClick={() => toggleTitleOrCaption('title')}>
+        <FontAwesomeIcon icon={faFont} className={styles.captionIcon} />
+        <p>Title</p>
+      </div>
+      <div className={`${video?.caption !== false ? styles.activeIconWrapper : styles.videoEditMenuIconWrapper}`} onClick={() => toggleTitleOrCaption('caption')}>
+        <FontAwesomeIcon icon={faFont} className={styles.captionIcon} />
+        <p>Caption</p>
+      </div>
+      <div className={`${styles.videoEditMenuIconWrapper}`}>
+        <FontAwesomeIcon icon={faTrash} className={`${styles.captionIcon} ${styles.trashIcon}`} />
+        <p>Remove</p>
+      </div>
+
     </div>
   );
 
-  if (!src) { return <p>Loading</p> }
+  if (!video) { return <p>Loading</p> }
 
-  const videoContainerClass = src.orientation === 'portrait' ? styles.portraitVideoContainer : styles.videoContainer;
+  const videoContainerClass = video?.orientation === 'portrait' ? styles.portraitVideoContainer : styles.videoContainer;
 
   return (
-    <>
-      {isEditable && videoEditMenu}
-      {(url !== '' || src.content !== '') ? (
+    <div className={styles.videoBlockWrapper}>
+      {isEditable && url && videoEditMenu}
+      {(url !== '' || video.url !== '') ? (
         <div className={videoContainerClass}>
           {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}
-          <iframe src={src.content} frameBorder="0" allowFullScreen></iframe>
+          <iframe src={video.url} frameBorder="0" allowFullScreen></iframe>
         </div>
       ) : emptyVideoLinkInputMessage}
-    </>
+
+      { !isLayout &&
+      <ContentBlockTitleAndCaption
+        content={video}
+        isEditable={isEditable}
+        setContentBlocks={setContentBlocks}
+        index={blockIndex}
+        nestedIndex={nestedIndex}
+      />}
+
+    </div>
   );
 }
 

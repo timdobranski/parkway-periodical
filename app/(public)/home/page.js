@@ -516,29 +516,17 @@ export default function Home({ introRunning, setIntroRunning }) {
             {block.type === 'video' && (
               <div className='blockWrapper'>
                 <Video
-                  src={block}
+                  video={block.content[0]}
                 />
               </div>
             )}
 
             {block.type === 'flexibleLayout' && (
               <ContentLayout
-                // parentContentBlocks={contentBlocks}
                 block={block}
                 viewContext='view'
-                // setActiveOuterBlock={setActiveBlock}
-                // viewContext={viewContext}
                 orientation='horizontal'
                 user={user}
-                // addBlock={addBlock}
-                // addPhoto={addPhoto}
-                // setContentBlocks={(newContent) => updateBlockContent(index, newContent)}
-                // setContentBlocks={setContentBlocks}
-                // parentIndex={index}
-                // parentActiveBlock={activeBlock}
-                // layoutIsEditable={index === activeBlock}
-                // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
-
               />
             )}
 
