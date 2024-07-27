@@ -21,7 +21,9 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
   const [isEmpty, setIsEmpty] = useState(true);
   const [activeBlock, setActiveBlock] = useState(null);
 
-  // console.log('Layout Content: ', content)
+  useEffect(() => {
+    console.log('viewContext: ', viewContext)
+  })
 
   useEffect(() => {
     console.log('ACTIVE NESTED BLOCK: ', activeBlock)
@@ -98,7 +100,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
               }}
             >
 
-              {contentBlock.type === 'undecided' && (
+              {contentBlock.type === 'undecided' && viewContext === 'edit' && (
                 <SelectLayoutContent
                   isEditable={layoutIsEditable}
                   addBlock={(newBlock) => addBlock(newBlock, parentIndex, index)}
