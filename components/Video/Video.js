@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faRotateRight, faRotateLeft, faFont, faUpRightAndDownLeftFromCenter } from '@fortawesome/free-solid-svg-icons';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import ContentBlockTitleAndCaption from '../ContentBlockTitleAndCaption/ContentBlockTitleAndCaption';
+import { Rnd } from 'react-rnd';
 
 // src is the full video object with type, content, title, caption, styles, and orientation properties
 // update video style takes in an object with width, height, top, and left values set to numbers
@@ -23,18 +24,41 @@ export default function VideoBlock({
 }) {
 
   const [url, setUrl] = useState(video?.url);
+  const videoRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const [size, setSize] = useState({ width: '100%', height: '100%' });
+  const [resizeActive, setResizeActive] = useState(false);
+  const videoContainerClass = video?.orientation === 'portrait' ? styles.portraitVideoContainer : styles.videoContainer;
+
 
   // console.log('isEditable inside video block: ', isEditable)
   useEffect(() => {
     if (url || url === '') {
       updateVideoUrl && updateVideoUrl(url);
-      console.log('url changed: ', url)
     }
   }, [url]);
 
   useEffect(() => {
-    console.log('video prop changed: ', video)
-  }, [video]);
+    console.log('video object in contentblocks style changed: ', video.style)
+
+  }, [video.style])
+
+  useEffect(() => {
+    if (resizeActive && videoRef.current && wrapperRef.current) {
+      const videoHeight = videoRef.current.offsetHeight;
+      console.log('video height in resizeActive, size useEffect:', videoHeight); // Debugging line
+      wrapperRef.current.style.height = `${videoHeight}px`;
+    } else if (!resizeActive && wrapperRef.current) {
+      wrapperRef.current.style.height = 'auto';
+    }
+  }, [resizeActive]);
+
+  useEffect(() => {
+    if (!isEditable) {
+      setResizeActive(false);
+    }
+  }, [isEditable])
+
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;
@@ -56,6 +80,98 @@ export default function VideoBlock({
     const match = url.match(regExp);
     return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : null;
   };
+  // adds or updates video style without resetting any existing values in the style object
+  const setVideoStyle = (style) => {
+    setContentBlocks(prev => {
+      const newContent = [...prev];
+      if (nestedIndex || nestedIndex === 0) {
+        newContent[blockIndex].content[nestedIndex].content[0].style = {
+          ...newContent[blockIndex].content[nestedIndex].content[0].style,
+          ...style,
+        };
+      } else {
+        newContent[blockIndex].content[0].style = {
+          ...newContent[blockIndex].content[0].style,
+          ...style,
+        };
+      }
+      return newContent;
+    });
+  };
+  const videoElement = (
+    <div className={videoContainerClass} ref={videoRef} style={video.style} onClick={() => { if(isEditable && !resizeActive) {setResizeActive(true)}}}>
+      {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}
+      <iframe src={video.url} frameBorder="0" allowFullScreen></iframe>
+    </div>
+  )
+
+  const renderResizeView = () => (
+    <>
+      <div className={styles.resizeControls}>
+      </div>
+      <Rnd
+        size={size}
+        onResize={onResize}
+        onResizeStop={onResizeStop}
+        disableDragging
+        lockAspectRatio
+        minHeight="100px"
+        minWidth="100px"
+        maxWidth="100%"
+        maxHeight='100vh'
+        className={styles.rndElement}
+        resizeHandleStyles={{
+          bottomRight: {
+            zIndex:'1000',
+            width: '30px',
+            height: '30px',
+            bottom: '2px',
+            right: '2px',
+            backgroundColor: 'white',
+            outline: 'solid red 2px;',
+            clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' /* Define the triangle shape */
+
+          },
+        }}
+        resizeHandleClasses={{bottomRight: styles.bottomRightResizeHandle}}
+      >
+      <div className={videoContainerClass} ref={videoRef} >
+      {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}
+      <iframe src={video.url} frameBorder="0" allowFullScreen></iframe>
+    </div>
+      </Rnd>
+    </>
+  );
+  const onResizeStop = (e, direction, ref, delta, position) => {
+    const newWidthPercentage = ref.style.width; // Width as a percentage (string with %)
+    const numericWidth = parseFloat(newWidthPercentage); // Extract numeric part
+    const newHeightPercentage = (numericWidth * 9 / 16) + "%";
+
+    const newSize = {
+      width: newWidthPercentage,
+      paddingBottom: `${parseFloat(newWidthPercentage) * 9 / 16}%`
+
+    };
+
+    setSize(newSize);
+    setVideoStyle(newSize);
+    setResizeActive(false);
+    // Optionally: save newSize to a database or state
+  };
+
+  // update the wrapper's height on resize
+  const onResize = (e, direction, ref, delta, position) => {
+    const newSize = {
+      width: ref.style.width,
+      height: ref.style.height,
+    };
+    setSize(newSize);
+    if (wrapperRef.current) {
+      wrapperRef.current.style.height = newSize.height;
+    }
+  };
+
+
   const toggleOrientation = () => {
     updateVideoOrientation(src.orientation === 'landscape' ? 'portrait' : 'landscape');
   };
@@ -77,7 +193,7 @@ export default function VideoBlock({
   )
   const videoEditMenu = (
     <div className={styles.videoEditMenu}>
-      <div className={styles.videoEditMenuIconWrapper}>
+      <div className={styles.videoEditMenuIconWrapper} onClick={() => setResizeActive(!resizeActive)}>
         <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={styles.captionIcon} />
         <p>Resize</p>
       </div>
@@ -99,19 +215,16 @@ export default function VideoBlock({
 
   if (!video) { return <p>Loading</p> }
 
-  const videoContainerClass = video?.orientation === 'portrait' ? styles.portraitVideoContainer : styles.videoContainer;
 
   return (
-    <div className={styles.videoBlockWrapper}>
+    <div className={styles.videoBlockWrapper} ref={wrapperRef}>
       {isEditable && url && videoEditMenu}
-      {(url !== '' || video.url !== '') ? (
-        <div className={videoContainerClass}>
-          {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}
-          <iframe src={video.url} frameBorder="0" allowFullScreen></iframe>
-        </div>
-      ) : emptyVideoLinkInputMessage}
+      {(url !== '' || video.url !== '') ?
+        resizeActive ? renderResizeView() : (videoElement)
+        :
+        emptyVideoLinkInputMessage}
 
-      { !isLayout &&
+      { !isLayout && !resizeActive &&
       <ContentBlockTitleAndCaption
         content={video}
         isEditable={isEditable}

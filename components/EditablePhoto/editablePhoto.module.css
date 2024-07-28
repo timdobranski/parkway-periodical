@@ -19,7 +19,7 @@
 .rndElement {
   left: 50% !important;
   transform: translateX(-50%) !important;
-  /* border: solid red 2px; */
+  border: solid red 4px;
   display: block;
 
   /* top: 4px; */

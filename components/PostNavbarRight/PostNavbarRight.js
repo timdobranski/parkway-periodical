@@ -103,8 +103,8 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
             style: {
               width: '100%',
               height: 'auto' ,
-              x: 325,
-              y: 0,
+              // x: 325,
+              // y: 0,
               maxHeight:'50vh'
             }
           }],
