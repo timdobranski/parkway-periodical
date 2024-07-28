@@ -14,8 +14,22 @@ import ContentBlockTitleAndCaption from '../ContentBlockTitleAndCaption/ContentB
 // style is an object that determines the style of the overall layout
 // content is an array of objects that determine the content of the block
 
-export default function Layout({ block, layoutIsEditable, updateBlockContent, updateBlock,
-  addBlock, addPhoto, parentIndex, setContentBlocks, setActiveOuterBlock, setPhotoStyle, deletePhoto, viewContext, toggleTitleOrCaption }) {
+export default function Layout({
+  block,
+  layoutIsEditable,
+  updateBlockContent,
+  updateBlock,
+  addBlock,
+  addPhoto,
+  parentIndex,
+  setContentBlocks,
+  setActiveOuterBlock,
+  setPhotoStyle,
+  deletePhoto,
+  viewContext,
+  toggleTitleOrCaption,
+  updateVideoUrl
+}) {
   const content = block.content;
 
   const [isEmpty, setIsEmpty] = useState(true);
@@ -50,17 +64,7 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
       return newContent;
     })
   }
-  const updateVideoUrl = (layoutIndex, url) => {
-    if (typeof setContentBlocks === 'function') {
 
-      setContentBlocks(prev => {
-        const newContent = [...prev];
-        console.log('newContent: ', newContent[parentIndex].content[layoutIndex])
-        newContent[parentIndex].content[layoutIndex].content = url;
-        return newContent;
-      })
-    }
-  }
   const resetBlock = () => {
     setContentBlocks(prev => {
       const newContent = [...prev];
@@ -109,11 +113,13 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
               )}
               {contentBlock.type === 'video' && (
                 <Video
-                  src={contentBlock}
+                  video={contentBlock?.content[0]}
                   isEditable={index === activeBlock}
                   updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
-                  updateVideoUrl={(url) => updateVideoUrl(index, url)}
-                  viewContext={'edit'}
+                  updateVideoUrl={updateVideoUrl ? (url) => updateVideoUrl(url, index) : null}
+                  viewContext={viewContext}
+                  toggleTitleOrCaption={(titleOrCaption) => toggleTitleOrCaption(titleOrCaption, parentIndex, index)}
+                  isLayout={true}
                 />
               )}
               {contentBlock.type === 'text' && (
@@ -179,11 +185,4 @@ export default function Layout({ block, layoutIsEditable, updateBlockContent, up
   );
 }
 
-// key={index}
-// addPhoto={addPhoto}
-// deletePhoto={(fileName) => deletePhoto(index, fileName)}
-// blockIndex={index}
-// isEditable={index === activeBlock}
-// photo={block.content?.length ? block.content[0] : null}
-// setActiveBlock={setActiveBlock}
-// removeBlock={() => removeBlock(index)}
+

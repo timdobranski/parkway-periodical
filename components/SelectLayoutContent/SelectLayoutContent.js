@@ -12,7 +12,24 @@ export default function SelectLayoutContent ({ addBlock, isEditable, index, view
     if (!isEditable) {setExpanded(false)}
   }, [isEditable])
 
-  const defaultVideoBlock = { type: 'video', content: '', orientation: 'landscape', style: { width: '100%', height: 'auto' , x: 325, y: 0, maxHeight:'50vh' }}
+  const defaultVideoBlock = {
+    type: 'video',
+    content: [{
+      url: '',
+      title: false,
+      caption: false,
+      orientation: 'landscape',
+      style: {
+        width: '100%',
+        height: 'auto' ,
+        x: 325,
+        y: 0,
+        maxHeight:'50vh'
+      }}
+    ]
+  }
+
+
   const defaultTextBlock = { type: 'text', content: ''}
   const defaultPhotoBlock = { type: 'photo', content: '', style: { width: '100%', height: 'auto', x: 0, y: 0, maxHeight: '50vh' }, format: 'single-photo-no-caption' }
 

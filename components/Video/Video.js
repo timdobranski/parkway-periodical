@@ -26,8 +26,10 @@ export default function VideoBlock({
 
   // console.log('isEditable inside video block: ', isEditable)
   useEffect(() => {
-    updateVideoUrl && updateVideoUrl(url);
-    // console.log('url changed: ', url)
+    if (url || url === '') {
+      updateVideoUrl && updateVideoUrl(url);
+      console.log('url changed: ', url)
+    }
   }, [url]);
 
   useEffect(() => {
@@ -41,8 +43,6 @@ export default function VideoBlock({
     // Automatically set portrait for YouTube Shorts
     if (embedUrl && embedUrl.includes('shorts')) {
       updateVideoOrientation('portrait');
-    } else {
-      updateVideoOrientation('landscape');
     }
   };
   const getYoutubeEmbedUrl = (url) => {

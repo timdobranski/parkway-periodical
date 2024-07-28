@@ -385,8 +385,12 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   // video block helpers
   const updateVideoUrl = (index, url, nestedIndex = null) => {
     const newContentBlocks = [...contentBlocks];
+    console.log('url: ', url)
+    console.log('index: ', index)
+    console.log('nestedIndex: ', nestedIndex)
 
     if (nestedIndex !== null) {
+      console.log('running update URL with nested index...')
       newContentBlocks[index] = {
         ...newContentBlocks[index],
         content: newContentBlocks[index].content.map((item, i) =>
@@ -546,16 +550,9 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   setPhotoStyle={(style, nestedIndex) => updateBlockStyle(index, style, nestedIndex)}
                   deletePhoto={(fileName, nestedIndex) => deletePhoto(index, nestedIndex, fileName)}
                   toggleTitleOrCaption={toggleTitleOrCaption}
-                  // updateVideoOrientation={(orientation) => updateVideoOrientation(index, orientation)}
-
+                  updateVideoUrl={(url, nestedIndex) => updateVideoUrl(index, url, nestedIndex)}
                 />
               )}
-              {/* {block.type === 'undecided' && (
-                <SelectLayoutContent
-                  addBlock={(newBlock, childIndex) => { addBlock(newBlock, parentIndex, childIndex)}}
-                  index={index}
-                />
-              )} */}
 
               {block.type === 'text' && (
                 <PrimeText
@@ -603,13 +600,10 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
               {block.type === 'video' &&
                 <>
                   <Video
-                    updateVideoUrl={(url) => updateVideoUrl(index, url)}
+                    updateVideoUrl={(url, nestedIndex) => updateVideoUrl(index, url, nestedIndex)}
                     updateBlockStyle={(style) => updateBlockStyle(index, style)}
                     setActiveBlock={orientation === 'vertical' ? setActiveBlock : null}
-                    isEditable={orientation === 'vertical' ? (index === activeBlock) :
-                    //  (index=== activeBlock && parentIndex === parentActiveBlock)
-                      true
-                    }
+                    isEditable={orientation === 'vertical' ? (index === activeBlock) : true }
                     toggleTitleOrCaption={(type) => {toggleTitleOrCaption(type, index)}}
                     setContentBlocks={setContentBlocks}
                     toggleEditable={toggleEditable}
