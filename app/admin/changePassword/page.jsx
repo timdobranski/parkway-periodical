@@ -68,6 +68,7 @@ export default function Login() {
 
 
   return (
+    <div className='adminPageWrapper' >
     <div className={styles.loginContainer}>
       <img src="/images/logos/parkway.webp" alt="Parkway Periodical Logo" className={styles.logo} />
       <form className={styles.loginForm}>
@@ -88,6 +89,7 @@ export default function Login() {
           onClick={() => updatePassword}
         >Update Password</button>
       </form>
+    </div>
     </div>
   );
 }

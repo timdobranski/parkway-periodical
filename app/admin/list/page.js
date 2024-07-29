@@ -122,6 +122,7 @@ export default function List() {
     }
   }
   return (
+    <div className='adminPageWrapper' >
     <div className='adminFeedWrapper'>
       <div className='editablePost'>
         <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : type === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
@@ -205,6 +206,7 @@ export default function List() {
           })}
         </div>
       </div>
+    </div>
     </div>
   )
 }

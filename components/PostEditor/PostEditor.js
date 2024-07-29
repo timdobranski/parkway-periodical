@@ -96,7 +96,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
         // Convert canvas to blob
         canvas.toBlob(async (blob) => {
           try {
-            const fileName = `${Math.random().toString(36).substring(2)}.webp`; // Generate a random file name
+            const fileName = `${Math.random().toString(36).substring(2)}POSTID.webp`; // Generate a random file name
             // Upload the image blob to your server or storage service
             const { data, error } = await supabase
               .storage
@@ -127,6 +127,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
       img.src = dataURL;
     });
   };
+  // deletes photo from supabase storage, then calls removeFromPhotoBlock
   const deletePhoto = async (blockIndex, filename, nestedIndex) => {
     // console.log('INSIDE DELETE PHOTO FUNCTION: ', blockIndex, filename, nestedIndex);
     // Attempt to remove the photo from storage
@@ -316,12 +317,6 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     setContentBlocks(newContentBlocks);
   };
 
-
-
-
-
-
-
   // adds new photos to the photo block or carousel block
   const updatePhotoContent = (index, newPhotos, nestedIndex) => {
     // Update state with a function to ensure access to the most current state
@@ -429,7 +424,6 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
     setContentBlocks(newContentBlocks);
   };
-
   const updateVideoOrientation = (index, orientation) => {
     const newContentBlocks = [...contentBlocks];
     newContentBlocks[index] = { ...newContentBlocks[index], orientation: orientation };
@@ -502,6 +496,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
   const post = (
     <div className={`editablePost ${styles.adminPost}`} >
+
       {contentBlocks.map((block, index) => (
         <React.Fragment key={index}>
           {/* if the block is the title, render the title component */}

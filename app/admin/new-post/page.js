@@ -31,19 +31,11 @@ export default function NewPostPage() {
   const postWrapperRef = useRef(null);
   const [prevContentLength, setPrevContentLength] = useState(contentBlocks.length);
 
+  // scroll to the bottom if new content is added to the post
   useEffect(() => {
-    console.log('inside autoscroll useEffect');
     if (prevContentLength && contentBlocks.length > prevContentLength) {
-      console.log('new element added to contentBlocks');
       if (postWrapperRef.current) {
-        // console.log('postWrapperRef is current');
-        // console.log('scrollHeight: ', postWrapperRef.current.scrollHeight);
-        // console.log('scrollTop: ', postWrapperRef.current.scrollTop);
-
-        if (postWrapperRef.current) {
-          postWrapperRef.current.scrollTop = postWrapperRef.current.scrollHeight;
-        }
-
+        postWrapperRef.current.scrollTop = postWrapperRef.current.scrollHeight;
       }
     }
     setPrevContentLength(contentBlocks.length);
@@ -83,8 +75,6 @@ export default function NewPostPage() {
       console.log('no draft found')
     }
   }
-
-
   // get existing post if id provided, or draft if there is one
   useEffect(() => {
     const fetchData = async () => {
@@ -143,6 +133,7 @@ export default function NewPostPage() {
       console.error('Error updating draft:', error);
     }
   }
+  // TODO: update to also remove associated photos from storage
   async function deleteDraft() {
     try {
       const { error } = await supabase
@@ -159,6 +150,75 @@ export default function NewPostPage() {
       console.error('Unexpected error:', error);
     }
   }
+  // delete post and associated photos. deletes from posts table or drafts table if no id is provided
+  async function deletePost() {
+    try {
+      // first, iterate through contentBlocks and delete all associated photos (type photo, carousel, and flexibleLayout)
+      const photosToDelete = [];
+
+      // gather all photos to delete
+      contentBlocks.forEach((block, index) => {
+        if (block.type === 'photo') {
+          block.content.forEach(async (photo) => {
+            photosToDelete.push(`photos/${photo.fileName}`)
+          })
+        }
+        if (block.type === 'carousel') {
+          block.content.forEach(async (photo) => {
+            photosToDelete.push(`photos/${photo.fileName}`)
+          })
+        }
+        if (block.type === 'flexibleLayout') {
+          block.content.forEach((nestedBlock) => {
+            if (nestedBlock.type === 'photo') {
+              nestedBlock.content.forEach(async (photo) => {
+                photosToDelete.push(`photos/${photo.fileName}`);
+              })
+            }
+          })
+        }
+      })
+      console.log('photos to be deleted: ', photosToDelete)
+      // delete photos from storage
+      const { data: photosData, error: photoError } = await supabase
+        .storage
+        .from('posts')
+        .remove(photosToDelete);
+
+      if (photosData) {
+        console.log('Photos deleted:', photosData);
+      }
+
+      if (photoError) {
+        console.error('Error deleting photos:', photoError);
+        return;
+      }
+      // then, delete the post from posts if id or drafts if no id
+      if (postId) {
+        const { error } = await supabase
+          .from('posts')
+          .delete()
+          .match({ id: postId });
+
+        if (error) { console.log('error deleting post (after deleting photos): ', error); }
+      } else {
+        const { error } = await supabase
+          .from('drafts')
+          .delete()
+          .match({ author: user.id });
+
+        if (error) { console.log('error deleting draft (after deleting photos): ', error); }
+      }
+
+      // then either redirect to home or show a message that the post was deleted (reset contentBlocks);
+      router.push('/admin/new-post')
+
+    } catch (error) {
+      console.error('Unexpected error:', error);
+    }
+  }
+
+
   // update the draft when content changes (debounced)
   useEffect(() => {
     const isNewPost = (contentBlocks.length === 1 && contentBlocks[0].content === '');
@@ -181,17 +241,6 @@ export default function NewPostPage() {
   const stripHTML = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || "";
-  }
-  const deleteExistingPost = async () => {
-    const { error } = await supabase
-      .from('posts')
-      .delete()
-      .eq('id', postId);
-
-    if (error) {
-      console.error('Error deleting post:', error);
-    }
-    router.push('/admin/home');
   }
 
   // PUBLISH POST---------------------------------------------
@@ -351,21 +400,23 @@ export default function NewPostPage() {
   };
   const postEditMenu = (
     <div className={styles.postEditMenu}>
-      <p className={styles.editMenuLabel}>{`EDITING EXISTING POST:`}</p>
-      <p className={styles.editMenuPostTitle}>{`"${existingPostTitle}"`}</p>
+      {postId && <p className={styles.editMenuLabel}>{`EDITING EXISTING POST:`}</p>}
+      {postId && <p className={styles.editMenuPostTitle}>{`"${existingPostTitle}"`}</p>}
 
-      <button onClick={deleteExistingPost}>Delete Post</button>
+      <button onClick={deletePost}>{`${postId ? 'Delete Post' :'Delete draft and reset Post'}`}</button>
+
+
     </div>
   );
 
   return (
     <div className='adminPageWrapper' ref={postWrapperRef}>
+      {postEditMenu}
 
       <PostNavbarLeft
         categoryTags={categoryTags}
         setCategoryTags={setCategoryTags}
       />
-      {postId && postEditMenu}
       <PostEditor
         viewContext='edit'
         orientation='vertical'

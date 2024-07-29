@@ -249,39 +249,40 @@ export default function Settings () {
   };
 
   return (
-    <div className={styles.pageWrapper}>
-      {modalIsOpen && updatePhotoModalContent}
-      <div className={styles.userInfo}>
-        {userPhoto('edit', () => setModalIsOpen(true))}
+    <div className='adminPageWrapper' >
+      <div className={styles.pageWrapper}>
+        {modalIsOpen && updatePhotoModalContent}
+        <div className={styles.userInfo}>
+          {userPhoto('edit', () => setModalIsOpen(true))}
 
-        <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
-        <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
-      </div>
+          <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
+          <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
+        </div>
 
-      <div className={styles.editUserInfoWrapper}>
+        <div className={styles.editUserInfoWrapper}>
 
-        {/* <h3 className={styles.infoLabel}>Change Email</h3>
+          {/* <h3 className={styles.infoLabel}>Change Email</h3>
         <div className={styles.inputWrapper}>
           <input className={styles.updateInput} type='email' placeholder={user.email} />
           <button className={styles.inviteButton}>Confirm</button>
         </div> */}
 
-        <h3 className='smallerTitle'>Change Password</h3>
-        <div className={styles.inputWrapper}>
-          <p>{`New passwords must have `}</p>
-          <input className={styles.updateInput}
-            type='password'
-            value={newPassword}
-            placeholder='Enter new password'
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <button
-            className={styles.inviteButton}
-            onClick={(e) => {handlePasswordChange()}}
-          >Confirm</button>
-        </div>
+          <h3 className='smallerTitle'>Change Password</h3>
+          <div className={styles.inputWrapper}>
+            <p>{`New passwords must have `}</p>
+            <input className={styles.updateInput}
+              type='password'
+              value={newPassword}
+              placeholder='Enter new password'
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button
+              className={styles.inviteButton}
+              onClick={(e) => {handlePasswordChange()}}
+            >Confirm</button>
+          </div>
 
-        {user.admin &&
+          {user.admin &&
         <>
           <h3 className='smallerTitle'>Invite New User</h3>
           <div className={styles.inputWrapper}>
@@ -309,9 +310,9 @@ export default function Settings () {
             >Send Invite</button>
           </div>
         </>
-        }
+          }
 
-        { user.admin &&
+          { user.admin &&
         <>
           <h3 className='smallerTitle'>Remove User</h3>
           <div className={styles.inputWrapper}>
@@ -334,9 +335,9 @@ export default function Settings () {
             </button>
           </div>
         </>
-        }
-      </div>
-      {user.admin &&
+          }
+        </div>
+        {user.admin &&
       <div className={styles.inputWrapper}>
         <button className={styles.archiveButton}>MOVE TO NEW SCHOOL YEAR</button>
         <p className={styles.archiveInstructions}>{`When you're done adding posts for the school year, click this button
@@ -344,9 +345,9 @@ export default function Settings () {
       posts will no longer be editable.`}</p>
         <h3 className={styles.warning}>***CANNOT BE UNDONE***</h3>
       </div>
-      }
+        }
+      </div>
     </div>
-    // </div>
   )
 }
 

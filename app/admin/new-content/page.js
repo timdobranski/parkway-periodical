@@ -419,6 +419,7 @@ export default function NewContentPage() {
   )
 
   return (
+    <div className='adminPageWrapper' >
     <div className='adminFeedWrapper'>
       <div className='post' style={{boxShadow: '0 0 5px rgba(0, 0, 0, .5)'}}>
 
@@ -429,6 +430,7 @@ export default function NewContentPage() {
         {formData && form}
 
       </div>
+    </div>
     </div>
   )
 }

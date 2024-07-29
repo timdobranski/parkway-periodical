@@ -52,7 +52,7 @@ export default function AdminHomePage() {
     fetchCounts();
   }, []);
   return (
-    <>
+    <div className='adminPageWrapper' >
       <h1 className={`${styles.adminHomeTitle} pageTitle`}>ADMIN HOME</h1>
       <div className={styles.homeGrid}>
         <div className={styles.sectionWrapper}>
@@ -130,6 +130,6 @@ export default function AdminHomePage() {
         </div>
       </div>
       {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}
-    </>
+    </div>
   );
 }
