@@ -28,7 +28,8 @@ export default function Layout({
   deletePhoto,
   viewContext,
   toggleTitleOrCaption,
-  updateVideoUrl
+  updateVideoUrl,
+  setTextState
 }) {
   const content = block.content;
 
@@ -131,7 +132,7 @@ export default function Layout({
                 <PrimeText
                   src={contentBlock}
                   isEditable={index === activeBlock}
-                  setTextState={(url) => updateVideoUrl(index, url)}
+                  setTextState={(text) => {setTextState(text, index)}}
                 />
               )}
               {contentBlock.type === 'photo' && (
@@ -168,6 +169,7 @@ export default function Layout({
                 updateBlock={(newBlock) => updateBlock(newBlock, parentIndex, index)}
                 removeBlock={() => removeBlock(index)}
                 setActiveBlock={setActiveBlock}
+                isText={contentBlock.type === 'text'}
               />
 
               {layoutIsEditable && index === activeBlock && contentBlock.type !== 'undecided' &&

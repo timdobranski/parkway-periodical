@@ -253,8 +253,8 @@ export default function EditablePhoto({
   const renderResizeView = () => (
     <>
       <div className={styles.resizeControls}>
-        <button onClick={() => setResizeActive(false)}>Finalize Resize</button>
-        <button onClick={toggleResize}>Back</button>
+        <button className={styles.stopResizeButton}onClick={() => setResizeActive(false)}>Set Size</button>
+        {/* <button onClick={toggleResize}>Back</button> */}
       </div>
       <Rnd
         size={size}
@@ -274,7 +274,7 @@ export default function EditablePhoto({
             bottom: '2px',
             right: '2px',
             backgroundColor: 'white',
-            outline: 'solid red 2px;',
+            border: 'solid red 2px',
             clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' /* Define the triangle shape */
 
           },

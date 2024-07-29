@@ -29,7 +29,7 @@ const formDataAndIntroText = {
       description: '',
       expires: '',
       deleteOnExpire: false,
-      duration: 'Year Long',
+      duration: 'YEAR LONG',
       cte: false,
       image: '',
       pathway: 'Traditional Electives'

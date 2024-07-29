@@ -55,7 +55,7 @@ export default function ClubsPage() {
               </Fragment>
             )
           }) :
-          <div>{`It looks like there aren't any clubs added yet.`}</div>}
+          <div className='centeredWhiteText'>{`It looks like there aren't any clubs added yet.`}</div>}
       </div>
     </div>
   )

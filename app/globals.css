@@ -188,6 +188,7 @@
   overflow-y: visible;
   padding: 2rem;
   transform: none;
+  /* border: solid red 2px; */
 }
 .welcomeHeader {
   width: 100%;
@@ -360,7 +361,7 @@
   width: 100%;
   height: fit-content;
   padding: 0;
-  margin: 2rem 0rem 2rem 0rem;
+  margin: 1rem 0rem 1rem 0rem;
 }
 .columnBlockWrapper {
   flex: 1;
@@ -508,13 +509,14 @@
 }
 .p-editor-toolbar {
   top: -52px;
-  left: 52px;
-
+  /* left: 52px; */
+  min-width: 600px !important;
+  left: 50%;
   z-index: 1;
   border-radius: 2px !important;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);
   position: absolute !important;
-  transform: scale(1.2);
+  transform: scale(1.2) translateX(-40%);
 }
 .p-editor-content {
   border: none !important;
@@ -527,7 +529,7 @@
   height: 100% !important;
   box-sizing: border-box !important;
   flex-grow: 1 !important;
-  line-height: 1 !important
+  line-height: 1.1 !important
 }
 .ql-color-picker .ql-picker-options {
   padding: .5rem !important;
@@ -549,7 +551,10 @@
   outline: solid rgb(187, 187, 187) .5px !important;
   border-radius: 50%;
 }
-
+.ql-flip {
+  top: unset !important;
+  bottom: -50px !important;
+}
 
 
 .postBody {

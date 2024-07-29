@@ -129,7 +129,7 @@
   border-radius: 4px;
   width: 55px;
   color: rgb(102, 102, 102);
-  margin: 0 1rem;
+  margin: 0 .5rem;
 }
 .activeIconWrapper {
   background: rgb(0, 144, 221);

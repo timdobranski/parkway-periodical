@@ -30,12 +30,12 @@ export default function AdminLayout({ children }) {
   return (
     <>
       <HeaderAdmin />
-      <div className='adminPageWrapper'>
+      {/* <div className='adminPageWrapper'> */}
         {mobileSupportMessage}
         <Suspense>
           {children}
         </Suspense>
-      </div>
+      {/* </div> */}
     </>
   );
 }

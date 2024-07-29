@@ -21,8 +21,6 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
-  const blocksRef = useRef({});
-
 
 
   useEffect(() => {
@@ -289,13 +287,33 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
       return block;
     }));
   };
-  const updateTextEditorState = (newText) => {
-    setContentBlocks(contentBlocks.map((block, index) => {
-      if (index === activeBlock) {
-        return { ...block, content: newText };
-      }
-      return block;
-    }));
+  const updateTextEditorState = (index, text, nestedIndex = null) => {
+    const newContentBlocks = [...contentBlocks];
+    console.log('text: ', text)
+    console.log('index: ', index)
+    console.log('nestedIndex: ', nestedIndex)
+
+    if (nestedIndex !== null) {
+      console.log('running update text block with nested index...')
+      newContentBlocks[index] = {
+        ...newContentBlocks[index],
+        content: newContentBlocks[index].content.map((item, i) =>
+          i === nestedIndex
+            ? {
+              ...item,
+              content: text,
+            }
+            : item
+        ),
+      };
+    } else {
+      newContentBlocks[index] = {
+        ...newContentBlocks[index],
+        content: text,
+      };
+    }
+
+    setContentBlocks(newContentBlocks);
   };
 
 
@@ -483,8 +501,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   if (!user) { return <h1>Loading...</h1>}
 
   const post = (
-    <div className={`editablePost ${styles.adminPost}`}
-    >
+    <div className={`editablePost ${styles.adminPost}`} >
       {contentBlocks.map((block, index) => (
         <React.Fragment key={index}>
           {/* if the block is the title, render the title component */}
@@ -507,7 +524,9 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
             <div
               key={index}
               // ref={el => blocksRef.current[index] = el}
-              className={`${'blockWrapper'} ${index === activeBlock ? 'outlined' : ''}`}
+              // className={`${'blockWrapper'} ${index === activeBlock ? 'outlined' : ''}`}
+              className={`${'blockWrapper'} ${activeBlock === null ? '' : 'outlined'}`}
+
               onClick={(e) => {
                 const excludedClasses = ['arrowLeft', 'arrowLeftDisabled', 'arrowRight', 'arrowRightDisabled'];
 
@@ -524,7 +543,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
             >
               {/* any blocks that aren't of type 'title' will have an edit menu below them */}
-              {block.type !== 'title' &&
+              {block.type !== 'title' && index === activeBlock &&
                 <BlockEditMenu
                   isEditable={index === activeBlock}
                   setStatus={() => { toggleEditable(index)}}
@@ -540,6 +559,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   setActiveOuterBlock={setActiveBlock}
                   viewContext={viewContext}
                   orientation='horizontal'
+                  setTextState={(text, nestedIndex) => {updateTextEditorState(index, text, nestedIndex)}}
                   user={user}
                   addBlock={addBlock}
                   addPhoto={addPhoto}
@@ -561,7 +581,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   toggleEditable={toggleEditable}
                   src={block}
                   setActiveBlock={setActiveBlock}
-                  setTextState={updateTextEditorState}
+                  setTextState={(text, nestedIndex) => updateTextEditorState(index, text, nestedIndex)}
                   onClick={() => setActiveBlock(index)}
                   updateBlockStyle={(style) => updateBlockStyle(index, style)}
                   removeBlock={() => removeBlock(index)}

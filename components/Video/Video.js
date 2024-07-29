@@ -7,6 +7,8 @@ import { faTrash, faRotateRight, faRotateLeft, faFont, faUpRightAndDownLeftFromC
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import ContentBlockTitleAndCaption from '../ContentBlockTitleAndCaption/ContentBlockTitleAndCaption';
 import { Rnd } from 'react-rnd';
+import { useMediaQuery } from 'react-responsive';
+
 
 // src is the full video object with type, content, title, caption, styles, and orientation properties
 // update video style takes in an object with width, height, top, and left values set to numbers
@@ -29,6 +31,8 @@ export default function VideoBlock({
   const [size, setSize] = useState({ width: '100%', height: '100%' });
   const [resizeActive, setResizeActive] = useState(false);
   const videoContainerClass = video?.orientation === 'portrait' ? styles.portraitVideoContainer : styles.videoContainer;
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const videoStyle = isMobile ? {} : video.style;
 
 
   // console.log('isEditable inside video block: ', isEditable)
@@ -104,7 +108,7 @@ export default function VideoBlock({
     });
   };
   const videoElement = (
-    <div className={videoContainerClass} ref={videoRef} style={video.style} onClick={() => { if(isEditable && !resizeActive) {setResizeActive(true)}}}>
+    <div className={videoContainerClass} ref={videoRef} style={videoStyle} onClick={() => { if(isEditable && !resizeActive) {setResizeActive(true)}}}>
       {viewContext === 'edit' && <div className={styles.videoOverlay}></div>}
       <iframe src={video.url} frameBorder="0" allowFullScreen></iframe>
     </div>

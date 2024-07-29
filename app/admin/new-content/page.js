@@ -352,8 +352,8 @@ export default function NewContentPage() {
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>Duration</label>
         <select  name='duration' className={styles.onExpire} value={formData.duration} onChange={handleChange}>
-          <option value="Year Long">Year Long</option>
-          <option value="Trimester">Trimester</option>
+          <option value="YEAR LONG">Year Long</option>
+          <option value="TRIMESTER">Trimester</option>
         </select>
       </div>
       }

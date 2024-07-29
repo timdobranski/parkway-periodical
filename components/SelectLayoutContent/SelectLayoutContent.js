@@ -30,7 +30,7 @@ export default function SelectLayoutContent ({ addBlock, isEditable, index, view
   }
 
 
-  const defaultTextBlock = { type: 'text', content: ''}
+  const defaultTextBlock = { type: 'text', content: '', caption: false, title: false}
   const defaultPhotoBlock = { type: 'photo', content: '', style: { width: '100%', height: 'auto', x: 0, y: 0, maxHeight: '50vh' }, format: 'single-photo-no-caption' }
 
   const toggleExpand = () => setExpanded(prev => !prev);

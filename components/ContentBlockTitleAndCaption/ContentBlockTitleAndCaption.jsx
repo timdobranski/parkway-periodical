@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import styles from './ContentBlockTitleAndCaption.module.css';
 
 // content will be either a photo or video object with title and caption properties
-export default function ContentBlockTitleAndCaption({ content, isEditable, setContentBlocks, index, nestedIndex }) {
+export default function ContentBlockTitleAndCaption({ content, isEditable, setContentBlocks, index, nestedIndex, isText }) {
 
   // set title and caption to the content passed in, or false if they are an empty string
   const [title, setTitle] = useState(content?.title);
@@ -43,7 +43,7 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
     setContentBlocks(prev => {
       const newContent = [...prev];
 
-      if (nestedIndex || nestedIndex === 0) {
+      if ((nestedIndex || nestedIndex === 0) && newContent[index].content[nestedIndex].content && !isText) {
         newContent[index].content[nestedIndex].content[0].title = title; // if title is false, set to an empty string
         newContent[index].content[nestedIndex].content[0].caption = caption;
       } else {

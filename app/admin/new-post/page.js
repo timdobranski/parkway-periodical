@@ -28,6 +28,26 @@ export default function NewPostPage() {
   const [categoryTags, setCategoryTags] = useState([]);
   const [existingPostOldCategoryTags, setExistingPostOldCategoryTags] = useState([]);
   const [existingPostTitle, setExistingPostTitle] = useState('');
+  const postWrapperRef = useRef(null);
+  const [prevContentLength, setPrevContentLength] = useState(contentBlocks.length);
+
+  useEffect(() => {
+    console.log('inside autoscroll useEffect');
+    if (prevContentLength && contentBlocks.length > prevContentLength) {
+      console.log('new element added to contentBlocks');
+      if (postWrapperRef.current) {
+        // console.log('postWrapperRef is current');
+        // console.log('scrollHeight: ', postWrapperRef.current.scrollHeight);
+        // console.log('scrollTop: ', postWrapperRef.current.scrollTop);
+
+        if (postWrapperRef.current) {
+          postWrapperRef.current.scrollTop = postWrapperRef.current.scrollHeight;
+        }
+
+      }
+    }
+    setPrevContentLength(contentBlocks.length);
+  }, [contentBlocks, prevContentLength]);
 
   const getPostFromId = async () => {
     if (postId) {
@@ -64,10 +84,8 @@ export default function NewPostPage() {
     }
   }
 
-  // useEffect(() => {
-  //   console.log('ACTIVE BLOCK CHANGED: ', activeBlock)
-  // }, [activeBlock])
 
+  // get existing post if id provided, or draft if there is one
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -341,7 +359,8 @@ export default function NewPostPage() {
   );
 
   return (
-    <>
+    <div className='adminPageWrapper' ref={postWrapperRef}>
+
       <PostNavbarLeft
         categoryTags={categoryTags}
         setCategoryTags={setCategoryTags}
@@ -367,6 +386,6 @@ export default function NewPostPage() {
         publishingStatus={publishingStatus}
         updateMode={postId ? true : false}
       />
-    </>
+    </div>
   );
 }
