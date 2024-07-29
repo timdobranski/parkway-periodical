@@ -24,6 +24,24 @@
   /* background-color: rgb(233, 233, 233) */
   /* padding-top: 3rem; */
 }
+.carouselEditPhotosWrapper {
+  position: fixed;
+  top: 150%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 30vw;
+  height: 80vh;
+  border: solid blue 2px;
+  overflow-y: auto;
+  /* border: solid rgb(117, 117, 117) 6px; */
+  /* background-color: rgb(233, 233, 233) */
+  /* padding-top: 3rem; */
+}
 .photoInput {
   position: absolute;
   left: 50%;
@@ -91,39 +109,7 @@
   padding: .5rem;
 }
 /* NAV ARROWS */
-.arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {
-  height: 30px;
-  width: 30px;
-  position: absolute;
-  top: calc(50% - 15px);
-  /* transform: translate(0, -50%); */
-  /* transition: transform 0.5s ease; */
-  border-radius: 50%;
-  padding: .5rem;
-  z-index: 10;
-}
-.arrowLeft, .arrowRight {
-  background-color: rgba(0, 90, 120, 1);
-  backdrop-filter: blur(5px);
-  color: rgb(255, 255, 255);
-}
-.arrowLeft:hover, .arrowRight:hover {
-  background-color: rgb(255, 84, 84);
-  box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0;
-  border: solid rgb(255, 255, 255) 2px;
-  cursor: pointer;
-  transform: scale(1.2);
-}
-.arrowLeft, .arrowLeftDisabled {
-  left: 19px;
-}
-.arrowRight, .arrowRightDisabled {
-  right: 19px;
-}
-.arrowLeftDisabled, .arrowRightDisabled {
-  background-color: rgba(0, 0, 0, 0.7);
-  color: rgb(136, 136, 136);
-}
+
 
 @media(max-width: 768px) {
   .arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {

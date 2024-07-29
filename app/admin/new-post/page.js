@@ -27,6 +27,7 @@ export default function NewPostPage() {
   const schoolYear = '2024-25';
   const [categoryTags, setCategoryTags] = useState([]);
   const [existingPostOldCategoryTags, setExistingPostOldCategoryTags] = useState([]);
+  const [existingPostTitle, setExistingPostTitle] = useState('');
 
   const getPostFromId = async () => {
     if (postId) {
@@ -62,9 +63,6 @@ export default function NewPostPage() {
       console.log('no draft found')
     }
   }
-  useEffect(() => {
-    console.log('category tags: ', categoryTags)
-  }, [categoryTags])
 
   // useEffect(() => {
   //   console.log('ACTIVE BLOCK CHANGED: ', activeBlock)
@@ -81,6 +79,7 @@ export default function NewPostPage() {
         if (postContent) {
           console.log('post content loaded')
           setContentBlocks(postContent);
+          setExistingPostTitle(postContent[0].content);
 
           // get the existing post's category tags
           const { data, error } = await supabase
@@ -164,6 +163,17 @@ export default function NewPostPage() {
   const stripHTML = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || "";
+  }
+  const deleteExistingPost = async () => {
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', postId);
+
+    if (error) {
+      console.error('Error deleting post:', error);
+    }
+    router.push('/admin/home');
   }
 
   // PUBLISH POST---------------------------------------------
@@ -321,7 +331,14 @@ export default function NewPostPage() {
     // only set the new block as active if it's not inside a nested layout
     if (nestedIndex === null) {console.log('setting active block from inside addBlock'); setActiveBlock(contentBlocks.length);}
   };
+  const postEditMenu = (
+    <div className={styles.postEditMenu}>
+      <p className={styles.editMenuLabel}>{`EDITING EXISTING POST:`}</p>
+      <p className={styles.editMenuPostTitle}>{`"${existingPostTitle}"`}</p>
 
+      <button onClick={deleteExistingPost}>Delete Post</button>
+    </div>
+  );
 
   return (
     <>
@@ -329,6 +346,7 @@ export default function NewPostPage() {
         categoryTags={categoryTags}
         setCategoryTags={setCategoryTags}
       />
+      {postId && postEditMenu}
       <PostEditor
         viewContext='edit'
         orientation='vertical'

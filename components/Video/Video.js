@@ -85,10 +85,15 @@ export default function VideoBlock({
     setContentBlocks(prev => {
       const newContent = [...prev];
       if (nestedIndex || nestedIndex === 0) {
+        console.log('NEW CONTENT: ', newContent)
+        console.log('block index: ', blockIndex)
+        console.log('nested index: ', nestedIndex)
+        if (newContent[blockIndex]?.content[nestedIndex]?.content[0]?.style) {
         newContent[blockIndex].content[nestedIndex].content[0].style = {
           ...newContent[blockIndex].content[nestedIndex].content[0].style,
           ...style,
         };
+      }
       } else {
         newContent[blockIndex].content[0].style = {
           ...newContent[blockIndex].content[0].style,
@@ -128,7 +133,7 @@ export default function VideoBlock({
             bottom: '2px',
             right: '2px',
             backgroundColor: 'white',
-            outline: 'solid red 2px;',
+            outline: 'solid red 2px',
             clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%)' /* Define the triangle shape */
 
           },

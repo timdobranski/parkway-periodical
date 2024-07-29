@@ -19,7 +19,7 @@
 .rndElement {
   left: 50% !important;
   transform: translateX(-50%) !important;
-  border: solid red 4px;
+  /* border: solid red 4px; */
   display: block;
 
   /* top: 4px; */
@@ -37,9 +37,10 @@
 .photoEditMenu, .layoutPhotoEditMenu {
   position: absolute;
   top: -65px;
-  left: 50%;
+  /* left: 50%;
   transform: translateX(-50%);
-  width: 500px;
+  width: 500px; */
+  width: 100%;
   /* max-width: 100%; */
   margin: 0 auto;
   padding: .25rem .5rem;
@@ -47,6 +48,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
+  width: 100%;
+  justify-content: flex-start;
   background: rgb(255, 255, 255);
   box-shadow: 0 0 5px rgba(0, 0, 0, .3);
   border: solid rgb(163, 163, 163) 2px;
@@ -163,7 +166,7 @@
 }
 
 .cropControlsWrapper {
-  position: absolute;
+  /* position: absolute; */
   bottom: -40px;
   display: flex;
   flex-direction: row;
@@ -172,6 +175,15 @@
   width: 100%;
   margin: 1rem;
   z-index: 100;
+}
+.cropControlsWrapper * {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(0, 174, 255);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 2px;
+  padding: .25rem .5rem;
 }
 /* .photoWithNoCaption {
   width: 100%;

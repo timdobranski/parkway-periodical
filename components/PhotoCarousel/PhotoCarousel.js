@@ -70,56 +70,59 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
     <p>Click the button above to select photos for the carousel</p>
   )
   const sortPhotos = (
-    <DragDropContext
-      onDragEnd={(result) => {
-        if (!result.destination) return;
-        reorderPhotos(result.source.index, result.destination.index);
-      }}
-    >
-      <Droppable droppableId="photos" >
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}       style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            padding: '20px'
-          }}>
-            {photos.map((photo, index) => (
-              <Draggable key={photo.fileName} draggableId={photo.fileName} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={{
-                      ...provided.draggableProps.style,
-                      margin: '35px 0',
-                      padding: '8px',
-                      maxWidth: '40%',
-                      left: 'auto !important',
-                      top: 'auto !important'
-                    }}
-                  >
-                    <EditablePhoto
-                      photo={photo}
-                      isEditable={isEditable}
-                      updatePhotoContent={addPhoto}
-                      deletePhoto={deletePhoto}
-                      containerClassName={styles.photoContainer}
-                      handleTitleChange={(title) => handleTitleChange(index, title)}
-                      handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
-                      photoIndex={index}
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className={styles.carouselEditPhotosWrapper}>
+      <DragDropContext
+        onDragEnd={(result) => {
+          if (!result.destination) return;
+          reorderPhotos(result.source.index, result.destination.index);
+        }}
+      >
+        <Droppable droppableId="photos" >
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}       style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              padding: '20px'
+            }}>
+              {photos.map((photo, index) => (
+                <Draggable key={photo.fileName} draggableId={photo.fileName} index={index}>
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        ...provided.draggableProps.style,
+                        margin: '35px 0',
+                        padding: '8px',
+                        maxWidth: '40%',
+                        // left: 'auto !important',
+                        // top: 'auto !important'
+                      }}
+                    >
+                      <EditablePhoto
+                        photo={photo}
+                        isEditable={isEditable}
+                        updatePhotoContent={addPhoto}
+                        deletePhoto={deletePhoto}
+                        containerClassName={styles.photoContainer}
+                        handleTitleChange={(title) => handleTitleChange(index, title)}
+                        handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
+                        photoIndex={index}
+                        carousel={true}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
   )
   const input = (
     <input

@@ -11,7 +11,7 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
   const singlePhotoNoCaption = { type: 'photo', content: [], format: 'single-photo-no-caption' };
   const photoCarousel = { type: 'carousel', content: [], format: 'carousel' };
-
+  const undecidedBlock = {type: 'undecided', content: [{title: false, caption: false}]}
 
 
   return (
@@ -20,7 +20,10 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Flexible Layouts </h3>
-        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [ {type: 'undecided'}, {type: 'undecided'}]})}>
+        <div className={styles.navbarSectionItem} onClick={() => addBlock({
+          type: 'flexibleLayout',
+          content: [ undecidedBlock, undecidedBlock]
+        })}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
               <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />

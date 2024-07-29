@@ -34,6 +34,8 @@ export default function Layout({
 
   const [isEmpty, setIsEmpty] = useState(true);
   const [activeBlock, setActiveBlock] = useState(null);
+  const undecidedBlock = {type: 'undecided', content: [{title: false, caption: false}]}
+
 
   useEffect(() => {
     console.log('viewContext: ', viewContext)
@@ -68,7 +70,7 @@ export default function Layout({
   const resetBlock = () => {
     setContentBlocks(prev => {
       const newContent = [...prev];
-      newContent[parentIndex].content[activeBlock] = {type: 'undecided'};
+      newContent[parentIndex].content[activeBlock] = {type: 'undecided', content: [undecidedBlock]};
       return newContent;
     })
   }
@@ -120,6 +122,9 @@ export default function Layout({
                   viewContext={viewContext}
                   toggleTitleOrCaption={(titleOrCaption) => toggleTitleOrCaption(titleOrCaption, parentIndex, index)}
                   isLayout={true}
+                  setContentBlocks={setContentBlocks}
+                  blockIndex={parentIndex}
+                  nestedIndex={index}
                 />
               )}
               {contentBlock.type === 'text' && (
@@ -165,7 +170,7 @@ export default function Layout({
                 setActiveBlock={setActiveBlock}
               />
 
-              {layoutIsEditable && index === activeBlock &&
+              {layoutIsEditable && index === activeBlock && contentBlock.type !== 'undecided' &&
             <div className={styles.layoutColumnEditMenu} onClick={resetBlock}>
               <div className={styles.resetColumnWrapper}>
                 <FontAwesomeIcon

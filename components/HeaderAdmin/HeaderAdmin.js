@@ -228,8 +228,8 @@ export default function Header() {
         <Link href='/admin/list?type=clubs'>
           <h2>CLUBS</h2>
         </Link>
-        <Link href='/admin/list?type=staff'>
-          <h2>STAFF</h2>
+        <Link href='/admin/list?type=events'>
+          <h2>EVENTS</h2>
         </Link>
         <Link href='/admin/list?type=links'>
           <h2>LINKS</h2>

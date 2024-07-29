@@ -98,3 +98,39 @@
 .noBlocksMessage {
   margin-top:4rem;
 }
+.postEditMenu {
+  margin: 0;
+  padding: .25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background: rgb(255, 255, 255);
+  box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+  border-radius: 4px;
+  background: var(--mobile-background);
+  color: white;
+}
+.postEditMenu p {
+  margin: .25rem
+}
+.editMenuLabel {
+  /* font-weight: bold; */
+  font-size: 1.25rem;
+  text-decoration: underline;
+  text-decoration-color: red;
+}
+.editMenuPostTitle {
+  font-size: 1.25rem;
+}
+.postEditMenu button {
+  margin: .25rem;
+  padding: .25rem .5rem;
+  border-radius: 4px;
+  border: none;
+  background-color: rgb(250, 109, 109);
+}
+.postEditMenu button:hover {
+  cursor: pointer;
+}
