@@ -57,6 +57,7 @@ export default function EditablePhoto({
     if (!isEditable) {setCropActive(false); setResizeActive(false)}
   }, [isEditable])
 
+  // Update the wrapper's height on resize
   useEffect(() => {
     if (resizeActive && imageRef.current && wrapperRef.current) {
       const imageHeight = imageRef.current.offsetHeight;
@@ -67,11 +68,6 @@ export default function EditablePhoto({
     }
   }, [resizeActive, size]);
 
-  useEffect(() => {
-    if (!resizeActive) {
-
-    }
-  }, [resizeActive])
 
   const onResizeStop = (e, direction, ref, delta, position) => {
     const newSize = {
@@ -169,8 +165,13 @@ export default function EditablePhoto({
     </div>
   )
 
+  const carouselStyles = {
+    position: 'relative',
+    top: '0'
+  }
+
   const editMenu = (
-    <div className={`${isLayout ? styles.layoutPhotoEditMenu : styles.photoEditMenu}`}>
+    <div className={`${isLayout ? styles.layoutPhotoEditMenu : styles.photoEditMenu}`}style={(carousel && isEditable) ? carouselStyles : {}}>
       <div className={styles.photoEditMenuIconWrapper} onClick={toggleCrop}>
         <FontAwesomeIcon icon={faCropSimple} className={styles.cropIcon} />
         <p>Crop</p>
@@ -291,7 +292,7 @@ export default function EditablePhoto({
     <>
       {isEditable && editMenu}
       {imageElement}
-      {typeof photoIndex === 'number' && <h3 className={styles.photoNumber}>#{photoIndex + 1}</h3>}
+      {typeof photoIndex === 'number' && <h3 className={styles.photoNumber}>{photoIndex + 1}</h3>}
       {/* {photo.title && <PrimeText src={{content: photo.title}} isEditable={isEditable} setTextState={handleTitleChange}/>} */}
     </>
   );

@@ -319,29 +319,37 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
   // adds new photos to the photo block or carousel block
   const updatePhotoContent = (index, newPhotos, nestedIndex) => {
-    // Update state with a function to ensure access to the most current state
     setContentBlocks(prevContentBlocks => {
-      // Copy the array to avoid direct mutation
       const updatedContentBlocks = [...prevContentBlocks];
 
       if (nestedIndex !== undefined) {
-        // If nestedIndex is provided, update the specific nested array
-        updatedContentBlocks[index].content[nestedIndex] = {
-          ...updatedContentBlocks[index].content[nestedIndex],
-          content: newPhotos
-        };
+        // Handle nested content update
+        const contentItem = updatedContentBlocks[index].content[nestedIndex];
+        if (contentItem.type === 'carousel') {
+          // Append new photos to the existing array
+          contentItem.content = [...contentItem.content, ...newPhotos];
+        } else {
+          // Replace existing content with new photos
+          contentItem.content = newPhotos;
+        }
+        updatedContentBlocks[index].content[nestedIndex] = { ...contentItem };
       } else {
-        // If no nestedIndex is provided, update the content array directly
-        updatedContentBlocks[index] = {
-          ...updatedContentBlocks[index],
-          content: newPhotos
-        };
+        // Handle non-nested content update
+        const contentItem = updatedContentBlocks[index];
+        if (contentItem.type === 'carousel') {
+          // Append new photos to the existing array
+          contentItem.content = [...contentItem.content, ...newPhotos];
+        } else {
+          // Replace existing content with new photos
+          contentItem.content = newPhotos;
+        }
+        updatedContentBlocks[index] = { ...contentItem };
       }
 
-      // Return the newly formed array which triggers the update
       return updatedContentBlocks;
     });
   };
+
 
   // updates the order of the photos in the carousel block
   const reorderPhotos = (startIndex, endIndex) => {

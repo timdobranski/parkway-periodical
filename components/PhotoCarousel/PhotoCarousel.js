@@ -16,18 +16,8 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
   const pRef = useRef(null);
   const prevHeightRef = useRef('0px');
   // Reset edited fields when the current photo changes
-  useEffect(() => {
-    if (photos && photos.length > 0) {
-      setEditedTitle(photos[currentPhotoIndex].title || "");
-      setEditedCaption(photos[currentPhotoIndex].caption || "");
-    }
-  }, [currentPhotoIndex, photos]);
-  // useEffect(() => {
-  //   handleTitleChange(currentPhotoIndex, editedTitle)
-  // }, [editedTitle])
-  // useEffect(() => {
-  //   handleCaptionChange(currentPhotoIndex, editedCaption)
-  // }, [editedCaption])
+
+
   useEffect(() => {
     const p = pRef.current;
     if (p) {
@@ -77,15 +67,14 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
           reorderPhotos(result.source.index, result.destination.index);
         }}
       >
-        <Droppable droppableId="photos" >
+        <Droppable
+        // direction="horizontal"
+          droppableId="photos" >
           {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef}       style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              padding: '20px'
-            }}>
+            <div {...provided.droppableProps}
+              className={styles.droppableAreaWrapper}
+              ref={provided.innerRef}
+            >
               {photos.map((photo, index) => (
                 <Draggable key={photo.fileName} draggableId={photo.fileName} index={index}>
                   {(provided) => (
@@ -93,15 +82,13 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      className={styles.draggableItemWrapper}
                       style={{
                         ...provided.draggableProps.style,
-                        margin: '35px 0',
-                        padding: '8px',
-                        maxWidth: '40%',
-                        // left: 'auto !important',
-                        // top: 'auto !important'
+                        overflowY: 'auto'
                       }}
                     >
+
                       <EditablePhoto
                         photo={photo}
                         isEditable={isEditable}
@@ -125,6 +112,7 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
     </div>
   )
   const input = (
+
     <input
       type="file"
       accept="image/*"
@@ -132,6 +120,7 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
       onChange={addPhoto}
       className={styles.photoInput}
     />
+
   )
   const carousel = (
     <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
@@ -159,15 +148,19 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
     </div>
   )
 
-  return (
-    <>
-      {isEditable && input /*render the input if editable regardless of the number of photos*/}
+  const editableInstructions = (
+    <h3 className='smallerTitle margin'>Add, Remove, Crop, & Rearrange Your Slideshow Photos</h3>
+  )
 
+  return (
+    <div className={styles.carouselWrapper}>
+      {isEditable && input /*render the input if editable regardless of the number of photos*/}
+      {isEditable && editableInstructions}
       {isEditable ?
         photos.length ? sortPhotos : noPhotosMessage // if editable, show the sort view or no photos message
         :
         photos.length ? carousel : noPhotosMessage // if NOT editable, show the carousel or no photos message
       }
-    </>
+    </div>
   );
 }

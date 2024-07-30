@@ -41,6 +41,21 @@ export default function NewPostPage() {
     setPrevContentLength(contentBlocks.length);
   }, [contentBlocks, prevContentLength]);
 
+  // if user tries to leave the page with unsaved changes, prompt them to confirm
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (saving) {
+        event.preventDefault();
+        event.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [saving]);
   const getPostFromId = async () => {
     if (postId) {
       console.log('post id found: ', postId)
@@ -185,6 +200,10 @@ export default function NewPostPage() {
         })
       }
     })
+    if (!photosToDelete.length) {
+      console.log('no photos to delete');
+      return;
+    }
     console.log('photos to be deleted: ', photosToDelete)
     // delete photos from storage
     const { data: photosData, error: photoError } = await supabase
@@ -228,7 +247,7 @@ export default function NewPostPage() {
       // then either redirect to home or show a message that the post was deleted (reset contentBlocks);
       // router.push('/admin/new-post')
       setContentBlocks(newPost);
-      let postId = null;
+      router.push('/admin/new-post')
 
     } catch (error) {
       console.error('Unexpected error:', error);
@@ -241,15 +260,14 @@ export default function NewPostPage() {
     const isNewPost = (contentBlocks.length === 1 && contentBlocks[0].content === '');
     // update the draft if there are content blocks and a user, and this is not a preexisting post
     if (contentBlocks.length && user && !postId) {
-      // if (isNewPost) { deleteDraft() } else {
+      if (isNewPost) { deleteDraft() } else {
       const post = {
         content: JSON.stringify(contentBlocks),
-        'post-type': 'weekly-update', // Example type
         author: user.id
       };
       setSaving(true);
       debouncedUpdateDraftRef.current(post);
-      // }
+      }
     }
   }, [contentBlocks, user]);
 
@@ -431,7 +449,7 @@ export default function NewPostPage() {
 
   return (
     <div className='adminPageWrapper' ref={postWrapperRef}>
-      {postEditMenu}
+      {    !(contentBlocks.length === 1 && contentBlocks[0].content === '') && postEditMenu}
 
       <PostNavbarLeft
         categoryTags={categoryTags}
