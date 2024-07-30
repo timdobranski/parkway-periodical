@@ -19,11 +19,11 @@ export default function NewPostPage() {
   const [activeBlock, setActiveBlock] = useState(null);
   const blocksRef = useRef({});
   const searchParams = useSearchParams();
-  const postId = searchParams.get('id');
+  let postId = searchParams.get('id');
   const [publishingStatus, setPublishingStatus] = useState(false);
   const { isLoading, setIsLoading, saving, setSaving, user, authUser } = useAdmin();
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
-  const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.supabase_user}]
+  const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.id}];
   const schoolYear = '2024-25';
   const [categoryTags, setCategoryTags] = useState([]);
   const [existingPostOldCategoryTags, setExistingPostOldCategoryTags] = useState([]);
@@ -61,6 +61,7 @@ export default function NewPostPage() {
     }
   }
   const getDraft = async () => {
+    console.log('inside getDraft')
     const { data: draft, error } = await supabase
 
       .from('drafts')
@@ -68,9 +69,14 @@ export default function NewPostPage() {
       .eq('author', user.id)
       .single();
 
+    if (error) {
+      console.error('Error fetching draft:', error);
+    }
+
     if (draft) {
-      console.log('existing draft found')
-      setContentBlocks(JSON.parse(draft.content));
+      console.log('existing draft found: ', draft)
+      // setContentBlocks(JSON.parse(draft.content));
+      return JSON.parse(draft.content);
     } else {
       console.log('no draft found')
     }
@@ -85,7 +91,6 @@ export default function NewPostPage() {
         const postContent = await getPostFromId(postId);
         console.log('postContent: ', postContent)
         if (postContent) {
-          console.log('post content loaded')
           setContentBlocks(postContent);
           setExistingPostTitle(postContent[0].content);
 
@@ -98,20 +103,24 @@ export default function NewPostPage() {
           if (error) {
             console.error('Error fetching post tags:', error);
           }
-          console.log('existing category tags data:', data)
           const tags = data.map(tag => tag.tag);
           setExistingPostOldCategoryTags(tags);
           setCategoryTags(tags);
         }
         // not an existing post, check for a draft
       } else if (user?.id) {
+        console.log('no post id but getting user id draft')
         const draftContent = await getDraft(user.id);
         if (draftContent) {
+          console.log('draft content found and being set')
           setContentBlocks(draftContent);
         } else {
+          console.log('draft content not found, draftContent variable: ', draftContent)
+          console.log('no draft content found, setting to new post')
           setContentBlocks(newPost);
         }
       } else {
+        console.log('no user id found when searching for draft, setting to new post')
         setContentBlocks(newPost);
       }
       setIsLoading(false);
@@ -150,49 +159,55 @@ export default function NewPostPage() {
       console.error('Unexpected error:', error);
     }
   }
-  // delete post and associated photos. deletes from posts table or drafts table if no id is provided
+  // given a contentBlock array, this deletes all photos from supabase storage that the blocks reference
+  const deletePhotosFromStorage = async (contentBlocks) => {
+    const photosToDelete = [];
+
+    // gather all photos to delete
+    contentBlocks.forEach((block, index) => {
+      if (block.type === 'photo') {
+        block.content.forEach(async (photo) => {
+          photosToDelete.push(`photos/${photo.fileName}`)
+        })
+      }
+      if (block.type === 'carousel') {
+        block.content.forEach(async (photo) => {
+          photosToDelete.push(`photos/${photo.fileName}`)
+        })
+      }
+      if (block.type === 'flexibleLayout') {
+        block.content.forEach((nestedBlock) => {
+          if (nestedBlock.type === 'photo') {
+            nestedBlock.content.forEach(async (photo) => {
+              photosToDelete.push(`photos/${photo.fileName}`);
+            })
+          }
+        })
+      }
+    })
+    console.log('photos to be deleted: ', photosToDelete)
+    // delete photos from storage
+    const { data: photosData, error: photoError } = await supabase
+      .storage
+      .from('posts')
+      .remove(photosToDelete);
+
+    if (photosData) {
+      console.log('Photos deleted:', photosData);
+    }
+
+    if (photoError) {
+      console.error('Error deleting photos:', photoError);
+      return;
+    }
+  }
+  // delete post and associated photos. deletes from posts table or drafts table by user id if there is no postId
   async function deletePost() {
     try {
+
+      deletePhotosFromStorage(contentBlocks);
       // first, iterate through contentBlocks and delete all associated photos (type photo, carousel, and flexibleLayout)
-      const photosToDelete = [];
 
-      // gather all photos to delete
-      contentBlocks.forEach((block, index) => {
-        if (block.type === 'photo') {
-          block.content.forEach(async (photo) => {
-            photosToDelete.push(`photos/${photo.fileName}`)
-          })
-        }
-        if (block.type === 'carousel') {
-          block.content.forEach(async (photo) => {
-            photosToDelete.push(`photos/${photo.fileName}`)
-          })
-        }
-        if (block.type === 'flexibleLayout') {
-          block.content.forEach((nestedBlock) => {
-            if (nestedBlock.type === 'photo') {
-              nestedBlock.content.forEach(async (photo) => {
-                photosToDelete.push(`photos/${photo.fileName}`);
-              })
-            }
-          })
-        }
-      })
-      console.log('photos to be deleted: ', photosToDelete)
-      // delete photos from storage
-      const { data: photosData, error: photoError } = await supabase
-        .storage
-        .from('posts')
-        .remove(photosToDelete);
-
-      if (photosData) {
-        console.log('Photos deleted:', photosData);
-      }
-
-      if (photoError) {
-        console.error('Error deleting photos:', photoError);
-        return;
-      }
       // then, delete the post from posts if id or drafts if no id
       if (postId) {
         const { error } = await supabase
@@ -211,7 +226,9 @@ export default function NewPostPage() {
       }
 
       // then either redirect to home or show a message that the post was deleted (reset contentBlocks);
-      router.push('/admin/new-post')
+      // router.push('/admin/new-post')
+      setContentBlocks(newPost);
+      let postId = null;
 
     } catch (error) {
       console.error('Unexpected error:', error);
@@ -222,18 +239,20 @@ export default function NewPostPage() {
   // update the draft when content changes (debounced)
   useEffect(() => {
     const isNewPost = (contentBlocks.length === 1 && contentBlocks[0].content === '');
-    if (contentBlocks.length && user) {
-      if (isNewPost) { deleteDraft() } else {
-        const post = {
-          content: JSON.stringify(contentBlocks),
-          'post-type': 'weekly-update', // Example type
-          author: user.id
-        };
-        setSaving(true);
-        debouncedUpdateDraftRef.current(post);
-      }
+    // update the draft if there are content blocks and a user, and this is not a preexisting post
+    if (contentBlocks.length && user && !postId) {
+      // if (isNewPost) { deleteDraft() } else {
+      const post = {
+        content: JSON.stringify(contentBlocks),
+        'post-type': 'weekly-update', // Example type
+        author: user.id
+      };
+      setSaving(true);
+      debouncedUpdateDraftRef.current(post);
+      // }
     }
   }, [contentBlocks, user]);
+
   useEffect(() => {
     console.log('CONTENT BLOCKS CHANGED: ', contentBlocks)
   }, [contentBlocks])
@@ -354,13 +373,14 @@ export default function NewPostPage() {
       }
 
       // STEP 5: delete the draft
+      if (!postId) {
       const { error: draftError } = await supabase
         .from('drafts')
         .delete()
         .match({ author: user.id });
 
       if (draftError) throw draftError;
-
+      }
       // STEP 6: redirect to the home page
       setPublishingStatus(false);
       router.push('/home');

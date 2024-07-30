@@ -43,10 +43,10 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
     setContentBlocks(prev => {
       const newContent = [...prev];
 
-      if ((nestedIndex || nestedIndex === 0) && newContent[index].content[nestedIndex].content && !isText) {
+      if ((nestedIndex || nestedIndex === 0) && newContent[index].content[nestedIndex].content[0]?.title) {
         newContent[index].content[nestedIndex].content[0].title = title; // if title is false, set to an empty string
         newContent[index].content[nestedIndex].content[0].caption = caption;
-      } else {
+      } else if (newContent[index].content[0]?.title) {
         newContent[index].content[0].title = title;
         newContent[index].content[0].caption = caption;
       }
