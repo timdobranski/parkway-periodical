@@ -123,7 +123,6 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
 
   )
   const carousel = (
-    <div className={`${styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
       <Carousel
         renderArrowPrev={customPrevArrow}
         renderArrowNext={customNextArrow}
@@ -145,15 +144,14 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
         ))}
       </Carousel>
 
-    </div>
   )
 
   const editableInstructions = (
-    <h3 className='smallerTitle margin'>Add, Remove, Crop, & Rearrange Your Slideshow Photos</h3>
+    <h3 className='smallerTitle'>Add, Remove, Crop, & Rearrange Your Slideshow Photos</h3>
   )
 
   return (
-    <div className={styles.carouselWrapper}>
+    <div className={`${isEditable ? styles.carouselEditableWrapper : styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
       {isEditable && input /*render the input if editable regardless of the number of photos*/}
       {isEditable && editableInstructions}
       {isEditable ?
