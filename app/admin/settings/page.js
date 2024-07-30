@@ -20,7 +20,11 @@ export default function Settings () {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [photo, setPhoto] = useState('');
+
+  const placeholderPhoto = '/images/users/placeholder.webp';
+  const [originalPhoto, setOriginalPhoto] = useState('');
+  const [croppedPhoto, setCroppedPhoto] = useState('');
+
   const [userToRemove, setUserToRemove] = useState('');
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
 
@@ -42,7 +46,7 @@ export default function Settings () {
     //   // setPhoto(cacheBustedUrl);
     // }
     if (user) {
-      setPhoto(user.photo);
+      setCroppedPhoto(user.photo);
     }
     if (user && user.admin) {
       const fetchUsers = async () => {
@@ -116,7 +120,8 @@ export default function Settings () {
       if (errorUpdatingTable) {
         console.log('Error updating users table with new photo url')
       }
-      setPhoto(value)
+      setOriginalPhoto(value)
+      setCropActive(true);
     }
   }
   const afterCrop = async () => {
@@ -132,7 +137,7 @@ export default function Settings () {
       if (error) {
         console.log('error setting the new photo in the users table inside afterCrop function: ', error)
       }
-      setPhoto(value)
+      setCroppedPhoto(value)
       return
     }
   }
@@ -168,15 +173,17 @@ export default function Settings () {
     return <div>Loading...</div>;
   }
 
+  // render photo on main page or in edit modal.
+  // if rendered on main page, render photo with pencil icon to edit and handler to open edit modal
+  // if rendered inside edit modal, AND IF PHOTO ISN'T THE PLACEHOLDER, render with crop icon to trigger crop mode and handler to open crop mode
   const userPhoto = (editOrCrop, handler) => (
     <div className={styles.currentPhotoPreviewWrapper}>
-      {photo ? (
-        <img src={photo} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon} />
+      {croppedPhoto ? (
+        <img src={croppedPhoto} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon} />
       ) : (
         userIcon
       )}
-
-      {(editOrCrop === 'edit' || (editOrCrop === 'crop' && photo)) && (
+      {(editOrCrop === 'edit' || (editOrCrop === 'crop' && croppedPhoto !== placeholderPhoto)) && (
         <FontAwesomeIcon
           icon={editOrCrop === 'edit' ? faPencil : faCrop}
           className={styles.editIcon}
@@ -191,27 +198,30 @@ export default function Settings () {
       <div className={styles.modalContentWrapper}>
         <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.modalBackButton} onClick={() => {setCropActive(false); setModalIsOpen(false)}} />
         <p className={styles.infoLabel}>Crop Or Change Photo</p>
-        {!photo && <p>No photo current set. Upload a photo here</p>}
+        {!croppedPhoto && <p>No photo current set. Upload a photo here</p>}
 
         <input className={styles.photoInput} type="file" name="photo" onChange={(e) => handleFileChange(e)}/>
         <div className={styles.cropWrapper}>
           {cropActive ?
+          // render the CroppablePhoto component
             <CroppablePhoto
-              photo={photo}
+              photo={originalPhoto}
               ratio={1}
               bucket={'users'}
               filePath={`photos/${user.email}`}
               setCropActive={setCropActive}
               afterUpload={afterCrop}
             /> :
+            // render the cropped user photo with a crop icon to trigger crop mode when clicked
             userPhoto('crop', async () => {
               const { success, error, value } = await userPhotos.getProfilePhoto(user.email, 'original');
 
               if (error) {
                 console.log('error setting photo to original for crop');
-                return;
+                setPhoto('/images/logos/parkway.webp');
+                setCropActive(true);
               }
-              setPhoto(value);
+              setOriginalPhoto(value);
               setCropActive(true)
             })
           }
@@ -269,7 +279,7 @@ export default function Settings () {
 
           <h3 className='smallerTitle'>Change Password</h3>
           <div className={styles.inputWrapper}>
-            <p>{`New passwords must have `}</p>
+            <p>{`Passwords must have six or more characters.`}</p>
             <input className={styles.updateInput}
               type='password'
               value={newPassword}

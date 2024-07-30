@@ -36,6 +36,7 @@ export default function Header() {
     console.log('User in header: ', user)
   }, [user])
 
+  // fetch expired content for alerts
   useEffect(() => {
     async function fetchEntriesExpiringSoon(contentTypes) {
       const nowInPacific = moment().tz('America/Los_Angeles');
@@ -79,9 +80,9 @@ export default function Header() {
     fetchEntriesExpiringSoon(contentTypes);
   }, [])
   // console log alerts
-  // useEffect(() => {
-  //   console.log('alerts: ', alerts);
-  // }, [alerts])
+  useEffect(() => {
+    console.log('alerts: ', alerts);
+  }, [alerts])
   // check storage usage
   useEffect(() => {
     async function checkStorageUsage() {
@@ -130,7 +131,7 @@ export default function Header() {
       if (
         (leftMenuRef.current && !leftMenuRef.current.contains(event.target)) &&
         (rightMenuRef.current && !rightMenuRef.current.contains(event.target)) &&
-        (alertsMenuRef.current && !alertsMenuRef.current.contains(event.target)) &&
+        // (alertsMenuRef.current && !alertsMenuRef.current.contains(event.target)) &&
         (userMenuRef.current && !userMenuRef.current.contains(event.target))
       ) {
         setMenuOpen(false);
@@ -310,10 +311,10 @@ export default function Header() {
   )
   const rightSideNavbar = (
     <div className={styles.rightSideNavbarContent}>
-      { user && (user.id === 1 || user.id === 3) &&
+      { user && user.id === 1 &&
         testEmailErrorButton
       }
-      {alertsMenu}
+      {/* {alertsMenu} */}
       {rightNavbarMenu}
       {user && userMenu}
     </div>

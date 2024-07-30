@@ -89,7 +89,7 @@ export const AdminProvider = ({ children }) => {
 
     // Cleanup subscription on unmount
     return () => {
-      authListener.unsubscribe();
+      authListener?.subscription.unsubscribe();
     };
 
 
