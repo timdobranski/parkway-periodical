@@ -54,7 +54,7 @@ export default function PostNavbarLeft({ categoryTags, setCategoryTags }) {
       }
 
       if (data) {
-        console.log('tags data:', data)
+        // console.log('tags data:', data)
         setOptions(data);
 
         // Ensure the selectedTags state is correctly initialized based on categoryTags

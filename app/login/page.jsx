@@ -1,16 +1,41 @@
+'use client'
+
 // import supabase from '../../utils/supabase.js';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import { login } from './actions'
+import { createClient } from '../../utils/supabase/client';
+import { useState, useEffect } from 'react';
 
 
 export default function Login() {
-  let showPassword = false;
-  // const router = useRouter();
+  const supabase = createClient();
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
+  const login = async (e) => {
+    e.preventDefault();
+    console.log('email: ', email)
+    console.log('password: ', password)
+    const response = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    console.log('response: ', response)
+    const error = response.error;
+    if (error) {
+      console.error('Error logging in:', error);
+      alert('There was an error signing you in. Please try again. If the problem persists, please contact Tim.');
+      return;
+    }
 
+    // console.log('User:', user);
+    // console.log('Session:', session);
+    router.push('/admin/home');
+  }
 
   return (
     <div className={styles.loginContainer}>
@@ -24,6 +49,7 @@ export default function Login() {
           type="email"
           placeholder="Email"
           className={styles.loginInput}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
 
@@ -31,21 +57,22 @@ export default function Login() {
           <input
             id='password'
             name='password'
-            type='password'
+            type={showPassword ? 'text' : 'password'}
             placeholder="Password"
             className={styles.loginInput}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {/* <FontAwesomeIcon
-            onClick={() => showPassword = !showPassword}
+          <FontAwesomeIcon
+            onClick={() => setShowPassword(!showPassword)}
             className={styles.togglePasswordIcon}
             icon={showPassword ? faEye : faEyeSlash}
-          /> */}
+          />
         </div>
         <a href="/forgotPassword" className={styles.forgotPassword}>Forgot Password?</a>
 
 
-        <button formAction={login} className={styles.loginButton}>Login</button>
+        <button onClick={login} className={styles.loginButton}>Login</button>
       </form>
     </div>
   );

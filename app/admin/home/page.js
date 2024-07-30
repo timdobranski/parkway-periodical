@@ -64,7 +64,7 @@ export default function AdminHomePage() {
               <h2 className={styles.link}>POSTS</h2>
             </Link>
           </div>
-          {typeCounts.drafts ? <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button> : null}
+          {/* {typeCounts.drafts ? <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button> : null} */}
           <p>{`Total Posts: ${typeCounts.posts}`}</p>
           {/* <p>Number of EXPIRED posts</p> */}
         </div>
@@ -117,7 +117,7 @@ export default function AdminHomePage() {
           <p>{`Total Links: ${typeCounts.links}`}</p>
         </div>
 
-        <div className={styles.sectionWrapper}>
+        {/* <div className={styles.sectionWrapper}>
             <Link href='/admin/new-content?type=staff'>
               <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
             </Link>
@@ -127,7 +127,7 @@ export default function AdminHomePage() {
             </Link>
           </div>
           <p>{`Total Staff: ${typeCounts.staff}`}</p>
-        </div>
+        </div> */}
       </div>
       {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}
     </div>
