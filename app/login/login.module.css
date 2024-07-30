@@ -20,7 +20,7 @@
   margin: 1rem;
   color: white;
 }
-.loginForm {
+.loginForm, .mobileMessage {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +34,22 @@
   background: var(--mobile-background);
   background: linear-gradient(to right, rgb(0, 97, 139), rgb(0, 136, 185));
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.367);
+}
+.mobileMessage {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+
+}
+.mobileMessage p {
+  font-size: 1.75rem;
+  padding: 0 .5rem;
+  color: white;
+  text-align: center;
 }
 .loginInput {
   width: 400px;
@@ -82,4 +98,21 @@ cursor: pointer;
 }
 .loginButton:hover {
   cursor: pointer;
+}
+@media(max-width: 768px) {
+  .loginForm {
+    display: none;
+  }
+
+  .mobileMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+  }
+  .logo {
+    margin-top: 2rem;
+    width: 200px;
+  }
 }

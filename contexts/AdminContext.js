@@ -32,16 +32,16 @@ export const AdminProvider = ({ children }) => {
       .eq('auth_id', session.user.id)
       .single();
 
-      if (userError && userError.code === 'PGRST116') {
-        console.log('USER DOES NOT YET EXIST IN USERS TABLE: ', userError);
-        setUser({});
-        return;
-      }
+    if (userError && userError.code === 'PGRST116') {
+      console.log('USER DOES NOT YET EXIST IN USERS TABLE: ', userError);
+      setUser({});
+      return;
+    }
 
-      if (userError && userError.code !== 'PGRST116') {
-        console.error('Error getting user data in AdminContext: ', userError);
-        return;
-      }
+    if (userError && userError.code !== 'PGRST116') {
+      console.error('Error getting user data in AdminContext: ', userError);
+      return;
+    }
     setUser(data);
   }
 
@@ -81,8 +81,14 @@ export const AdminProvider = ({ children }) => {
         }
 
         if (event === 'INITIAL_SESSION' || event === 'USER_UPDATED' || event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+
           setSession(session);
-          setAuthUser(session.user);
+
+          if (session && session.user) {
+            setAuthUser(session.user);
+          } else {
+            setAuthUser(null);
+          }
         }
       }
     );

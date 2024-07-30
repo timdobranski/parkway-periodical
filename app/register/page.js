@@ -20,14 +20,14 @@ export default function Register() {
   const [includeInStaff, setIncludeInStaff] = useState(true);
   const [aboutMe, setAboutMe] = useState('');
   const [session, setSession] = useState({});
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState('/images/users/placeholder.webp');
   const [croppedPhoto, setCroppedPhoto] = useState('');
   const [filePath, setFilePath] = useState('');
   const [cropActive, setCropActive] = useState(false);
   const [loadingPhoto, setLoadingPhoto] = useState(false);
   const [phoneExt, setPhoneExt] = useState('');
   const [previousUser, setPreviousUser] = useState(false);
-
+  const placeholderPhoto = '/images/users/placeholder.webp';
 
 
   // returns obj with success, error, & value keys
@@ -104,11 +104,11 @@ export default function Register() {
     }
     console.log('checking for existing user data with email: ', session)
     const checkForExistingUser = async () => {
-    const { data: existingUserData, error: existingUserError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', session.user?.email)
-      .single();
+      const { data: existingUserData, error: existingUserError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', session.user?.email)
+        .single();
 
       if (existingUserError) {
         console.error('Error fetching existing user data: ', existingUserError)
@@ -305,7 +305,7 @@ export default function Register() {
                 <div className={styles.photoWrapper} >
                   <img className={styles.photo} src={`${photo}`} />
                 </div>
-                <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => getOriginalPhotoForCrop()}/>
+                {photo !== placeholderPhoto && <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => getOriginalPhotoForCrop()}/>}
               </>
 
             :
@@ -321,14 +321,14 @@ export default function Register() {
 
         <div className={styles.wideFormSection}>
           <label className={'smallerPostTitle'}>Show Me on Staff Page?</label>
-          <p className={styles.instructions}>{`The staff page will display your name, position, email, photo(if provided), and a short introduction that you can add below.`}</p>
+          <p className={styles.instructions}>{`The staff page will display your name, position, phone extension, email, photo(if provided), and a short introduction that you can add below.`}</p>
           <input className={styles.checkbox} type="checkbox" name="include in staff" checked={includeInStaff} onChange={() => {setIncludeInStaff(!includeInStaff)}}/>
         </div>
 
         <div className={styles.wideFormSection}>
+          {!includeInStaff && <p className={styles.textareaDisabledNotice}>{`To add the fields below, check the 'Show Me On Staff Page' box`}</p>}
           <label className={includeInStaff ? 'smallerPostTitle' : 'smallerPostTitleDisabled'}>About</label>
           <p className={`${styles.instructions} ${includeInStaff ? null : styles.disabledText}`}>Use this section to write a short introduction about yourself for users to read on the staff page</p>
-          {!includeInStaff && <p className={styles.textareaDisabledNotice}>{`To edit, check the 'Show Me On Staff Page' box`}</p>}
           <textarea className={styles.formInput} disabled={!includeInStaff} maxLength={500} type="text" name="include in staff" value={aboutMe} onChange={(e) => {setAboutMe(e.target.value)}}/>
         </div>
 

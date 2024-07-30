@@ -110,7 +110,7 @@
 }
 .textareaDisabledNotice {
   position: absolute;
-  bottom: -2rem;
+  top: -2.5rem;
   background-color:rgb(255, 142, 142);
   margin: 1rem 0 .25rem 0;
   padding: .1rem .5rem;
@@ -133,7 +133,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid rgb(0, 100, 163) 2px;
+  /* border: solid rgb(0, 100, 163) 2px; */
 }
 .photo {
   width: 100%;

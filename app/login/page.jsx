@@ -40,43 +40,55 @@ export default function Login() {
     router.push('/admin/home');
   }
 
+  const loginForm = (
+    <form className={styles.loginForm}>
+      <h1 className='siteTitle'>PARKWAY PERIODICAL</h1>
+      <h3 className={styles.loginHeader}>Login</h3>
+      <input
+        id='email'
+        name='email'
+        type="email"
+        placeholder="Email"
+        className={styles.loginInput}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+
+      <div className={styles.inputContainer}>
+        <input
+          id='password'
+          name='password'
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Password"
+          className={styles.loginInput}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <FontAwesomeIcon
+          onClick={() => setShowPassword(!showPassword)}
+          className={styles.togglePasswordIcon}
+          icon={showPassword ? faEye : faEyeSlash}
+        />
+      </div>
+      <a href="/forgotPassword" className={styles.forgotPassword}>Forgot Password?</a>
+
+
+      <button onClick={login} className={styles.loginButton}>Login</button>
+    </form>
+  )
+  const mobileMessage = (
+    <div className={styles.mobileMessage}>
+      <img src="/images/logos/parkway.webp" alt="Parkway Periodical Logo" className={styles.logo} />
+      <p>{`Parkway Periodical doesn't current support mobile devices on the administration side. To create and manage content,
+      please login using a desktop or laptop computer.`}</p>
+    </div>
+  )
+
   return (
     <div className={styles.loginContainer}>
       <img src="/images/logos/parkway.webp" alt="Parkway Periodical Logo" className={styles.logo} />
-      <form className={styles.loginForm}>
-        <h1 className='siteTitle'>PARKWAY PERIODICAL</h1>
-        <h3 className={styles.loginHeader}>Login</h3>
-        <input
-          id='email'
-          name='email'
-          type="email"
-          placeholder="Email"
-          className={styles.loginInput}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <div className={styles.inputContainer}>
-          <input
-            id='password'
-            name='password'
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            className={styles.loginInput}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <FontAwesomeIcon
-            onClick={() => setShowPassword(!showPassword)}
-            className={styles.togglePasswordIcon}
-            icon={showPassword ? faEye : faEyeSlash}
-          />
-        </div>
-        <a href="/forgotPassword" className={styles.forgotPassword}>Forgot Password?</a>
-
-
-        <button onClick={login} className={styles.loginButton}>Login</button>
-      </form>
+        {loginForm}
+        {mobileMessage}
     </div>
   );
 }
