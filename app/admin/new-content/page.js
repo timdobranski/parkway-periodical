@@ -207,7 +207,7 @@ export default function NewContentPage() {
       formData.image = publicUrlData.publicUrl;
     } else {
       console.log('setting form data image to: ', photo);
-      formData.image = photo;
+      if (type !== 'links') {formData.image = photo};
     }
 
     formData.author = user.id;
