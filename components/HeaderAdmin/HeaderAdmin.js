@@ -229,9 +229,9 @@ export default function Header() {
         <Link href='/admin/list?type=clubs'>
           <h2>CLUBS</h2>
         </Link>
-        <Link href='/admin/list?type=events'>
+        {/* <Link href='/admin/list?type=events'>
           <h2>EVENTS</h2>
-        </Link>
+        </Link> */}
         <Link href='/admin/list?type=links'>
           <h2>LINKS</h2>
         </Link>
@@ -297,10 +297,10 @@ export default function Header() {
 
         <div className={menuOpen === 'left' ? styles.navContainerLeft : styles.navContainerHidden}>
           <Link href='/home'><h2>POST FEED</h2></Link>
-          <Link href='/elective'><h2>ELECTIVES PAGE</h2></Link>
+          <Link href='/electives'><h2>ELECTIVES PAGE</h2></Link>
           <Link href='/clubs'><h2>CLUBS PAGE</h2></Link>
           <Link href='/archive'><h2>ARCHIVE PAGE</h2></Link>
-          <Link href='/events'><h2>EVENTS PAGE</h2></Link>
+          {/* <Link href='/events'><h2>EVENTS PAGE</h2></Link> */}
           <Link href='/links'><h2>LINKS PAGE</h2></Link>
         </div>
       </div>

@@ -45,36 +45,46 @@ export default function Electives() {
     <div className='feedWrapper'>
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>ELECTIVES</h1>
-        <p className={styles.pageTitle}>Check out all our amazing student elective courses this year, or browse them by pathway!</p>
-
-        <div className='selectWrapper'>
-          <select value={selectedPathway} onChange={handleChange} className='selectContent'>
-            <option value="All">All</option>
-            {pathways.map((pathway, index) => (
-              <option key={index} value={pathway}>{pathway}</option>
-            ))}
-          </select>
-        </div>
 
         {filteredElectives.length > 0 ? (
-          filteredElectives.map((elective, index) => (
-            <Fragment
-            key={index}>
-            <Elective
-              data={elective}
-              titleSide={index % 2 === 0 ? 'left' : 'right'}
-            />
-            <ElectiveMobile
-            data={elective}
-            titleSide={index % 2 === 0 ? 'left' : 'right'}
-          />
-          </Fragment>
-          ))
-        ) : (
-          <p className='centeredWhiteText'>No electives currently offered for the selected pathway.</p>
-        )}
+          <>
+            <p className={styles.pageTitle}>
+              Check out all our amazing student elective courses this year, or browse them by pathway!
+            </p>
 
+            <div className='selectWrapper'>
+              <select value={selectedPathway} onChange={handleChange} className='selectContent'>
+                <option value="All">All</option>
+                {pathways.map((pathway, index) => (
+                  <option key={index} value={pathway}>{pathway}</option>
+                ))}
+              </select>
+            </div>
+
+            <>
+              {filteredElectives.map((elective, index) => (
+                <Fragment key={index}>
+                  <Elective
+                    data={elective}
+                    titleSide={index % 2 === 0 ? 'left' : 'right'}
+                  />
+                  <ElectiveMobile
+                    data={elective}
+                    titleSide={index % 2 === 0 ? 'left' : 'right'}
+                  />
+                </Fragment>
+              ))}
+            </>
+          </>
+        ) : (
+          selectedPathway === 'All' ? (
+            <p className='centeredWhiteText'>{`All this year's new electives coming soon!`}</p>
+          ) : (
+            <p className='centeredWhiteText'>{`No electives found for ${selectedPathway}`}</p>
+          )
+        )}
       </div>
     </div>
-  )
+  );
+
 }

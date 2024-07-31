@@ -46,7 +46,7 @@ export default function Header({ skipAnimation }) {
     <div className={styles.desktopLeftNavbarWrapper}>
       <div className={styles.socialWrapper}>
         <img src={'/images/logos/parkway.webp'} className={styles.logoContainer} alt="Parkway Academy Logo" fill='true' onClick={() => router.push('/home')}/>
-        <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link>
+        {/* <Link href='https://www.facebook.com/PKMSkindness/'><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} /></Link> */}
         <Link href='https://www.instagram.com/parkwaypatriots/'><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} /></Link>
         <Link href='https://x.com/pkmspatriots?s=20'><FontAwesomeIcon icon={faXTwitter} className={styles.socialIcon} /></Link>
       </div>
@@ -58,7 +58,7 @@ export default function Header({ skipAnimation }) {
         <FontAwesomeIcon icon={faChevronLeft} className={styles.closeIconLeft} onClick={() => setLeftNavbarOpen(!leftNavbarOpen)}/>
         <p className={styles.visitUsOn}>VISIT US ON:</p>
         <div className={styles.socialLinksWrapper}>
-          <Link href='https://www.facebook.com/PKMSkindness/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} />FACEBOOK</Link>
+          {/* <Link href='https://www.facebook.com/PKMSkindness/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faFacebook} className={styles.socialIcon} />FACEBOOK</Link> */}
           <Link href='https://www.instagram.com/parkwaypatriots/' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faInstagram} className={styles.socialIcon} />INSTAGRAM</Link>
           <Link href='https://x.com/pkmspatriots?s=20' className={styles.mobileSocialLink}><FontAwesomeIcon icon={faXTwitter} className={styles.socialIcon} />X (TWITTER)</Link>
         </div>
@@ -81,11 +81,11 @@ export default function Header({ skipAnimation }) {
         >ELECTIVES</h2>
         {/* </Link> */}
         <Link href='/clubs'>
-          <h2 className={isActive('/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
+          <h2 className={isActive('/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS & ESS</h2>
         </Link>
-        <Link href='/events'>
+        {/* <Link href='/events'>
           <h2 className={isActive('/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
-        </Link>
+        </Link> */}
         <Link href='/links'>
           <h2 className={isActive('/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
         </Link>
@@ -148,7 +148,7 @@ export default function Header({ skipAnimation }) {
       {mobileLeftNavbar}
       {/* title and subtitle */}
       <div className={styles.titleWrapper}>
-        <h1 className={styles.title}>PARKWAY PERIODICAL</h1>
+        <h1 className={styles.title} onClick={() => router.push('/home')}>PARKWAY PERIODICAL</h1>
         <p className={styles.subtitle}>The latest news and updates from Parkway Sports & Health Science Academy</p>
       </div>
       {/* navbar right handle (pages) */}

@@ -56,9 +56,9 @@ export default function AdminHomePage() {
       <h1 className={`${styles.adminHomeTitle} pageTitle`}>ADMIN HOME</h1>
       <div className={styles.homeGrid}>
         <div className={styles.sectionWrapper}>
-            <Link href='/admin/new-post'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
+          <Link href='/admin/new-post'>
+            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+          </Link>
           <div className={styles.titleWrapper}>
             <Link href='/admin/list?type=posts'>
               <h2 className={styles.link}>POSTS</h2>
@@ -69,22 +69,22 @@ export default function AdminHomePage() {
           {/* <p>Number of EXPIRED posts</p> */}
         </div>
 
-        <div className={styles.sectionWrapper}>
-            <Link href='/admin/new-content?type=events'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
+        {/* <div className={styles.sectionWrapper}>
+          <Link href='/admin/new-content?type=events'>
+            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+          </Link>
           <div className={styles.titleWrapper}>
             <Link href='/admin/list?type=events'>
               <h2 className={styles.link}>EVENTS</h2>
             </Link>
           </div>
           <p>{`Total Events: ${typeCounts.events}`}</p>
-        </div>
+        </div> */}
 
         <div className={styles.sectionWrapper}>
-            <Link href='/admin/new-content?type=electives'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
+          <Link href='/admin/new-content?type=electives'>
+            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+          </Link>
           <div className={styles.titleWrapper}>
             <Link href='/admin/list?type=electives'>
               <h2 className={styles.link}>ELECTIVES</h2>
@@ -94,9 +94,9 @@ export default function AdminHomePage() {
         </div>
 
         <div className={styles.sectionWrapper}>
-            <Link href='/admin/new-content?type=clubs'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
+          <Link href='/admin/new-content?type=clubs'>
+            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+          </Link>
           <div className={styles.titleWrapper}>
             <Link href='/admin/list?type=clubs'>
               <h2 className={styles.link}>CLUBS</h2>
@@ -106,9 +106,9 @@ export default function AdminHomePage() {
         </div>
 
         <div className={styles.sectionWrapper}>
-            <Link href='/admin/new-content?type=links'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
+          <Link href='/admin/new-content?type=links'>
+            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
+          </Link>
           <div className={styles.titleWrapper}>
             <Link href='/admin/list?type=links'>
               <h2 className={styles.link}>LINKS</h2>
