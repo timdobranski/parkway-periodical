@@ -295,47 +295,54 @@ export default function NewContentPage() {
 
   const form = (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {/* ELECTIVES, CLUBS, LINKS, & EVENTS */}
       {formData.title !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='title' className={styles.label}>Name</label>
         <input type='text'  name='title' className={styles.input} value={formData.title} onChange={handleChange} />
       </div>
       }
+      {/* STAFF */}
       {formData.name !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='title' className={styles.label}>Name</label>
         <input type='text' name='name' className={styles.input} value={formData.name} onChange={handleChange} />
       </div>
       }
+      {/* STAFF */}
       {formData.position !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='title' className={styles.label}>Position</label>
         <input type='text' name='position' className={styles.input} value={formData.position} onChange={handleChange} />
       </div>
       }
+      {/* LINKS */}
       {formData.url !== undefined && <div className={styles.formSection}>
         <label htmlFor='url' className={styles.label}>URL</label>
         <input type='text' id='url' name='url' className={styles.input} value={formData.url} onChange={handleChange} />
       </div>}
-
+      {/* LINKS, CLUBS, ELECTIVES, & EVENTS */}
       {formData.description !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='description' className={styles.label}>Description</label>
         <textarea name='description' className={`${styles.input} ${styles.textArea}`} value={formData.description} onChange={handleChange} />
       </div>
       }
+      {/* STAFF */}
       {formData.bio !==undefined &&
       <div className={styles.formSection}>
         <label htmlFor='description' className={styles.label}>Introduction</label>
         <textarea name='bio' className={styles.input} value={formData.bio} onChange={handleChange} />
       </div>
       }
+      {/* EVENTS */}
       {formData.date !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='description' className={styles.label}>Event Date</label>
         <input type='date' name='date' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.date} onChange={handleChange} />
       </div>
       }
+      {/* EVENTS */}
       {formData.startTime !== undefined &&
       <div className={styles.groupedFormSections}>
         <div className={styles.halfFormSection}>
@@ -344,7 +351,7 @@ export default function NewContentPage() {
           <p className={styles.optional}>optional</p>
 
         </div>
-
+        {/* EVENTS */}
         <div className={styles.halfFormSection}>
           <label htmlFor='description' className={styles.label}>Ends At:</label>
           <input type='text' name='endTime' className={`${styles.input} ${styles.dateAndTimeInputs}`} value={formData.endTime} onChange={handleChange} />
@@ -352,12 +359,14 @@ export default function NewContentPage() {
         </div>
       </div>
       }
+      {/* CLUBS */}
       {formData.when !== undefined &&
         <div className={styles.formSection}>
           <label htmlFor='description' className={styles.label}>When We Meet</label>
           <textarea name='when' className={styles.input} value={formData.when} onChange={handleChange} />
         </div>
       }
+      {/* ELECTIVES */}
       {formData.duration !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>Duration</label>
@@ -367,6 +376,7 @@ export default function NewContentPage() {
         </select>
       </div>
       }
+      {/* ELECTIVES */}
       {formData.cte !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>CTE Class?</label>
@@ -376,6 +386,7 @@ export default function NewContentPage() {
         </select>
       </div>
       }
+      {/* ELECTIVES */}
       {formData.pathway !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>Pathway</label>
@@ -387,6 +398,7 @@ export default function NewContentPage() {
         </select>
       </div>
       }
+      {/* {LINKS} */}
       {formData.category !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>Category</label>
@@ -400,9 +412,10 @@ export default function NewContentPage() {
         </select>
       </div>
       }
-
+      {/* CLUBS, IMAGES, STAFF */}
       {formData.image !== undefined && editPhoto}
 
+      {/* ALL */}
       {formData.expires !== undefined &&
       <div className={styles.formSection}>
         <label className={styles.label}>Set Expiration Date (optional)</label>
@@ -410,7 +423,7 @@ export default function NewContentPage() {
         {!formData.expires && <p className={styles.noExpiration}>No expiration currently set</p>}
       </div>
       }
-
+      {/* ALL */}
       {formData.expires !== undefined &&
       <div className={styles.formSection}>
         <label htmlFor='reminder' className={styles.label}>On Expire</label>

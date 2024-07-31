@@ -267,7 +267,7 @@
   }
   .navLink {
     font-size: 1.25rem;
-    margin: 0 .35rem;
+    margin: 0 .65rem;
   }
   .adminHomeLink {
     font-size: .85rem;
@@ -277,11 +277,11 @@
 }
 @media (max-width: 1400px) {
   .title {
-    font-size: 2.5rem;
+    font-size: 3rem;
   }
   .navLink {
     font-size: 1rem;
-    margin: 0 .25rem;
+    margin: 0 .55rem;
   }
   .subtitle {
     width: 50vw;
@@ -305,11 +305,11 @@
 }
 @media (max-width: 1150px) {
   .title {
-    font-size: 2rem;
+    font-size: 2.75rem;
     width: 70vw;
   }
   .navLink {
-    font-size: .85rem;
+    font-size: 1rem;
     margin: 0 .25rem;
   }
   .subtitle {
