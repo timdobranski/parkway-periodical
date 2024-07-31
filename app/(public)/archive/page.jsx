@@ -71,7 +71,8 @@ export default function Archive() {
         <p className='centeredWhiteText'>{`Here you can explore Parkway's history, from the first years of the school to the present day.
         The slideshow below explores photos and events throughout Parkway's history in La Mesa.`}</p>
         <p className={`centeredWhiteText ${styles.endOfIntroParagraph}`}>
-          {`The photos and articles displayed here were kindly provided to us by the La Mesa History Center. You can learn more about them `}
+          {`The photos and articles displayed here were kindly provided to us by generous alumni of Parkway and the La Mesa History Center. You can learn more about the La Mesa
+          History Center `}
           <a href="https://lamesahistory.com/" target="_blank" rel="noopener noreferrer" className={styles.historyCenterLink}>here</a>.
         </p>
 

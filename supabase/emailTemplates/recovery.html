@@ -1,10 +1,8 @@
 <h2>Reset Password</h2>
 
 <p>Follow this link to reset your Parkway Periodical password:</p>
-<p><a href="{{ .ConfirmationURL }}">Reset Password</a></p>
+<p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}">Reset Password</a></p>
 
 <img width=75px height=75px style="background-color: white" src="https://xtwrhmhwyifhrgkpbiqr.supabase.co/storage/v1/object/public/misc/parkwayWhiteBackground.webp?t=2024-06-13T19%3A23%3A05.559Z"/>
 
 
-<p>This will take you to:</p>
-<p><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}">Reset Password</a></p>

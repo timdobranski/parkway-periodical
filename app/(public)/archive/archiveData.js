@@ -6,71 +6,109 @@ const archiveData = {
     {
       src: `${photoBasePath}1.webp`,
       caption: `Parkway Middle School Construction, 1960s. The office building now at the center of the campus originally marked the front entrance of the school.
-      Other buildings were added over the years, extending the entrance further outward until the office was in the center rather than the front of the school.`
+      Other buildings were added over the years, extending the entrance further outward until the office was in the center rather than the front of the school.
+
+      The school didn't open until a month or so after the start of the school year, so during that time Parkway's first class of students attended classes at Northmont
+      Elementary School in the afternoon once the elementary students had gone home.`
     },
     {
       src: `${photoBasePath}2.webp`,
-      caption: 'Parkway Construction, 1960s'
+      caption: 'Parkway Yearbook 1963'
     },
     {
       src: `${photoBasePath}3.webp`,
-      caption: 'Parkway Construction, 1960s'
+      caption: 'Parkway Yearbook 1963'
     },
     {
       src: `${photoBasePath}4.webp`,
-      caption: 'Parkway Construction, 1960s'
+      caption: 'Parkway Yearbook 1963'
     },
     {
       src: `${photoBasePath}5.webp`,
-      caption: 'Parkway Construction, 1960s'
+      caption: 'Parkway Yearbook 1963'
     },
     {
       src: `${photoBasePath}6.webp`,
-      caption: 'La Mesa-Spring Valley Architect Clyde Hufbauer, 1960s'
+      caption: 'Parkway Yearbook 1963'
 
     },
     {
       src: `${photoBasePath}7.webp`,
-      caption: 'Parkway Construction, 1960s'
+            caption: 'Parkway Yearbook 1963'
 
     },
     {
       src: `${photoBasePath}8.webp`,
-      caption: 'Parkway Construction, 1960s'
+      caption: 'Parkway Yearbook 1963'
 
     },
     {
       src: `${photoBasePath}9.webp`,
-      caption: 'Parkway Track Meet, 1960s'
-
+      caption: 'Parkway Yearbook 1963'
     },
     {
       src: `${photoBasePath}10.webp`,
-      caption: 'Parkway Staff Photo, 1963'
+      caption: 'Parkway Yearbook 1963'
 
     },
     {
       src: `${photoBasePath}11.webp`,
-      caption: 'Parkway Staff Photo, 1971'
+      caption: 'Parkway Yearbook 1963'
 
     },
     {
       src: `${photoBasePath}12.webp`,
-      caption: 'Parkway Staff Photo, 1970s'
+      caption: 'Parkway Construction, 1960s'
+    },
+    {
+      src: `${photoBasePath}13.webp`,
+      caption: 'Parkway Construction, 1960s'
+    },
+    {
+      src: `${photoBasePath}14.webp`,
+      caption: 'Parkway Construction, 1960s'
+    },
+    {
+      src: `${photoBasePath}15.webp`,
+      caption: 'Parkway Construction, 1960s'
+    },
+    {
+      src: `${photoBasePath}16.webp`,
+      caption: 'Principal Garth Hanchett, district Superintendent, & construction supervisor, 1960s'
+    },
+    {
+      src: `${photoBasePath}17.webp`,
+      caption: 'Parkway Construction, 1960s'
+    },
+    {
+      src: `${photoBasePath}18.webp`,
+      caption: 'Parkway Construction, 1961'
+    },
+    {
+      src: `${photoBasePath}19.webp`,
+      caption: 'Parkway Track Meet 1964'
+    },
+    {
+      src: `${photoBasePath}20.webp`,
+      caption: 'Parkway Staff 1963'
+    },
+    {
+      src: `${photoBasePath}21.webp`,
+      caption: 'Parkway Staff 1971 (1/2)'
+    },
+    {
+      src: `${photoBasePath}22.webp`,
+      caption: 'Parkway Staff 1971 (2/2)'
+    },
+    {
+      src: `${photoBasePath}23.webp`,
+      caption: 'Parkway PTA Meeting, 1960s'
+    },
+    {
+      src: `${photoBasePath}24.webp`,
+      caption: 'Parkway Staff Football Game, 1964'
+    },
 
-    }
-    // {
-    //   src: `${photoBasePath}13.webp`,
-    // },
-    // {
-    //   src: `${photoBasePath}14.webp`,
-    // },
-    // {
-    //   src: `${photoBasePath}15.webp`,
-    // },
-    // {
-    //   src: `${photoBasePath}16.webp`,
-    // }
 
 
   ],

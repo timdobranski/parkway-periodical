@@ -73,7 +73,7 @@
   height: 30px;
   width: 30px;
   position: absolute;
-  top: 200px;;
+  top: 250px;
   /* transform: translate(0, -50%); */
   /* transition: transform 0.5s ease; */
   border-radius: 50%;
@@ -81,8 +81,8 @@
   z-index: 10;
 }
 .slideImg {
-  height: 400px;
-  max-height: 45vh;
+  height: 600px;
+  /* max-height: 60vh; */
   width: auto;
   /* max-width: 95%; */
   object-fit: contain;
@@ -147,9 +147,9 @@
   overflow-y: auto;
   height: 200px;
 }
-.captionAndTitleWrapper:hover {
+/* .captionAndTitleWrapper:hover {
   cursor: pointer;
-}
+} */
 .archivePhotoCaption, .archivePhotoTitle {
   margin: 0;
   padding: 1.5rem 1.5rem 2rem 1.5rem;
