@@ -48,6 +48,10 @@ export default function NewContentPage() {
     console.log('Form data changed: ', formData);
   }, [formData])
 
+  useEffect(() => {
+    console.log('photo: ', photo);
+  }, [photo])
+
   // populate the fields with existing data if editing, or with empty strings if adding new
   useEffect(() => {
     const fetchLinkData = async () => {
@@ -69,6 +73,9 @@ export default function NewContentPage() {
             return acc;
           }, {});
           setFormData(sanitizedData);
+          if (sanitizedData.image) {
+            setPhoto(sanitizedData.image);
+          }
         }
         if (error) {
           console.error('Error fetching link data:', error);
@@ -420,17 +427,17 @@ export default function NewContentPage() {
 
   return (
     <div className='adminPageWrapper' >
-    <div className='adminFeedWrapper'>
-      <div className='post' style={{boxShadow: '0 0 5px rgba(0, 0, 0, .5)'}}>
+      <div className='adminFeedWrapper'>
+        <div className='post' style={{boxShadow: '0 0 5px rgba(0, 0, 0, .5)'}}>
 
-        {/* page title & intro paragraph */ }
-        <h1 className='pageTitle'>{mode === 'edit' ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
-        <p>{introText}</p>
+          {/* page title & intro paragraph */ }
+          <h1 className='pageTitle'>{mode === 'edit' ? `EDITING ${singularType.toUpperCase()}` : `ADD NEW ${singularType.toUpperCase()}`}</h1>
+          <p>{introText}</p>
 
-        {formData && form}
+          {formData && form}
 
+        </div>
       </div>
-    </div>
     </div>
   )
 }
