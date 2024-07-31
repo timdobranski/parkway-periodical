@@ -196,8 +196,11 @@ export default function NewContentPage() {
         console.error('Error getting public URL:', publicUrlError);
         return;
       }
-
+      console.log('setting form data image to: ', publicUrlData.publicUrl);
       formData.image = publicUrlData.publicUrl;
+    } else {
+      console.log('setting form data image to: ', photo);
+      formData.image = photo;
     }
 
     formData.author = user.id;
