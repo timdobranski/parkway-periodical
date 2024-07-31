@@ -26,7 +26,7 @@ const archiveData = {
     },
     {
       src: `${photoBasePath}6.webp`,
-      caption: 'Parkway Construction, 1960s'
+      caption: 'La Mesa-Spring Valley Architect Clyde Hufbauer, 1960s'
 
     },
     {

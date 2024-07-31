@@ -79,7 +79,7 @@ export default function Login() {
   const mobileMessage = (
     <div className={styles.mobileMessage}>
       <img src="/images/logos/parkway.webp" alt="Parkway Periodical Logo" className={styles.logo} />
-      <p>{`Parkway Periodical doesn't current support mobile devices on the administration side. To create and manage content,
+      <p>{`Parkway Periodical doesn't currently support mobile devices on the administration side. To create and manage content,
       please login using a desktop or laptop computer.`}</p>
     </div>
   )

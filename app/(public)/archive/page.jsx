@@ -17,8 +17,8 @@ export default function Archive() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const [photosOrArticles, setPhotosOrArticles] = useState('photos');
-  const [expandedPhotoCaption, setExpandedPhotoCaption] = useState(false);
-  const [expandedArticleCaption, setExpandedArticleCaption] = useState(false);
+  // const [expandedPhotoCaption, setExpandedPhotoCaption] = useState(false);
+  // const [expandedArticleCaption, setExpandedArticleCaption] = useState(false);
 
   const items = photosOrArticles === 'photos' ? archivePhotos : newsArticles;
   const activeIndex = photosOrArticles === 'photos' ? currentPhotoIndex : currentArticleIndex;
@@ -42,6 +42,10 @@ export default function Archive() {
   //   getSchoolYears();
   // }, []);
 
+  useEffect(() => {
+
+  }, [currentArticleIndex])
+
   const customPrevArrow = (clickHandler, hasPrev) => {
     return (
       <FontAwesomeIcon icon={faChevronLeft} onClick={hasPrev ? clickHandler : null} className={hasPrev ? styles.arrowLeft : styles.arrowLeftDisabled}/>
@@ -53,7 +57,7 @@ export default function Archive() {
     );
   }
   const handleCarouselChange = (index) => {
-    photosOrArticles === 'photos' ? setCurrentPhotoIndex(false) : setCurrentArticleIndex(false);
+    // photosOrArticles === 'photos' ? setCurrentPhotoIndex(false) : setCurrentArticleIndex(false);
 
     photosOrArticles === 'photos' ? setCurrentPhotoIndex(index) : setCurrentArticleIndex(index);
   };
@@ -78,6 +82,7 @@ export default function Archive() {
           </a>
           <p className={`${photosOrArticles === 'articles' ? styles.active : styles.inactive} ${styles.newsArticles}`} onClick={() => setPhotosOrArticles('articles')}>NEWS ARTICLES</p>
         </div>
+
         <div className={styles.archiveCarouselWrapper}>
           <Carousel
             renderArrowPrev={customPrevArrow}
@@ -106,18 +111,10 @@ export default function Archive() {
 
                     {(items[activeIndex].title || items[activeIndex].caption) &&
 
-                    <div className={`${styles.captionAndTitleWrapper} ${
-                      photosOrArticles === 'photos'
-                        ? expandedPhotoCaption === index
-                          ? styles.expandedCaption
-                          : ''
-                        : expandedArticleCaption === index
-                          ? styles.expandedCaption
-                          : ''
-                    }`}
-                    onClick={photosOrArticles === 'photos' ?
-                      () => setExpandedPhotoCaption(expandedPhotoCaption === index ? false : index) :
-                      () => setExpandedArticleCaption(expandedArticleCaption === index ? false : index)}
+                    <div className={`${styles.captionAndTitleWrapper}`}
+                    // onClick={photosOrArticles === 'photos' ?
+                    //   () => setExpandedPhotoCaption(expandedPhotoCaption === index ? false : index) :
+                    //   () => setExpandedArticleCaption(expandedArticleCaption === index ? false : index)}
                     >
                       {items[activeIndex].title &&
                       <>
@@ -125,19 +122,9 @@ export default function Archive() {
                         <p className={styles.articleMetadata}>{`${items[activeIndex].date} via ${items[activeIndex].source}`}</p>
                       </>
                       }
-                      <p
-                        className={`centeredWhiteText ${styles.archivePhotoCaption}
-                           ${
-                photosOrArticles === 'photos'
-                  ? expandedPhotoCaption === index
-                    ? styles.expandedCaption
-                    : ''
-                  : expandedArticleCaption === index
-                    ? styles.expandedCaption
-                    : ''
-                }`
-
-                        }>{items[activeIndex].caption}</p>
+                      <p className={`centeredWhiteText ${styles.archivePhotoCaption}`}>
+                        {items[activeIndex].caption}
+                      </p>
                     </div>}
 
                   </div>

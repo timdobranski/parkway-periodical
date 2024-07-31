@@ -29,7 +29,7 @@
   height: 400px;
   border: none;
   border-radius: 10px;
-  padding: 10px;
+  padding: 2rem;
   background: rgb(0, 100, 154);
   background: var(--mobile-background);
   background: linear-gradient(to right, rgb(0, 97, 139), rgb(0, 136, 185));
