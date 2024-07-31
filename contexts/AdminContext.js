@@ -114,7 +114,7 @@ export const AdminProvider = ({ children }) => {
   }, [session]);
 
   return (
-    <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, authUser, session, introOver, setIntroOver }}>
+    <AdminContext.Provider value={{ isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, authUser, setAuthUser, session, setSession, introOver, setIntroOver }}>
       {children}
     </AdminContext.Provider>
   );

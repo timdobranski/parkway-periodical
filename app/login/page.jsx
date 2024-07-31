@@ -31,6 +31,7 @@ export default function Login() {
       console.error('Error logging in:', error.message);
       if (error.message === 'Invalid login credentials') {
         alert('The email or password you have entered is incorrect. Please try again, or click the Forgot Password link below.');
+        return;
       } else {
         alert('There was an error signing you in. Please try again. If the problem persists, please contact Tim.');
         return;

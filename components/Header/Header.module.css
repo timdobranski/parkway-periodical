@@ -212,7 +212,7 @@
   transition: transform .3s ease-in-out;
   border: none !important;
   height: fit-content;
-  /* text-shadow: 0 0 15px rgba(0, 0, 0, .8); */
+  text-shadow: 0 0 5px rgba(0, 0, 0, .5);
 }
 .navLink {
   font-family: Louis George Cafe;

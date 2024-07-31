@@ -163,12 +163,18 @@ IMAGE RELATED CLASSES
 }
 .blueOverlay {
   background-color: rgb(0, 143, 215);
+
 }
 .redOverlayFaded {
   background-color: rgb(255, 123, 111);
+  background-color: rgb(255, 101, 87);
+
+
 }
 .blueOverlayFaded {
   background-color: rgb(33, 181, 255);
+  background-color: rgb(4, 171, 255);
+
 }
 .redOverlayFaded, .blueOverlayFaded, .redOverlay, .blueOverlay {
   transition: opacity .5s ease-in;

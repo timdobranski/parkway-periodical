@@ -49,11 +49,11 @@ export async function updateSession(request) {
   }
 
   // protect pages in admin directory
-  // if (!user && request.nextUrl.pathname.startsWith('/admin')) {
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/login'
-  //   return NextResponse.redirect(url)
-  // }
+  if (!user && request.nextUrl.pathname.startsWith('/admin')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
+  }
 
   // protect api routes
   if (!user && request.nextUrl.pathname.startsWith('/api')) {
