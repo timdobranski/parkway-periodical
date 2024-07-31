@@ -63,11 +63,11 @@ export async function updateSession(request) {
     });
   }
   // protect registration page
-  if (!user && request.nextUrl.pathname.startsWith('/register')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
-  }
+  // if (!user && request.nextUrl.pathname.startsWith('/register')) {
+  //   const url = request.nextUrl.clone()
+  //   url.pathname = '/login'
+  //   return NextResponse.redirect(url)
+  // }
 
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

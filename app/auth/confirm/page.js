@@ -9,6 +9,7 @@ export default function Confirm() {
   const { setIsLoading, setUser, setAuthUser, setSession } = useAdmin();
   const searchParams = useSearchParams();
   const token_hash = searchParams.get('token_hash');
+  const type = searchParams.get('type');
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +34,11 @@ export default function Confirm() {
           // console.log('data returned from verifyOtp:', data);
           setSession(data.session);
           setAuthUser(data.user);
-          router.push('/admin/changePassword');
+          if (type === 'signup') {
+            router.push('/register');
+          } else {
+            router.push('/admin/changePassword');
+          }
         } catch (err) {
           console.error('Unexpected error:', err);
           router.push('/error');
