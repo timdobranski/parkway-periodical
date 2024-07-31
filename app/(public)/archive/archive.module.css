@@ -200,7 +200,12 @@
     padding-right: .5rem;
   }
   .slideImg {
-    padding-top: 0 !important;
+    /* padding-top: 0 !important; */
+    height: 400px;
+    padding: .5rem .25rem !important;
+  }
+  .captionAndTitleWrapper {
+    height: 150px;
   }
 }
 @media(max-width: 400px) {
