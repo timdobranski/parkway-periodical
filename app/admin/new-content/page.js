@@ -30,10 +30,10 @@ export default function NewContentPage() {
   const id = searchParams.get('id');
   const type = searchParams.get('type');
 
-
   // convenience variable for singular content type
   const singularType = type.slice(-1) === 's' ? type.slice(0, -1) : type;
-  const [photo, setPhoto] = useState(`/images/${type}/${singularType}Placeholder.webp`);
+  const placeholderPhoto = `/images/${type}/${singularType}Placeholder.webp`
+  const [photo, setPhoto] = useState(placeholderPhoto);
   const introText = formDataAndIntroText[`${singularType}FormData`].introText;
 
   useEffect(() => {
@@ -278,7 +278,7 @@ export default function NewContentPage() {
                   <FontAwesomeIcon icon={faCrop} className={styles.cropIcon} />
                   <p className={styles.cropLabel}>Crop Photo</p>
                 </div>
-                <div className={styles.removePhotoWrapper} onClick={() => setCropActive(true)} >
+                <div className={styles.removePhotoWrapper} onClick={() => {setPhoto(placeholderPhoto); setCroppedPhotoUrl('')}} >
                   <FontAwesomeIcon icon={faX} className={styles.cropIcon} />
                   <p className={styles.cropLabel}>Remove Photo</p>
                 </div>
