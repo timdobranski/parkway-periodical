@@ -29,9 +29,28 @@ export default function Header() {
   const userMenuRef = useRef();
   const pathname = usePathname();
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+  const [userPhotoIsValid, setUserPhotoIsValid] = useState(false); // if the photo doesn't load, setting to false will render the pkms logo instead
+  const placeholderPhoto = '/images/users/placeholder.webp';
   // fetch entries expiring soon
 
+  useEffect(() => {
+    const checkImage = (url) => {
+      return new Promise((resolve) => {
+        const img = new window.Image();
+        img.src = url;
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+      });
+    };
 
+    if (user.photo) {
+      checkImage(user.photo).then((valid) => {
+        setUserPhotoIsValid(valid);
+      });
+    } else {
+      setUserPhotoIsValid(false);
+    }
+  }, [user.photo]);
 
   useEffect(() => {
     console.log('User in header: ', user)
@@ -244,7 +263,7 @@ export default function Header() {
 
       <div className={user?.photo ? styles.photoWrapper : styles.userIconWrapper} onClick={() => toggleMenuOpen('user')}>
         { user?.photo ?
-          <img src={user.photo} alt="User Avatar" className={styles.userPhoto} />
+          <img src={userPhotoIsValid ? user.photo : placeholderPhoto} alt={userPhotoIsValid ? 'User photo' : 'placeholder user photo'} className={styles.userPhoto} />
           :
           <FontAwesomeIcon icon={faUser} className={styles.userIcon}/>
         }

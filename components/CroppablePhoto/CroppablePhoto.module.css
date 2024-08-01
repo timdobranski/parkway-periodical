@@ -1,32 +1,50 @@
 .croppablePhotoWrapper {
+  position: relative;
   display: block;
   /* margin-bottom: 1rem; */
   /* outline: solid red 2px; */
-  padding: 0;
+  padding: 2rem 0 2rem 0;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
   min-height: none;
-  overflow: hidden;
+  /* overflow: hidden; */
+  /* border: solid red 2px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* box-sizing: border-box; */
+  margin: 0 !important;
 }
 .croppablePhotoWrapper * {
-  box-sizing: border-box;
+  box-sizing:border-box;
 }
 .croppableImage {
   margin: 0;
   padding: 0 !important;
   display: block;
-  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  height: 100%;
   overflow: hidden;
-  max-height: 50vh;
-  overflow: hidden;
+  /* border: solid red 2px; */
+  box-sizing: border-box;
 }
 .saveCropButton {
-  margin: 1rem;
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  min-width: 100px;
+  transform: translateX(-50%);
+  margin: 1rem 0 .5rem 0;
   background-color: rgb(0, 112, 156);
   color: white;
   border: none;
   border-radius: 5px;
   padding: .5rem 1rem;
-  font-size: 1.25rem;
-  /* font-weight: bold; */
+  font-size: 1rem;
+  font-weight: normal;
+  z-index: 1000;
 }
 .saveCropButton:hover {
   cursor: pointer;

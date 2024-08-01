@@ -22,12 +22,36 @@ export default function Settings () {
   const [message, setMessage] = useState('');
 
   const placeholderPhoto = '/images/users/placeholder.webp';
-  const [originalPhoto, setOriginalPhoto] = useState('');
-  const [croppedPhoto, setCroppedPhoto] = useState('');
+  const [originalPhoto, setOriginalPhoto] = useState(''); // the photo to be passed into the CroppablePhoto component
+  const [croppedPhoto, setCroppedPhoto] = useState(''); // the photo to be displayed in the UI userPhoto
+  const [userPhotoIsValid, setUserPhotoIsValid] = useState(false);
 
   const [userToRemove, setUserToRemove] = useState('');
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
 
+  // if the user's photo isn't valid, set it to the placeholder photo
+  useEffect(() => {
+    const checkImage = (url) => {
+      return new Promise((resolve) => {
+        const img = new window.Image();
+        img.src = url;
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+      });
+    };
+
+    if (croppedPhoto) {
+      checkImage(croppedPhoto).then((valid) => {
+        setUserPhotoIsValid(valid);
+      });
+    } else {
+      setUserPhotoIsValid(false);
+    }
+  }, [croppedPhoto]);
+
+  useEffect(() => {
+    console.log('User in header: ', user)
+  }, [user])
 
   useEffect(() => {
     // if (user && user.email) {
@@ -179,6 +203,26 @@ export default function Settings () {
     }
   }
 
+  const resetPhotoToDefault = async () => {
+    // remove the photos from storage if exists - both cropped and original
+    const { data, error } = await supabase
+      .storage
+      .from('users')
+      .remove([`photos/${user.email}/cropped`, `photos/${user.email}/original`]);
+
+    if (error) {
+      console.log('error removing photos from storage: ', error);
+    }
+    // set the photo in the users table to the placeholder photo
+    const { success, error: updateError } = await userPhotos.setPhotoInUsersTable(user.email, placeholderPhoto);
+    if (updateError) {
+      console.log('error updating photo in users table: ', updateError)
+
+    }
+    setCroppedPhoto(placeholderPhoto);
+    setOriginalPhoto('');
+  }
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -188,12 +232,11 @@ export default function Settings () {
   // if rendered inside edit modal, AND IF PHOTO ISN'T THE PLACEHOLDER, render with crop icon to trigger crop mode and handler to open crop mode
   const userPhoto = (editOrCrop, handler) => (
     <div className={styles.currentPhotoPreviewWrapper}>
-      {croppedPhoto ? (
-        <img src={croppedPhoto} alt='User Photo' className={user.photo ? styles.currentPhotoPreview : styles.userIcon} />
-      ) : (
-        userIcon
-      )}
-      {(editOrCrop === 'edit' || (editOrCrop === 'crop' && croppedPhoto !== placeholderPhoto)) && (
+
+      <img src={userPhotoIsValid ? croppedPhoto : placeholderPhoto} alt='User Photo' className={styles.currentPhotoPreview} />
+
+      {/* render either an edit or crop icon based on the editOrCrop prop. if we're in crop mode and the photo is the placeholder, don't render the crop icon or allow crop */}
+      {(editOrCrop === 'edit' || (editOrCrop === 'crop' && croppedPhoto !== placeholderPhoto && userPhotoIsValid)) && (
         <FontAwesomeIcon
           icon={editOrCrop === 'edit' ? faPencil : faCrop}
           className={styles.editIcon}
@@ -201,16 +244,26 @@ export default function Settings () {
         />
       )}
 
+      {/* {!userPhotoIsValid && <p className={styles.info}>Photo is not valid. Please upload a new photo.</p>} */}
     </div>
   );
   const updatePhotoModalContent = (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContentWrapper}>
         <FontAwesomeIcon icon={faCircleChevronLeft} className={styles.modalBackButton} onClick={() => {setCropActive(false); setModalIsOpen(false)}} />
-        <p className={styles.infoLabel}>Crop Or Change Photo</p>
-        {!croppedPhoto && <p>No photo current set. Upload a photo here</p>}
+        <p className={styles.cropLabel}>Crop Or Change Photo</p>
 
-        <input className={styles.photoInput} type="file" name="photo" onChange={(e) => handleFileChange(e)}/>
+        {!croppedPhoto && <p>No photo currently set. Upload a photo here</p>}
+        <div className={styles.updatePhotoOptionsWrapper}>
+          {croppedPhoto !== placeholderPhoto && !cropActive &&
+      <button className={styles.resetPhotoMessage}
+        onClick={resetPhotoToDefault}
+      >Reset Photo to Default
+      </button>}
+
+          {!cropActive && <input className={styles.photoInput} type="file" name="photo" onChange={(e) => handleFileChange(e)}/>}
+        </div>
+
         <div className={styles.cropWrapper}>
           {cropActive ?
           // render the CroppablePhoto component
@@ -274,6 +327,7 @@ export default function Settings () {
         {modalIsOpen && updatePhotoModalContent}
         <div className={styles.userInfo}>
           {userPhoto('edit', () => setModalIsOpen(true))}
+          {(croppedPhoto === placeholderPhoto || !userPhotoIsValid) && <p className={styles.defaultPhotoMessage}>No photo provided; using default</p>}
 
           <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
           <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>

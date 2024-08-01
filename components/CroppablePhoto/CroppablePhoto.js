@@ -43,7 +43,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
   }, [completedCrop])
 
   useEffect(() => {
-    const width = 400; // Set your desired default width here
+    const width = 100; // Set your desired default width here
     const height = width / ratio;
 
     setCrop({
@@ -54,7 +54,11 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
       y: 0,
       aspect: ratio
     });
-  }, [ratio]);
+  }, [ratio, photo]);
+
+  useEffect(() => {
+    console.log('crop changed: ', crop);
+  }, [crop, photo])
 
 
   const uploadCroppedPhoto = async (e) => {
@@ -124,7 +128,8 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
   return (
     <>
       <div className={styles.croppablePhotoWrapper}>
-        <p>Crop Photo</p>
+        <button onClick={(e) => uploadCroppedPhoto(e)} className={styles.saveCropButton}>Set Crop</button>
+
         <ReactCrop
         // src={photo}
           crop={crop}
@@ -138,8 +143,7 @@ export default function CroppablePhoto({ photo, ratio = 1, bucket, filePath, set
           <img src={photo} ref={imageRef} alt="Crop preview" className={styles.croppableImage} crossOrigin="anonymous"/>
         </ReactCrop>
       </div>
-      <button onClick={(e) => uploadCroppedPhoto(e)} className={styles.saveCropButton}>SAVE</button>
-      <button onClick={() => setCropActive(false)}>Cancel</button>
+      {/* <button onClick={() => setCropActive(false)}>Cancel</button> */}
     </>
   );
 }
