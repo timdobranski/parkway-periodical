@@ -28,7 +28,7 @@ export default function Register() {
   const [phoneExt, setPhoneExt] = useState('');
   const [previousUser, setPreviousUser] = useState(false);
   const placeholderPhoto = '/images/users/placeholder.webp';
-
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // returns obj with success, error, & value keys
   // takes in user email, type string 'cropped' or 'original', and file if setting
@@ -71,6 +71,7 @@ export default function Register() {
     getUserAuthData();
   }, [router]);
   // set the photo if it already exists. Check cropped, then original, based on email and users bucket
+  // set admin status
   useEffect(() => {
     const setInitialPhoto = async() => {
       const { success: successRetreivingCroppedPhoto, error: errorRetreivingCroppedPhoto, value: croppedPhoto } = await getProfilePhoto(session.user.email, 'cropped');
@@ -86,6 +87,7 @@ export default function Register() {
     }
     if (session && session.user) {
       setInitialPhoto()
+      setIsAdmin(session.user.user_metadata?.admin)
     }
   }, [session])
 
@@ -97,6 +99,7 @@ export default function Register() {
   //   console.log('photo: ', photo)
   // }, [photo])
 
+  // check for existing user data in users table, set values if found
   useEffect(() => {
     if (!session.user) {
       console.log('no session user')
@@ -121,6 +124,7 @@ export default function Register() {
         setPosition(existingUserData.position);
         setEmail(existingUserData.email);
         // setIncludeInStaff(existingUserData.include_in_staff);
+        setIsAdmin(existingUserData.admin);
         setAboutMe(existingUserData.about_me);
         setPhoneExt(existingUserData.phone_ext);
         setPhoto(existingUserData.photo)
@@ -150,7 +154,7 @@ export default function Register() {
     }
 
     // conditions are met; add user
-    const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe, phoneExt };
+    const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe, phoneExt, isAdmin };
     registrationData.id = session.user.id;
     registrationData.email = session.user.email;
     const response = await fetch('/api/completeSignup', {method: 'POST', body: JSON.stringify(registrationData)});

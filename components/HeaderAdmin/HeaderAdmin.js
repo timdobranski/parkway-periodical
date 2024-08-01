@@ -28,6 +28,7 @@ export default function Header() {
   const alertsMenuRef = useRef();
   const userMenuRef = useRef();
   const pathname = usePathname();
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
   // fetch entries expiring soon
 
 
@@ -327,6 +328,7 @@ export default function Header() {
   return (
     <div className={styles.headerContainer}>
       {leftSideNavbar}
+      {/* {(SITE_URL === 'http://parkway-periodical.vercel.app' && user.email === 'timdobranski@gmail.com') ? <h3 className={styles.productionWarning}>PRODUCTION VERSION</h3> : <h3 className={styles.developmentWarning}>DEVELOPMENT VERSION</h3>} */}
       {rightSideNavbar}
     </div>
   )

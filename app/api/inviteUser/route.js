@@ -3,6 +3,8 @@ import { createClient } from '../../../utils/supabase/server';
 
 export async function POST(request) {
   const supabaseAdmin = createClient();
+
+  // appends the public site url with the register page path to redirect authenticated users
   const getURL = () => {
     let url =
       process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
@@ -30,6 +32,7 @@ export async function POST(request) {
     const url = getURL();
     const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
       redirectTo: url,
+      data: { admin }
     });
 
     // if there's an error and it's not because the email already exists, return an error message
@@ -76,7 +79,7 @@ export async function POST(request) {
   }
 
 
-  const { email } = await request.json();
+  const { email, admin } = await request.json();
 
   if (!email) {
     return NextResponse.json({ error: 'Email is required' }, { status: 400 });

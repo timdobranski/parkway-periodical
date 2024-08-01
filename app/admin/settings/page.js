@@ -74,7 +74,7 @@ export default function Settings () {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, admin: newUserAdminStatus }),
       });
 
       const data = await response.json();

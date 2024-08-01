@@ -504,6 +504,15 @@ USER MENU---------------------------------------------
   font-size: 1.25rem;
   margin-top: .25rem;
 }
+.productionWarning {
+
+}
+.developmentWarning {
+  color: rgb(255, 0, 0);
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin: 0;
+}
 @media (max-width: 1023px) {
   .headerContainer {
     position: fixed;
