@@ -82,11 +82,14 @@ const userPhotos = {
 
       const blob = await blobPromise;
 
+      const cacheBust = Date.now();
+      const filePath = `photos/${email}/${croppedOrOriginal}?t=${cacheBust}`;
+
       // Step 4: Upload the WebP image blob
       const { data, error } = await supabase
         .storage
         .from('users')
-        .upload(`photos/${email}/${croppedOrOriginal}`, blob, { upsert: true });
+        .upload(filePath, blob, { upsert: true });
 
       if (error) {
         result.success = false;
@@ -98,7 +101,7 @@ const userPhotos = {
         const { data: imageUrl } = supabase
           .storage
           .from('users')
-          .getPublicUrl(`photos/${email}/${croppedOrOriginal}`);
+          .getPublicUrl(filePath);
 
         result.data = imageUrl;
       }
