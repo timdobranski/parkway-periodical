@@ -20,7 +20,7 @@ export default function Register() {
   const [includeInStaff, setIncludeInStaff] = useState(true);
   const [aboutMe, setAboutMe] = useState('');
   const [session, setSession] = useState({});
-  const [photo, setPhoto] = useState('/images/users/placeholder.webp');
+  const [photo, setPhoto] = useState('/images/users/placeholder.webp'); // photo starts as placeholder
   const [croppedPhoto, setCroppedPhoto] = useState('');
   const [filePath, setFilePath] = useState('');
   const [cropActive, setCropActive] = useState(false);
@@ -33,6 +33,8 @@ export default function Register() {
   // returns obj with success, error, & value keys
   // takes in user email, type string 'cropped' or 'original', and file if setting
   const { getProfilePhoto, setProfilePhoto } = userPhotos;
+
+
   // check auth
   useEffect(() => {
     const getUserAuthData = async () => {
@@ -76,11 +78,17 @@ export default function Register() {
     const setInitialPhoto = async() => {
       const { success: successRetreivingCroppedPhoto, error: errorRetreivingCroppedPhoto, value: croppedPhoto } = await getProfilePhoto(session.user.email, 'cropped');
       if (successRetreivingCroppedPhoto) {
+        console.log('getProfilePhoto returned success: ', successRetreivingCroppedPhoto)
+        console.log('setting photo as currently saved storage cropped photo from setInitialPhoto: ', croppedPhoto)
         setPhoto(croppedPhoto)
         return
       }
       const { success: successRetreivingOriginalPhoto, error: errorRetreivingOriginalPhoto, value: originalPhoto } = await getProfilePhoto(session.user.email, 'original');
+
       if (successRetreivingOriginalPhoto) {
+        console.log('getProfilePhoto returned success: ', successRetreivingCroppedPhoto)
+        console.log('setting photo as currently saved original photo from setInitialPhoto: ', croppedPhoto)
+
         setPhoto(originalPhoto)
         return
       }
@@ -105,7 +113,7 @@ export default function Register() {
       console.log('no session user')
       return;
     }
-    console.log('checking for existing user data with email: ', session)
+    // console.log('checking for existing user data with email: ', session)
     const checkForExistingUser = async () => {
       const { data: existingUserData, error: existingUserError } = await supabase
         .from('users')
@@ -134,7 +142,9 @@ export default function Register() {
     checkForExistingUser();
   }, [session])
 
-
+  useEffect(() => {
+    console.log('photo changed: ', photo)
+  }, [photo])
 
   const finishSignup = async (e) => {
     e.preventDefault()
@@ -154,7 +164,7 @@ export default function Register() {
     }
 
     // conditions are met; add user
-    const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe, phoneExt, isAdmin };
+    const registrationData = { firstName, lastName, position, password, includeInStaff, aboutMe, phoneExt, isAdmin, photoUrl: photo };
     registrationData.id = session.user.id;
     registrationData.email = session.user.email;
     const response = await fetch('/api/completeSignup', {method: 'POST', body: JSON.stringify(registrationData)});
@@ -169,6 +179,7 @@ export default function Register() {
       } else {
         // if login successful, route to admin home
         router.push('/admin/home');
+        // alert('Registration complete! You are now logged in. Redirect disabled for testing, line 181');
       }
     } else {
       alert('There was an error completing registration: ', response)
@@ -254,6 +265,11 @@ export default function Register() {
   const previousUserInstructions = `Based on your email address, it looks like you've been here before. Welcome back!
   Your required info has been prefilled below, except for your password.
   If you'd like to make any changes, you can do so now.`;
+
+
+  if (!session.user) {
+    return <div>No authenticated user detected</div>
+  }
 
   return (
     <div className={styles.pageWrapper}>

@@ -4,7 +4,7 @@ import { createClient } from '../../../utils/supabase/server';
 export async function POST(request) {
   const supabaseAdmin = createClient();
   console.log('INSIDE COMPLETE SIGNUP');
-  const { firstName, lastName, position, password, id, email, includeInStaff, aboutMe, phoneExt, isAdmin } = await request.json();
+  const { firstName, lastName, position, password, id, email, includeInStaff, aboutMe, phoneExt, isAdmin, photoUrl } = await request.json();
 
   if (!firstName || !lastName || !position || !password || !id || !email) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -20,10 +20,11 @@ export async function POST(request) {
       console.error('Error updating password:', authError);
       return NextResponse.json({ error: 'Failed to update password' }, { status: 500 });
     }
-    const { data: photoData } = await supabaseAdmin
-      .storage
-      .from('users')
-      .getPublicUrl(`/photos/${email}/cropped`)
+    // get url for existing cropped storage photo
+    // const { data: photoData } = await supabaseAdmin
+    //   .storage
+    //   .from('users')
+    //   .getPublicUrl(`photos/${email}/cropped`)
 
 
 
@@ -39,7 +40,16 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Failed to fetch existing user data' }, { status: 500 });
     }
 
-    const updatePayload = { first_name: firstName, last_name: lastName, position: position, email: email, auth_id: id, photo: photoData.publicUrl, active: true, admin: isAdmin };
+    const updatePayload = {
+      first_name: firstName,
+      last_name: lastName,
+      position: position,
+      email: email,
+      auth_id: id,
+      photo: photoUrl,
+      active: true,
+      admin: isAdmin
+    };
     if (existingUserData) {
     // Only update fields if they are different
       if (existingUserData.first_name !== firstName) updatePayload.first_name = firstName;
@@ -47,7 +57,7 @@ export async function POST(request) {
       if (existingUserData.position !== position) updatePayload.position = position;
       if (existingUserData.email !== email) updatePayload.email = email;
       if (existingUserData.auth_id !== id) updatePayload.auth_id = id;
-      if (existingUserData.photo !== photoData.publicUrl) updatePayload.photo = photoData.publicUrl;
+      if (existingUserData.photo !== photoUrl) updatePayload.photo = photoUrl;
 
       // Update the user's details in the users table
       const { error: usersUpdateError } = await supabaseAdmin
@@ -78,7 +88,7 @@ export async function POST(request) {
           name: `${firstName} ${lastName}`,
           position: position,
           email: email,
-          image: photoData.publicUrl,
+          image: photoUrl,
           bio: aboutMe,
           phone: `Ext. ${phoneExt}`
         })

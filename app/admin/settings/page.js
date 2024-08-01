@@ -110,19 +110,29 @@ export default function Settings () {
   const handleFileChange = async (e) => {
     console.log('file upload for user photo changed: ', e);
     const file = e.target.files[0];
-    const { success, error, value } = await userPhotos.setProfilePhoto(user.email, 'original', file);
+
+    // upload the file to supabase storage
+    const response = await userPhotos.setProfilePhoto(user.email, 'original', file);
+    console.log('response from setProfilePhoto: ', response);
+    const { data, error } = response;
 
     if (error) {
       console.log('Error uploading file to supabase storage')
     }
-    if (value) {
-      const { success: updatedTable, error: errorUpdatingTable } = await userPhotos.setPhotoInUsersTable(user.email, value);
+    if (data) {
+      console.log('success setting photo in storage: ', data)
+
+      // update the users table with the new photo url
+      const { success: updatedTable, error: errorUpdatingTable } = await userPhotos.setPhotoInUsersTable(user.email, data.path);
       if (errorUpdatingTable) {
         console.log('Error updating users table with new photo url')
       }
-      setOriginalPhoto(value)
+      console.log('data returned from photo upload: ', data)
+      // update the photo in the ui
+      setOriginalPhoto(data.publicUrl);
       setCropActive(true);
     }
+    console.log('no error or value returned');
   }
   const afterCrop = async () => {
     // update users table here

@@ -32,35 +32,87 @@ const userPhotos = {
   setProfilePhoto: async (email, croppedOrOriginal, file) => {
     const result = {};
 
-    const { data, error } = await supabase
-      .storage
-      .from('users')
-      .upload(`photos/${email}/${croppedOrOriginal}`, file, {upsert: true});
+    // Step 1: Read the image file
+    const fileReader = new FileReader();
+    const fileReaderPromise = new Promise((resolve, reject) => {
+      fileReader.onload = (e) => resolve(e.target.result);
+      fileReader.onerror = (e) => reject(e);
+    });
 
-    if (error) {
+    fileReader.readAsDataURL(file);
+
+    try {
+      const imageSrc = await fileReaderPromise;
+      const img = new Image();
+      img.src = imageSrc;
+
+      const imageLoadPromise = new Promise((resolve, reject) => {
+        img.onload = () => resolve(img);
+        img.onerror = (e) => reject(e);
+      });
+
+      await imageLoadPromise;
+
+      // Step 2: Create a canvas and draw the resized image
+      const maxDimension = 1500;
+      let { width, height } = img;
+
+      if (width > height) {
+        if (width > maxDimension) {
+          height *= maxDimension / width;
+          width = maxDimension;
+        }
+      } else {
+        if (height > maxDimension) {
+          width *= maxDimension / height;
+          height = maxDimension;
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Step 3: Convert the canvas content to a WebP blob
+      const blobPromise = new Promise((resolve) => {
+        canvas.toBlob(resolve, 'image/webp');
+      });
+
+      const blob = await blobPromise;
+
+      // Step 4: Upload the WebP image blob
+      const { data, error } = await supabase
+        .storage
+        .from('users')
+        .upload(`photos/${email}/${croppedOrOriginal}`, blob, { upsert: true });
+
+      if (error) {
+        result.success = false;
+        result.error = error;
+      } else {
+        console.log('successfully uploaded new original photo to supabase storage');
+        result.success = true;
+
+        const { data: imageUrl } = supabase
+          .storage
+          .from('users')
+          .getPublicUrl(`photos/${email}/${croppedOrOriginal}`);
+
+        result.data = imageUrl;
+      }
+    } catch (error) {
       result.success = false;
       result.error = error;
-      return result;
-    }
-    const { success: gotUrl, error: errorGettingUrl, value: url } = await userPhotos.getProfilePhoto(email, croppedOrOriginal);
-
-    if (errorGettingUrl) {
-      console.log('successfully uploaded photo, but error returning its url: ', errorGettingUrl)
-      result.success = false;
-      return result
-    }
-    result.value = url
-
-    const { error: tableEntryError } = await userPhotos.setPhotoInUsersTable(email, url)
-    if (tableEntryError) {
-      console.log('successfully uploaded photo, but error adding url to users table: ', tableEntryError)
-      result.success = false;
-      return result
     }
 
-    result.success = true;
     return result;
   },
+
+
+
+
 
   setPhotoInUsersTable: async (email, url) => {
     const result = {};
