@@ -40,13 +40,28 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
 
   // updates the title and caption in the content block when isEditable changes
   const updateTitleAndCaption = () => {
+    console.log('inside updateTitleAndCaption')
     setContentBlocks(prev => {
       const newContent = [...prev];
+      console.log('PREV CONTENT BEFORE ERROR: ', newContent)
+      // if there's a nested index
+      if ((nestedIndex || nestedIndex === 0) &&
 
-      if ((nestedIndex || nestedIndex === 0) && newContent[index].content[nestedIndex].content[0]?.title) {
+      // and the content has a property at the nested index (to weed out undecided block)
+
+      // then if either the caption or title properties aren't false
+        (newContent[index].content[nestedIndex].content[0]?.title !== false ||
+        newContent[index].content[nestedIndex].content[0]?.caption !== false)
+
+      )
+      {
+        // set the title and caption to the new values
         newContent[index].content[nestedIndex].content[0].title = title; // if title is false, set to an empty string
         newContent[index].content[nestedIndex].content[0].caption = caption;
-      } else if (newContent[index].content[0]?.title) {
+      }
+      // if there's no nested index and the title or caption properties aren't false
+      else if (newContent[index].content[0]?.title !== false || newContent[index].content[0]?.caption !== false) {
+        // set the title and caption to the new values
         newContent[index].content[0].title = title;
         newContent[index].content[0].caption = caption;
       }

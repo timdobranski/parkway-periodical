@@ -38,13 +38,13 @@ export default function Layout({
   const undecidedBlock = {type: 'undecided', content: [{title: false, caption: false}]}
 
 
-  useEffect(() => {
-    console.log('viewContext: ', viewContext)
-  })
+  // useEffect(() => {
+  //   console.log('viewContext: ', viewContext)
+  // })
 
-  useEffect(() => {
-    console.log('ACTIVE NESTED BLOCK: ', activeBlock)
-  }, [activeBlock])
+  // useEffect(() => {
+  //   console.log('ACTIVE NESTED BLOCK: ', activeBlock)
+  // }, [activeBlock])
 
   useEffect(() => {
     const hasTruthyContent = content.some(element => element.content);
