@@ -45,21 +45,20 @@ export default function Electives() {
     <div className='feedWrapper'>
       <div className={`slideUp`}>
         <h1 className='whiteTitle'>ELECTIVES</h1>
+        <div className='selectWrapper'>
+          <select value={selectedPathway} onChange={handleChange} className='selectContent'>
+            <option value="All">All</option>
+            {pathways.map((pathway, index) => (
+              <option key={index} value={pathway}>{pathway}</option>
+            ))}
+          </select>
+        </div>
 
         {filteredElectives.length > 0 ? (
           <>
             <p className={styles.pageTitle}>
               Check out all our amazing student elective courses this year, or browse them by pathway!
             </p>
-
-            <div className='selectWrapper'>
-              <select value={selectedPathway} onChange={handleChange} className='selectContent'>
-                <option value="All">All</option>
-                {pathways.map((pathway, index) => (
-                  <option key={index} value={pathway}>{pathway}</option>
-                ))}
-              </select>
-            </div>
 
             <>
               {filteredElectives.map((elective, index) => (

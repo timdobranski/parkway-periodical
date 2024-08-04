@@ -512,11 +512,12 @@
   /* left: 52px; */
   min-width: 600px !important;
   left: 50%;
-  z-index: 1;
+  z-index: 10;
   border-radius: 2px !important;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, .3);
   position: absolute !important;
   transform: scale(1.2) translateX(-40%);
+
 }
 .p-editor-content {
   border: none !important;

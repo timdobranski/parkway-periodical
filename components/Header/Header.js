@@ -109,12 +109,12 @@ export default function Header({ skipAnimation }) {
         </div>
         <div
           onClick={() => {setRightNavbarOpen(false); router.push('/clubs')}}>
-          <h2 className={isActive('/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS</h2>
+          <h2 className={isActive('/clubs') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>CLUBS & ESS</h2>
         </div>
-        <div
+        {/* <div
           onClick={() => {setRightNavbarOpen(false); router.push('/events')}}>
           <h2 className={isActive('/events') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>EVENTS</h2>
-        </div>
+        </div> */}
         <div
           onClick={() => {setRightNavbarOpen(false); router.push('/links')}}>
           <h2 className={isActive('/links') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>LINKS</h2>
