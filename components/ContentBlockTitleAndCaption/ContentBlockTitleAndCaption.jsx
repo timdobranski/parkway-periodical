@@ -20,6 +20,8 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
 
     if (content) {
       setTitle(content.title);
+    } else {
+      setTitle(false);
     }
   }, [content?.title])
 
@@ -28,6 +30,8 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
 
     if (content) {
       setCaption(content.caption);
+    } else {
+      setCaption(false);
     }
   }, [content?.caption])
 
