@@ -68,6 +68,7 @@ export default function Layout({
     })
   }
 
+  // used to reset a layout column's content to undecided
   const resetBlock = () => {
     setContentBlocks(prev => {
       const newContent = [...prev];
@@ -101,10 +102,10 @@ export default function Layout({
               // style={{justifyContent: ''}}
               // grid item for all grid children, mainContent to signify type and mainContentIndex to signify which block it is
               className={`${styles.gridItem} ${styles.mainContent} ${styles[`mainContent${index}`]}`}
-              onClick={(e) => {
+              onClick={viewContext === 'edit' ? (e) => {
                 e.stopPropagation();
                 if (index !== activeBlock) {setActiveOuterBlock(parentIndex); setActiveBlock(index)}
-              }}
+              } : null}
             >
 
               {contentBlock.type === 'undecided' && viewContext === 'edit' && (
@@ -147,6 +148,7 @@ export default function Layout({
                   isLayout={true}
                   setContentBlocks={setContentBlocks}
                   toggleTitleOrCaption={toggleTitleOrCaption}
+                  viewContext = {viewContext}
                 // deletePhoto={(fileName) => deletePhoto(index, fileName)} // how it's passed from postEditor direct to photoBlock
                 />
               )}

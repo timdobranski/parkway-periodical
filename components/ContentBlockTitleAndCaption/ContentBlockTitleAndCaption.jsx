@@ -72,9 +72,9 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
       return newContent;
     })
   }
-  // if the component has mounted, is not editable, and the content blocks are set, update the title and caption
+  // if the component has mounted, is not editable, and there is content to be updated, update the title and caption
   useEffect(() => {
-    if (!isEditable && hasMounted.current && setContentBlocks) {
+    if (!isEditable && hasMounted.current && setContentBlocks && content) {
       updateTitleAndCaption();
     } else {
       hasMounted.current = true;

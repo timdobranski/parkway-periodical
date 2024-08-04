@@ -10,10 +10,7 @@ import PostTitle from '../../components/PostTitle/PostTitle';
 import PhotoBlock from '../../components/PhotoBlock/PhotoBlock';
 import PhotoCarousel from '../../components/PhotoCarousel/PhotoCarousel';
 import ContentLayout from '../../components/ContentLayout/ContentLayout';
-import SelectLayoutContent from '../../components/SelectLayoutContent/SelectLayoutContent';
 import BlockEditMenu from '../../components/BlockEditMenu/BlockEditMenu';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashCan, faFloppyDisk, faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function PostEditor({ contentBlocks, setContentBlocks, user,
