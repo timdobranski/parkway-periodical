@@ -20,10 +20,13 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Flexible Layouts </h3>
-        <div className={styles.navbarSectionItem} onClick={() => addBlock({
-          type: 'flexibleLayout',
-          content: [ undecidedBlock, undecidedBlock]
-        })}>
+        <div
+          className={styles.navbarSectionItem}
+          data-testid="addLayout2x"
+          onClick={() => addBlock({
+            type: 'flexibleLayout',
+            content: [ undecidedBlock, undecidedBlock]
+          })}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
               <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
@@ -38,7 +41,10 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
           <h3 className={styles.layoutLabel}>2x</h3>
         </div>
 
-        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
+        <div
+          className={styles.navbarSectionItem}
+          data-testid="addLayout3x"
+          onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
               <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
@@ -54,7 +60,10 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
           </div>
           <h3 className={styles.layoutLabel}>3x</h3>
         </div>
-        <div className={styles.navbarSectionItem} onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
+        <div
+          className={styles.navbarSectionItem}
+          data-testid="addLayout4x"
+          onClick={() => addBlock({type: 'flexibleLayout', content: [{type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}, {type: 'undecided'}]})}>
           <div className={styles.iconWrapper}>
             <div className={styles.layoutTopRowWrapper}>
               <FontAwesomeIcon icon={faImage} className={styles.layoutIcon} />
@@ -72,12 +81,13 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
           </div>
           <h3 className={styles.layoutLabel}>4x</h3>
         </div>
-
       </div>
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Text</h3>
-        <div onClick={() => addBlock({ type: 'text', content: ''})} className={styles.navbarSectionItem}>
+        <div
+          data-testid="addText"
+          onClick={() => addBlock({ type: 'text', content: ''})} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faFont} className={styles.icon} />
           <h3>Text</h3>
         </div>
@@ -85,11 +95,16 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Photos</h3>
-        <div onClick={() => addBlock(singlePhotoNoCaption)} className={styles.navbarSectionItem}>
+        <div
+          data-testid="addPhoto"
+          onClick={() => addBlock(singlePhotoNoCaption)}
+          className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faImage} className={styles.icon} />
           <h3>Single Photo</h3>
         </div>
-        <div onClick={() => addBlock(photoCarousel)} className={styles.navbarSectionItem}>
+        <div
+          data-testid="addCarousel"
+          onClick={() => addBlock(photoCarousel)} className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faTv} className={styles.icon} />
           <h3>Slideshow</h3>
         </div>
@@ -97,22 +112,24 @@ export default function PostNavbarRight({ handleSubmit, addBlock, publishingStat
 
       <div className={styles.navbarSection}>
         <h3 className={styles.navbarSectionTitle}>Videos</h3>
-        <div onClick={() =>
-          addBlock({ type: 'video', content: [{
-            url: '',
-            title: false,
-            caption: false,
-            orientation: 'landscape',
-            style: {
-              width: '100%',
-              height: 'auto' ,
-              // x: 325,
-              // y: 0,
-              maxHeight:'50vh'
-            }
-          }],
-          })}
-        className={styles.navbarSectionItem}>
+        <div
+          data-testid="addVideo"
+          onClick={() =>
+            addBlock({ type: 'video', content: [{
+              url: '',
+              title: false,
+              caption: false,
+              orientation: 'landscape',
+              style: {
+                width: '100%',
+                height: 'auto' ,
+                // x: 325,
+                // y: 0,
+                maxHeight:'50vh'
+              }
+            }],
+            })}
+          className={styles.navbarSectionItem}>
           <FontAwesomeIcon icon={faYoutube} className={`${styles.icon} ${styles.youtubeIcon}`} />
           <h3>Youtube</h3>
         </div>

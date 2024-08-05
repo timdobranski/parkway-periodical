@@ -91,6 +91,7 @@ export default function PhotoBlock({
       {/* if we're in the editor view, and there's no photo, and we ARE editing this block, show the photo */}
       {isEditable && !photo?.src &&
         <input
+          data-testid="singlePhotoInput"
           type="file"
           accept="image/*"
           onChange={(e) => {addPhoto(e, nestedIndex)}}
