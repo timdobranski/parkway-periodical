@@ -11,7 +11,7 @@ import PrimeText from '../PrimeText/PrimeText';
 import { createClient } from '../../utils/supabase/client';
 
 export default function EditablePhoto({
-  photo, isEditable, updatePhotoContent, deletePhoto, containerClassName, index, setSelectedPhotos,
+  photo, isEditable, updatePhotoContent, deletePhoto, containerClassName, index, nestedIndex, setSelectedPhotos,
   handleTitleChange, handleCaptionChange, photoIndex, photoContext, setPhotoStyle, isLayout, toggleTitleOrCaption, carousel }) {
   const supabase = createClient()
   const imageRef = useRef(null);
@@ -216,6 +216,7 @@ export default function EditablePhoto({
   )
   const imageElement = (
     <img
+      data-testid={`photo${index.toString()}${nestedIndex ? `-${nestedIndex.toString()}` : ''}`} // test id format ex: photo1-1: second photo in the second block
       src={`${photo.src}?v=${imageVersion}`}
       className='gridPhoto'
       alt={`Preview ${index}`}

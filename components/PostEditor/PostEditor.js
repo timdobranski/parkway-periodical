@@ -14,7 +14,7 @@ import BlockEditMenu from '../../components/BlockEditMenu/BlockEditMenu';
 
 
 export default function PostEditor({ contentBlocks, setContentBlocks, user,
-  activeBlock, setActiveBlock, viewContext, orientation, addBlock }) {
+  activeBlock, setActiveBlock, viewContext, orientation, addBlock, existingPost }) {
 
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
@@ -43,6 +43,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
 
 
   const addPhoto = async (event, nestedIndex) => {
+    // console.log('inside addPhoto. event: ', event)
     setLoading(true);
     const files = event.target.files;
     // console.log('FILES: ', files)
@@ -60,6 +61,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     setLoading(false);
   };
   const processFile = (file) => new Promise((resolve, reject) => {
+    console.log('inside processFile');
     if (!file) reject("No file provided");
     const reader = new FileReader();
     reader.onload = async (e) => {
@@ -70,6 +72,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
     reader.readAsDataURL(file);
   });
   const createAndUploadImage = async (dataURL) => {
+    console.log('inside createAndUploadImage');
     return new Promise((resolve, reject) => {
       // Create an image element
       const img = new Image();
@@ -500,7 +503,10 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
   if (!user) { return <h1>Loading...</h1>}
 
   const post = (
-    <div className={`editablePost ${styles.adminPost}`} >
+    <div
+      className={`editablePost ${styles.adminPost}`}
+      data-testid={existingPost ? existingPost.id.toString() : 'newPost'}
+    >
 
       {contentBlocks.map((block, index) => (
         <React.Fragment key={index}>

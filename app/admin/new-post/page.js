@@ -28,6 +28,7 @@ export default function NewPostPage() {
   const [categoryTags, setCategoryTags] = useState([]);
   const [existingPostOldCategoryTags, setExistingPostOldCategoryTags] = useState([]);
   const [existingPostTitle, setExistingPostTitle] = useState('');
+  const [existingPost, setExistingPost] = useState(null);
   const postWrapperRef = useRef(null);
   const [prevContentLength, setPrevContentLength] = useState(contentBlocks.length);
 
@@ -69,9 +70,11 @@ export default function NewPostPage() {
         console.error('Error fetching post from post Id in url:', error);
         return;
       }
-      console.log('post data from id: ', data)
 
-      return JSON.parse(data.content);
+      const parsedContent = JSON.parse(data.content);
+      data.content = parsedContent;
+      setExistingPost(data);
+      return parsedContent;
 
     }
   }
@@ -171,7 +174,7 @@ export default function NewPostPage() {
         // console.log('Draft deleted');
       }
     } catch (error) {
-      console.error('Unexpected error:', error);
+      // console.error('Unexpected error:', error);
     }
   }
   // given a contentBlock array, this deletes all photos from supabase storage that the blocks reference
@@ -261,18 +264,18 @@ export default function NewPostPage() {
     // update the draft if there are content blocks and a user, and this is not a preexisting post
     if (contentBlocks.length && user && !postId) {
       if (isNewPost) { deleteDraft() } else {
-      const post = {
-        content: JSON.stringify(contentBlocks),
-        author: user.id
-      };
-      setSaving(true);
-      debouncedUpdateDraftRef.current(post);
+        const post = {
+          content: JSON.stringify(contentBlocks),
+          author: user.id
+        };
+        setSaving(true);
+        debouncedUpdateDraftRef.current(post);
       }
     }
   }, [contentBlocks, user]);
 
   useEffect(() => {
-    console.log('CONTENT BLOCKS CHANGED: ', contentBlocks)
+    // console.log('CONTENT BLOCKS CHANGED: ', contentBlocks)
   }, [contentBlocks])
   // to remove html from text blocks to facilitate searchable text
   const stripHTML = (html) => {
@@ -392,12 +395,12 @@ export default function NewPostPage() {
 
       // STEP 5: delete the draft
       if (!postId) {
-      const { error: draftError } = await supabase
-        .from('drafts')
-        .delete()
-        .match({ author: user.id });
+        const { error: draftError } = await supabase
+          .from('drafts')
+          .delete()
+          .match({ author: user.id });
 
-      if (draftError) throw draftError;
+        if (draftError) throw draftError;
       }
       // STEP 6: redirect to the home page
       setPublishingStatus(false);
@@ -440,10 +443,7 @@ export default function NewPostPage() {
     <div className={styles.postEditMenu}>
       {postId && <p className={styles.editMenuLabel}>{`EDITING EXISTING POST:`}</p>}
       {postId && <p className={styles.editMenuPostTitle}>{`"${existingPostTitle}"`}</p>}
-
       <button onClick={deletePost}>{`${postId ? 'Delete Post' :'Delete draft and reset Post'}`}</button>
-
-
     </div>
   );
 
@@ -465,6 +465,7 @@ export default function NewPostPage() {
         user={user}
         blocksRef={blocksRef}
         addBlock={addBlock}
+        existingPost={existingPost}
       />
 
       <PostNavbarRight

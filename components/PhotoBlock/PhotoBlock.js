@@ -80,6 +80,8 @@ export default function PhotoBlock({
       setPhotoStyle={setPhotoStyle}
       isLayout={isLayout}
       toggleTitleOrCaption={(titleOrCaption) => {toggleTitleOrCaption(titleOrCaption, index, nestedIndex)}}
+      index={index}
+      nestedIndex={nestedIndex}
     />
   )
 

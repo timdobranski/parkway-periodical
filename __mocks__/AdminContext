@@ -1,0 +1,8 @@
+export const useAdmin = jest.fn().mockReturnValue({
+  isLoading: false,
+  setIsLoading: jest.fn(),
+  saving: false,
+  setSaving: jest.fn(),
+  user: { id: 1, email: 'timdobranski@gmail.com' },
+  authUser: { id: 1, email: 'timdobranski@gmail.com' },
+});
