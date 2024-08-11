@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useAdmin } from '../../../contexts/AdminContext';
 import dateFormatter from '../../../utils/dateFormatter';
+import rearrangeContentList from '../../../utils/rearrangeContentList';
 
 export default function List() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
@@ -19,6 +20,8 @@ export default function List() {
   const router = useRouter();
   const [expanded, setExpanded] = useState('')
   const [paddingClass, setPaddingClass] = useState('');
+  const { moveItemUp, moveItemDown } = rearrangeContentList(list, setList);
+
 
   // types: electives, clubs, posts, staff, links
 
@@ -32,15 +35,23 @@ export default function List() {
     let query = supabase
       .from(type)
       .select('*')
-      .order('id', { ascending: false });
+      // .order('id', { ascending: false });
 
     if (user && !user.admin) {
       query = query.eq('author', user.id);
     }
 
+    // Sort by sortOrder if type is 'posts', otherwise by id
+    if (type === 'posts') {
+      query = query.order('sortOrder', { ascending: false })
+    } else {
+      query = query.order('id', { ascending: false });
+    }
+
     const { data, error } = await query;
 
     if (data) {
+      console.log('list data: ', data)
       if (data.length === 0) {
         setList([]);
       } else {
@@ -123,90 +134,105 @@ export default function List() {
   }
   return (
     <div className='adminPageWrapper' >
-    <div className='adminFeedWrapper'>
-      <div className='editablePost'>
-        <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : type === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
-        <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
-          const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
-          type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
-          ;
-        }}/>
-        <div className={styles.sectionWrapper}>
-          {list && list.map((item, index) => {
-            const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
-            return (
-              <div className={styles.listWrapper} key={index}>
-                <div className={styles.collapsedContentWrapper}>
-                  <div className={styles.titleWrapper}>
-                    <FontAwesomeIcon
-                      icon={faChevronDown}
-                      className={`${styles.dropdownIcon} ${expanded === index ? styles.collapseIcon : ''}`}
-                      onClick={() => {handleToggle(index)}}
-                    />
-                    <h3 className={`smallerPostTitle ${styles.truncate} `} onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
+      <div className='adminFeedWrapper'>
+        <div className='editablePost'>
+          <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : type === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
+          <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
+            const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
+            type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
+            ;
+          }}/>
+          <div className={styles.sectionWrapper}>
+          {list.length === 0 && <p className={styles.noContentMessage}>No {type} have been created yet. Click the + icon above to add some.</p>}
+
+            {list && list.map((item, index) => {
+              const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
+              return (
+                <div className={styles.listWrapper} key={index}>
+                  <div className={styles.collapsedContentWrapper}>
+                    <div className={styles.titleWrapper}>
+                      <FontAwesomeIcon
+                        icon={faChevronDown}
+                        className={`${styles.dropdownIcon} ${expanded === index ? styles.collapseIcon : ''}`}
+                        onClick={() => {handleToggle(index)}}
+                      />
+                      <h3 className={`smallerPostTitle ${styles.truncate} `} onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
+                    </div>
+                    <div className={styles.editControlsWrapper}>
+                      <button className={styles.editButton}  onClick={() => handleViewContent(item.id)}>VIEW</button>
+                      <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
+                      <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>DELETE</button>
+                      {type === 'posts' &&
+                      <div className={styles.sortWrapper}>
+                        <FontAwesomeIcon
+                          icon={faChevronUp}
+                          className={`${styles.sortIcon}`}
+                          onClick={() => {moveItemUp(index)}}
+                        />
+                        <FontAwesomeIcon
+                          icon={faChevronDown}
+                          className={`${styles.sortIcon}`}
+                          onClick={() => {moveItemDown(index)}}
+                        />
+                      </div>}
+                    </div>
                   </div>
-                  <div className={styles.editControlsWrapper}>
-                    <button className={styles.editButton}  onClick={() => handleViewContent(item.id)}>VIEW</button>
-                    <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
-                    <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>DELETE</button>
-                  </div>
-                </div>
-                <div className={`${styles.expandedInfo} ${expanded === index ? styles.expandedInfoVisible : styles.expandedInfoHidden}`}>
-                  {item.author &&
+                  <div className={`${styles.expandedInfo} ${expanded === index ? styles.expandedInfoVisible : styles.expandedInfoHidden}`}>
+                    {item.author &&
                   <>
                     <p className={styles.metadataLabel}>{`CREATED BY:`}</p>
                     <p className={styles.metadata}>{`${item.author.first_name} ${item.author.last_name}`}</p>
                   </>
-                  }
-                  {item.when &&
+                    }
+                    {item.when &&
                   <>
                     <p className={styles.metadataLabel}>{`MEETS:`}</p>
                     <p className={styles.metadata}>{`${item.when}`}</p>
                   </>
-                  }
-                  {item.position &&
+                    }
+                    {item.position &&
                   <>
                     <p className={styles.metadataLabel}>{`POSITION:`}</p>
                     <p className={styles.metadata}>{`${item.position}`}</p>
                   </>
-                  }
-                  {item.date &&
+                    }
+                    {item.date &&
                   <>
                     <p className={styles.metadataLabel}>{`DATE:`}</p>
                     <p className={styles.metadata}>{dateFormatter(item.date)}</p>
                   </>
-                  }
-                  {item.description &&
+                    }
+                    {item.description &&
                   <>
                     <p className={styles.metadataLabel}>{`DESCRIPTION:`}</p>
                     <p className={styles.metadata}>{item.description}</p>
                   </>
-                  }
-                  {item.category &&
+                    }
+                    {item.category &&
                   <>
                     <p className={styles.metadataLabel}>{`CATEGORY:`}</p>
                     <p className={styles.metadata}>{item.category}</p>
                   </>
-                  }
-                  {item.bio &&
+                    }
+                    {item.bio &&
                   <>
                     <p className={styles.metadataLabel}>{`ABOUT ME:`}</p>
                     <p className={styles.metadata}>{item.bio}</p>
                   </>
-                  }
-                  {item.url &&
+                    }
+                    {item.url &&
                   <>
                     <p className={styles.metadataLabel}>{`URL:`}</p>
                     <p className={styles.metadata}>{item.url}</p>
                   </>
-                  }
+                    }
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
 }
