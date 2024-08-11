@@ -4,13 +4,17 @@ export default function formatDate(dateStr) {
   // Parse the input date string to a Date object
   const dateObj = parseISO(dateStr);
 
+  // Convert the date to Pacific Time
+  const pacificOffset = -7; // PDT (Pacific Daylight Time) is UTC-7, and PST is UTC-8
+  const pacificDate = new Date(dateObj.getTime() + pacificOffset * 60 * 60 * 1000);
+
   // Get the current year
   const currentYear = new Date().getFullYear();
 
-  // Extract the year, month, and day from the date object
-  const year = dateObj.getFullYear();
-  const month = format(dateObj, 'MMMM'); // Full month name
-  const day = dateObj.getUTCDate(); // Get the day of the month in UTC
+  // Extract the year, month, and day from the pacificDate object
+  const year = pacificDate.getFullYear();
+  const month = format(pacificDate, 'MMMM'); // Full month name
+  const day = pacificDate.getDate(); // Get the day of the month in Pacific Time
 
   // Check if the year is the current year and format accordingly
   if (year === currentYear) {
