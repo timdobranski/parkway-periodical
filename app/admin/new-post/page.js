@@ -261,12 +261,12 @@ export default function NewPostPage() {
     // update the draft if there are content blocks and a user, and this is not a preexisting post
     if (contentBlocks.length && user && !postId) {
       if (isNewPost) { deleteDraft() } else {
-      const post = {
-        content: JSON.stringify(contentBlocks),
-        author: user.id
-      };
-      setSaving(true);
-      debouncedUpdateDraftRef.current(post);
+        const post = {
+          content: JSON.stringify(contentBlocks),
+          author: user.id
+        };
+        setSaving(true);
+        debouncedUpdateDraftRef.current(post);
       }
     }
   }, [contentBlocks, user]);
@@ -308,6 +308,7 @@ export default function NewPostPage() {
       return '';
     });
     const completeSearchableText = searchableText.join(' ');
+
 
     // STEP 2: set the post object with the content, author, title, and searchable text
     setPublishingStatus(true);
@@ -365,6 +366,24 @@ export default function NewPostPage() {
 
 
       } else {
+        // Query to find the highest sortOrder for the given schoolYear
+        const { data: maxSortOrderData, error: maxSortOrderError } = await supabase
+          .from('posts')
+          .select('sortOrder')
+          .eq('schoolYear', schoolYear)
+          .order('sortOrder', { ascending: false })
+          .limit(1);
+
+        if (maxSortOrderError) {
+          console.error("Error fetching max sortOrder:", maxSortOrderError);
+          return;
+        }
+
+        // Determine the new sortOrder value
+        const maxSortOrder = maxSortOrderData.length > 0 ? maxSortOrderData[0].sortOrder : 0;
+        post.sortOrder = maxSortOrder + 1;
+
+
         // Insert new post
         const { data, error } = await supabase
           .from('posts')
@@ -392,12 +411,12 @@ export default function NewPostPage() {
 
       // STEP 5: delete the draft
       if (!postId) {
-      const { error: draftError } = await supabase
-        .from('drafts')
-        .delete()
-        .match({ author: user.id });
+        const { error: draftError } = await supabase
+          .from('drafts')
+          .delete()
+          .match({ author: user.id });
 
-      if (draftError) throw draftError;
+        if (draftError) throw draftError;
       }
       // STEP 6: redirect to the home page
       setPublishingStatus(false);
