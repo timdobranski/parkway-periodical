@@ -143,7 +143,7 @@ export default function List() {
             ;
           }}/>
           <div className={styles.sectionWrapper}>
-          {list.length === 0 && <p className={styles.noContentMessage}>No {type} have been created yet. Click the + icon above to add some.</p>}
+          {list && list.length === 0 && <p className={styles.noContentMessage}>No {type} have been created yet. Click the + icon above to add some.</p>}
 
             {list && list.map((item, index) => {
               const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`

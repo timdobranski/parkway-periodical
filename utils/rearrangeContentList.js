@@ -15,24 +15,28 @@ export default function rearrangeContentList(contentList, setContentList) {
     // Determine the new index for the item
     const newIndex = direction === 'up' ? index - 1 : index + 1;
 
-    // Swap the items in the contentList array
+    // Create a copy of the contentList
     const updatedList = [...contentList];
-    const temp = updatedList[index];
-    updatedList[index] = updatedList[newIndex];
-    updatedList[newIndex] = temp;
 
-    // Update the sortOrder values in the array
-    updatedList[index].sortOrder = newIndex + 1;
-    updatedList[newIndex].sortOrder = index + 1;
+    // Remove the item from the current position
+    const [movedItem] = updatedList.splice(index, 1);
+
+    // Insert the item at the new position
+    updatedList.splice(newIndex, 0, movedItem);
+
+    // Recalculate the sortOrder for the entire list
+    updatedList.forEach((item, idx) => {
+      item.sortOrder = updatedList.length - idx; // Reverse the sortOrder
+    });
 
     // Update the state
     setContentList(updatedList);
 
     // Prepare the updates for the database
-    const updates = [
-      { id: updatedList[index].id, sortOrder: updatedList[index].sortOrder },
-      { id: updatedList[newIndex].id, sortOrder: updatedList[newIndex].sortOrder },
-    ];
+    const updates = updatedList.map(item => ({
+      id: item.id,
+      sortOrder: item.sortOrder,
+    }));
 
     // Batch update the database
     const { error } = await supabase.from('posts').upsert(updates, { onConflict: ['id'] });
