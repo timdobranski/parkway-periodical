@@ -236,6 +236,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         .eq('post_tags.tag', tagId)
 
         .eq('schoolYear', schoolYear)
+        .order('sortOrder', { ascending: false })
         .order('id', { ascending: false })
         .limit(postFetchLimit)
 
@@ -262,7 +263,7 @@ export default function Home({ introRunning, setIntroRunning }) {
     // get the array of posts for the current category tag
     const tagArray = tagResultPosts[tagId] || [];
     // get the id to start from when fetching new posts by id
-    const lastPostId = tagArray.length > 0 ? tagArray[tagArray.length - 1].id : null;
+    const lastPostId = tagArray.length > 0 ? tagArray[tagArray.length - 1].sortOrder : null;
 
     // const lastPostId = tagResultPosts[tagId] && tagResultPosts[tagId].length ? tagResultPosts[tagId][tagResultPosts.length - 1].id : null;
     const taggedPosts = await getMorePostsByTagId(schoolYear, tagId, lastPostId);
@@ -293,6 +294,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         .ilike('searchableText', `%${searchQuery}%`)
 
         .eq('schoolYear', schoolYear)
+        .order('sortOrder', { ascending: false })
         .order('id', { ascending: false })
         .limit(postFetchLimit)
 
@@ -347,6 +349,7 @@ export default function Home({ introRunning, setIntroRunning }) {
         .from('posts')
         .select('*')
         .eq('schoolYear', schoolYear)
+        .order('sortOrder', { ascending: false })
         .order('id', { ascending: false })
         .limit(postFetchLimit)
 
@@ -369,7 +372,7 @@ export default function Home({ introRunning, setIntroRunning }) {
       return parsedData
     }
 
-    const lastPostId = recentPosts.length ? recentPosts[recentPosts.length - 1].id : null;
+    const lastPostId = recentPosts.length ? recentPosts[recentPosts.length - 1].sortOrder : null;
     const newRecentPosts = await getRecentPosts(schoolYear, lastPostId);
 
     if (newRecentPosts) {
