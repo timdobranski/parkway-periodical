@@ -14,7 +14,7 @@ import moment from 'moment-timezone';
 import dateFormatter from '../../utils/dateFormatter';
 import logUserOut from '../../utils/logUserOut';
 import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faCircleExclamation,
-  faCloud, faCloudArrowUp, faCloudArrowDown, faCheck } from '@fortawesome/free-solid-svg-icons';
+  faCloud, faCloudArrowUp, faCloudArrowDown, faCheck, faHouse, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
@@ -235,25 +235,25 @@ export default function Header() {
       {/* <p className={styles.viewPages}>SETTINGS</p> */}
       <div className={menuOpen === 'right' ? styles.navContainerRight : styles.navContainerHidden}>
         <Link href='/admin/home' className={styles.link}>
-          <h2>HOME</h2>
+          <h2>ADMIN HOME</h2>
         </Link>
         <Link href='/admin/new-post'>
-          <h2>NEW POST</h2>
+          <h2>CREATE POST</h2>
         </Link>
         <Link href='/admin/list?type=posts'>
-          <h2>POSTS</h2>
+          <h2>VIEW POSTS</h2>
         </Link>
         <Link href='/admin/list?type=electives'>
-          <h2>ELECTIVES</h2>
+          <h2>VIEW ELECTIVES</h2>
         </Link>
         <Link href='/admin/list?type=clubs'>
-          <h2>CLUBS</h2>
+          <h2>VIEW CLUBS</h2>
         </Link>
         {/* <Link href='/admin/list?type=events'>
           <h2>EVENTS</h2>
         </Link> */}
         <Link href='/admin/list?type=links'>
-          <h2>LINKS</h2>
+          <h2>VIEW LINKS</h2>
         </Link>
       </div>
     </div>
@@ -316,7 +316,7 @@ export default function Header() {
         </div>
 
         <div className={menuOpen === 'left' ? styles.navContainerLeft : styles.navContainerHidden}>
-          <Link href='/home'><h2>POST FEED</h2></Link>
+          <Link href='/home'><h2>HOME PAGE</h2></Link>
           <Link href='/electives'><h2>ELECTIVES PAGE</h2></Link>
           <Link href='/clubs'><h2>CLUBS PAGE</h2></Link>
           <Link href='/archive'><h2>ARCHIVE PAGE</h2></Link>
@@ -346,6 +346,7 @@ export default function Header() {
 
   return (
     <div className={styles.headerContainer}>
+
       {leftSideNavbar}
       {/* {(SITE_URL === 'http://parkway-periodical.vercel.app' && user.email === 'timdobranski@gmail.com') ? <h3 className={styles.productionWarning}>PRODUCTION VERSION</h3> : <h3 className={styles.developmentWarning}>DEVELOPMENT VERSION</h3>} */}
       {rightSideNavbar}

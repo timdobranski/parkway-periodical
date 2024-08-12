@@ -172,11 +172,13 @@ LEFT AND RIGHT NAV CONTAINERS-------------------------
 .navContainerLeft {
   left: 50%;
   transform: translateX(-50%);
+  /* text-align: left; */
 }
 .navContainerRight {
   left: auto;
   right: 0;
   transform: none;
+  /* text-align: right; */
 }
 .navContainerHidden {
   display: none;

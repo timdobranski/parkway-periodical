@@ -4,12 +4,13 @@ import styles from './list.module.css';
 import {createClient } from '../../../utils/supabase/client';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faChevronDown, faChevronUp, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useAdmin } from '../../../contexts/AdminContext';
 import dateFormatter from '../../../utils/dateFormatter';
 import rearrangeContentList from '../../../utils/rearrangeContentList';
+import deletePhotosFromStorage from '../../../utils/deletePhotosFromStorage';
 
 export default function List() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
@@ -21,6 +22,7 @@ export default function List() {
   const [expanded, setExpanded] = useState('')
   const [paddingClass, setPaddingClass] = useState('');
   const { moveItemUp, moveItemDown } = rearrangeContentList(list, setList);
+  const [deletingId, setDeletingId] = useState(null);
 
 
   // types: electives, clubs, posts, staff, links
@@ -115,6 +117,48 @@ export default function List() {
       }
     }
   }
+
+  async function deletePost(id) {
+    setDeletingId(id);
+    setIsLoading(true);
+    try {
+
+      const { data: post, error: postError } = await supabase
+        .from('posts')
+        .select('content')
+        .eq('id', id)
+        .single();
+
+      if (postError) { console.log('error fetching post: ', postError); }
+
+      const contentBlocks = JSON.parse(post.content);
+      // first, iterate through contentBlocks and delete all associated photos (type photo, carousel, and flexibleLayout)
+      await deletePhotosFromStorage(contentBlocks);
+
+      // then, delete the post from posts table
+      const { error } = await supabase
+        .from('posts')
+        .delete()
+        .match({ id: id });
+
+      if (error) { console.log('error deleting post (after deleting photos): ', error); }
+
+      setList(list.filter(item => item.id !== id));
+
+      // then either redirect to home or show a message that the post was deleted (reset contentBlocks);
+      // router.push('/admin/new-post')
+      setIsLoading(false);
+      setDeletingId(null);
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      setIsLoading(false);
+      setDeletingId(null);
+    }
+  }
+
+
+
+
   const handleToggle = (index) => {
     if (expanded === '') {
       setExpanded(index);
@@ -143,7 +187,7 @@ export default function List() {
             ;
           }}/>
           <div className={styles.sectionWrapper}>
-          {list && list.length === 0 && <p className={styles.noContentMessage}>No {type} have been created yet. Click the + icon above to add some.</p>}
+            {list && list.length === 0 && <p className={styles.noContentMessage}>No {type} have been created yet. Click the + icon above to add some.</p>}
 
             {list && list.map((item, index) => {
               const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
@@ -161,7 +205,9 @@ export default function List() {
                     <div className={styles.editControlsWrapper}>
                       <button className={styles.editButton}  onClick={() => handleViewContent(item.id)}>VIEW</button>
                       <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
-                      <button className={styles.deleteButton} onClick={() => deleteItem(item.id)}>DELETE</button>
+                      <button className={`${styles.deleteButton} ${deletingId === item.id && styles.deleting}`} onClick={type === 'posts' ? () => deletePost(item.id) : deleteItem(item.id)}>
+                        {deletingId === item.id ? <FontAwesomeIcon icon={faSpinner} className={styles.loadingIcon}/> : 'DELETE'}
+                      </button>
                       {type === 'posts' &&
                       <div className={styles.sortWrapper}>
                         <FontAwesomeIcon
