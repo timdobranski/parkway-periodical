@@ -140,7 +140,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
 
   useEffect(() => {
-    console.log('Post ID: ', postId)
+    // console.log('Post ID: ', postId)
     if (postId) {
       setDisplayType('id')
       const postIdNumber = parseInt(postId);
@@ -166,7 +166,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // when the type of post view changes, remove the 'no more posts' message and reset the addPosts handler to the appropriate function
   useEffect(() => {
-    console.log('DISPLAY TYPE CHANGED: ', displayType)
+    // console.log('DISPLAY TYPE CHANGED: ', displayType)
     setNoMorePosts(false);  // reset noMorePosts when displayType changes
 
     // on page load or user select, render recent unfiltered posts
@@ -214,7 +214,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   // HELPER EFFECTS TO LOG VALUES
   useEffect(() => {
-    console.log('POSTS CHANGED: ', posts)
+    // console.log('POSTS CHANGED: ', posts)
   }, [posts])
   useEffect(() => {
     // console.log('CATEGORY POSTS CHANGED: ', tagResultPosts)

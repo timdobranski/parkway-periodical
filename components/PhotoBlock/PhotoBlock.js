@@ -60,7 +60,7 @@ export default function PhotoBlock({
 
 
   useEffect(() => {
-    console.log('photo passed to PhotoBlock: ', photo)
+    // console.log('photo passed to PhotoBlock: ', photo)
   }, [photo])
 
 

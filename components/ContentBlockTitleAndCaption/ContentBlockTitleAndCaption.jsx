@@ -16,7 +16,7 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
   // if it turns to false, set the title to false
   // if it turns to an empty string, set it to
   useEffect(() => {
-    console.log('TITLEANDCAPTION TITLE CHANGE: ', content?.title)
+    // console.log('TITLEANDCAPTION TITLE CHANGE: ', content?.title)
 
     if (content) {
       setTitle(content.title);
@@ -26,7 +26,7 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
   }, [content?.title])
 
   useEffect(() => {
-    console.log('TITLEANDCAPTION CAPTION CHANGE: ', content?.caption)
+    // console.log('TITLEANDCAPTION CAPTION CHANGE: ', content?.caption)
 
     if (content) {
       setCaption(content.caption);
@@ -36,7 +36,7 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
   }, [content?.caption])
 
   useEffect(() => {
-    console.log('CONTENT CHANGE: ', content)
+    // console.log('CONTENT CHANGE: ', content)
   }, [content])
 
 
@@ -44,10 +44,10 @@ export default function ContentBlockTitleAndCaption({ content, isEditable, setCo
 
   // updates the title and caption in the content block when isEditable changes
   const updateTitleAndCaption = () => {
-    console.log('inside updateTitleAndCaption')
+    // console.log('inside updateTitleAndCaption')
     setContentBlocks(prev => {
       const newContent = [...prev];
-      console.log('PREV CONTENT BEFORE ERROR: ', newContent)
+      // console.log('PREV CONTENT BEFORE ERROR: ', newContent)
       // if there's a nested index
       if ((nestedIndex || nestedIndex === 0) &&
 

@@ -58,7 +58,7 @@ export const AdminProvider = ({ children }) => {
         setIsLoading(false);
         return;
       }
-      console.log('RESULT FROM INITIAL SESSION CHECK: ', data);
+      // console.log('RESULT FROM INITIAL SESSION CHECK: ', data);
       setSession(data.session);
       setAuthUser(data.session.user);
       setIsLoading(false);
@@ -102,14 +102,14 @@ export const AdminProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log('USER IN ADMIN CONTEXT FILE: ', user);
+    // console.log('USER IN ADMIN CONTEXT FILE: ', user);
   }, [user]);
 
   useEffect(() => {
     if (session && session.user) {
       getUserData(session);
     }
-    console.log('SESSION IN ADMIN CONTEXT FILE: ', session);
+    // console.log('SESSION IN ADMIN CONTEXT FILE: ', session);
     setIsLoading(false);
   }, [session]);
 
