@@ -138,7 +138,7 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
     >
       {photos?.map((photo, index) => (
         <div key={index} className={styles.carouselSlide}>
-          {index === currentPhotoIndex || index === (currentPhotoIndex + 1) ? (
+          {index === currentPhotoIndex || index === (currentPhotoIndex + 1) || index === (currentPhotoIndex - 1) ? (
             <img
               src={photo.src}
               alt={`Photo ${index}`}
