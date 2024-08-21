@@ -566,6 +566,10 @@ export default function Home({ introRunning, setIntroRunning }) {
   return (
     <div className='feedWrapper' ref={feedWrapperRef}>
       <div className={`slideUp`}>
+        {/* {posts && posts.length === 0 && displayType === 'recent' && <p className='centeredWhiteText'>
+          {`We're so thrilled about the gigantic interest
+        in the new Parkway Periodical! We're having trouble keeping up with all the new traffic. We're working on it and we expect to be back soon!`}
+        </p>} */}
         <WelcomeSlideshow />
         <SearchAndFilterBar
           postTags={postTags}

@@ -1,6 +1,7 @@
 import './globals.css'
 import { Suspense } from 'react';
 import { AdminProvider } from '../contexts/AdminContext';
+import { Analytics } from "@vercel/analytics/react"
 
 
 const url = process.env.NEXT_PUBLIC_SITE_URL;
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <div className='background'>
+          <Analytics />
           <AdminProvider>
             <Suspense fallback={<div>Loading...</div>}>
               {children}
