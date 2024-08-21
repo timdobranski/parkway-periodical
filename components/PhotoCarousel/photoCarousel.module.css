@@ -84,7 +84,10 @@
   object-fit: contain;
 
 }
-
+.carouselImageLoading {
+  height: 800px;
+  width: 100%;
+}
 /* TITLE AND CAPTIONS */
 .captionInput, .captionP {
   width: calc(100% - 4rem);

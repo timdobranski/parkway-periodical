@@ -79,7 +79,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
         const ctx = canvas.getContext('2d');
 
         // Calculate resizing
-        const maxSize = 1500; // Max size for width or height
+        const maxSize = 800; // Max size for width or height
         const ratio = Math.min(maxSize / img.width, maxSize / img.height);
         const width = img.width * ratio;
         const height = img.height * ratio;

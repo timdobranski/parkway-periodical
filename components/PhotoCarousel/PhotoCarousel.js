@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
 
-export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto, reorderPhotos }) {
+export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto, reorderPhotos, viewContext }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedCaption, setEditedCaption] = useState("");
@@ -123,26 +123,37 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
 
   )
   const carousel = (
-      <Carousel
-        renderArrowPrev={customPrevArrow}
-        renderArrowNext={customNextArrow}
-        preventMovementUntilSwipeScrollTolerance={true}
-        swipeScrollTolerance={50}
-        emulateTouch={true}
-        dynamicHeight={false}
-        autoPlay={false}
-        showThumbs={false}
-        showStatus={false}
-        selectedItem={currentPhotoIndex}
-        onChange={handleCarouselChange}
-      >
-        {photos?.map((photo, index) => (
-          <div key={index} className={styles.carouselSlide}>
-            <img src={photo.src} alt={`Photo ${index}`}
-              className={styles.slideImg}/>
-          </div>
-        ))}
-      </Carousel>
+    <Carousel
+      renderArrowPrev={customPrevArrow}
+      renderArrowNext={customNextArrow}
+      preventMovementUntilSwipeScrollTolerance={true}
+      swipeScrollTolerance={50}
+      emulateTouch={true}
+      dynamicHeight={false}
+      autoPlay={false}
+      showThumbs={false}
+      showStatus={false}
+      selectedItem={currentPhotoIndex}
+      onChange={handleCarouselChange}
+    >
+      {photos?.map((photo, index) => (
+        <div key={index} className={styles.carouselSlide}>
+          {index === currentPhotoIndex || index === (currentPhotoIndex + 1) ? (
+            <img
+              src={photo.src}
+              alt={`Photo ${index}`}
+              loading='lazy'
+              className={styles.slideImg}
+            />
+          ) : (
+            <div className={styles.slideImg}>
+              {/* Placeholder content */}
+              <p className={styles.carouselImageLoading}></p>
+            </div>
+          )}
+        </div>
+      ))}
+    </Carousel>
 
   )
 

@@ -355,7 +355,7 @@ export default function Home({ introRunning, setIntroRunning }) {
 
       // Only apply the 'less than' filter if lastId is provided and not null
       if (lastId != null) {
-        query = query.lt('id', lastId)
+        query = query.lt('sortOrder', lastId)
       }
 
       const { data, error } = await query

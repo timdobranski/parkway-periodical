@@ -222,6 +222,7 @@ export default function EditablePhoto({
       ref={imageRef}
       crossOrigin="anonymous"
       onLoad={onImageLoaded}
+      loading='lazy'
       onClick={() => {
         if (isEditable && !cropActive && !resizeActive && !carousel) {
           setResizeActive(true);
