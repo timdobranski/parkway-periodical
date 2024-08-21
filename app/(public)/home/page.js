@@ -50,7 +50,7 @@ export default function Home({ introRunning, setIntroRunning }) {
   const [tagId, setTagId] = useState('')
   const [tagResultPosts, setTagResultPosts] = useState({}); // separate array of posts from tag results
 
-  const postFetchLimit = 2;
+  const postFetchLimit = 1; // fetches this many posts on page load and again on scroll to bottom of feed
   const [noMorePosts, setNoMorePosts] = useState(false);
 
 

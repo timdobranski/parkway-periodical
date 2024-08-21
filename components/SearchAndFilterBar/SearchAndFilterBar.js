@@ -35,6 +35,7 @@ export default function SearchAndFilterBar ({ setSearch, postTags, tagId, setTag
         <input
           ref={searchInputRef}
           type='search'
+          id='postSearch'
           placeholder='Search for topics'
           className={searchExpanded ? styles.searchBarExpanded : styles.searchBar}
           value={searchQuery || ''}

@@ -54,7 +54,7 @@ export const AdminProvider = ({ children }) => {
       const { data, error } = await supabase.auth.getSession();
 
       if (error || !data.session) {
-        console.log('No user session: ', error);
+        // console.log('No user session: ', error);
         setIsLoading(false);
         return;
       }
