@@ -11,8 +11,8 @@ import PrimeText from '../PrimeText/PrimeText';
 import { createClient } from '../../utils/supabase/client';
 
 export default function EditablePhoto({
-  photo, isEditable, updatePhotoContent, deletePhoto, containerClassName, index, setSelectedPhotos,
-  handleTitleChange, handleCaptionChange, photoIndex, photoContext, setPhotoStyle, isLayout, toggleTitleOrCaption, carousel }) {
+  photo, isEditable, deletePhoto, index,
+  photoIndex, photoContext, setPhotoStyle, isLayout, toggleTitleOrCaption, carousel, setContentBlocks }) {
   const supabase = createClient()
   const imageRef = useRef(null);
   const wrapperRef = useRef(null); // Ref for the photo wrapper to enable dynamic height resizing when photo is resized
@@ -29,7 +29,6 @@ export default function EditablePhoto({
   const [size, setSize] = useState({ width: '100%', height: '100%' }); // sets the size of the rnd element (red border)
 
 
-
   // handle image loaded
   const onImageLoaded = useCallback(() => {
     if (imageRef.current) {
@@ -40,9 +39,9 @@ export default function EditablePhoto({
   }, []);
 
 
-  // useEffect(() => {
-  //   console.log('PHOTO STYLE: ', photo.style);
-  // }, [photo]);
+  useEffect(() => {
+    console.log('PHOTO: ', photo);
+  }, [photo]);
 
   // useEffect(() => {
   //   if (imageRef.current && imageRef.current.complete) {
@@ -67,7 +66,6 @@ export default function EditablePhoto({
       wrapperRef.current.style.height = 'auto';
     }
   }, [resizeActive, size]);
-
 
   const onResizeStop = (e, direction, ref, delta, position) => {
     const newSize = {
@@ -98,37 +96,68 @@ export default function EditablePhoto({
     setCrop(newCrop);
   };
   // when the photo is cropped, replace the old version in supabase
-  const updatePhotoInSupabase = async (file) => {
-    console.log('photo passed to editablePhoto component:', photo);
-    console.log('file passed to updatePhotoInSupabase:', file);
+  const updatePhotoInSupabase = async (file, newFileName) => {
     try {
-      // Try updating the file first
-      const { data: updateData, error: updateError } = await supabase
+      // Delete the old file from Supabase storage
+      const { error: deleteError } = await supabase
         .storage
         .from('posts')
-        .update(`photos/${photo.fileName}`, file, {
-          cacheControl: '3600', upsert: true
-        });
+        .remove([`photos/${photo.fileName}`]);
 
-      // If the file does not exist, upload it
-      if (updateError) {
-        console.log('Error updating file in editablePhoto crop: ', updateError.message);
+      if (deleteError) {
+        console.error('Error deleting old photo:', deleteError.message);
         return;
       }
 
-      // Successfully uploaded the image, increment the image version to force re-render
-      setImageVersion(prev => prev + 1);
-      setCropActive(false);  // Disable crop mode
+      // Upload the new file with the new filename
+      const { error: uploadError } = await supabase
+        .storage
+        .from('posts')
+        .upload(`photos/${newFileName}`, file, {
+          cacheControl: '3600',
+          upsert: false, // Ensure it doesn't overwrite existing files
+        });
 
+      if (uploadError) {
+        console.error('Error uploading new photo:', uploadError.message);
+        return;
+      }
+
+      // Get the public URL of the newly uploaded file
+      const { data } = supabase.storage.from('posts').getPublicUrl(`photos/${newFileName}`);
+      const newUrl = data.publicUrl;
+
+      // Update contentBlocks with the new file name and URL
+      setContentBlocks(prevBlocks => {
+        const updatedBlocks = [...prevBlocks];
+
+        if (updatedBlocks[index] && updatedBlocks[index].content) {
+          if (typeof nestedIndex !== 'undefined') {
+            if (updatedBlocks[index].content[nestedIndex] && updatedBlocks[index].content[nestedIndex].content) {
+              updatedBlocks[index].content[nestedIndex].content[0].fileName = newFileName;
+              updatedBlocks[index].content[nestedIndex].content[0].src = newUrl;
+            }
+          } else {
+            if (updatedBlocks[index].content[0]) {
+              updatedBlocks[index].content[0].fileName = newFileName;
+              updatedBlocks[index].content[0].src = newUrl;
+            }
+          }
+        }
+
+        return updatedBlocks;
+      });
 
     } catch (error) {
-      console.error('Error updating/uploading file:', error);
+      console.error('Error during file update process:', error);
     }
   };
 
   // Finalize crop
   const finalizeCrop = () => {
+    console.log('Finalizing crop...');
     if (imageRef.current && completedCrop) {
+      console.log('Image and completedCrop exist:');
       const { width, height, x, y } = completedCrop;
       const canvas = document.createElement('canvas');
       const scaleX = imageRef.current.naturalWidth / imageRef.current.width;
@@ -149,8 +178,17 @@ export default function EditablePhoto({
         height * scaleY
       );
 
-      canvas.toBlob(blob => {
-        updatePhotoInSupabase(blob);
+      canvas.toBlob(async blob => {
+        // Generate a new filename for the cropped image
+        const newFileName = `photo_${Date.now()}.jpg`;
+        console.log('Starting upload process...');
+
+        // Await the completion of the photo update process
+        await updatePhotoInSupabase(blob, newFileName);
+
+        // After the updatePhotoInSupabase has completed successfully, disable crop mode
+        console.log('Photo upload complete, disabling crop mode.');
+        setCropActive(false);
       });
     }
   };
@@ -216,7 +254,7 @@ export default function EditablePhoto({
   )
   const imageElement = (
     <img
-      src={`${photo.src}?v=${imageVersion}`}
+      src={`${photo.src}`}
       className='gridPhoto'
       alt={`Preview ${index}`}
       ref={imageRef}

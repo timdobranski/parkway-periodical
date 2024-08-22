@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import EditablePhoto from '../EditablePhoto/EditablePhoto';
 
-export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto, reorderPhotos, viewContext }) {
+export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhoto, reorderPhotos, viewContext, setContentBlocks, blockIndex }) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedCaption, setEditedCaption] = useState("");
@@ -98,7 +98,10 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
                         handleTitleChange={(title) => handleTitleChange(index, title)}
                         handleCaptionChange={(caption) => handleCaptionChange(index, caption)}
                         photoIndex={index}
+                        nestedIndex={index}
                         carousel={true}
+                        setContentBlocks={setContentBlocks}
+                        index={blockIndex}
                       />
                     </div>
                   )}

@@ -73,7 +73,9 @@ export default function PhotoBlock({
   const photoComponent = (
     <EditablePhoto
       photo={photo}
+      index={index}
       isEditable={isEditable}
+      setContentBlocks={setContentBlocks}
       updatePhotoContent={addPhoto}
       deletePhoto={deletePhoto}
       containerClassName={styles.photoContainer}

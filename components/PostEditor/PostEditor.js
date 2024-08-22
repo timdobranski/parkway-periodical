@@ -615,6 +615,7 @@ export default function PostEditor({ contentBlocks, setContentBlocks, user,
                   setActiveBlock={setActiveBlock}
                   removeBlock={() => removeBlock(index)}
                   reorderPhotos={reorderPhotos}
+                  setContentBlocks={setContentBlocks}
                 />
               }
               {block.type === 'video' &&
