@@ -74,6 +74,7 @@ export default function PhotoBlock({
     <EditablePhoto
       photo={photo}
       index={index}
+      nestedIndex={nestedIndex}
       isEditable={isEditable}
       setContentBlocks={setContentBlocks}
       updatePhotoContent={addPhoto}

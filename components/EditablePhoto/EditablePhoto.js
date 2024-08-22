@@ -12,7 +12,7 @@ import { createClient } from '../../utils/supabase/client';
 
 export default function EditablePhoto({
   photo, isEditable, deletePhoto, index,
-  photoIndex, photoContext, setPhotoStyle, isLayout, toggleTitleOrCaption, carousel, setContentBlocks }) {
+  photoIndex, photoContext, setPhotoStyle, isLayout, toggleTitleOrCaption, carousel, setContentBlocks, nestedIndex }) {
   const supabase = createClient()
   const imageRef = useRef(null);
   const wrapperRef = useRef(null); // Ref for the photo wrapper to enable dynamic height resizing when photo is resized
@@ -133,11 +133,13 @@ export default function EditablePhoto({
 
         if (updatedBlocks[index] && updatedBlocks[index].content) {
           if (typeof nestedIndex !== 'undefined') {
+            console.log('Updating nested index:', nestedIndex);
             if (updatedBlocks[index].content[nestedIndex] && updatedBlocks[index].content[nestedIndex].content) {
               updatedBlocks[index].content[nestedIndex].content[0].fileName = newFileName;
               updatedBlocks[index].content[nestedIndex].content[0].src = newUrl;
             }
           } else {
+            console.log('no nested index found: ', nestedIndex);
             if (updatedBlocks[index].content[0]) {
               updatedBlocks[index].content[0].fileName = newFileName;
               updatedBlocks[index].content[0].src = newUrl;
