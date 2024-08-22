@@ -408,16 +408,23 @@ export default function NewPostPage() {
           if (postTagsError) throw postTagsError;
         }
       }
-
+      console.log('deleting draft from publishPost...')
       // STEP 5: delete the draft
       if (!postId) {
-        const { error: draftError } = await supabase
+        console.log('no post id found, deleting draft where author is user id: ', user.id)
+        const { data: draftDeleteData, error: draftDeleteError } = await supabase
           .from('drafts')
           .delete()
-          .match({ author: user.id });
+          .eq('author', user.id)
+          .select();
 
-        if (draftError) throw draftError;
+        if (draftDeleteError) {
+          console.error('Error deleting draft:', draftDeleteError);
+        } else {
+          console.log('draft deleted:', draftDeleteData);
+        }
       }
+
       // STEP 6: redirect to the home page
       setPublishingStatus(false);
       router.push('/home');

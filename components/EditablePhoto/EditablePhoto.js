@@ -131,10 +131,18 @@ export default function EditablePhoto({
       setContentBlocks(prevBlocks => {
         const updatedBlocks = [...prevBlocks];
 
-        if (updatedBlocks[index] && updatedBlocks[index].content) {
+        if (carousel) {
+          if (updatedBlocks[index].content[nestedIndex]) {
+            console.log('inside final if statement');
+            updatedBlocks[index].content[nestedIndex].fileName = newFileName;
+            updatedBlocks[index].content[nestedIndex].src = newUrl;
+          }
+        } else if (updatedBlocks[index] && updatedBlocks[index].content) {
           if (typeof nestedIndex !== 'undefined') {
             console.log('Updating nested index:', nestedIndex);
+            console.log('updatedBlocks: ', updatedBlocks);
             if (updatedBlocks[index].content[nestedIndex] && updatedBlocks[index].content[nestedIndex].content) {
+              console.log('inside final if statement');
               updatedBlocks[index].content[nestedIndex].content[0].fileName = newFileName;
               updatedBlocks[index].content[nestedIndex].content[0].src = newUrl;
             }
