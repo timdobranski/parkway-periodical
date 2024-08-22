@@ -164,7 +164,7 @@
   border-radius: 50%;
   background-color: rgb(255, 91, 91);
   border: solid white 2px;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, .4);
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, .7);
   position: absolute;
   font-weight: normal;
   bottom: 0;

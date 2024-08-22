@@ -57,7 +57,7 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
     );
   }
   const noPhotosMessage = (
-    <p>Click the button above to select photos for the carousel</p>
+    <p>Add photos to create a photo slideshow</p>
   )
   const sortPhotos = (
     <div className={styles.carouselEditPhotosWrapper}>
@@ -161,13 +161,16 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
   )
 
   const editableInstructions = (
-    <h3 className='smallerTitle'>Add, Remove, Crop, & Rearrange Your Slideshow Photos</h3>
+    <>
+      {/* <h3 className='smallerTitle'>Add, Remove, Crop, & Rearrange Your Slideshow Photos</h3> */}
+      <p>You can drag photos up or down to rearrange them.</p>
+    </>
   )
 
   return (
     <div className={`${isEditable ? styles.carouselEditableWrapper : styles.carouselWrapper} ${!isEditable && photos.length === 0 ? 'outlined' : ''}`}>
       {isEditable && input /*render the input if editable regardless of the number of photos*/}
-      {isEditable && editableInstructions}
+      {(isEditable && photos.length) ? editableInstructions : null}
       {isEditable ?
         photos.length ? sortPhotos : noPhotosMessage // if editable, show the sort view or no photos message
         :
