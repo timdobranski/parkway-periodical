@@ -561,16 +561,23 @@
 .postBody {
   margin: 0;
 }
+
+
 .gridPhoto, .ReactCrop {
   max-height: 60vh !important;
   max-width: 100% !important;
   /* height: 100%; */
   box-sizing: border-box;
-  /* border: solid blue 2px; */
+  /* width: 100%; */
   /* box-shadow: 0px 0px 20px 6px rgba(0, 0, 0, .7); */
 }
-/* .gridPhoto {
-} */
+.gridPhoto {
+  display: block;
+
+}
+ .ReactCrop {
+  margin: 0 !important;
+ }
 .carousel-root {
   width: 100%;
   display: flex;

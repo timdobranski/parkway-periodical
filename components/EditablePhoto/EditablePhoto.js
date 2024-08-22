@@ -208,8 +208,8 @@ export default function EditablePhoto({
 
   const cropControls = (
     <div className={styles.cropControlsWrapper}>
-      <button onClick={() => setCropActive(false)}>Back</button>
       <button onClick={finalizeCrop}>Confirm Crop</button>
+      <button onClick={() => setCropActive(false)}>Cancel</button>
     </div>
   )
 
