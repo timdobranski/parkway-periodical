@@ -56,7 +56,12 @@ export async function updateSession(request) {
   }
 
   // protect api routes
-  if (!user && request.nextUrl.pathname.startsWith('/api')) {
+  const publicApiRoutes = new Set([
+    '/api/sendSupportEmail',
+    '/api/sendErrorEmail',
+  ]);
+
+  if (!user && request.nextUrl.pathname.startsWith('/api') && !publicApiRoutes.has(request.nextUrl.pathname)) {
     return new NextResponse(JSON.stringify({ message: 'Unauthorized' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
