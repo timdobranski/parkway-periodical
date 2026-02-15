@@ -24,12 +24,37 @@ export default function NewPostPage() {
   const { isLoading, setIsLoading, saving, setSaving, user, authUser } = useAdmin();
   const debouncedUpdateDraftRef = useRef(debounce(updateDraft, 3000));
   const newPost = [{type: 'title', content: '', style: {width: '0px', height: '0px', x: 0, y: 0}, author: user?.id}];
-  const schoolYear = '2024-25';
+  const [schoolYear, setSchoolYear] = useState(null);
   const [categoryTags, setCategoryTags] = useState([]);
   const [existingPostOldCategoryTags, setExistingPostOldCategoryTags] = useState([]);
   const [existingPostTitle, setExistingPostTitle] = useState('');
   const postWrapperRef = useRef(null);
   const [prevContentLength, setPrevContentLength] = useState(contentBlocks.length);
+
+  useEffect(() => {
+    const fetchCurrentSchoolYear = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('school_years')
+          .select('label')
+          .eq('is_current', true)
+          .limit(1);
+
+        if (error) {
+          console.error('Error fetching current school year:', error);
+          setSchoolYear('2024-25');
+          return;
+        }
+
+        setSchoolYear(data?.[0]?.label || '2024-25');
+      } catch (e) {
+        console.error('Error fetching current school year:', e);
+        setSchoolYear('2024-25');
+      }
+    };
+
+    fetchCurrentSchoolYear();
+  }, []);
 
   // scroll to the bottom if new content is added to the post
   useEffect(() => {
@@ -312,12 +337,13 @@ export default function NewPostPage() {
 
     // STEP 2: set the post object with the content, author, title, and searchable text
     setPublishingStatus(true);
+    const activeSchoolYear = schoolYear || '2024-25';
     const post = {
       content: JSON.stringify(contentBlocks),
       author: JSON.stringify(user.id),
       title: contentBlocks[0].content,
       searchableText: completeSearchableText,
-      schoolYear: schoolYear
+      schoolYear: activeSchoolYear
     };
     // STEP 3: insert or update the post in the posts table
     try {
@@ -370,7 +396,7 @@ export default function NewPostPage() {
         const { data: maxSortOrderData, error: maxSortOrderError } = await supabase
           .from('posts')
           .select('sortOrder')
-          .eq('schoolYear', schoolYear)
+          .eq('schoolYear', activeSchoolYear)
           .order('sortOrder', { ascending: false })
           .limit(1);
 

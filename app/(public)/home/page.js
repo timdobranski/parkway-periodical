@@ -32,7 +32,32 @@ export default function Home({ introRunning, setIntroRunning }) {
   const pathname = usePathname();
   const [postId, setPostId] = useState(searchParams.get('postId'));
   const feedWrapperRef = useRef(null);
-  const schoolYear = '2024-25';
+  const [schoolYear, setSchoolYear] = useState(null);
+
+  useEffect(() => {
+    const fetchCurrentSchoolYear = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('school_years')
+          .select('label')
+          .eq('is_current', true)
+          .limit(1);
+
+        if (error) {
+          console.error('Error fetching current school year:', error);
+          setSchoolYear('2024-25');
+          return;
+        }
+
+        setSchoolYear(data?.[0]?.label || '2024-25');
+      } catch (e) {
+        console.error('Error fetching current school year:', e);
+        setSchoolYear('2024-25');
+      }
+    };
+
+    fetchCurrentSchoolYear();
+  }, []);
 
   // FETCHING & RENDERING POSTS
   const [displayType, setDisplayType] = useState('recent') // options are: recent, id, category, search
@@ -52,6 +77,13 @@ export default function Home({ introRunning, setIntroRunning }) {
 
   const postFetchLimit = 1; // fetches this many posts on page load and again on scroll to bottom of feed
   const [noMorePosts, setNoMorePosts] = useState(false);
+
+  // On initial load, fetch the first page once we know the current year.
+  useEffect(() => {
+    if (schoolYear && displayType === 'recent' && !postId && recentPosts.length === 0) {
+      addToRecentPosts();
+    }
+  }, [schoolYear]);
 
 
   // get category tags
@@ -229,6 +261,9 @@ export default function Home({ introRunning, setIntroRunning }) {
   };
   // get and set posts from category tag ID
   const addToTagResultPosts = async () => {
+    if (!schoolYear) {
+      return;
+    }
     const getMorePostsByTagId = async (schoolYear, tagId, lastId) => {
       let query = supabase
         .from('posts')
@@ -287,6 +322,9 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
   // get and set posts from search query
   const addToSearchResultPosts = async () => {
+    if (!schoolYear) {
+      return;
+    }
     const getMorePostsBySearch = async (schoolYear, searchQuery, lastId) => {
       let query = supabase
         .from('posts')
@@ -344,6 +382,9 @@ export default function Home({ introRunning, setIntroRunning }) {
   }
   // get and set general list of posts
   const addToRecentPosts = async () => {
+    if (!schoolYear) {
+      return;
+    }
     const getRecentPosts = async (schoolYear, lastId) => {
       let query = supabase
         .from('posts')

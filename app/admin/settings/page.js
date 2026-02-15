@@ -38,6 +38,7 @@ export default function Settings () {
 
   const [userToRemove, setUserToRemove] = useState('');
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
+  const [advancingSchoolYear, setAdvancingSchoolYear] = useState(false);
 
   // if the user's photo isn't valid, set it to the placeholder photo
   useEffect(() => {
@@ -331,6 +332,25 @@ export default function Settings () {
     }
   };
 
+  const advanceToNextSchoolYear = async () => {
+    try {
+      setAdvancingSchoolYear(true);
+      const { data, error } = await supabase.rpc('advance_school_year');
+      if (error) {
+        console.error('Error advancing school year:', error);
+        setMessage(`Error advancing school year: ${error.message}`);
+        return;
+      }
+
+      setMessage(`School year updated to ${data}.`);
+    } catch (e) {
+      console.error('Error advancing school year:', e);
+      setMessage('Error advancing school year.');
+    } finally {
+      setAdvancingSchoolYear(false);
+    }
+  };
+
   return (
     <div className='adminPageWrapper'>
       <div className={adminUI.pageInner}>
@@ -455,7 +475,13 @@ export default function Settings () {
                 <span>Archive School Year</span>
               </h3>
               <div className={styles.formStack}>
-                <button className={styles.archiveButton}>MOVE TO NEW SCHOOL YEAR</button>
+                <button
+                  className={styles.archiveButton}
+                  onClick={advanceToNextSchoolYear}
+                  disabled={advancingSchoolYear}
+                >
+                  {advancingSchoolYear ? 'UPDATING...' : 'MOVE TO NEW SCHOOL YEAR'}
+                </button>
                 <p className={styles.archiveInstructions}>{`When you're done adding posts for the school year, click this button
 to send all current posts to the archive and switch the app over to a new school year. All posts will be removed from the main page, and the year's archived
 posts will no longer be editable.`}</p>

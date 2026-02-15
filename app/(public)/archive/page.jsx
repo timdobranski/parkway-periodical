@@ -9,11 +9,22 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import archiveData from './archiveData';
+import PostTitle from '../../../components/PostTitle/PostTitle';
+import PrimeText from '../../../components/PrimeText/PrimeText';
+import PhotoBlock from '../../../components/PhotoBlock/PhotoBlock';
+import PhotoCarousel from '../../../components/PhotoCarousel/PhotoCarousel';
+import Video from '../../../components/Video/Video';
+import ContentLayout from '../../../components/ContentLayout/ContentLayout';
+import dateFormatter from '../../../utils/dateFormatter';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons';
 
 export default function Archive() {
   const supabase = createClient();
   const { archivePhotos, newsArticles } = archiveData;
   const [schoolYears, setSchoolYears] = useState([]);
+  const [selectedSchoolYear, setSelectedSchoolYear] = useState('');
+  const [archivedPosts, setArchivedPosts] = useState([]);
+  const [loadingArchivedPosts, setLoadingArchivedPosts] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const [photosOrArticles, setPhotosOrArticles] = useState('photos');
@@ -24,23 +35,61 @@ export default function Archive() {
   const activeIndex = photosOrArticles === 'photos' ? currentPhotoIndex : currentArticleIndex;
 
 
-  // useEffect(() => {
-  //   const getSchoolYears = async () => {
-  //     const { data, error } = await supabase
-  //       .from('school_years')
-  //       .select('*');
+  useEffect(() => {
+    const getSchoolYears = async () => {
+      const { data, error } = await supabase
+        .from('school_years')
+        .select('label, is_current')
+        .order('label', { ascending: false });
 
-  //     if (error) {
-  //       console.error('Error fetching school years:', error);
-  //     }
+      if (error) {
+        console.error('Error fetching school years:', error);
+        return;
+      }
 
-  //     if (data) {
-  //       console.log('school years data:', data)
-  //       setSchoolYears(data);
-  //     }
-  //   }
-  //   getSchoolYears();
-  // }, []);
+      const years = data || [];
+      setSchoolYears(years);
+
+      const defaultYear = years.find((y) => !y.is_current)?.label || years[0]?.label || '';
+      setSelectedSchoolYear(defaultYear);
+    };
+
+    getSchoolYears();
+  }, []);
+
+  useEffect(() => {
+    const fetchArchivedPosts = async () => {
+      if (!selectedSchoolYear) {
+        setArchivedPosts([]);
+        return;
+      }
+
+      setLoadingArchivedPosts(true);
+      const { data, error } = await supabase
+        .from('posts')
+        .select('id, content, author, created_at, sortOrder')
+        .eq('schoolYear', selectedSchoolYear)
+        .order('sortOrder', { ascending: false })
+        .order('id', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching archived posts:', error);
+        setArchivedPosts([]);
+        setLoadingArchivedPosts(false);
+        return;
+      }
+
+      const parsed = (data || []).map((post) => ({
+        ...post,
+        content: typeof post.content === 'string' ? JSON.parse(post.content) : post.content,
+      }));
+
+      setArchivedPosts(parsed);
+      setLoadingArchivedPosts(false);
+    };
+
+    fetchArchivedPosts();
+  }, [selectedSchoolYear]);
 
   useEffect(() => {
 
@@ -138,10 +187,79 @@ export default function Archive() {
         <p className={`centeredWhiteText ${styles.endOfIntroParagraph}`}>
           {`Browse prior years of Parkway Periodicals' posts below. Select a school year from the dropdown menu below to view archived posts from that year.`}
         </p>
-        <select className={styles.select}>
-          {!schoolYears.length && <option value="No School Years To Show Yet">No School Years To View Yet</option>}
+
+        <select
+          className={styles.select}
+          value={selectedSchoolYear}
+          onChange={(e) => setSelectedSchoolYear(e.target.value)}
+        >
+          {!schoolYears.length && <option value="">No School Years To View Yet</option>}
+          {schoolYears.map((y) => (
+            <option key={y.label} value={y.label}>
+              {y.label}{y.is_current ? ' (Current)' : ''}
+            </option>
+          ))}
         </select>
-        {!schoolYears.length && <p className={'centeredWhiteText'}>{`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!`}</p>}
+
+        {schoolYears.filter((y) => !y.is_current).length === 0 && (
+          <p className={'centeredWhiteText'}>
+            {`Since this is the first year of the Parkway Periodical, we don't have any archived school years yet!`}
+          </p>
+        )}
+
+        {loadingArchivedPosts && (
+          <p className={'centeredWhiteText'}>{`Loading posts...`}</p>
+        )}
+
+        {!loadingArchivedPosts && selectedSchoolYear && archivedPosts.length === 0 && (
+          <p className={'centeredWhiteText'}>{`No posts found for ${selectedSchoolYear}.`}</p>
+        )}
+
+        {!loadingArchivedPosts && archivedPosts.map((post, i) => (
+          <div className='post' key={i}>
+            {post.content?.map((block, index) => (
+              <Fragment key={index}>
+                {block.type === 'title' && (
+                  <PostTitle src={block} authorId={post.author} id={post.id} viewContext='view' />
+                )}
+                {block.type === 'text' && (
+                  <div className='blockWrapper'>
+                    <PrimeText src={block} viewContext='view' />
+                  </div>
+                )}
+                {block.type === 'photo' && (
+                  <div className='blockWrapper'>
+                    <PhotoBlock isEditable={false} photo={block.content[0]} />
+                  </div>
+                )}
+                {block.type === 'carousel' && (
+                  <div className='blockWrapper'>
+                    <PhotoCarousel photos={block.content} />
+                  </div>
+                )}
+                {block.type === 'video' && (
+                  <div className='blockWrapper'>
+                    <Video video={block.content[0]} />
+                  </div>
+                )}
+                {block.type === 'flexibleLayout' && (
+                  <ContentLayout
+                    block={block}
+                    viewContext='view'
+                    orientation='horizontal'
+                  />
+                )}
+              </Fragment>
+            ))}
+
+            <div className={styles.postFooter}>
+              <div className={styles.createdAtWrapper}>
+                <FontAwesomeIcon icon={faCalendarDays} className={styles.createdAtIcon} />
+                <p className={styles.createdAt}>{dateFormatter(post.created_at)}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
 

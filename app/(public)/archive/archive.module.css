@@ -141,6 +141,28 @@
 .endOfIntroParagraph {
   margin-bottom: 2rem;
 }
+
+.postFooter {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+.createdAtWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: rgba(0, 0, 0, .6);
+  font-size: .95rem;
+}
+
+.createdAtIcon {
+  opacity: .7;
+}
+
+.createdAt {
+  margin: 0;
+}
 .captionAndTitleWrapper {
   /* border: solid red 2px; */
   border-top: solid 1px rgba(255, 255, 255, .2);
