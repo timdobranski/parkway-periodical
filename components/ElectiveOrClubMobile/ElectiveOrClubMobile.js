@@ -27,7 +27,7 @@ export default function ElectiveOrClub({ data, titleSide }) {
   // )
 
   const overImage = (
-      <img src={data.image}className={styles.photo}/>
+      <img src={data.image} className={styles.photo} alt={data?.title ? `${data.title} photo` : 'Elective or club photo'}/>
   )
   const clubMeetTime = (
     <div className={titleSide === 'right' ? styles.clubMeetTimeWrapperRight : styles.clubMeetTimeWrapper}>

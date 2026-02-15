@@ -3,12 +3,13 @@ import sgMail from '@sendgrid/mail';
 sgMail.setApiKey(process.env.NEXT_SENDGRID_API_KEY);
 
 export const sendErrorEmail = async (error, context = {}) => {
-  console.log('test');
-  const { page, user, additionalInfo } = context;
+  const { page, user, additionalInfo, replyToEmail, replyToName } = context;
+  const toEmail = process.env.SENDGRID_TO_EMAIL || 'timdobranski@gmail.com';
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'timdobranski@gmail.com';
   const msg = {
-    to: 'singlecut@hotmail.com', // Change to your recipient
-    from: 'timdobranski@gmail.com', // Change to your verified sender
-    subject: 'Error Notification',
+    to: toEmail,
+    from: { email: fromEmail, name: 'Parkway Periodical' },
+    subject: 'Parkway Periodical Support Request / Error Notification',
     text: `
       An error occurred in Parkway Periodical: ${error.message}
       Page: ${page || 'N/A'}
@@ -23,6 +24,13 @@ export const sendErrorEmail = async (error, context = {}) => {
       <p><strong>Additional Info:</strong> ${additionalInfo || 'N/A'}</p>
     `,
   };
+
+  if (replyToEmail) {
+    msg.replyTo = {
+      email: replyToEmail,
+      name: replyToName || replyToEmail,
+    };
+  }
 
   try {
     const response = await sgMail.send(msg);

@@ -128,7 +128,7 @@ export default function Archive() {
         <div className={styles.photosOrArticlesWrapper}>
           <p className={`${photosOrArticles === 'photos' ? styles.active : styles.inactive} ${styles.historicPhotos}`} onClick={() => setPhotosOrArticles('photos')}>HISTORIC PHOTOS</p>
           <a href={'https://lamesahistory.com/'} target="_blank" rel="noopener noreferrer">
-            <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo}/>
+            <img src='/images/laMesaHistoryCenter.webp' className={styles.historyCenterLogo} alt='La Mesa History Center logo'/>
           </a>
           <p className={`${photosOrArticles === 'articles' ? styles.active : styles.inactive} ${styles.newsArticles}`} onClick={() => setPhotosOrArticles('articles')}>NEWS ARTICLES</p>
         </div>
@@ -154,7 +154,7 @@ export default function Archive() {
                   <div className={styles.carouselSlide}>
                     <img
                       src={photo.src}
-                      alt={`Photo ${index}`}
+                      alt={(photo?.title && String(photo.title).trim()) || (photo?.caption && String(photo.caption).trim()) || `${photosOrArticles === 'articles' ? 'News article' : 'Historic photo'} ${index + 1}`}
                       className={styles.slideImg}
                       onContextMenu={(e) => e.preventDefault()}
                     />

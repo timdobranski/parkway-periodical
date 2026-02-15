@@ -144,7 +144,7 @@ export default function PhotoCarousel({ photos, isEditable, addPhoto, deletePhot
           {index === currentPhotoIndex || index === (currentPhotoIndex + 1) || index === (currentPhotoIndex - 1) ? (
             <img
               src={photo.src}
-              alt={`Photo ${index}`}
+              alt={(photo?.title && String(photo.title).trim()) || (photo?.caption && String(photo.caption).trim()) || `Parkway Periodical photo ${index + 1}`}
               loading='lazy'
               className={styles.slideImg}
             />

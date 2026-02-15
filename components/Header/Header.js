@@ -7,7 +7,7 @@ import  { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram, faXTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faBars, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronLeft, faChevronRight, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import { useAdmin } from '../../contexts/AdminContext';
 
 export default function Header({ skipAnimation }) {
@@ -92,6 +92,10 @@ export default function Header({ skipAnimation }) {
         <Link href='/archive'>
           <h2 className={isActive('/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
         </Link>
+
+        <Link href='/help' className={styles.helpIconLink} aria-label='Help'>
+          <FontAwesomeIcon icon={faCircleQuestion} className={styles.helpIcon} />
+        </Link>
       </div>
     </div>
   )
@@ -122,6 +126,12 @@ export default function Header({ skipAnimation }) {
         <div
           onClick={() => {setRightNavbarOpen(false); router.push('/archive')}}>
           <h2 className={isActive('/archive') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>ARCHIVE</h2>
+        </div>
+        <div
+          onClick={() => {setRightNavbarOpen(false); router.push('/help')}}>
+          <h2 className={isActive('/help') ? `${styles.navLink} ${styles.underline}` : styles.navLink}>
+            HELP
+          </h2>
         </div>
         <hr className={styles.navDivider}></hr>
         <div

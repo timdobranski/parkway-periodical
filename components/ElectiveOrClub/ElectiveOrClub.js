@@ -30,7 +30,7 @@ export default function ElectiveOrClub({ data, titleSide }) {
     <div className={` ${titleSide === 'right' ? styles.rightPhotoWrapper : styles.leftPhotoWrapper} ${expanded ? (titleSide === 'left' ? styles.slideOutLeft : styles.slideOutRight) : null}`}
       onClick={() => setExpanded(!expanded)}
     >
-      <img src={data.image}className={styles.photo}/>
+      <img src={data.image} className={styles.photo} alt={data?.title ? `${data.title} photo` : 'Elective or club photo'}/>
       {responsiveArrowButton}
       {/* {mobileArrowButton} */}
 

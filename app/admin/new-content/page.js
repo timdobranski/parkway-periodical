@@ -286,7 +286,11 @@ export default function NewContentPage() {
               :
               <p className={styles.placeholderImageLabel}>Placeholder image set</p>
             }
-            <img src={croppedPhotoUrl !== '' ? croppedPhotoUrl : photo} className={styles.existingImagePreview}/>
+            <img
+              src={croppedPhotoUrl !== '' ? croppedPhotoUrl : photo}
+              className={styles.existingImagePreview}
+              alt={formData?.title ? `${formData.title} photo preview` : formData?.name ? `${formData.name} photo preview` : 'Content photo preview'}
+            />
           </>
         }
       </div>

@@ -14,7 +14,6 @@ export async function POST(request) {
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
     });
-    console.log('Error email result:', errorEmailResult)
   } catch (err) {
     console.error('Error in API route:', err);
     return new Response(JSON.stringify({ error: 'Internal server error' }), {

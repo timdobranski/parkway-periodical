@@ -266,7 +266,7 @@ export default function EditablePhoto({
     <img
       src={`${photo.src}`}
       className='gridPhoto'
-      alt={`Preview ${index}`}
+      alt={(photo?.title && String(photo.title).trim()) || (photo?.caption && String(photo.caption).trim()) || (Number.isFinite(index) ? `Parkway Periodical photo ${index + 1}` : 'Parkway Periodical photo')}
       ref={imageRef}
       crossOrigin="anonymous"
       onLoad={onImageLoaded}

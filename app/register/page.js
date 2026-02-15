@@ -274,7 +274,7 @@ export default function Register() {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.headerBar}>
-        <img className={styles.logo} src='/images/logos/parkway.webp'/>
+        <img className={styles.logo} src='/images/logos/parkway.webp' alt='Parkway Periodical logo'/>
         <h1 className='siteTitle'>PARKWAY PERIODICAL</h1>
       </div>
       <h2 className='postTitle'>New User Signup</h2>
@@ -323,7 +323,7 @@ export default function Register() {
               /> :
               <>
                 <div className={styles.photoWrapper} >
-                  <img className={styles.photo} src={`${photo}`} />
+                  <img className={styles.photo} src={`${photo}`} alt='User profile photo preview' />
                 </div>
                 {photo !== placeholderPhoto && <FontAwesomeIcon icon={faPencil} className={styles.cropIcon} onClick={() => getOriginalPhotoForCrop()}/>}
               </>
