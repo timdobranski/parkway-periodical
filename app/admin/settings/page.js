@@ -409,7 +409,7 @@ export default function Settings () {
                   <option value={true}>Administrator</option>
                 </select>
 
-                <p className={styles.helperText}>Standard Users can create content and edit only the content they've created.</p>
+                <p className={styles.helperText}>Standard Users can create content and edit only the content they&apos;ve created.</p>
                 <p className={styles.helperText}>Administrators can invite/remove users and edit all content, including content created by another user.</p>
                 <button
                   className={styles.inviteButton}

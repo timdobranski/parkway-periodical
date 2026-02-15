@@ -10,28 +10,73 @@
 }
 
 .carouselWrapper, .carouselEditableWrapper {
+  --carousel-border: color-mix(in srgb, var(--primary-blue-transparent), white 70%);
+  --carousel-muted: color-mix(in srgb, var(--primary-blue-transparent), black 40%);
+  --carousel-surface: transparent;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
   overflow: hidden;
-  /* border: solid rgb(218, 218, 218) 2px; */
-  box-shadow: rgba(0, 0, 0, 0.7) 0 0 15px 0;
-  background-color: rgb(255, 255, 255);
+
+  background: transparent;
+  border: 1px solid var(--carousel-border);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px -36px rgba(0, 0, 0, 0.45);
   width: 100%;
-  padding: .25rem;
+  padding: 0.75rem;
   margin: 0;
 }
 
-.carouselWrapper {
-  /* background-color:rgb(82, 82, 82); */
-  /* background-color: rgb(0, 103, 167); */
+/* Scoped overrides for the react-responsive-carousel default styles */
+.carouselWrapper :global(.carousel),
+.carouselEditableWrapper :global(.carousel) {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 
+.carouselWrapper :global(.carousel .slider-wrapper),
+.carouselEditableWrapper :global(.carousel .slider-wrapper) {
+  order: 1;
+}
+
+.carouselWrapper :global(.carousel .slide),
+.carouselEditableWrapper :global(.carousel .slide) {
+  background: transparent;
+}
+
+.carouselWrapper :global(.carousel .slider-wrapper),
+.carouselEditableWrapper :global(.carousel .slider-wrapper) {
+  border-radius: 12px;
+}
+
+.carouselWrapper :global(.carousel .control-dots),
+.carouselEditableWrapper :global(.carousel .control-dots) {
+  order: 2;
+  position: static !important;
+  margin: 0.5rem 0 0 !important;
+  padding: 0;
+}
+
+.carouselWrapper :global(.carousel .control-dots .dot),
+.carouselEditableWrapper :global(.carousel .control-dots .dot) {
+  box-shadow: none;
+  opacity: 1;
+  background: var(--carousel-border);
+}
+
+.carouselWrapper :global(.carousel .control-dots .dot.selected),
+.carouselEditableWrapper :global(.carousel .control-dots .dot.selected) {
+  background: var(--primary-blue-transparent);
 }
 
 .carouselEditPhotosWrapper {
   position: relative;
-  background-color: white;
+  background-color: transparent;
   /* width: 100%; */
   /* height: 80vh; */
   /* border: solid blue 2px; */
@@ -45,10 +90,11 @@
   top: auto !important; /* needed to ensure placeholder isnt offset while dragging */
   position: relative;
   max-width: 500px;
-  margin: 1.5rem 0;
-  padding: 1rem;
-  border: solid rgb(66, 66, 66) 1px;
-  box-shadow: rgba(0, 0, 0, 0.7) 0 0 15px 0;
+  margin: 1rem 0;
+  padding: 0.85rem;
+  border: 1px solid var(--carousel-border);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px -36px rgba(0, 0, 0, 0.45);
   overflow: visible;
 }
 .photoInput {
@@ -64,7 +110,7 @@
 }
 .carouselSlide {
   position: relative;
-  max-height: 40vh;
+  max-height: 44vh;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -73,8 +119,8 @@
   justify-content: center;
   align-items: center;
   /* overflow: hidden; */
-  background-color: rgb(83, 83, 83);
-  background-color: rgb(233, 233, 233);
+  background: transparent;
+  border-radius: 12px;
 
   /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0, 1) 100%); */
   /* background: linear-gradient(to bottom, rgba(0, 129, 181, 0.7) 0%, rgba(0, 85, 119, 0.7) 100%); */
@@ -83,18 +129,19 @@
 
 }
 .carouselSlide img {
-  padding: .75rem;
+  padding: 0.75rem;
   /* box-shadow:rgba(0, 0, 0, 0.7) 0 0 5px 0; */
 }
 .slideImg {
-  max-height: 40vh;
+  max-height: 44vh;
   width: auto;
+  max-width: 100%;
   object-fit: contain;
   /* border: solid white 4px !important; */
-
+  display: block;
 }
 .carouselImageLoading {
-  height: 800px;
+  height: min(44vh, 360px);
   width: 100%;
 }
 /* TITLE AND CAPTIONS */
@@ -128,11 +175,79 @@
 }
 /* NAV ARROWS */
 
+/* PhotoCarousel uses global arrow classes; scope a cleaner, minimal style here */
+.carouselWrapper :global(.arrowLeft),
+.carouselWrapper :global(.arrowRight),
+.carouselEditableWrapper :global(.arrowLeft),
+.carouselEditableWrapper :global(.arrowRight),
+.carouselWrapper :global(.arrowLeftDisabled),
+.carouselWrapper :global(.arrowRightDisabled),
+.carouselEditableWrapper :global(.arrowLeftDisabled),
+.carouselEditableWrapper :global(.arrowRightDisabled) {
+  width: 34px;
+  height: 34px;
+  padding: 0.45rem;
+  border-radius: 999px;
+  top: calc(50% - 17px);
+  backdrop-filter: none;
+  transform: none;
+}
+
+.carouselWrapper :global(.arrowLeft),
+.carouselWrapper :global(.arrowRight),
+.carouselEditableWrapper :global(.arrowLeft),
+.carouselEditableWrapper :global(.arrowRight) {
+  background: white;
+  border: 1px solid var(--carousel-border);
+  color: var(--carousel-muted);
+  box-shadow: 0 18px 40px -36px rgba(0, 0, 0, 0.55);
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.carouselWrapper :global(.arrowLeft:hover),
+.carouselWrapper :global(.arrowRight:hover),
+.carouselEditableWrapper :global(.arrowLeft:hover),
+.carouselEditableWrapper :global(.arrowRight:hover) {
+  background-color: color-mix(in srgb, var(--primary-blue-transparent), white 92%);
+  border-color: color-mix(in srgb, var(--primary-blue-transparent), black 12%);
+  color: var(--primary-blue);
+  box-shadow: 0 18px 40px -36px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transform: translateY(-1px);
+}
+
+.carouselWrapper :global(.arrowLeft),
+.carouselEditableWrapper :global(.arrowLeft) {
+  left: 12px;
+}
+
+.carouselWrapper :global(.arrowRight),
+.carouselEditableWrapper :global(.arrowRight) {
+  right: 12px;
+}
+
+.carouselWrapper :global(.arrowLeftDisabled),
+.carouselWrapper :global(.arrowRightDisabled),
+.carouselEditableWrapper :global(.arrowLeftDisabled),
+.carouselEditableWrapper :global(.arrowRightDisabled) {
+  background: white;
+  border: 1px solid var(--carousel-border);
+  color: color-mix(in srgb, var(--primary-blue-transparent), black 55%);
+  opacity: 0.55;
+}
+
 
 @media(max-width: 768px) {
   .carouselWrapper {
   }
-  .arrowLeft, .arrowRight, .arrowLeftDisabled, .arrowRightDisabled {
+  .carouselWrapper :global(.arrowLeft),
+  .carouselWrapper :global(.arrowRight),
+  .carouselWrapper :global(.arrowLeftDisabled),
+  .carouselWrapper :global(.arrowRightDisabled),
+  .carouselEditableWrapper :global(.arrowLeft),
+  .carouselEditableWrapper :global(.arrowRight),
+  .carouselEditableWrapper :global(.arrowLeftDisabled),
+  .carouselEditableWrapper :global(.arrowRightDisabled) {
     display: none;
   }
   .carouselSlide {
