@@ -13,8 +13,8 @@ import { useRouter } from 'next/navigation';
 import moment from 'moment-timezone';
 import dateFormatter from '../../utils/dateFormatter';
 import logUserOut from '../../utils/logUserOut';
-import { faCircleChevronDown, faCircleChevronUp, faGear, faUser, faFile, faBell, faCircleExclamation,
-  faCloud, faCloudArrowUp, faCloudArrowDown, faCheck, faHouse, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronDown, faCircleChevronUp, faChevronDown, faChevronUp, faGear, faUser, faBell, faCircleExclamation,
+  faCloud, faCloudArrowUp, faCloudArrowDown, faCheck, faHouse, faGlobe, faPlus, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
@@ -29,8 +29,7 @@ export default function Header() {
   const userMenuRef = useRef();
   const pathname = usePathname();
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
-  const [userPhotoIsValid, setUserPhotoIsValid] = useState(false); // if the photo doesn't load, setting to false will render the pkms logo instead
-  const placeholderPhoto = '/images/users/placeholder.webp';
+  const [userPhotoIsValid, setUserPhotoIsValid] = useState(false); // if the photo doesn't load, fall back to an icon
   // fetch entries expiring soon
 
   useEffect(() => {
@@ -43,14 +42,24 @@ export default function Header() {
       });
     };
 
-    if (user.photo) {
+    if (user?.photo) {
       checkImage(user.photo).then((valid) => {
         setUserPhotoIsValid(valid);
       });
     } else {
       setUserPhotoIsValid(false);
     }
-  }, [user.photo]);
+  }, [user?.photo]);
+
+  const storagePct = storageUsage?.percentageUsed;
+  const storageStatusClass =
+    storagePct == null
+      ? styles.storageNeutral
+      : storagePct >= 90
+        ? styles.storageDanger
+        : storagePct >= 75
+          ? styles.storageWarn
+          : styles.storageOk;
 
   useEffect(() => {
     console.log('User in header: ', user)
@@ -228,10 +237,19 @@ export default function Header() {
     </div>
   )
   const rightNavbarMenu = (
-    <div className={styles.rightNavHandle} onClick={() => toggleMenuOpen('right')} ref={rightMenuRef}>
-      <div className={styles.iconWrapper}>
-        <FontAwesomeIcon icon={menuOpen === 'right' ? faCircleChevronUp : faCircleChevronDown} className={`${menuOpen === 'right' ? styles.selectedMenuIcon : styles.menuIcon}`}/>
+    <div
+      className={`${styles.rightNavHandle} ${styles.handlePill}`}
+      onClick={() => toggleMenuOpen('right')}
+      ref={rightMenuRef}
+    >
+      <div className={styles.handleIconWrapper}>
+        <FontAwesomeIcon icon={faGear} className={styles.handleIcon}/>
       </div>
+      <p className={styles.handleLabel}>Admin Actions</p>
+      <FontAwesomeIcon
+        icon={menuOpen === 'right' ? faChevronUp : faChevronDown}
+        className={styles.dropdownChevron}
+      />
       {/* <p className={styles.viewPages}>SETTINGS</p> */}
       <div className={menuOpen === 'right' ? styles.navContainerRight : styles.navContainerHidden}>
         <Link href='/admin/home' className={styles.link}>
@@ -261,33 +279,47 @@ export default function Header() {
   const userMenu = (
     <div className={styles.userHandle} ref={userMenuRef}>
 
-      <div className={user?.photo ? styles.photoWrapper : styles.userIconWrapper} onClick={() => toggleMenuOpen('user')}>
-        { user?.photo ?
-          <img src={userPhotoIsValid ? user.photo : placeholderPhoto} alt={userPhotoIsValid ? 'User photo' : 'placeholder user photo'} className={styles.userPhoto} />
-          :
-          <FontAwesomeIcon icon={faUser} className={styles.userIcon}/>
+      <div className={userPhotoIsValid && user?.photo ? styles.photoWrapper : styles.userIconWrapper} onClick={() => toggleMenuOpen('user')}>
+        { userPhotoIsValid && user?.photo
+          ? <img src={user.photo} alt='User photo' className={styles.userPhoto} />
+          : <FontAwesomeIcon icon={faUser} className={styles.userIcon}/>
         }
       </div>
       <div className={`${styles.userMenu} ${menuOpen !== 'user' ? 'hidden' : ''}`}>
-        <h2 className='smallerTitle'>{`${user?.first_name} ${user?.last_name}`}</h2>
-        <div className={styles.userDetailsWrapper}>
-          <h2 className={styles.userPosition}>{user?.position}</h2>
-          <h2 className={styles.userEmail}>{user?.email}</h2>
+        <div className={styles.userMenuHeader}>
+          <p className={styles.userMenuName}>{`${user?.first_name} ${user?.last_name}`}</p>
+          {user?.position && <p className={styles.userMenuMeta}>{user.position}</p>}
+          {user?.email && <p className={styles.userMenuMeta}>{user.email}</p>}
         </div>
-        <div className={styles.iconWrapper} onClick={() => {toggleMenuOpen(menuOpen); router.push('/admin/settings') }}>
-          <FontAwesomeIcon icon={faGear} className={styles.menuIcon}/>
-        </div>
-        <p className={styles.settingsLabel}>SETTINGS</p>
+
+        <div className={styles.userMenuDivider} />
+
         <button
-          className={styles.logout}
+          type='button'
+          className={styles.userMenuItem}
+          onClick={() => {
+            toggleMenuOpen('user');
+            router.push('/admin/settings');
+          }}
+        >
+          <FontAwesomeIcon icon={faGear} className={styles.userMenuItemIcon} />
+          <span>Settings</span>
+        </button>
+
+        <button
+          type='button'
+          className={`${styles.userMenuItem} ${styles.userMenuItemDanger}`}
           onClick={() => logUserOut(router)}
-        >Log Out</button>
+        >
+          <FontAwesomeIcon icon={faArrowRightFromBracket} className={styles.userMenuItemIcon} />
+          <span>Log Out</span>
+        </button>
       </div>
     </div>
   )
   const storageStatus = (
-    <div className={styles.storageStatusWrapper}>
-      <p className={styles.storageUsed}>Free Photo Storage Used: {storageUsage ? `${storageUsage.percentageUsed}%` : 'Loading...'}</p>
+    <div className={`${styles.storageStatusWrapper} ${storageStatusClass}`}>
+      <p className={styles.storageUsed}>Free Photo Storage Used: {storagePct == null ? 'Loading...' : `${storagePct}%`}</p>
     </div>
 
   )
@@ -300,20 +332,26 @@ export default function Header() {
   )
   const leftSideNavbar = (
     <div className={styles.leftSideNavbarContent}>
-      <div className={styles.logoContainer}>
-        <Link href='/admin/home'>
+      <Link href='/admin/home' className={styles.brand}>
+        <span className={styles.logoContainer}>
           <Image src={logo} alt="Parkway Academy Logo" fill='true'/>
-        </Link>
-      </div>
+        </span>
+        <span className={styles.brandText}>Admin Home</span>
+      </Link>
       <div
-        className={styles.leftNavHandle}
+        className={`${styles.leftNavHandle} ${styles.handlePill}`}
         ref={leftMenuRef}
         onClick={() => {toggleMenuOpen('left')}}
       >
         {/* <FontAwesomeIcon icon={faCaretDown} className={styles.menuIcon}/> */}
-        <div className={styles.iconWrapper}>
-          <FontAwesomeIcon icon={faFile} className={styles.menuIcon}/>
+        <div className={styles.handleIconWrapper}>
+          <FontAwesomeIcon icon={faGlobe} className={styles.handleIcon}/>
         </div>
+        <p className={styles.handleLabel}>View Site</p>
+        <FontAwesomeIcon
+          icon={menuOpen === 'left' ? faChevronUp : faChevronDown}
+          className={styles.dropdownChevron}
+        />
 
         <div className={menuOpen === 'left' ? styles.navContainerLeft : styles.navContainerHidden}>
           <Link href='/home'><h2>HOME PAGE</h2></Link>

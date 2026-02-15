@@ -1,0 +1,299 @@
+.pageInner {
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+  padding: 1.75rem 1.25rem 3rem;
+  --admin-border: color-mix(in srgb, var(--primary-blue-transparent), white 70%);
+}
+
+.pageTitle {
+  margin: 0 0 1.25rem;
+}
+
+.cardGrid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card {
+  background: white;
+  border: 2px solid var(--admin-border);
+  border-radius: 12px;
+  padding: 1rem 1rem 1.25rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cardTitleLink {
+  color: var(--primary-blue-transparent);
+  font-size: 1.4rem;
+  text-decoration: underline;
+  text-decoration-color: var(--primary-red);
+  font-weight: normal;
+  margin: 0;
+}
+
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-blue-transparent);
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.primaryAction:hover {
+  background: var(--primary-blue);
+}
+
+.primaryActionIcon {
+  height: 18px;
+  width: 18px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.metaLine {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.secondaryLink {
+  color: var(--primary-blue-transparent);
+  text-decoration: underline;
+  text-decoration-color: var(--primary-red);
+  width: fit-content;
+}
+
+/* Shared list/accordion styles for admin pages */
+
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.primaryActionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-blue-transparent);
+  color: white;
+  border: none;
+  text-decoration: none;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.primaryActionButton:hover {
+  background: var(--primary-blue);
+}
+
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.listItem {
+  width: 100%;
+  background: white;
+  border: 1.5px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+.listItemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0.85rem;
+  background: color-mix(in srgb, var(--primary-blue-transparent), white 94%);
+  background: rgb(255, 255, 255);
+}
+
+.listItemLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: white;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.iconButtonActive {
+  background: var(--primary-blue-transparent);
+  color: white;
+}
+
+.itemTitle {
+  margin: 0;
+  padding: 0;
+  font-size: 1.4rem;
+  font-weight: normal;
+  color: var(--primary-blue);
+  text-decoration: underline;
+  text-decoration-color: var(--primary-red);
+  text-underline-offset: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.actionButton {
+  background: white;
+  border: 1px solid var(--admin-border);
+  color: var(--primary-blue);
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.actionButton:hover {
+  background: rgba(0, 89, 124, 0.08);
+}
+
+.dangerButton {
+  border-color: var(--primary-red);
+  color: var(--primary-red);
+}
+
+.dangerButton:hover {
+  background: rgba(250, 88, 88, 0.12);
+}
+
+.dangerButtonBusy {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.sortActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.details {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 260ms ease, opacity 180ms ease;
+  overflow: hidden;
+}
+
+.detailsOpen {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.detailsInner {
+  min-height: 0;
+  overflow: hidden;
+  border-top: 0;
+  padding: 0;
+  background: white;
+}
+
+.detailsOpen .detailsInner {
+  border-top: 1px solid var(--admin-border);
+  padding: 0.75rem 0.85rem 0.95rem;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  text-align: left;
+}
+
+@media (min-width: 700px) {
+  .detailsGrid {
+    grid-template-columns: 180px 1fr;
+    align-items: start;
+  }
+}
+
+.detailLabel {
+  margin: 0;
+  font-weight: normal;
+  color: var(--primary-blue);
+  text-decoration: underline;
+  text-decoration-color: var(--primary-red);
+}
+
+.detailValue {
+  margin: 0;
+  color: black;
+  word-break: break-word;
+}
+
+.noContent {
+  margin: 0;
+  padding: 0.75rem 0.25rem;
+  text-align: left;
+}
+
+.spinnerIcon {
+  animation: adminUISpin 1.25s linear infinite;
+}
+
+@keyframes adminUISpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

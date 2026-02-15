@@ -1,6 +1,5 @@
 'use client'
 
-import styles from './list.module.css';
 import {createClient } from '../../../utils/supabase/client';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +10,7 @@ import { useAdmin } from '../../../contexts/AdminContext';
 import dateFormatter from '../../../utils/dateFormatter';
 import rearrangeContentList from '../../../utils/rearrangeContentList';
 import deletePhotosFromStorage from '../../../utils/deletePhotosFromStorage';
+import adminUI from '../adminUI.module.css';
 
 export default function List() {
   const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser } = useAdmin();
@@ -20,7 +20,6 @@ export default function List() {
   const type = searchParams.get('type');
   const router = useRouter();
   const [expanded, setExpanded] = useState('')
-  const [paddingClass, setPaddingClass] = useState('');
   const { moveItemUp, moveItemDown } = rearrangeContentList(list, setList);
   const [deletingId, setDeletingId] = useState(null);
 
@@ -177,106 +176,143 @@ export default function List() {
     }
   }
   return (
-    <div className='adminPageWrapper' >
-      <div className='adminFeedWrapper'>
-        <div className='editablePost'>
-          <h1 className='pageTitle'>{`${user?.admin ? 'ALL' : type === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
-          <FontAwesomeIcon icon={faAdd} className={styles.addIcon} onClick={() => {
-            const newType = type.replace(/s$/, ''); // Removes 's' if it is the last character
-            type === 'posts' ? router.push(`/admin/new-post`) : router.push(`/admin/new-content?type=${type}`)
-            ;
-          }}/>
-          <div className={styles.sectionWrapper}>
-            {list && list.length === 0 && <p className={styles.noContentMessage}>No {type} have been created yet. Click the + icon above to add some.</p>}
+    <div className='adminPageWrapper'>
+      <div className={adminUI.pageInner}>
+        <div className={adminUI.headerRow}>
+          <h1 className={`pageTitle ${adminUI.pageTitle}`}>{`${user?.admin ? 'ALL' : type === 'staff' ? '' : 'YOUR'}  ${type.toUpperCase()}`}</h1>
 
-            {list && list.map((item, index) => {
-              const editUrl = type === 'posts' ? `/admin/new-post?id=${item.id}` : `/admin/new-content?id=${item.id}&type=${type}`
-              return (
-                <div className={styles.listWrapper} key={index}>
-                  <div className={styles.collapsedContentWrapper}>
-                    <div className={styles.titleWrapper}>
-                      <FontAwesomeIcon
-                        icon={faChevronDown}
-                        className={`${styles.dropdownIcon} ${expanded === index ? styles.collapseIcon : ''}`}
-                        onClick={() => {handleToggle(index)}}
-                      />
-                      <h3 className={`smallerPostTitle ${styles.truncate} `} onClick={() => handleToggle(index)}>{item.title || item.name}</h3>
-                    </div>
-                    <div className={styles.editControlsWrapper}>
-                      <button className={styles.editButton}  onClick={() => handleViewContent(item.id)}>VIEW</button>
-                      <button className={styles.editButton}  onClick={() => router.push(editUrl)}>EDIT</button>
-                      <button className={`${styles.deleteButton} ${deletingId === item.id && styles.deleting}`} onClick={type === 'posts' ? () => deletePost(item.id) : deleteItem(item.id)}>
-                        {deletingId === item.id ? <FontAwesomeIcon icon={faSpinner} className={styles.loadingIcon}/> : 'DELETE'}
-                      </button>
-                      {type === 'posts' &&
-                      <div className={styles.sortWrapper}>
-                        <FontAwesomeIcon
-                          icon={faChevronUp}
-                          className={`${styles.sortIcon}`}
-                          onClick={() => {moveItemUp(index)}}
-                        />
-                        <FontAwesomeIcon
-                          icon={faChevronDown}
-                          className={`${styles.sortIcon}`}
-                          onClick={() => {moveItemDown(index)}}
-                        />
-                      </div>}
-                    </div>
+          <button
+            type='button'
+            className={adminUI.primaryActionButton}
+            onClick={() => {
+              type === 'posts'
+                ? router.push(`/admin/new-post`)
+                : router.push(`/admin/new-content?type=${type}`);
+            }}
+          >
+            <FontAwesomeIcon icon={faAdd} className={adminUI.primaryActionIcon} />
+            <span>New</span>
+          </button>
+        </div>
+
+        {list && list.length === 0 && (
+          <p className={adminUI.noContent}>No {type} have been created yet. Click “New” to add some.</p>
+        )}
+
+        <div className={adminUI.list}>
+          {list && list.map((item, index) => {
+            const editUrl = type === 'posts'
+              ? `/admin/new-post?id=${item.id}`
+              : `/admin/new-content?id=${item.id}&type=${type}`;
+
+            const isExpanded = expanded === index;
+
+            return (
+              <div className={adminUI.listItem} key={index}>
+                <div className={adminUI.listItemHeader}>
+                  <div className={adminUI.listItemLeft}>
+                    <button
+                      type='button'
+                      className={`${adminUI.iconButton} ${isExpanded ? adminUI.iconButtonActive : ''}`}
+                      onClick={() => handleToggle(index)}
+                      aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
+                    >
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    </button>
+
+                    <h3 className={adminUI.itemTitle} onClick={() => handleToggle(index)}>
+                      {item.title || item.name}
+                    </h3>
                   </div>
-                  <div className={`${styles.expandedInfo} ${expanded === index ? styles.expandedInfoVisible : styles.expandedInfoHidden}`}>
-                    {item.author &&
-                  <>
-                    <p className={styles.metadataLabel}>{`CREATED BY:`}</p>
-                    <p className={styles.metadata}>{`${item.author.first_name} ${item.author.last_name}`}</p>
-                  </>
-                    }
-                    {item.when &&
-                  <>
-                    <p className={styles.metadataLabel}>{`MEETS:`}</p>
-                    <p className={styles.metadata}>{`${item.when}`}</p>
-                  </>
-                    }
-                    {item.position &&
-                  <>
-                    <p className={styles.metadataLabel}>{`POSITION:`}</p>
-                    <p className={styles.metadata}>{`${item.position}`}</p>
-                  </>
-                    }
-                    {item.date &&
-                  <>
-                    <p className={styles.metadataLabel}>{`DATE:`}</p>
-                    <p className={styles.metadata}>{dateFormatter(item.date)}</p>
-                  </>
-                    }
-                    {item.description &&
-                  <>
-                    <p className={styles.metadataLabel}>{`DESCRIPTION:`}</p>
-                    <p className={styles.metadata}>{item.description}</p>
-                  </>
-                    }
-                    {item.category &&
-                  <>
-                    <p className={styles.metadataLabel}>{`CATEGORY:`}</p>
-                    <p className={styles.metadata}>{item.category}</p>
-                  </>
-                    }
-                    {item.bio &&
-                  <>
-                    <p className={styles.metadataLabel}>{`ABOUT ME:`}</p>
-                    <p className={styles.metadata}>{item.bio}</p>
-                  </>
-                    }
-                    {item.url &&
-                  <>
-                    <p className={styles.metadataLabel}>{`URL:`}</p>
-                    <p className={styles.metadata}>{item.url}</p>
-                  </>
-                    }
+
+                  <div className={adminUI.actions}>
+                    <button type='button' className={adminUI.actionButton} onClick={() => handleViewContent(item.id)}>
+                      View
+                    </button>
+                    <button type='button' className={adminUI.actionButton} onClick={() => router.push(editUrl)}>
+                      Edit
+                    </button>
+                    <button
+                      type='button'
+                      className={`${adminUI.actionButton} ${adminUI.dangerButton} ${deletingId === item.id ? adminUI.dangerButtonBusy : ''}`}
+                      onClick={type === 'posts' ? () => deletePost(item.id) : () => deleteItem(item.id)}
+                    >
+                      {deletingId === item.id
+                        ? <FontAwesomeIcon icon={faSpinner} className={adminUI.spinnerIcon} />
+                        : 'Delete'
+                      }
+                    </button>
+
+                    {type === 'posts' && (
+                      <div className={adminUI.sortActions}>
+                        <button type='button' className={adminUI.iconButton} onClick={() => moveItemUp(index)} aria-label='Move up'>
+                          <FontAwesomeIcon icon={faChevronUp} />
+                        </button>
+                        <button type='button' className={adminUI.iconButton} onClick={() => moveItemDown(index)} aria-label='Move down'>
+                          <FontAwesomeIcon icon={faChevronDown} />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )
-            })}
-          </div>
+
+                <div className={`${adminUI.details} ${isExpanded ? adminUI.detailsOpen : ''}`}>
+                  <div className={adminUI.detailsInner}>
+                    <div className={adminUI.detailsGrid}>
+                    {item.author && (
+                      <>
+                        <p className={adminUI.detailLabel}>CREATED BY:</p>
+                        <p className={adminUI.detailValue}>{`${item.author.first_name} ${item.author.last_name}`}</p>
+                      </>
+                    )}
+                    {item.when && (
+                      <>
+                        <p className={adminUI.detailLabel}>MEETS:</p>
+                        <p className={adminUI.detailValue}>{`${item.when}`}</p>
+                      </>
+                    )}
+                    {item.position && (
+                      <>
+                        <p className={adminUI.detailLabel}>POSITION:</p>
+                        <p className={adminUI.detailValue}>{`${item.position}`}</p>
+                      </>
+                    )}
+                    {item.date && (
+                      <>
+                        <p className={adminUI.detailLabel}>DATE:</p>
+                        <p className={adminUI.detailValue}>{dateFormatter(item.date)}</p>
+                      </>
+                    )}
+                    {item.description && (
+                      <>
+                        <p className={adminUI.detailLabel}>DESCRIPTION:</p>
+                        <p className={adminUI.detailValue}>{item.description}</p>
+                      </>
+                    )}
+                    {item.category && (
+                      <>
+                        <p className={adminUI.detailLabel}>CATEGORY:</p>
+                        <p className={adminUI.detailValue}>{item.category}</p>
+                      </>
+                    )}
+                    {item.bio && (
+                      <>
+                        <p className={adminUI.detailLabel}>ABOUT ME:</p>
+                        <p className={adminUI.detailValue}>{item.bio}</p>
+                      </>
+                    )}
+                    {item.url && (
+                      <>
+                        <p className={adminUI.detailLabel}>URL:</p>
+                        <p className={adminUI.detailValue}>{item.url}</p>
+                      </>
+                    )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

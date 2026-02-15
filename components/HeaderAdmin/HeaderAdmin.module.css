@@ -1,4 +1,7 @@
 .headerContainer {
+  --admin-border: color-mix(in srgb, var(--primary-blue-transparent), white 70%);
+  --admin-surface: color-mix(in srgb, var(--primary-blue-transparent), white 96%);
+  --admin-muted: color-mix(in srgb, var(--primary-blue-transparent), black 35%);
   box-sizing: border-box;
   position: fixed;
   top:0;
@@ -9,15 +12,13 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(255, 255, 255, 1);
-  background-color: rgb(233, 249, 255);
-  background-color: white;
+  background-color: var(--admin-surface);
   text-align: center;
   z-index: 2001;
-  padding: .5rem;
+  padding: 0 0.75rem;
   overflow:visible;
-  border-bottom: solid 1px rgb(223, 223, 223);
-  box-shadow: 0 7px 8px -10px rgba(0, 0, 0, 0.5);
+  border-bottom: solid 1px var(--admin-border);
+  box-shadow: 0 10px 20px -18px rgba(0, 0, 0, 0.6);
 }
 .leftSideNavbarContent, .rightSideNavbarContent {
   display: flex;
@@ -25,31 +26,55 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  gap: 0.5rem;
 }
 .leftSideNavbarContent {
-  padding-left: .5rem;
+  padding-left: 0;
 }
 .rightSideNavbarContent {
-  padding-right: .5rem;
+  padding-right: 0;
 }
 .testErrorButton {
-  margin: 0 2rem;
-  padding: .5rem 1rem;
-  background-color: rgb(255, 123, 123);
-  color: rgb(0, 0, 0);
-  /* font-weight: bold; */
-  font-size: 1.25rem;
-  border: none;
+  margin: 0 0.75rem;
+  padding: 0.45rem 0.75rem;
+  background-color: white;
+  border: 1px solid var(--primary-red);
+  color: var(--primary-red);
+  font-size: 1rem;
+  border-radius: 10px;
 }
 .testErrorButton:hover {
   cursor: pointer;
 
 }
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  padding: 0.25rem 0.35rem;
+  border-radius: 10px;
+}
+
+.brand:hover {
+  background: color-mix(in srgb, var(--primary-blue-transparent), white 92%);
+}
+
 .logoContainer {
   position: relative;
-  width: 35px;
-  height: 35px;
-  margin: 0
+  width: 32px;
+  height: 32px;
+  margin: 0;
+}
+
+.brandText {
+  font-size: 1.15rem;
+  font-weight: normal;
+  color: var(--primary-blue);
+  text-decoration: underline;
+  text-decoration-color: var(--primary-red);
+  text-underline-offset: 2px;
+  white-space: nowrap;
 }
 .headerContainer h1 {
   position: relative;
@@ -62,14 +87,39 @@
   position: relative;
   box-sizing: border-box;
   font-family: Louis George Cafe;
-  height: 100%;
-  padding: 10px;
+  height: auto;
+  padding: 0.25rem 0.35rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0);
-  margin: 0 1rem;
+  margin: 0;
+  gap: 0.4rem;
+  border-radius: 10px;
+}
+
+.handlePill {
+  border: 1px solid var(--admin-border);
+  background: white;
+}
+
+.handlePill:hover {
+  background-color: color-mix(in srgb, var(--primary-blue-transparent), white 92%);
+}
+
+.handleIconWrapper {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.handleIcon {
+  color: var(--admin-muted);
+  width: 18px;
+  height: 18px;
 }
 .leftNavHandle{
 }
@@ -80,30 +130,32 @@
 }
 .iconWrapper, .userPhoto, .userIconWrapper {
   position: relative;
-  width: 45px;
-  height: 45px;
+  width: 36px;
+  height: 36px;
   margin: 0rem;
-  background-color: rgb(235, 235, 235);
+  background-color: transparent;
   box-sizing: border-box;
   display: block;
-  border-radius: 50%;
+  border-radius: 10px;
   /* border: solid red 2px; */
 }
 .userIconWrapper {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   /* flex-direction: row; */
   justify-content: center;
   align-items: center;
-  border: solid rgb(203, 203, 203) 1px;
+  border: solid var(--admin-border) 1px;
+  background: white;
 }
 .iconWrapper {
-  padding: .5rem;
-  background: transparent;
+  padding: 0.45rem;
+  border: 1px solid var(--admin-border);
+  background: white;
 }
 .iconWrapper:hover, .userIconWrapper:hover {
-  background-color: rgb(237, 237, 237);
+  background-color: color-mix(in srgb, var(--primary-blue-transparent), white 92%);
   cursor: pointer;
   /* border: solid rgb(176, 176, 176) 1px; */
 }
@@ -122,19 +174,28 @@
   padding: 0;
 }
 .selectedMenuIcon, .iconWrapper:hover .menuIcon {
-  color: rgb(0, 123, 180);
-  /* background-color: rgb(0, 0, 0); */
-  border-radius: 50%;
+  color: var(--primary-blue);
 }
 .selectedAlertsIcon {
-  color: rgb(0, 123, 180);
-  /* background-color: rgb(189, 189, 189); */
-  border-radius: 50%;
+  color: var(--primary-blue);
   width: 100%;
   height: 100%;
 }
 .menuIcon {
-  color: rgb(88, 88, 88);
+  color: var(--admin-muted);
+}
+
+.handleLabel {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--admin-muted);
+  user-select: none;
+}
+
+.dropdownChevron {
+  color: var(--admin-muted);
+  font-size: 0.95rem;
+  margin-left: 0.1rem;
 }
 .alertsIcon {
   color: rgb(249, 91, 91);
@@ -155,19 +216,20 @@
 LEFT AND RIGHT NAV CONTAINERS-------------------------
 ------------------------------------------------------ */
 .navContainerLeft, .navContainerRight, .alertsWrapper, .userMenu {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: white;
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   overflow: visible;
-  padding: 1rem 0;
+  padding: 0.35rem 0;
   white-space: nowrap;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  box-shadow: 0 20px 50px -30px rgba(0, 0, 0, 0.9);
+  border-radius: 12px;
+  border: 1px solid var(--admin-border);
   margin: 0;
-  top: 45px;
+  top: 48px;
 }
 .navContainerLeft {
   left: 50%;
@@ -195,22 +257,21 @@ LEFT AND RIGHT NAV CONTAINERS-------------------------
   /* margin: .5rem 0 .5rem 0; */
   margin: 0;
   font-family: Louis George Cafe;
-  color: var(--primary-blue);
-  text-decoration: underline;
-  text-decoration-color: red;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  font-size: 1.25rem;
-  font-weight:normal;
-  transition: transform .3s ease-in-out;
+  color: color-mix(in srgb, var(--primary-blue-transparent), black 45%);
+  text-decoration: none;
+  font-size: 1.02rem;
+  font-weight: normal;
+  transition: background-color .15s ease, color .15s ease;
   width: 100%;
-  padding: .5rem 1.5rem;
+  padding: 0.55rem 1.1rem;
   box-sizing: border-box;
+  text-align: left;
 }
 .navContainerLeft h2:hover, .navContainerRight h2:hover{
   /* transform: scale(1.2); */
   cursor: pointer;
-  background-color: rgb(238, 238, 238);
+  background-color: color-mix(in srgb, var(--primary-blue-transparent), white 92%);
+  color: var(--primary-blue);
   width: 100%;
 }
 .rightSideNavbarContent {
@@ -375,10 +436,12 @@ ALERTS MENU-------------------------------------------
 USER MENU---------------------------------------------
 ------------------------------------------------------ */
 .photoWrapper {
-  height: 35px;
-  width: 35px;
-  background-color:rgb(88, 88, 88);
-  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  overflow: hidden;
 }
 .userPhoto {
   height: 100%;
@@ -390,75 +453,146 @@ USER MENU---------------------------------------------
   cursor: pointer;
 }
 .userMenu {
-  position: absolute;
+  right: 0.75rem;
+  top: 48px;
+  min-width: 260px;
+  padding: 0.35rem 0;
+  align-items: stretch;
+}
+
+.userMenuHeader {
+  padding: 0.7rem 1.1rem 0.55rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  padding: 1rem;
-  right: 20px;
-  top: 53px;
+  align-items: flex-start;
+  gap: 0.15rem;
 }
-.userDetailsWrapper {
-  margin: 1rem 0 1rem 0;
-}
-.userEmail, .userPosition {
-  font-weight: normal;
-  font-size: 1.25rem;
+
+.userMenuName {
   margin: 0;
+  font-family: Louis George Cafe;
+  font-size: 1.05rem;
+  font-weight: normal;
+  color: var(--primary-blue);
 }
-.userPosition {
-  font-weight: bold;
-  font-size: 1.25rem;
-  margin-top: 0;
+
+.userMenuMeta {
+  margin: 0;
+  font-family: Louis George Cafe;
+  font-size: 0.95rem;
+  font-weight: normal;
+  color: var(--admin-muted);
 }
-.logout {
-  font-size: 1.25rem;
-  margin: 2rem 0 0 0;
-  padding: .5rem 1rem;
-  background-color: rgb(255, 126, 126);
-  color: black;
+
+.userMenuDivider {
+  height: 1px;
+  width: 100%;
+  background: var(--admin-border);
+  margin: 0.25rem 0;
+}
+
+.userMenuItem {
+  width: 100%;
   border: none;
+  background: transparent;
+  padding: 0.55rem 1.1rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: Louis George Cafe;
+  font-size: 1.02rem;
+  font-weight: normal;
+  color: color-mix(in srgb, var(--primary-blue-transparent), black 45%);
+  text-align: left;
 }
-.logout:hover {
+
+.userMenuItem:hover {
   cursor: pointer;
+  background-color: color-mix(in srgb, var(--primary-blue-transparent), white 92%);
+  color: var(--primary-blue);
+}
+
+.userMenuItemIcon {
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.userMenuItemDanger {
+  color: color-mix(in srgb, var(--primary-red), black 35%);
+}
+
+.userMenuItemDanger:hover {
+  background-color: color-mix(in srgb, var(--primary-red), white 92%);
+  color: var(--primary-red);
 }
 .storageStatusWrapper {
   box-sizing: border-box;
-  height: 100%;
+  height: auto;
+  align-self: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 0.3rem 0.6rem;
+  margin: 0.25rem 0;
   background-color: rgb(167, 252, 158);
+  border: 1px solid color-mix(in srgb, rgb(167, 252, 158), black 15%);
+  border-radius: 999px;
   /* border: solid red 2px; */
+}
+
+.storageNeutral {
+  background-color: rgb(235, 235, 235);
+  border-color: var(--admin-border);
+}
+
+.storageOk {
+  background-color: rgb(167, 252, 158);
+  border-color: color-mix(in srgb, rgb(167, 252, 158), black 15%);
+}
+
+.storageWarn {
+  background-color: rgb(255, 235, 140);
+  border-color: color-mix(in srgb, rgb(255, 235, 140), black 20%);
+}
+
+.storageDanger {
+  background-color: rgb(255, 126, 126);
+  border-color: color-mix(in srgb, rgb(255, 126, 126), black 20%);
 }
 .storageStatusWrapper p {
   top: 50;
-  padding: 5px .5rem;
+  padding: 0;
   font-family: Louis George Cafe;
-  font-size: 1.25rem;
+  font-size: 0.95rem;
   margin: 0;
+  color: black;
 }
 .autosaveStatusWrapper {
   box-sizing: border-box;
-  margin: 0 1rem;;
+  margin: 0 0.25rem;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   height: 100%;
-  width: 200px;
+  width: 210px;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  background: white;
   /* border: solid red 2px; */
 }
 .autosaveStatus {
-  font-size: 1rem;
+  font-size: 0.9rem;
   /* border: solid blue 2px; */
   /* height: 100%; */
   width: 75%;
   text-align: left;
+  margin: 0;
+  color: var(--admin-muted);
 }
 .cloudIcon {
   color:rgb(148, 230, 250);
@@ -500,11 +634,6 @@ USER MENU---------------------------------------------
   left: 9px;
   top: calc(50% + 2px);
   transform: translate(0, -50%);
-}
-.settingsLabel {
-  font-weight: normal;
-  font-size: 1.25rem;
-  margin-top: .25rem;
 }
 .productionWarning {
 

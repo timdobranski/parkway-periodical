@@ -1,22 +1,56 @@
 'use client'
 
-import styles from './home.module.css';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { createClient } from '../../../utils/supabase/client';
 import { useAdmin } from '../../../contexts/AdminContext';
+import adminUI from '../adminUI.module.css';
 
 
 export default function AdminHomePage() {
-  const { isLoading, setIsLoading, saving, setSaving, alerts, setAlerts, user, setUser, authUser, setAuthUser } = useAdmin();
+  useAdmin();
   const supabase = createClient();
-  const types = ['posts', 'electives', 'clubs', 'staff', 'links', 'events', 'drafts'];
-  const [typeCounts, setTypeCounts] = useState(types.reduce((acc, type) => {
-    acc[type] = 0; // initialize all counts to zero
-    return acc;
-  }, {}));
+  const sections = [
+    {
+      type: 'posts',
+      title: 'POSTS',
+      listHref: '/admin/list?type=posts',
+      newHref: '/admin/new-post',
+      countLabel: 'Total Posts',
+    },
+    {
+      type: 'electives',
+      title: 'ELECTIVES',
+      listHref: '/admin/list?type=electives',
+      newHref: '/admin/new-content?type=electives',
+      countLabel: 'Total Electives',
+    },
+    {
+      type: 'clubs',
+      title: 'CLUBS',
+      listHref: '/admin/list?type=clubs',
+      newHref: '/admin/new-content?type=clubs',
+      countLabel: 'Total Clubs',
+    },
+    {
+      type: 'links',
+      title: 'LINKS',
+      listHref: '/admin/list?type=links',
+      newHref: '/admin/new-content?type=links',
+      countLabel: 'Total Links',
+    },
+  ];
+
+  const types = sections.map((section) => section.type);
+
+  const [typeCounts, setTypeCounts] = useState(() =>
+    types.reduce((accumulator, type) => {
+      accumulator[type] = 0;
+      return accumulator;
+    }, {})
+  );
 
   async function getEntryCount(type) {
     try {
@@ -42,94 +76,42 @@ export default function AdminHomePage() {
         return { type, count };
       }));
 
-      const newTypeCounts = {...typeCounts};
-      counts.forEach(({ type, count }) => {
-        newTypeCounts[type] = count;
-      });
-      setTypeCounts(newTypeCounts);
+      setTypeCounts(
+        counts.reduce((accumulator, { type, count }) => {
+          accumulator[type] = count;
+          return accumulator;
+        }, {})
+      );
     }
 
     fetchCounts();
   }, []);
   return (
-    <div className='adminPageWrapper' >
-      <h1 className={`${styles.adminHomeTitle} pageTitle`}>ADMIN HOME</h1>
-      <div className={styles.homeGrid}>
-        <div className={styles.sectionWrapper}>
-          <Link href='/admin/new-post'>
-            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-          </Link>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/list?type=posts'>
-              <h2 className={styles.link}>POSTS</h2>
-            </Link>
-          </div>
-          {/* {typeCounts.drafts ? <button onClick={() => setExpanded('posts')} className={styles.resumeDraft}>RESUME DRAFT</button> : null} */}
-          <p>{`Total Posts: ${typeCounts.posts}`}</p>
-          {/* <p>Number of EXPIRED posts</p> */}
+    <div className='adminPageWrapper'>
+      <div className={adminUI.pageInner}>
+        <h1 className={`${adminUI.pageTitle} pageTitle`}>ADMIN HOME</h1>
+        <div className={adminUI.cardGrid}>
+          {sections.map((section) => (
+            <div key={section.type} className={adminUI.card}>
+              <div className={adminUI.cardHeader}>
+                <Link href={section.listHref}>
+                  <h2 className={adminUI.cardTitleLink}>{section.title}</h2>
+                </Link>
+
+                <Link href={section.newHref} className={adminUI.primaryAction}>
+                  <FontAwesomeIcon icon={faAdd} className={adminUI.primaryActionIcon} />
+                  <span>New</span>
+                </Link>
+              </div>
+
+              <div className={adminUI.cardBody}>
+                <p className={adminUI.metaLine}>{`${section.countLabel}: ${typeCounts[section.type] ?? 0}`}</p>
+                <Link href={section.listHref} className={adminUI.secondaryLink}>View all</Link>
+              </div>
+            </div>
+          ))}
         </div>
-
-        {/* <div className={styles.sectionWrapper}>
-          <Link href='/admin/new-content?type=events'>
-            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-          </Link>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/list?type=events'>
-              <h2 className={styles.link}>EVENTS</h2>
-            </Link>
-          </div>
-          <p>{`Total Events: ${typeCounts.events}`}</p>
-        </div> */}
-
-        <div className={styles.sectionWrapper}>
-          <Link href='/admin/new-content?type=electives'>
-            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-          </Link>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/list?type=electives'>
-              <h2 className={styles.link}>ELECTIVES</h2>
-            </Link>
-          </div>
-          <p>{`Total Electives: ${typeCounts.electives}`}</p>
-        </div>
-
-        <div className={styles.sectionWrapper}>
-          <Link href='/admin/new-content?type=clubs'>
-            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-          </Link>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/list?type=clubs'>
-              <h2 className={styles.link}>CLUBS</h2>
-            </Link>
-          </div>
-          <p>{`Total Clubs: ${typeCounts.clubs}`}</p>
-        </div>
-
-        <div className={styles.sectionWrapper}>
-          <Link href='/admin/new-content?type=links'>
-            <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-          </Link>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/list?type=links'>
-              <h2 className={styles.link}>LINKS</h2>
-            </Link>
-          </div>
-          <p>{`Total Links: ${typeCounts.links}`}</p>
-        </div>
-
-        {/* <div className={styles.sectionWrapper}>
-            <Link href='/admin/new-content?type=staff'>
-              <FontAwesomeIcon icon={faAdd} className={styles.addIcon}/>
-            </Link>
-          <div className={styles.titleWrapper}>
-            <Link href='/admin/list?type=staff'>
-              <h2 className={styles.link}>STAFF</h2>
-            </Link>
-          </div>
-          <p>{`Total Staff: ${typeCounts.staff}`}</p>
-        </div> */}
       </div>
-      {/* <h3 className='pageTitle'>Update Social Media Links</h3> */}
     </div>
   );
 }

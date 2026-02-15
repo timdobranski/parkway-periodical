@@ -1,18 +1,28 @@
 'use client'
 
 import styles from './settings.module.css';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPencil, faCrop, faCircleChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUser,
+  faPencil,
+  faCrop,
+  faCircleChevronLeft,
+  faIdBadge,
+  faKey,
+  faUserPlus,
+  faUserMinus,
+  faBoxArchive,
+} from '@fortawesome/free-solid-svg-icons';
 import { createClient } from '../../../utils/supabase/client';
 import CroppablePhoto from '../../../components/CroppablePhoto/CroppablePhoto';
 import userPhotos from '../../../utils/userPhotos';
 import { useAdmin } from '../../../contexts/AdminContext';
+import adminUI from '../adminUI.module.css';
 
 
 export default function Settings () {
   const supabase = createClient();
-  const userIcon = (<FontAwesomeIcon icon={faUser} className={styles.userIcon} />)
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserAdminStatus, setNewUserAdminStatus] = useState(false);
   const [users, setUsers] = useState([]);
@@ -322,104 +332,138 @@ export default function Settings () {
   };
 
   return (
-    <div className='adminPageWrapper' >
-      <div className={styles.pageWrapper}>
+    <div className='adminPageWrapper'>
+      <div className={adminUI.pageInner}>
         {modalIsOpen && updatePhotoModalContent}
-        <div className={styles.userInfo}>
-          {userPhoto('edit', () => setModalIsOpen(true))}
-          {(croppedPhoto === placeholderPhoto || !userPhotoIsValid) && <p className={styles.defaultPhotoMessage}>No photo provided; using default</p>}
 
-          <p className='smallerTitle'>{user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}</p>
-          <p className={styles.info}>{user ? `${user.position}` : 'Position'}</p>
+        <div className={adminUI.headerRow}>
+          <h1 className={`${adminUI.pageTitle} pageTitle`}>SETTINGS</h1>
         </div>
 
-        <div className={styles.editUserInfoWrapper}>
+        <div className={styles.settingsStack}>
+          <div className={adminUI.card}>
+            <h3 className={styles.cardTitle}>
+              <FontAwesomeIcon icon={faIdBadge} className={styles.sectionTitleIcon} />
+              <span>Profile</span>
+            </h3>
+            <div className={styles.profileHeader}>
+              <div className={styles.profilePhoto}>
+                {userPhoto('edit', () => setModalIsOpen(true))}
+                {(croppedPhoto === placeholderPhoto || !userPhotoIsValid) && (
+                  <p className={styles.defaultPhotoMessage}>No photo provided; using default</p>
+                )}
+              </div>
 
-          {/* <h3 className={styles.infoLabel}>Change Email</h3>
-        <div className={styles.inputWrapper}>
-          <input className={styles.updateInput} type='email' placeholder={user.email} />
-          <button className={styles.inviteButton}>Confirm</button>
-        </div> */}
-
-          <h3 className='smallerTitle'>Change Password</h3>
-          <div className={styles.inputWrapper}>
-            <p>{`Passwords must have six or more characters.`}</p>
-            <input className={styles.updateInput}
-              type='password'
-              value={newPassword}
-              placeholder='Enter new password'
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <button
-              className={styles.inviteButton}
-              onClick={(e) => {handlePasswordChange()}}
-            >Confirm</button>
+              <div className={styles.profileMeta}>
+                <p className={styles.profileName}>
+                  {user ? `${user.first_name || 'User'} ${user.last_name || 'Name'}` : 'User Name'}
+                </p>
+                <p className={styles.profileSubtle}>{user ? `${user.position}` : 'Position'}</p>
+              </div>
+            </div>
           </div>
 
-          {user.admin &&
-        <>
-          <h3 className='smallerTitle'>Invite New User</h3>
-          <div className={styles.inputWrapper}>
-            <input
-              className={styles.updateInput}
-              value={newUserEmail}
-              onChange={(e) => setNewUserEmail(e.target.value)}
-              type='email'
-              placeholder='Enter email address'
-            />
-            <label className={styles.adminLabel}>User Permissions</label>
-            <select
-              className={styles.newUserTypeSelect}
-              type='checkbox'
-              checked={newUserAdminStatus}
-              onChange={() => setNewUserAdminStatus(!newUserAdminStatus)}>
-              <option value={false}>Standard User</option>
-              <option value={true}>Administrator</option>
-            </select>
-            <p className={styles.info}>{`Standard Users can create content and edit only the content they've created`}</p>
-            <p className={styles.info}>{`Administrators can invite/remove users and edit all content, including content created by another user.`}</p>
-            <button
-              className={styles.inviteButton}
-              onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
-            >Send Invite</button>
+          <div className={adminUI.card}>
+            <h3 className={styles.cardTitle}>
+              <FontAwesomeIcon icon={faKey} className={styles.sectionTitleIcon} />
+              <span>Change Password</span>
+            </h3>
+            <div className={styles.formStack}>
+              <p className={styles.helperText}>Passwords must have six or more characters.</p>
+              <input
+                className={styles.updateInput}
+                type='password'
+                value={newPassword}
+                placeholder='Enter new password'
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <button className={styles.inviteButton} onClick={(e) => {handlePasswordChange()}}>
+                Confirm
+              </button>
+            </div>
           </div>
-        </>
-          }
 
-          { user.admin &&
-        <>
-          <h3 className='smallerTitle'>Remove User</h3>
-          <div className={styles.inputWrapper}>
-            <select
-              className={styles.updateInput}
-              value={userToRemove}
-              onChange={(e) => setUserToRemove(e.target.value)}
-              type='email'
-            >
-              <option value=''>{users.length ? 'Select user to remove' : 'No users to remove yet'}</option>
-              {users.map((user, index) => {
-                return <option key={index} value={user.email}>{`${user.first_name} ${user.last_name } - ${user.email}`}</option>
-              })}
-            </select>
-            <button
-              className={styles.inviteButton}
-              onClick={() => {if (userToRemove) {removeUser(userToRemove)}}}
-            >
-              Remove
-            </button>
-          </div>
-        </>
-          }
+          {user.admin && (
+            <div className={adminUI.card}>
+              <h3 className={styles.cardTitle}>
+                <FontAwesomeIcon icon={faUserPlus} className={styles.sectionTitleIcon} />
+                <span>Invite New User</span>
+              </h3>
+              <div className={styles.formStack}>
+                <input
+                  className={styles.updateInput}
+                  value={newUserEmail}
+                  onChange={(e) => setNewUserEmail(e.target.value)}
+                  type='email'
+                  placeholder='Enter email address'
+                />
+
+                <label className={styles.adminLabel}>User Permissions</label>
+                <select
+                  className={styles.newUserTypeSelect}
+                  type='checkbox'
+                  checked={newUserAdminStatus}
+                  onChange={() => setNewUserAdminStatus(!newUserAdminStatus)}
+                >
+                  <option value={false}>Standard User</option>
+                  <option value={true}>Administrator</option>
+                </select>
+
+                <p className={styles.helperText}>Standard Users can create content and edit only the content they've created.</p>
+                <p className={styles.helperText}>Administrators can invite/remove users and edit all content, including content created by another user.</p>
+                <button
+                  className={styles.inviteButton}
+                  onClick={() => {if (newUserEmail) {sendRequestToInviteNewUser(newUserEmail)}}}
+                >
+                  Send Invite
+                </button>
+              </div>
+            </div>
+          )}
+
+          {user.admin && (
+            <div className={adminUI.card}>
+              <h3 className={styles.cardTitle}>
+                <FontAwesomeIcon icon={faUserMinus} className={styles.sectionTitleIcon} />
+                <span>Remove User</span>
+              </h3>
+              <div className={styles.formStack}>
+                <select
+                  className={styles.updateInput}
+                  value={userToRemove}
+                  onChange={(e) => setUserToRemove(e.target.value)}
+                  type='email'
+                >
+                  <option value=''>{users.length ? 'Select user to remove' : 'No users to remove yet'}</option>
+                  {users.map((user, index) => {
+                    return <option key={index} value={user.email}>{`${user.first_name} ${user.last_name } - ${user.email}`}</option>
+                  })}
+                </select>
+                <button className={`${styles.inviteButton} ${styles.dangerButton}`}
+                  onClick={() => {if (userToRemove) {removeUser(userToRemove)}}}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          )}
+
+          {user.admin && (
+            <div className={adminUI.card}>
+              <h3 className={styles.cardTitle}>
+                <FontAwesomeIcon icon={faBoxArchive} className={styles.sectionTitleIcon} />
+                <span>Archive School Year</span>
+              </h3>
+              <div className={styles.formStack}>
+                <button className={styles.archiveButton}>MOVE TO NEW SCHOOL YEAR</button>
+                <p className={styles.archiveInstructions}>{`When you're done adding posts for the school year, click this button
+to send all current posts to the archive and switch the app over to a new school year. All posts will be removed from the main page, and the year's archived
+posts will no longer be editable.`}</p>
+                <p className={styles.warning}>***CANNOT BE UNDONE***</p>
+              </div>
+            </div>
+          )}
         </div>
-        {user.admin &&
-      <div className={styles.inputWrapper}>
-        <button className={styles.archiveButton}>MOVE TO NEW SCHOOL YEAR</button>
-        <p className={styles.archiveInstructions}>{`When you're done adding posts for the school year, click this button
-      to send all current posts to the archive and switch the app over to a new school year. All posts will be removed from the main page, and the year's archived
-      posts will no longer be editable.`}</p>
-        <h3 className={styles.warning}>***CANNOT BE UNDONE***</h3>
-      </div>
-        }
       </div>
     </div>
   )
